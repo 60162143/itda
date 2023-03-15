@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.itda.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_bag"
+            app:destination="@id/navigation_bag" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_map"
+            app:destination="@id/navigation_map" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_collabo"
+            app:destination="@id/navigation_collabo" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_mypage"
+            app:destination="@id/navigation_mypage" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.itda.ui.map.MapFragment"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/navigation_collabo"
+        android:name="com.example.itda.ui.collaboration.CollaboFragment"
+        tools:layout="@layout/fragment_collabo" />
+
+    <fragment
+        android:id="@+id/navigation_bag"
+        android:name="com.example.itda.ui.bag.BagFragment"
+        tools:layout="@layout/fragment_bag" />
+
+    <fragment
+        android:id="@+id/navigation_mypage"
+        android:name="com.example.itda.ui.mypage.MyPageFragment"
+        tools:layout="@layout/fragment_mypage" />
+
+</navigation>

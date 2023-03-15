@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.29846153846153844" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/custom_bottom_navigation.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_bag.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_collabo.xml" value="0.24351851851851852" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_coupon.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.24351851851851852" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_heart.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_home.xml" value="0.23072916666666668" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_map.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_mypage.xml" value="0.37552083333333336" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_orderlist.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_password_sad.xml" value="0.3351851851851852" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_password_smile.xml" value="0.3351851851851852" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_review.xml" value="0.303125" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_search.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_sushi.xml" value="0.24351851851851852" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_user.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/ic_working_time.xml" value="0.3351851851851852" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/drawable/round.xml" value="0.1" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/activity_info.xml" value="0.31929347826086957" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/activity_login.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/activity_membership.xml" value="0.22" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/activity_password.xml" value="0.22" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/collabo.xml" value="0.27239583333333334" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_bag.xml" value="0.23125" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_collabo.xml" value="0.23125" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_coupon.xml" value="0.17477203647416414" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_heart.xml" value="0.17477203647416414" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_home.xml" value="0.17477203647416414" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_info.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_map.xml" value="0.17477203647416414" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/fragment_mypage.xml" value="0.17477203647416414" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/info_brief_menu.xml" value="0.2869791666666667" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/info_collabo.xml" value="0.2869791666666667" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/info_detail.xml" value="0.2869791666666667" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/info_detail_menu.xml" value="0.2869791666666667" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/main_category.xml" value="0.23125" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/main_item_list.xml" value="0.11246200607902736" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/main_store.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/round.xml" value="0.2921875" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/layout/splash.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/menu/bottom_nav_menu.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2947916666666667" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/MyApplication6/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.28125" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/itda/app/src/main/res/layout/activity_main.xml" value="0.16302083333333334" />
+        <entry key="..\:/Users/no295/AndroidStudioProjects/itda/app/src/main/res/layout/fragment_map.xml" value="0.12314814814814815" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
