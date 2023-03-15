@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--인터넷 권한-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--위치 권한-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_logo_round"
+        android:supportsRtl="true">
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="8c941ca74f96358c3816c091017b5f77" />
+        <activity android:name="com.example.itda.ui.splash.SplashActivity"
+            android:theme="@style/Theme.MyApplication"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--메인 액티비티-->
+        <activity
+            android:name="com.example.itda.MainActivity"
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!--가게 상세 정보 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--가게 검색 화면 액티비티-->
+        <activity android:name="com.example.itda.ui.home.HomeSearchActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--로그인 액티비티-->
+        <activity android:name="com.example.itda.ui.login.LoginActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <activity android:name="com.example.itda.ui.login.PasswordActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <activity android:name="com.example.itda.ui.login.MembershipActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!--상단 화면 입니다.-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_back_ic"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginVertical="10dp"
+            android:src="@drawable/ic_back_arrow"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_main_store_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/info_back_ic"
+            android:layout_marginStart="20dp"
+            android:textSize="15sp"
+            android:text="임시입니다."/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_call_ic"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/info_bookmark_ic"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_call"
+            android:background="@android:color/transparent"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_bookmark_ic"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_before_bookmark"
+            android:background="@android:color/transparent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--상단 화면 끝 입니다.-->
+
+    <!--스크롤 시작 입니다.-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--info 간단한 소개 화면-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="10"
+                    android:layout_marginHorizontal="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/info_store_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="착한커피" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginEnd="10dp">
+
+                            <ImageView
+                                android:id="@+id/info_star_ic"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_star"
+                                app:layout_constraintRight_toLeftOf="@id/info_star_score"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginEnd="10dp"/>
+
+                            <TextView
+                                android:id="@+id/info_star_score"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4.8"
+                                app:layout_constraintLeft_toRightOf="@+id/info_star_image"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/info_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="히포캠퍼스는 LOVE, PEACE and HAPINESS의 이념을 바탕으로 다양한 향기제품을 제공하고 있는 연남동 향기스튜디오 입니다."
+                        android:layout_marginVertical="10dp"/>
+
+                    <TextView
+                        android:id="@+id/info_hashtag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#커피 #디저트" />
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/item_main_store_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="0dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="20dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/info_store_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center"
+                        android:padding="0dp"
+                        android:contentDescription="TODO" />
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+            <!--info 간단한 소개 화면 끝-->
+
+<!--            협업한 가게 나오는 화면 입니다-->
+            <TextView
+                android:id="@+id/collabo_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이어진 가게"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/info_collabo_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <!--            협업한 가게 나오는 화면 끝입니다-->
+
+
+            <!--            운영시간, 주차 가능 여부 나오는 화면 입니다-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp">
+
+<!--                운영 시간 나오는 화면 입니다-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageView
+                        android:id="@+id/info_working_time_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_working_time"
+                        />
+
+                    <TextView
+                        android:id="@+id/info_working_time"
+                        android:layout_marginStart="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10:00~22:00, 월 휴무"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+
+<!--            주차 가능 여부 나오는 화면 입니다-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageView
+                        android:id="@+id/info_parking_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_parking"
+                        />
+
+                    <TextView
+                        android:id="@+id/info_parking"
+                        android:layout_marginStart="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="주차 가능"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--            운영시간, 주차 가능 여부 나오는 화면 끝입니다-->
+
+<!--            메뉴 화면 입니다-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/info_menu_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_menu"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="20dp"/>
+
+                    <Button
+                        android:id="@+id/info_menu_plus_btn"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:text="+more"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center"
+                        android:textSize="10sp"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/info_menu_center_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="·"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/info_menu_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="아메리카노"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/info_menu_center_dot"
+                            android:layout_marginStart="10dp"/>
+
+                        <TextView
+                            android:id="@+id/info_menu_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3.0"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:layout_marginEnd="20dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--                    아이템은 info_brief_menu-->
+                    <ListView
+                        android:id="@+id/info_menu_lv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </ListView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+<!--            메뉴 화면 끝입니다.-->
+
+
+<!--            지도 화면 입니다-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:id="@+id/info_menu_map_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_map"/>
+
+                    <TextView
+                        android:id="@+id/info_address"
+                        android:layout_marginStart="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="경기도 수원시 팔달구"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+
+<!--                지도 화면 예시입니다-->
+                <ImageView
+                    android:layout_width="300dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/map_ex"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            </LinearLayout>
+<!--            지도 화면 끝입니다.-->
+
+
+<!--            가게 사진 화면 입니다.-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/info_photo_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="착한커피's Picture"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="20dp"/>
+
+                    <Button
+                        android:id="@+id/info_photo_plus_btn"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:text="+more"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center"
+                        android:textSize="10sp"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/info_photo_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+<!--            가게 사진 화면 끝입니다-->
+
+<!--            리뷰 화면 입니다-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/info_review_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="착한커피's score"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="20dp"/>
+
+                    <ImageView
+                        android:id="@+id/info_review_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_review"
+                        app:layout_constraintRight_toLeftOf="@id/info_review_plus_btn"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:id="@+id/info_review_plus_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="리뷰쓰기"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="20dp"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/info_review_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="리뷰 나올 자리"/>
+
+            </LinearLayout>
+<!--            리뷰 화면 끝입니다-->
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+<!--    결제 버튼 입니다-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/info_payment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="결제하기"
+            android:background="@drawable/round"
+            android:layout_marginBottom="10dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

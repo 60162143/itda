@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.itda.ui.home.HomeFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--검색 아이콘-->
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/search_button"
+            android:layout_marginStart="10dp"
+            android:layout_marginVertical="10dp"
+            android:src="@drawable/ic_search"
+            android:background="@android:color/transparent"/>
+
+        <!--검색어 입력 창-->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/search_main_store"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginVertical="10dp"
+            android:textSize="15sp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:hint="검색어를 입력해 주세요."
+            android:background="@null"/>
+
+    </LinearLayout>
+
+
+    <!--스크롤뷰-->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--카테고리 리사이클러뷰-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_category_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <!--가게 정보 리사이클러뷰-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_store_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

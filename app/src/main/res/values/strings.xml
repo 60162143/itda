@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">itda</string>
+    <string name="title_home">홈</string>
+    <string name="title_qr">큐알</string>
+    <string name="title_map">맵</string>
+    <string name="title_collabo">협업가게</string>
+    <string name="title_bag">가방</string>
+    <string name="title_mypage">마이페이지</string>
+</resources>
