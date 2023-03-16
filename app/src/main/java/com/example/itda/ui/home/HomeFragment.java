@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
     final static private String HOST = "http://no2955922.ivyro.net";        // Host 정보
 
     private int touchPosition = -1;       // 현재 터치한 Position, 음수로 초기화
+    private float xPosition = 0;          // 현재 터치한 x 좌표
 
     // View 생성
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -91,6 +92,7 @@ public class HomeFragment extends Fragment {
                 switch(e.getAction()) {
                     // 눌렀을 때
                     case MotionEvent.ACTION_DOWN: {
+                        xPosition = e.getX();   // 터치한 x 좌표 저장
                         // findChildViewUnder : 지정된 점 위의 view를 찾아주는 메서드
                         View child = CategoryRv.findChildViewUnder(e.getX(), e.getY());
                         if(child != null){  // view가 있으면 현재 누른 리사이클러뷰 Position GET
@@ -99,7 +101,6 @@ public class HomeFragment extends Fragment {
                         break;
 
                     }
-
                     // 누른걸 땠을 때
                     case MotionEvent.ACTION_UP: {
                         // findChildViewUnder : 지정된 점 위의 view를 찾아주는 메서드
@@ -109,8 +110,8 @@ public class HomeFragment extends Fragment {
                             postPosition = CategoryRv.getChildAdapterPosition(child);
                         }
 
-                        // 누른 Position과 땐 Position이 같으면 터치로 인식
-                        if(postPosition == touchPosition){
+                        // 누른 Position과 땐 Position이 같고 터치한 좌표의 오차 범위가 +-1 이면 터치로 인식
+                        if(postPosition == touchPosition && xPosition >= e.getX() - 1 && xPosition <= e.getX() + 1){
                             Map<String, String> param = new HashMap<>();
                             param.put("categoryId", String.valueOf(category.get(touchPosition).getCategoryId()));  // 파라미터 설정
                             getSearchMainStore(param);
@@ -122,18 +123,13 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
-            }
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) { }
 
             @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) { }
         });
 
         getCategory();     // 카테고리 생성
-
         getMainStore();   // 가게 정보 생성
 
         return root;
@@ -279,8 +275,7 @@ public class HomeFragment extends Fragment {
 
                     search_main_store.add(mainStore);  // 가게 정보 저장
                 }
-
-                System.out.println("통신");
+                
                 if(!search_main_store.isEmpty()){
                     intent = new Intent(getContext(), HomeSearchActivity.class);  // 가게 검색 Activity 화면으로 이동하기 위한 Intent 객체 선언
 
