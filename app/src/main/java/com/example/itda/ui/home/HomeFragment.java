@@ -275,7 +275,7 @@ public class HomeFragment extends Fragment {
 
                     search_main_store.add(mainStore);  // 가게 정보 저장
                 }
-                
+
                 if(!search_main_store.isEmpty()){
                     intent = new Intent(getContext(), HomeSearchActivity.class);  // 가게 검색 Activity 화면으로 이동하기 위한 Intent 객체 선언
 
