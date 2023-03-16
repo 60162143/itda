@@ -39,7 +39,7 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
     @NonNull
     @Override
     public MapRvAdapter.CustomStoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_store, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_map_store, parent, false);
 
         return new CustomStoreViewHolder(view);
     }

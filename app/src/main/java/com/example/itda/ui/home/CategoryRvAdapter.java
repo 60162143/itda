@@ -28,7 +28,7 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
     @Override
     public CategoryRvAdapter.CustomCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // layoutInflater로 xml객체화. viewHolder 생성
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_category, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_main_category, parent, false);
         return new CustomCategoryViewHolder(view);
     }
 

@@ -2,15 +2,11 @@ package com.example.itda.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -47,7 +43,7 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     @Override
     public MainStoreRvAdapter.CustomMainCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // layoutInflater로 xml객체화. viewHolder 생성
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_store, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_main_store, parent, false);
         return new CustomMainCategoryViewHolder(view);
     }
 
