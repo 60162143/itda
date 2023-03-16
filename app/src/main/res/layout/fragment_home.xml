@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/border">
 
         <!--검색 아이콘-->
         <ImageButton
@@ -38,7 +39,6 @@
 
     </LinearLayout>
 
-
     <!--스크롤뷰-->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -53,15 +53,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_category_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:paddingVertical="10dp"/>
 
             <!--가게 정보 리사이클러뷰-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_store_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"/>
 
         </LinearLayout>
 
