@@ -34,7 +34,7 @@
             android:layout_marginStart="20dp"
             android:textSize="12sp"
             android:text="가게 이름"
-            android:background="@drawable/info_name_round"/>
+            android:background="@drawable/round_color"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -228,33 +228,79 @@
                         android:text="10:00~22:00, 월 휴무"
                         android:layout_gravity="center_vertical"/>
 
+                    <ImageButton
+                        android:id="@+id/info_working_time_down_arrow_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_down_arrow"
+                        android:layout_marginStart="10dp"
+                        android:background="@android:color/transparent"
+                        android:layout_gravity="bottom"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/info_working_time_up_arrow_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_up_arrow"
+                        android:layout_marginStart="10dp"
+                        android:visibility="gone"
+                        android:background="@android:color/transparent"
+                        android:layout_gravity="bottom"
+                        />
                 </LinearLayout>
 
-<!--            주차 가능 여부 나오는 화면 입니다-->
+<!--            가게 간단 제공 서비스 나오는 화면 입니다-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="20dp"
+                    >
 
                     <ImageView
-                        android:id="@+id/info_parking_ic"
+                        android:id="@+id/info_detail_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_parking"
+                        android:src="@drawable/ic_detail"
                         />
 
                     <TextView
-                        android:id="@+id/info_parking"
+                        android:id="@+id/info_detail"
                         android:layout_marginStart="30dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="주차 가능"
-                        android:layout_gravity="center_vertical"/>
+                        android:text="예약 가능, 포장 가능"
+                        android:layout_gravity="center_vertical" />
 
                 </LinearLayout>
 
+                <!--            가게 간단 제공 서비스 나오는 화면 입니다-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="20dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/info_facility_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_facility"
+                        />
+
+                    <TextView
+                        android:id="@+id/info_facility"
+                        android:layout_marginStart="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wifi 제공, 애완동물 출입 금지"
+                        android:layout_gravity="center_vertical" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <!--            운영시간, 주차 가능 여부 나오는 화면 끝입니다-->
@@ -292,6 +338,8 @@
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
                         android:textSize="10sp"
+                        android:background="@drawable/round_color"
+                        android:layout_marginVertical="5dp"
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

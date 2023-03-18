@@ -7,7 +7,8 @@ public class mainStoreData implements Parcelable {
     private int StoreId;            // 가게 고유 아이디
     private String StoreName;       // 가게 명
     private String StoreAddress;    // 가게 주소
-    private String StoreParking;    // 가게 주차 가능 여부
+    private String StoreDetail;    // 가게 간단 제공 서비스
+    private String StoreFacility;    // 가게 제공 시설 여부
     private double StoreLatitude;   // 가게 위도
     private double StoreLongitude;  // 가게 경도
     private String StoreNumber;     // 가게 번호
@@ -18,11 +19,12 @@ public class mainStoreData implements Parcelable {
     private String StoreWorkingTime;    // 가게 운영 시간
 
     // Constructor
-    public mainStoreData(int storeId, String storeName, String storeAddress, String storeParking, double storeLatitude, double storeLongitude, String storeNumber, String storeInfo, int storeCategoryId, String storeThumbnailPath, double storeScore, String storeWorkingTime) {
+    public mainStoreData(int storeId, String storeName, String storeAddress, String storeDetail, String storeFacility, double storeLatitude, double storeLongitude, String storeNumber, String storeInfo, int storeCategoryId, String storeThumbnailPath, double storeScore, String storeWorkingTime) {
         StoreId = storeId;
         StoreName = storeName;
         StoreAddress = storeAddress;
-        StoreParking = storeParking;
+        StoreDetail = storeDetail;
+        StoreFacility = storeFacility;
         StoreLatitude = storeLatitude;
         StoreLongitude = storeLongitude;
         StoreNumber = storeNumber;
@@ -38,7 +40,8 @@ public class mainStoreData implements Parcelable {
         StoreId = in.readInt();
         StoreName = in.readString();
         StoreAddress = in.readString();
-        StoreParking = in.readString();
+        StoreDetail = in.readString();
+        StoreFacility = in.readString();
         StoreLatitude = in.readDouble();
         StoreLongitude = in.readDouble();
         StoreNumber = in.readString();
@@ -78,7 +81,8 @@ public class mainStoreData implements Parcelable {
         dest.writeInt(StoreId);
         dest.writeString(StoreName);
         dest.writeString(StoreAddress);
-        dest.writeString(StoreParking);
+        dest.writeString(StoreDetail);
+        dest.writeString(StoreFacility);
         dest.writeDouble(StoreLatitude);
         dest.writeDouble(StoreLongitude);
         dest.writeString(StoreNumber);
@@ -116,12 +120,20 @@ public class mainStoreData implements Parcelable {
         StoreAddress = storeAddress;
     }
 
-    public String getStoreParking() {
-        return StoreParking;
+    public String getStoreDetail() {
+        return StoreDetail;
     }
 
-    public void setStoreParking(String storeParking) {
-        StoreParking = storeParking;
+    public void setStoreDetail(String storeDetail) {
+        StoreDetail = storeDetail;
+    }
+
+    public String getStoreFacility() {
+        return StoreFacility;
+    }
+
+    public void setStoreFacility(String storeFacility) {
+        StoreFacility = storeFacility;
     }
 
     public double getStoreLatitude() {

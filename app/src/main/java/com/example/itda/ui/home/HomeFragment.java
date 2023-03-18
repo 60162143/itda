@@ -196,7 +196,8 @@ public class HomeFragment extends Fragment {
                               object.getInt("storeId")                      // 가게 고유 아이디
                             , object.getString("storeName")                 // 가게 이름
                             , object.getString("storeAddress")              // 가게 주소
-                            , object.getString("storeParking")              // 가게 주차 가능 여부
+                            , object.getString("storeDetail")               // 가게 간단 제공 서비스
+                            , object.getString("storeFacility")             // 가게 제공 시설 여부
                             , object.getDouble("storeLatitude")             // 가게 위도
                             , object.getDouble("storeLongitude")            // 가게 경도
                             , object.getString("storeNumber")               // 가게 번호
@@ -263,7 +264,8 @@ public class HomeFragment extends Fragment {
                             object.getInt("storeId")                      // 가게 고유 아이디
                             , object.getString("storeName")                 // 가게 이름
                             , object.getString("storeAddress")              // 가게 주소
-                            , object.getString("storeParking")              // 가게 주차 가능 여부
+                            , object.getString("storeDetail")               // 가게 간단 제공 서비스
+                            , object.getString("storeFacility")             // 가게 제공 시설 여부
                             , object.getDouble("storeLatitude")             // 가게 위도
                             , object.getDouble("storeLongitude")            // 가게 경도
                             , object.getString("storeNumber")               // 가게 번호
