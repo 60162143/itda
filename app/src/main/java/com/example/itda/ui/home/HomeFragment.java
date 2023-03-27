@@ -192,6 +192,7 @@ public class HomeFragment extends Fragment {
 
                 for(int i = 0; i < mainStoreArr.length(); i++){
                     JSONObject object = mainStoreArr.getJSONObject(i);                              // 배열 원소 하나하나 꺼내서 JSONObject 생성
+
                     mainStoreData mainStore = new mainStoreData(
                               object.getInt("storeId")                      // 가게 고유 아이디
                             , object.getString("storeName")                 // 가게 이름
@@ -203,9 +204,9 @@ public class HomeFragment extends Fragment {
                             , object.getString("storeNumber")               // 가게 번호
                             , object.getString("storeInfo")                 // 가게 간단 정보
                             , object.getInt("storeCategoryId")              // 가게가 속한 카테고리 고유 아이디
-                            , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
+                            , !object.isNull("storeThumbnailPath") ? HOST + object.getString("storeThumbnailPath") : HOST + "/ftpFileStorage/noImage.png"   // 가게 썸네일 이미지 경로
                             , object.getDouble("storeScore")                // 가게 별점
-                            , object.getString("storeWorkingTime"));        // 가게 운영 시간
+                            , object.getString("storeWorkingTime"));          // 가게 운영 시간
 
                     main_store.add(mainStore);  // 가게 정보 저장
                 }

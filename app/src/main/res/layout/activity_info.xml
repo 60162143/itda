@@ -34,7 +34,8 @@
             android:layout_marginStart="20dp"
             android:textSize="12sp"
             android:text="가게 이름"
-            android:background="@drawable/round_color"/>
+            android:background="@drawable/round_color"
+            android:paddingHorizontal="10dp"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -186,18 +187,20 @@
                 android:textStyle="bold"
                 android:textSize="15sp"
                 android:layout_marginStart="20dp"
-                android:paddingTop="20dp"/>
+                android:paddingTop="20dp"
+                android:visibility="gone"/>
 
+            <!-- 협업한 가게 나오는 화면 끝입니다-->
+
+
+            <!-- 운영시간, 주차 가능 여부 나오는 화면 입니다-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/info_collabo_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border"
                 android:paddingBottom="20dp"/>
-            <!-- 협업한 가게 나오는 화면 끝입니다-->
 
-
-            <!-- 운영시간, 주차 가능 여부 나오는 화면 입니다-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,7 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
+                    android:paddingVertical="10dp"
                     android:layout_marginStart="20dp">
 
                     <ImageView
@@ -255,7 +258,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
+                    android:paddingVertical="10dp"
                     android:layout_marginStart="20dp"
                     >
 
@@ -281,7 +284,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
+                    android:paddingVertical="10dp"
                     android:layout_marginStart="20dp"
                     >
 
@@ -301,6 +304,7 @@
                         android:layout_gravity="center_vertical" />
 
                 </LinearLayout>
+
             </LinearLayout>
 
             <!--            운영시간, 주차 가능 여부 나오는 화면 끝입니다-->
@@ -309,13 +313,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
                 android:orientation="vertical"
                 android:background="@drawable/border">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:id="@+id/info_menu_bar">
 
                     <ImageView
                         android:id="@+id/info_menu_ic"
@@ -329,75 +334,29 @@
 
                     <Button
                         android:id="@+id/info_menu_plus_btn"
-                        android:layout_width="80dp"
-                        android:layout_height="30dp"
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
                         android:text="+more"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
-                        android:textSize="10sp"
+                        android:textSize="8sp"
                         android:background="@drawable/round_color"
-                        android:layout_marginVertical="5dp"
-                        />
+                        android:layout_marginVertical="5dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
+<!--                    아이템은 rv_info_menu-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/info_menu_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp">
-
-                        <TextView
-                            android:id="@+id/info_menu_center_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="·"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:layout_marginStart="20dp"/>
-
-                        <TextView
-                            android:id="@+id/info_menu_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="아메리카노"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/info_menu_center_dot"
-                            android:layout_marginStart="10dp"/>
-
-                        <TextView
-                            android:id="@+id/info_menu_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3.0"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            android:layout_marginEnd="20dp"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--                    아이템은 info_brief_menu-->
-                    <ListView
-                        android:id="@+id/info_menu_lv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </ListView>
-
-                </LinearLayout>
+                    android:paddingBottom="10dp"/>
 
             </LinearLayout>
 <!--            메뉴 화면 끝입니다.-->
-
 
 <!--            지도 화면 입니다-->
             <LinearLayout

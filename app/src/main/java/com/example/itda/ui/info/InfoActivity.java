@@ -18,12 +18,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.itda.ui.home.CategoryRvAdapter;
 import com.example.itda.ui.home.HomeSearchActivity;
-import com.example.itda.ui.home.mainCategoryData;
 import com.example.itda.ui.home.mainStoreData;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,42 +36,71 @@ import java.util.ArrayList;
 
 public class InfoActivity extends Activity {
 
-    private mainStoreData Store;
-    private ArrayList<collaboData> Collabo = new ArrayList<>();
+    private mainStoreData Store;    // 가게 데이터
+    private ArrayList<collaboData> Collabo = new ArrayList<>();     // 협업 가게 데이터
+    private ArrayList<menuData> Menu = new ArrayList<>();       // 메뉴 데이터
 
+    // ---------------- 최상단 Section ---------------------------
     private TextView infoMainStoreName; // 최상단 가게 이름
-    private TextView infoStoreName; // 가게 이름
-    private TextView infoStarScore; // 가게 별점
-    private TextView infoInformation; // 가게 간단한 설명
-    private TextView infoHashtag; // 가게 해시태그
-    private TextView infoWorkingTime; // 가게 운영 시간
-    private TextView infoDetail; // 가게 간단 제공 서비스
-    private TextView infoFacility; // 가게 제공 시설 여부
+    private ImageButton infoBackIc;     // 최상단 뒤로가기 버튼
+    private ImageButton infoCallIc;     // 최상단 전화 버튼
+    private ImageButton infoBookmarkIc; // 최상단 찜 버튼
+
+
+    // ---------------- 가게 정보 Section ---------------------
+    private TextView infoStoreName;     // 가게 이름
+    private TextView infoStarScore;     // 가게 별점
+    private TextView infoInformation;   // 가게 간단 설명
+    private TextView infoHashtag;       // 가게 해시태그
+    private ImageView infoStoreImage;   // 가게 썸네일 이미지
+
+
+    // ---------------- 협업 Section ---------------------
+    private TextView infoCollaboTxt;                    // 협업 가게 Text ( "이어진 가게" )
+    private RecyclerView infoCollaboRv;                 // 협업 가게 리사이클러뷰
+    private InfoCollaboRvAdapter infoCollaboAdapter;    // 협업 가게 리사이클러뷰 어뎁터
+
+
+    // ---------------- 운영 정보 Section ---------------------
+    private TextView infoWorkingTime;           // 가게 운영 시간
+    private TextView infoDetail;                // 가게 간단 제공 서비스
+    private TextView infoFacility;              // 가게 제공 시설 여부
+    private ImageButton infoWorkingTimeDownIc;  // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
+    private ImageButton infoWorkingTimeUpIc;    // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
+    private String[] workingTimeArr;            // 운영 시간 텍스트를 구분자 "&&"으로 Split한 배열
+
+
+    // ---------------- 메뉴 Section ---------------------
+    private Button infoMenuPlusBtn;             // 메뉴 더보기 버튼
+    private RecyclerView infoMenuRv;            // 메뉴 리사이클러뷰(최대 3개까지만 보여짐), 나머지는 더보기 버튼을 누른 후
+    private InfoMenuRvAdapter infoMenuAdapter;  // 메뉴 리사이클러뷰 어댑터
+    private ImageView infoMenuIcon;             // 메뉴 아이콘
+
+
+    // ---------------- 지도 Section ---------------------
     private TextView infoAddress; // 가게 주소
-    private TextView infoPhotoTitle; // 사진 타이틀 가게 이름
-    private TextView infoReviewTitle; // 리뷰 타이틀 가게 이름
-    private Button infoMenuPlusBtn; // 메뉴 더보기 버튼
-    private Button infoPhotoPlusBtn; // 사진 더보기 버튼
+
+
+    // ---------------- 사진 Section ---------------------
+    private TextView infoPhotoTitle;    // 사진 타이틀 가게 이름
+    private Button infoPhotoPlusBtn;    // 사진 더보기 버튼
+    private RecyclerView infoPhotoRv;   // 사진 리사이클러뷰
+
+
+    // ---------------- 리뷰 Section ---------------------
+    private TextView infoReviewTitle;   // 리뷰 타이틀 가게 이름
     private TextView infoReviewPlusBtn; // 리뷰 쓰기 버튼
+    private RecyclerView infoReviewRv;  // 리뷰 리사이클러뷰
+
+    // ---------------- 결제 Section ---------------------
     private Button infoPaymentBtn; // 결제하기 버튼
-    private ImageView infoStoreImage; // 가게 메인 이미지
-    private ImageButton infoBackIc; // 최상단 뒤로가기 버튼
-    private ImageButton infoCallIc; // 최상단 전화하기 버튼
-    private ImageButton infoBookmarkIc; // 최상단 찜하기 버튼
-    private ImageButton infoWorkingTimeDownIc; // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
-    private ImageButton infoWorkingTimeUpIc; // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
-    private ListView infoMenuLv; // 메뉴 리스트뷰(최대 3개까지만 보여짐), 나머지는 더보기 버튼을 누른 후
-    private RecyclerView infoCollaboRv;             // 협업 가게 리사이클러뷰
-    private RecyclerView infoPhotoRv; // 사진 리사이클러뷰
-    private RecyclerView infoReviewRv; // 리뷰 리사이클러뷰
-    private InfoCollaboRvAdapter infoCollaboAdapter;       // 협업 가게 리사이클러뷰 어뎁터
+
 
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
-    final static private String COLLABO_PATH = "/collabo/getInfoCollabo.php"; // 가게 정보 데이터 조회 Rest API
+    final static private String COLLABO_PATH = "/info/getInfoCollabo.php";  // 협업 가게 정보 데이터 조회 Rest API
+    final static private String MENU_PATH = "/info/getInfoMenu.php";        // 메뉴 정보 데이터 조회 Rest API
     final static private String HOST = "http://no2955922.ivyro.net";        // Host 정보
 
-    private String[] workingTimeArr;    // 운영 시간 텍스트를 구분자 "&&"으로 Split한 배열
-    private boolean isWorkingTimeMore = false;  // 가게 운영 시간 더보기 버튼이 눌러졌는지 확인
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,19 +114,21 @@ public class InfoActivity extends Activity {
 
         Store = getIntent().getParcelableExtra("Store");
 
-        //텍스트 설정
+        // ---------------- 최상단 Section ---------------------------
         infoMainStoreName.setText(Store.getStoreName());    // 최상단 가게 이름
+        // 최상단 뒤로가기 버튼 클릭 리스너
+        infoBackIc.setOnClickListener(v -> finish());   // 버튼 클릭 시 Activity 종료
+
+        // ---------------- 가게 정보 Section ---------------------
         infoStoreName.setText(Store.getStoreName());        // 가게 이름
         infoStarScore.setText(String.valueOf(Store.getStoreScore()));   // 가게 별점
         infoInformation.setText(Store.getStoreInfo());      // 가게 간단 정보
 
-        // 가게 운영 시간
-        if(!TextUtils.isEmpty(Store.getStoreWorkingTime())){
-            workingTimeArr = Store.getStoreWorkingTime().split("\\n");
-            infoWorkingTime.setText(workingTimeArr[0]);
+        // 가게 간단 소개
+        if(!TextUtils.isEmpty(Store.getStoreInfo())){
+            infoInformation.setText(Store.getStoreInfo());
         }else{
-            infoWorkingTime.setText("등록되어 있지 않습니다.");
-            infoWorkingTimeDownIc.setVisibility(View.GONE);
+            infoInformation.setText("가게 소개가 등록되어 있지 않습니다.");
         }
 
         // 이미지 설정
@@ -108,8 +138,21 @@ public class InfoActivity extends Activity {
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(infoStoreImage);     // 이미지를 보여줄 View를 지정
 
-        // 최상단 뒤로가기 버튼 클릭 리스너
-        infoBackIc.setOnClickListener(v -> finish());   // 버튼 클릭 시 Activity 종료
+        // ---------------- 협업 Section ---------------------
+        getInfoCollabo();   // 협업 가게 데이터 GET
+
+        // ---------------- 운영 정보 Section ---------------------
+        // 가게 운영 시간
+        if(!TextUtils.isEmpty(Store.getStoreWorkingTime())){
+            workingTimeArr = Store.getStoreWorkingTime().split("\\n");
+            infoWorkingTime.setText(workingTimeArr[0]);
+            if(workingTimeArr.length == 1){
+                infoWorkingTimeDownIc.setVisibility(View.GONE);
+            }
+        }else{
+            infoWorkingTime.setText("등록되어 있지 않습니다.");
+            infoWorkingTimeDownIc.setVisibility(View.GONE);
+        }
 
         // 가게 운영시간 아래 화살표 ( 내용 늘이기 ) 버튼 클릭 리스너
         infoWorkingTimeDownIc.setOnClickListener(view -> {
@@ -125,71 +168,77 @@ public class InfoActivity extends Activity {
             infoWorkingTimeDownIc.setVisibility(View.VISIBLE);                  // 아래 방향 화살표 버튼 보이기
         });
 
-        getInfoCollabo();   // 협업 가게 데이터 GET
+        // ---------------- 메뉴 Section ---------------------
+        getInfoMenu();  // 메뉴 데이터 GET
+
+        infoMenuPlusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InfoActivity.this, InfoMenuActivity.class);  // 메뉴 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+
+                intent.putParcelableArrayListExtra("Menu", Menu);
+                startActivity(intent);
+            }
+        });
+
+        // ---------------- 지도 Section ---------------------
+
+
+        // ---------------- 사진 Section ---------------------
+
+
+        // ---------------- 리뷰 Section ---------------------
+
+
+        // ---------------- 결제 Section ---------------------
+
     }
 
     private void initView(){
-        //텍스트뷰 정의
-        //최상단 가게 이름
-        infoMainStoreName = findViewById(R.id.info_main_store_name);
-        //가게 이름
-        infoStoreName = findViewById(R.id.info_store_name);
-        //가게 별점
-        infoStarScore = findViewById(R.id.info_star_score);
-        //가게 간단한 설명
-        infoInformation = findViewById(R.id.info_information);
-        //가게 해시태그
-        infoHashtag = findViewById(R.id.info_hashtag);
-        //가게 운영 시간
-        infoWorkingTime = findViewById(R.id.info_working_time);
-        //가게 간단 제공 서비스
-        infoDetail = findViewById(R.id.info_detail);
-        //가게 제공 시설 여부
-        infoFacility = findViewById(R.id.info_facility);
-        //가게 주소
-        infoAddress = findViewById(R.id.info_address);
-        //사진 타이틀 가게 이름
-        infoPhotoTitle = findViewById(R.id.info_photo_title);
-        //리뷰 타이틀 가게 이름
-        infoReviewTitle = findViewById(R.id.info_review_title);
+        // ---------------- 최상단 Section ---------------------------
+        infoMainStoreName = findViewById(R.id.info_main_store_name);    // 최상단 가게 이름
+        infoBackIc = findViewById(R.id.info_back_ic);                   // 최상단 뒤로 가기 버튼
+        infoCallIc = findViewById(R.id.info_call_ic);                   // 최상단 전화 버튼
+        infoBookmarkIc = findViewById(R.id.info_bookmark_ic);           // 최상단 찜 버튼
 
-        //버튼 정의
-        //메뉴 더보기 버튼
-        infoMenuPlusBtn = findViewById(R.id.info_menu_plus_btn);
-        //사진 더보기 버튼
-        infoPhotoPlusBtn = findViewById(R.id.info_photo_plus_btn);
-        //리뷰 쓰기 버튼
-        infoReviewPlusBtn = findViewById(R.id.info_review_plus_btn);
-        //결제하기 버튼
-        infoPaymentBtn = findViewById(R.id.info_payment_btn);
+        // ---------------- 가게 정보 Section ---------------------
+        infoStoreName = findViewById(R.id.info_store_name);     // 가게 이름
+        infoStarScore = findViewById(R.id.info_star_score);     // 가게 별점
+        infoInformation = findViewById(R.id.info_information);  // 가게 간단 설명
+        infoHashtag = findViewById(R.id.info_hashtag);          // 가게 해시태그
+        infoStoreImage = findViewById(R.id.info_store_image);   // 가게 썸네일 이미지
 
-        //이미지 정의
-        //가게 메인 이미지
-        infoStoreImage = findViewById(R.id.info_store_image);
+        // ---------------- 협업 Section ---------------------
+        infoCollaboTxt = findViewById(R.id.collabo_tv);     // 협업 타이틀
+        infoCollaboRv = findViewById(R.id.info_collabo_rv); // 협업 리사이클러뷰
 
-        //최상단 아이콘 정의
-        //최상단 뒤로가기 버튼
-        infoBackIc = findViewById(R.id.info_back_ic);
-        //최상단 전화하기 버튼
-        infoCallIc = findViewById(R.id.info_call_ic);
-        //최상단 찜하기 버튼
-        infoBookmarkIc = findViewById(R.id.info_bookmark_ic);
-        // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
-        infoWorkingTimeDownIc = findViewById(R.id.info_working_time_down_arrow_ic);
-        // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
-        infoWorkingTimeUpIc = findViewById(R.id.info_working_time_up_arrow_ic);
+        // ---------------- 운영 정보 Section ---------------------
+        infoWorkingTime = findViewById(R.id.info_working_time); // 가게 운영 시간
+        infoDetail = findViewById(R.id.info_detail);            // 가게 간단 제공 서비스
+        infoFacility = findViewById(R.id.info_facility);        // 가게 제공 시설 여부
+        infoWorkingTimeDownIc = findViewById(R.id.info_working_time_down_arrow_ic); // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
+        infoWorkingTimeUpIc = findViewById(R.id.info_working_time_up_arrow_ic);     // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
 
-        //메뉴 리스트 정의
-        //메뉴 리스트뷰(최대 3개까지만 보여짐), 나머지는 더보기 버튼을 누른 후
-        infoMenuLv = findViewById(R.id.info_menu_lv);
+        // ---------------- 메뉴 Section ---------------------
+        infoMenuPlusBtn = findViewById(R.id.info_menu_plus_btn);    // 메뉴 더보기 버튼
+        infoMenuRv = findViewById(R.id.info_menu_rv);               // 메뉴 리사이클러뷰(최대 3개까지만 보여짐), 나머지는 더보기 버튼을 누른 후
+        infoMenuIcon = findViewById(R.id.info_menu_ic);             // 메뉴 아이콘
 
-        //리사이클러뷰 정의
-        //협업 리사이클러뷰
-        infoCollaboRv = findViewById(R.id.info_collabo_rv);
-        //사진 리사이클러뷰
-        infoPhotoRv = findViewById(R.id.info_photo_rv);
-        //리뷰 리사이클러뷰
-        infoReviewRv = findViewById(R.id.info_review_rv);
+        // ---------------- 지도 Section ---------------------
+        infoAddress = findViewById(R.id.info_address);  // 가게 주소
+
+        // ---------------- 사진 Section ---------------------
+        infoPhotoTitle = findViewById(R.id.info_photo_title);       // 사진 타이틀 가게 이름
+        infoPhotoPlusBtn = findViewById(R.id.info_photo_plus_btn);  // 사진 더보기 버튼
+        infoPhotoRv = findViewById(R.id.info_photo_rv);             // 사진 리사이클러뷰
+
+        // ---------------- 리뷰 Section ---------------------
+        infoReviewTitle = findViewById(R.id.info_review_title);         // 리뷰 타이틀 가게 이름
+        infoReviewPlusBtn = findViewById(R.id.info_review_plus_btn);    // 리뷰 작성 버튼
+        infoReviewRv = findViewById(R.id.info_review_rv);               // 리뷰 리사이클러뷰
+
+        // ---------------- 결제 Section ---------------------
+        infoPaymentBtn = findViewById(R.id.info_payment_btn);   // 결제 버튼
     }
 
     // 협업 가게 데이터 GET
@@ -207,44 +256,105 @@ public class InfoActivity extends Activity {
         StringRequest CollaboRequest = new StringRequest(Request.Method.GET, HOST + collaboPath, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);                   // Response를 JsonObject 객체로 생성
-                JSONArray collaboArr = jsonObject.getJSONArray("collabo");  // 객체에 category라는 Key를 가진 JSONArray 생성
+                JSONArray collaboArr = jsonObject.getJSONArray("collabo");  // 객체에 collabo라는 Key를 가진 JSONArray 생성
 
-                for(int i = 0; i < collaboArr.length(); i++){
-                    JSONObject object = collaboArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
-                    // 카테고리 데이터 생성 및 저장
-                    collaboData collaboData = new collaboData(
-                              object.getInt("storeId")                      // 가게 고유 아이디
-                            , object.getString("storeName")                 // 가게 이름
-                            , object.getString("storeAddress")              // 가게 주소
-                            , object.getString("storeDetail")               // 가게 간단 제공 서비스
-                            , object.getString("storeFacility")             // 가게 제공 시설 여부
-                            , object.getDouble("storeLatitude")             // 가게 위도
-                            , object.getDouble("storeLongitude")            // 가게 경도
-                            , object.getString("storeNumber")               // 가게 번호
-                            , object.getString("storeInfo")                 // 가게 간단 정보
-                            , object.getInt("storeCategoryId")              // 가게가 속한 카테고리 고유 아이디
-                            , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
-                            , object.getDouble("storeScore")                // 가게 별점
-                            , object.getString("storeWorkingTime")          // 가게 운영 시간
-                            , object.getInt("collaboId")                    // 협업 고유 아이디
-                            , object.getInt("collaboDiscountCondition")     // 앞 가게 할인 조건 ( 최소 금액 )
-                            , object.getInt("collaboDiscountRate"));        // 뒷 가게 할인율 ( 정수 )
-                    Collabo.add(collaboData); // 카테고리 정보 저장
+                if(collaboArr.length() > 0) {
+                    for (int i = 0; i < collaboArr.length(); i++) {
+                        JSONObject object = collaboArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
+                        // 카테고리 데이터 생성 및 저장
+                        collaboData collaboData = new collaboData(
+                                object.getInt("storeId")                      // 가게 고유 아이디
+                                , object.getString("storeName")                 // 가게 이름
+                                , object.getString("storeAddress")              // 가게 주소
+                                , object.getString("storeDetail")               // 가게 간단 제공 서비스
+                                , object.getString("storeFacility")             // 가게 제공 시설 여부
+                                , object.getDouble("storeLatitude")             // 가게 위도
+                                , object.getDouble("storeLongitude")            // 가게 경도
+                                , object.getString("storeNumber")               // 가게 번호
+                                , object.getString("storeInfo")                 // 가게 간단 정보
+                                , object.getInt("storeCategoryId")              // 가게가 속한 카테고리 고유 아이디
+                                , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
+                                , object.getDouble("storeScore")                // 가게 별점
+                                , object.getString("storeWorkingTime")          // 가게 운영 시간
+                                , object.getInt("collaboId")                    // 협업 고유 아이디
+                                , object.getInt("collaboDiscountCondition")     // 앞 가게 할인 조건 ( 최소 금액 )
+                                , object.getInt("collaboDiscountRate"));        // 뒷 가게 할인율 ( 정수 )
+                        Collabo.add(collaboData); // 카테고리 정보 저장
+                    }
+
+                    infoCollaboAdapter = new InfoCollaboRvAdapter(this);  // 리사이클러뷰 어뎁터 객체 생성
+                    infoCollaboAdapter.setCollabo(Collabo);    // 어뎁터 객체에 카테고리 정보 저장
+                    infoCollaboRv.setAdapter(infoCollaboAdapter);     // 리사이클러뷰 어뎁터 객체 지정
+
+                    infoCollaboTxt.setVisibility(View.VISIBLE);
+                    infoCollaboRv.setVisibility(View.VISIBLE);
+                }else{
+                    infoCollaboTxt.setVisibility(View.GONE);
+                    infoCollaboRv.setVisibility(View.GONE);
                 }
-
-                infoCollaboAdapter = new InfoCollaboRvAdapter(this);  // 리사이클러뷰 어뎁터 객체 생성
-                infoCollaboAdapter.setCollabo(Collabo);    // 어뎁터 객체에 카테고리 정보 저장
-                infoCollaboRv.setAdapter(infoCollaboAdapter);     // 리사이클러뷰 어뎁터 객체 지정
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }, error -> {
             // 통신 에러시 로그 출력
-            Log.d("getCategoryError", "onErrorResponse : " + error);
+            Log.d("getInfoCollaboError", "onErrorResponse : " + error);
         });
 
         CollaboRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(CollaboRequest);      // RequestQueue에 요청 추가
+    }
+
+    // 메뉴 데이터 GET
+    private void getInfoMenu(){
+        // GET 방식 파라미터 설정
+        String menuPath = MENU_PATH + String.format("?storeId=%s", Store.getStoreId());
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
+        StringRequest MenuRequest = new StringRequest(Request.Method.GET, HOST + menuPath, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);             // Response를 JsonObject 객체로 생성
+                JSONArray menuArr = jsonObject.getJSONArray("menu");    // 객체에 menu라는 Key를 가진 JSONArray 생성
+
+                if(menuArr.length() > 0) {
+                    for (int i = 0; i < menuArr.length(); i++) {
+                        JSONObject object = menuArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
+                        // 카테고리 데이터 생성 및 저장
+                        menuData menuData = new menuData(
+                                object.getInt("menuId")                      // 가게 고유 아이디
+                                , object.getInt("storeId")                 // 가게 이름
+                                , object.getString("menuName")              // 가게 주소
+                                , object.getInt("menuPrice")               // 가게 간단 제공 서비스
+                                , object.getInt("menuOrder"));             // 가게 제공 시설 여부
+                        Menu.add(menuData); // 카테고리 정보 저장
+                    }
+
+                    infoMenuAdapter = new InfoMenuRvAdapter(this, Menu, false);  // 리사이클러뷰 어뎁터 객체 생성
+
+                    infoMenuRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                    infoMenuRv.setAdapter(infoMenuAdapter);
+
+                    infoMenuPlusBtn.setVisibility(View.VISIBLE);
+                    ConstraintLayout infoMenuBar = findViewById(R.id.info_menu_bar);
+                    infoMenuBar.setVisibility(View.VISIBLE);
+                    infoMenuRv.setVisibility(View.VISIBLE);
+                    infoMenuIcon.setVisibility(View.VISIBLE);
+                }else{
+                    ConstraintLayout infoMenuBar = findViewById(R.id.info_menu_bar);
+                    infoMenuBar.setVisibility(View.GONE);
+                    infoMenuPlusBtn.setVisibility(View.GONE);
+                    infoMenuRv.setVisibility(View.GONE);
+                    infoMenuIcon.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("getInfoMenuError", "onErrorResponse : " + error);
+        });
+
+        MenuRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(MenuRequest);      // RequestQueue에 요청 추가
     }
 }
 

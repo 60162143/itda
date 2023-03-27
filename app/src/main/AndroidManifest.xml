@@ -44,6 +44,11 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
+        <!--메뉴 상세 정보 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoMenuActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
         <!--로그인 액티비티-->
         <activity android:name="com.example.itda.ui.login.LoginActivity"
             android:theme="@style/Theme.MyApplication">

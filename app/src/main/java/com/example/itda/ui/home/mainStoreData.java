@@ -91,7 +91,6 @@ public class mainStoreData implements Parcelable {
         dest.writeString(StoreThumbnailPath);
         dest.writeDouble(StoreScore);
         dest.writeString(StoreWorkingTime);
-
     }
     //=======================================================================
 
@@ -140,7 +139,7 @@ public class mainStoreData implements Parcelable {
         return StoreLatitude;
     }
 
-    public void setStoreLatitude(Double storeLatitude) {
+    public void setStoreLatitude(double storeLatitude) {
         StoreLatitude = storeLatitude;
     }
 
@@ -148,7 +147,7 @@ public class mainStoreData implements Parcelable {
         return StoreLongitude;
     }
 
-    public void setStoreLongitude(Double storeLongitude) {
+    public void setStoreLongitude(double storeLongitude) {
         StoreLongitude = storeLongitude;
     }
 
@@ -188,7 +187,7 @@ public class mainStoreData implements Parcelable {
         return StoreScore;
     }
 
-    public void setStoreScore(Double storeScore) {
+    public void setStoreScore(double storeScore) {
         StoreScore = storeScore;
     }
 
