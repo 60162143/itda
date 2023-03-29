@@ -49,6 +49,11 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
+        <!--지도 상세 정보 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoMapActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
         <!--로그인 액티비티-->
         <activity android:name="com.example.itda.ui.login.LoginActivity"
             android:theme="@style/Theme.MyApplication">

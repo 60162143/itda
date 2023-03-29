@@ -36,7 +36,7 @@
                     android:id="@+id/map_store_image"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center"
                     android:padding="0dp"
                     android:adjustViewBounds="true"
@@ -48,27 +48,33 @@
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:weightSum="10">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:layout_weight="2">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_weight="7">
 
                         <TextView
                             android:id="@+id/map_store_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="가게 이름"
-                            android:textSize="50px">
+                            android:textSize="18sp"
+                            android:maxLines="1"
+                            android:ellipsize="end">
 
                         </TextView>
 
@@ -82,16 +88,13 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
-                        android:layout_marginEnd="20dp">
+                        android:layout_marginEnd="20dp"
+                        android:layout_weight="3">
 
                         <ImageView
                             android:id="@+id/map_star_ic"
@@ -104,7 +107,7 @@
 
                         <TextView
                             android:id="@+id/map_star_score"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
                             android:text="4.8"
@@ -114,7 +117,6 @@
 
                     </LinearLayout>
 
-
                 </LinearLayout>
 
                 <TextView
@@ -123,7 +125,8 @@
                     android:layout_height="wrap_content"
                     android:text="테스트 입니다. 테스트 입니다."
                     android:maxLines="3"
-                    android:ellipsize="end">
+                    android:ellipsize="end"
+                    android:layout_weight="7">
 
                 </TextView>
 
@@ -131,7 +134,8 @@
                     android:id="@+id/map_store_hashTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="#테스트1 #테스트2">
+                    android:text="#테스트1 #테스트2"
+                    android:layout_weight="1">
 
                 </TextView>
 

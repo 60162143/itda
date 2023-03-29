@@ -52,7 +52,7 @@ public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.Cu
 
     @Override
     public int getItemCount() {
-        return menuPlusBtn ? Menus.size() : 3;
+        return menuPlusBtn ? Menus.size() : Math.min(Menus.size(), 3);
     }
 
     public static class CustomInfoMenuViewHolder extends RecyclerView.ViewHolder {

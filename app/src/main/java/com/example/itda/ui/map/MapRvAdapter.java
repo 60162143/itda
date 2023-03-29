@@ -54,7 +54,7 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
-                .load(Uri.parse(store.getMapStoreIamagePath())) // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .load(Uri.parse(store.getMapStoreImagePath())) // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.mapStoreImage);        // 이미지를 보여줄 View를 지정
@@ -71,7 +71,7 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
         holder.mapStoreStarScore.setText(String.format("%.1f", store.getMapStoreScore()));  // 가게 별점 SET
         holder.mapStoreInfo.setText(store.getMapStoreInfo());   // 가게 간단 정보 SET
 
-        //holder.mapStoreHashTag.setText(store.getMapStoreHashTag());   // 추후 추가
+        holder.mapStoreHashTag.setText(store.getMapStoreHashTag());   // 추후 추가
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환

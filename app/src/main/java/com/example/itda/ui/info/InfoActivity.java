@@ -1,15 +1,19 @@
 package com.example.itda.ui.info;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,10 +27,15 @@ import com.example.itda.ui.home.mainStoreData;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
+
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +77,9 @@ public class InfoActivity extends Activity {
     private ImageButton infoWorkingTimeDownIc;  // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
     private ImageButton infoWorkingTimeUpIc;    // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
     private String[] workingTimeArr;            // 운영 시간 텍스트를 구분자 "&&"으로 Split한 배열
+    private LinearLayout infoWorkingTimeLayout; // 가게 운영시간 전체 레이아웃
+    private LinearLayout infoDetailLayout;      // 가게 간단 제공 서비스 레이아웃
+    private LinearLayout infoFacilityLayout;    // 가게 제공 시설 여부 레이아웃
 
 
     // ---------------- 메뉴 Section ---------------------
@@ -79,6 +91,13 @@ public class InfoActivity extends Activity {
 
     // ---------------- 지도 Section ---------------------
     private TextView infoAddress; // 가게 주소
+    private ViewGroup mapViewContainer;     // mapView를 포함시킬 View Container
+    private MapView mapView;                // 카카오 지도 View
+
+    private boolean firstDragFlag = true;   // mapView 드래그 모드인지 확인하는 Flag
+    private boolean dragFlag = false;       // 현재 터치가 드래그인지 확인하는 Flag
+    private float startXPosition = 0;       // 터치 이벤트의 시작점의 X(가로)위치
+    private float startYPosition = 0;       // 터치 이벤트의 시작점의 Y(가로)위치
 
 
     // ---------------- 사진 Section ---------------------
@@ -94,6 +113,10 @@ public class InfoActivity extends Activity {
 
     // ---------------- 결제 Section ---------------------
     private Button infoPaymentBtn; // 결제하기 버튼
+
+
+    // ---------------- Nested ScrollView ---------------------
+    private NestedScrollView infoScrollView; // 스크롤 뷰
 
 
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
@@ -141,6 +164,7 @@ public class InfoActivity extends Activity {
         // ---------------- 협업 Section ---------------------
         getInfoCollabo();   // 협업 가게 데이터 GET
 
+
         // ---------------- 운영 정보 Section ---------------------
         // 가게 운영 시간
         if(!TextUtils.isEmpty(Store.getStoreWorkingTime())){
@@ -150,8 +174,21 @@ public class InfoActivity extends Activity {
                 infoWorkingTimeDownIc.setVisibility(View.GONE);
             }
         }else{
-            infoWorkingTime.setText("등록되어 있지 않습니다.");
-            infoWorkingTimeDownIc.setVisibility(View.GONE);
+            infoWorkingTimeLayout.setVisibility(View.GONE);
+        }
+
+        // 가게 간단 제공 서비스
+        if(!TextUtils.isEmpty(Store.getStoreDetail())){
+            infoDetail.setText(Store.getStoreDetail());
+        }else{
+            infoDetailLayout.setVisibility(View.GONE);
+        }
+
+        // 가게 제공 시설 여부
+        if(!TextUtils.isEmpty(Store.getStoreFacility())){
+            infoFacility.setText(Store.getStoreFacility());
+        }else{
+            infoFacilityLayout.setVisibility(View.GONE);
         }
 
         // 가게 운영시간 아래 화살표 ( 내용 늘이기 ) 버튼 클릭 리스너
@@ -177,11 +214,13 @@ public class InfoActivity extends Activity {
                 Intent intent = new Intent(InfoActivity.this, InfoMenuActivity.class);  // 메뉴 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
 
                 intent.putParcelableArrayListExtra("Menu", Menu);
+                intent.putExtra("storeName", Store.getStoreName());
                 startActivity(intent);
             }
         });
 
         // ---------------- 지도 Section ---------------------
+        infoAddress.setText(Store.getStoreAddress());
 
 
         // ---------------- 사진 Section ---------------------
@@ -192,6 +231,73 @@ public class InfoActivity extends Activity {
 
         // ---------------- 결제 Section ---------------------
 
+    }
+
+
+    // Activity 이동간 mapView는 1개만 띄워져 있어야 하기 때문에
+    // onCreate가 아닌 onResume에서 mapview 객체 생성
+    //
+    // ----------- 간단한 LifeCycle --------------
+    // onCreate -> onResume -> ( 다른 Activity로 이동 ) -> onPause -> ( 현재 Activity로 이동 ) -> onResume
+    // @SuppressLint("ClickableViewAccessibility") 어노테이션을 추가해 Lint의 Warning을 무시
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mapView = new MapView(this);   // mapView 객체 생성
+
+        mapViewContainer = (ViewGroup) findViewById(R.id.info_map_view);    // ViewGroup Container
+        mapViewContainer.addView(mapView);                                  // mapView attach
+
+        double latitude = Store.getStoreLatitude();  // 첫 번째로 검색된 가게의 위도
+        double longitude = Store.getStoreLongitude(); // 첫 번째로 검색된 가게의 경도
+
+        // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
+
+        mapView.setMapCenterPoint(mapPoint, true);         // 지도 화면의 중심점을 설정
+
+        MapPOIItem marker = new MapPOIItem();                       // POI 객체 생성
+        marker.setItemName(Store.getStoreName());     // POI Item 아이콘이 선택되면 나타나는 말풍선(Callout Balloon)에 POI Item 이름이 보여짐
+        marker.setMapPoint(mapPoint);                           // POI Item의 지도상 좌표를 설정
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);        //  (클릭 전)기본으로 제공하는 BluePin 마커 모양의 색.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // (클릭 후) 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+        mapView.addPOIItem(marker); // 지도화면에 POI Item 아이콘(마커)를 추가
+
+        // mapView에 모션이벤트가 생길때
+        // mainScrollView.requestDisallowInterceptTouchEvent(true);
+        //스크롤에 터치이벤트를 뺏기지 않는다는 코드
+        mapView.setOnTouchListener((view, motionEvent) -> {
+            int action = motionEvent.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    infoScrollView.requestDisallowInterceptTouchEvent(true);
+                    startXPosition = motionEvent.getX();  //첫번째 터치의 X(너비)를 저장
+                    startYPosition = motionEvent.getY();  //첫번째 터치의 Y(너비)를 저장
+                    break;
+                case MotionEvent.ACTION_UP:
+                    float endXPosition = motionEvent.getX();   // X 좌표
+                    float endYPosition = motionEvent.getY();   // X 좌표
+                    if(Math.abs(startXPosition - endXPosition) < 10 && Math.abs(startYPosition - endYPosition) < 10){
+                        Intent intent = new Intent(InfoActivity.this, InfoMapActivity.class);  // 메뉴 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+
+                        intent.putExtra("store", Store);
+                        startActivity(intent);
+                    }
+                    infoScrollView.requestDisallowInterceptTouchEvent(true);
+                    break;
+            }
+            return false;
+        });
+    }
+
+    // 다른 Activity로 이동했을 경우 생성했던 mapView 객체 제거
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapViewContainer.removeView(mapView);
     }
 
     private void initView(){
@@ -218,6 +324,9 @@ public class InfoActivity extends Activity {
         infoFacility = findViewById(R.id.info_facility);        // 가게 제공 시설 여부
         infoWorkingTimeDownIc = findViewById(R.id.info_working_time_down_arrow_ic); // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
         infoWorkingTimeUpIc = findViewById(R.id.info_working_time_up_arrow_ic);     // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
+        infoWorkingTimeLayout = findViewById(R.id.info_working_time_layout);    // 가게 운영 시간 전체 레이아웃
+        infoDetailLayout = findViewById(R.id.info_detail_layout);               // 가게 간단 제공 서비스 전체 레이아웃
+        infoFacilityLayout = findViewById(R.id.info_facility_layout);           // 가게 제공 시설 여부 전체 레이아웃
 
         // ---------------- 메뉴 Section ---------------------
         infoMenuPlusBtn = findViewById(R.id.info_menu_plus_btn);    // 메뉴 더보기 버튼
@@ -239,6 +348,9 @@ public class InfoActivity extends Activity {
 
         // ---------------- 결제 Section ---------------------
         infoPaymentBtn = findViewById(R.id.info_payment_btn);   // 결제 버튼
+
+        // ---------------- Nested ScrollView ---------------------
+        infoScrollView = findViewById(R.id.info_scroll_view); // 스크롤 뷰
     }
 
     // 협업 가게 데이터 GET

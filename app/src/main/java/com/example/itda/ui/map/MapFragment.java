@@ -82,11 +82,13 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
     final static private String HOST = "http://no2955922.ivyro.net";        // Host 정보
 
     private boolean isTrackingMode = false;     // 현재 트래킹 모드인지 확인하는 Flag
+    private int lastTag = -1;   // 상세화면 전환시 해당 태그 번호 저장 ( 현재 위치를 마지막 위치로 기억하기 위해 )
 
     // =========== 리사이클러뷰 addOnItemTouchListener 내 전역 변수 ================
     private boolean firstDragFlag = true;   // 리사이클러뷰 드래그 모드인지 확인하는 Flag
     private boolean dragFlag = false;       // 현재 터치가 드래그인지 확인하는 Flag
     private float startXPosition = 0;       // 터치 이벤트의 시작점의 X(가로)위치
+
     // =========================================================================
 
     //지도 권한 허용 확인
@@ -119,14 +121,6 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
     // 뷰 생성
     private void initView() {
-        mapView = new MapView(root.getContext());   // mapView 객체 생성
-
-        mapViewContainer = (ViewGroup) root.findViewById(R.id.map_view);    // ViewGroup Container
-        mapViewContainer.addView(mapView);                                  // mapView attach
-
-        mapView.setMapViewEventListener(this);          // 지도 이동/확대/축소, 지도 화면 터치 (Single Tap / Double Tap / Long Press) 이벤트를 통보받을 수 있음
-        mapView.setCurrentLocationEventListener(this);  // 현위치 트래킹 이벤트를 통보 받을 수 있음
-        mapView.setPOIItemEventListener(this);          // POI 관련 이벤트를 통보 받을 수 있음
 
         ImageButton mapGPSBtn = (ImageButton) root.findViewById((R.id.gps_button));         // GPS 버튼
         EditText mapSchText = (EditText) root.findViewById((R.id.search_map_store));        // 검색어 입력창
@@ -148,6 +142,10 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         mapStoreRv.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                isTrackingMode = false;     // 현재 위치 트래킹 모드 해제
+                // 현위치 트랙킹 모드 및 나침반 모드 Off
+                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+
                 // 하드웨어 X축 길이 구하기 위해 사용
                 Display display  = requireActivity().getWindowManager().getDefaultDisplay();
                 Point size = new Point();   // 좌표 각채 생성
@@ -258,6 +256,8 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                                         select_store = new ArrayList<>();   // 가게 세부 정보 배열 객체 생성
                                         select_store.add(selectStore);      // 데이터 추가
 
+                                        lastTag = position; // 상세화면으로 이동할 리사이클러뷰의 태그 번호 ( 인덱스 번호 ) 저장
+
                                         intent = new Intent(getActivity(), InfoActivity.class);             // 상세화면으로 이동하기 위한 Intent 객체 선언
 
                                         // 데이터 송신을 위한 Parcelable interface 사용
@@ -297,30 +297,31 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
         // GPS 버튼 클릭 리스너
         mapGPSBtn.setOnClickListener(view -> {
-            // 위치관리자 객체 생성
-            lm = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-
             // ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION 퍼미션 체크
             if (ActivityCompat.checkSelfPermission(root.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(root.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(root.getContext(), "권한 허용을 하지 않으면 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // LocattionMananger.GPS_PROVIDER : GPS들로부터 현재 위치 확인, 정확도 높음, 실내 사용 불가
-            // LocationManager.NETWORK_PROVIDER : 기지국들로부터 현재 위치 확인, 정확도 낮음, 실내 사용 가능
-            Location loc_Current = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ? lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) : lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-            double cur_lat = loc_Current.getLatitude();     // 현재 위치의 위도
-            double cur_lon = loc_Current.getLongitude();    // 현재 위치의 경도
-
-            // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
-            MapPoint currentMapPoint = MapPoint.mapPointWithGeoCoord(cur_lat, cur_lon);
-            //이 좌표로 지도 중심 이동
-            mapView.setMapCenterPoint(currentMapPoint, true);
-
             //트래킹 모드가 아닌 단순 현재위치 업데이트일 경우, 한번만 위치 업데이트하고 트래킹을 중단
             if (!isTrackingMode) {
                 // 현위치 트랙킹 모드 On + 나침반 모드 On, 단말의 위치에 따라 지도 중심이 이동하며 단말의 방향에 따라 지도가 회전
+                lm = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);    // 위치관리자 객체 생성
+
+                // LocattionMananger.GPS_PROVIDER : GPS들로부터 현재 위치 확인, 정확도 높음, 실내 사용 불가
+                // LocationManager.NETWORK_PROVIDER : 기지국들로부터 현재 위치 확인, 정확도 낮음, 실내 사용 가능
+                // 실내에서 테스트 하기 위해 NETWORK_PROVIDER로 설정
+                //Location loc_Current = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ? lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) : lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Location loc_Current = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                double cur_lat = loc_Current.getLatitude();     // 현재 위치의 위도
+                double cur_lon = loc_Current.getLongitude();    // 현재 위치의 경도
+
+                // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
+                MapPoint currentMapPoint = MapPoint.mapPointWithGeoCoord(cur_lat, cur_lon);
+                //이 좌표로 지도 중심 이동
+                mapView.setMapCenterPoint(currentMapPoint, true);
+
                 mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
                 isTrackingMode = true;
             }else{
@@ -369,10 +370,6 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
             getMapStoreData(new HashMap<>());
             imm.hideSoftInputFromWindow(mapSchText.getWindowToken(),0); // 키보드 내려줌
         });
-
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);   // 현위치 트래킹 모드 및 나침반 모드를 설정
-        mapView.setZoomLevel(1, true);  // 지도 화면의 확대/축소 레벨을 설정
-        mapView.zoomIn(true);   // 지도 화면을 한단계 확대
     }
 
     // 가게 데이터 가져오는곳
@@ -395,7 +392,9 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
         // LocattionMananger.GPS_PROVIDER : GPS들로부터 현재 위치 확인, 정확도 높음, 실내 사용 불가
         // LocationManager.NETWORK_PROVIDER : 기지국들로부터 현재 위치 확인, 정확도 낮음, 실내 사용 가능
-        Location loc_Current = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ? lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) : lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        // 실내에서 테스트 하기 위해 NETWORK_PROVIDER로 설정
+        //Location loc_Current = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ? lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) : lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location loc_Current = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         double cur_lat = loc_Current.getLatitude();     // 현재 위치의 위도
         double cur_lon = loc_Current.getLongitude();    // 현재 위치의 경도
@@ -406,8 +405,11 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
         // GET 방식 파라미터 설정
         String mapStorePath = MAPSTORE_PATH;
+        mapStorePath += String.format("?latitude=%s", cur_lat);     // 위도 파라미터 설정
+        mapStorePath += String.format("&&longitude=%s", cur_lon);   // 경도 파라미터 ㅓㄹ정
+
         if(!param.isEmpty()){   // 검색어 입력되었을 경우 파라미터 입력
-            mapStorePath += String.format("?schText=%s",param.get("schText"));
+            mapStorePath += String.format("&&schText=%s",param.get("schText"));
         }
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
@@ -415,6 +417,8 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
             try {
                 JSONObject jsonObject = new JSONObject(response);                 // Response를 JsonObject 객체로 생성
                 JSONArray mapStoreArr = jsonObject.getJSONArray("store");   // 객체에 store라는 Key를 가진 JSONArray 생성
+
+                int index = lastTag != -1 ? lastTag : 0;    // 마지막으로 보여진 리사이클러뷰로 이동하기 위한 index
 
                 if(mapStoreArr.length() > 0){
                     for(int i = 0; i < mapStoreArr.length(); i++){
@@ -450,25 +454,27 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                         mapView.addPOIItem(marker); // 지도화면에 POI Item 아이콘(마커)를 추가
                     }
 
-                    double first_lat = map_store.get(0).getMapStoreLatitude();  // 첫 번째로 검색된 가게의 위도
-                    double first_lon = map_store.get(0).getMapStoreLongitude(); // 첫 번째로 검색된 가게의 경도
+                    double last_lat = map_store.get(index).getMapStoreLatitude();  // 마지막으로 검색된 가게의 위도
+                    double last_lon = map_store.get(index).getMapStoreLongitude(); // 마지막으로 검색된 가게의 경도
 
                     // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
-                    MapPoint firstMapPoint = MapPoint.mapPointWithGeoCoord(first_lat, first_lon);
+                    MapPoint lastMapPoint = MapPoint.mapPointWithGeoCoord(last_lat, last_lon);
 
-                    mapView.setMapCenterPoint(firstMapPoint, true);         // 지도 화면의 중심점을 설정
+                    mapView.setMapCenterPoint(lastMapPoint, true);         // 지도 화면의 중심점을 설정
 
-                    mapView.selectPOIItem(mapView.getPOIItems()[0], true);  // 선택한 가게의 마커 선택
+                    mapView.selectPOIItem(mapView.getPOIItems()[index], true);  // 선택한 가게의 마커 선택
 
                 }else{
                     // 검색 결과가 없을 시 Toast 메시지 출력
                     Toast.makeText(getContext(), "검색 결과가 없습니다.",Toast.LENGTH_SHORT).show();
                 }
-
                 mapStoreAdapter = new MapRvAdapter(getActivity());  // 리사이클러뷰 어뎁터 객체 생성
                 mapStoreAdapter.setStores(map_store);               // 어뎁터 객체에 가게 정보 저장
                 mapStoreAdapter.setMapView(mapView);                // 어뎁터 객체에 지도 정보 저장
                 mapStoreRv.setAdapter(mapStoreAdapter);             // 리사이클러뷰 어뎁터 객체 지정
+
+                mapStoreRv.scrollToPosition(index);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -494,30 +500,46 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         super.onViewCreated(view, savedInstanceState);
     }
 
+    // Activity 이동간 mapView는 1개만 띄워져 있어야 하기 때문에
+    // onCreate가 아닌 onResume에서 mapview 객체 생성
+    //
+    // ----------- 간단한 LifeCycle --------------
+    // onCreate -> onResume -> ( 다른 Activity로 이동 ) -> onPause -> ( 현재 Activity로 이동 ) -> onResume
+    // @SuppressLint("ClickableViewAccessibility") 어노테이션을 추가해 Lint의 Warning을 무시
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapViewContainer.removeAllViews();  // ViewGroup에서 모든 자식 뷰를 제거
-    }
+    public void onResume() {
+        super.onResume();
 
-    @Override
-    public void onCurrentLocationUpdate(MapView mmapView, MapPoint mmapPoint, float v) {
+        mapView = new MapView(root.getContext());   // mapView 객체 생성
 
-        // MapPoint 객체가 나타내는 지점의 좌표값을 위경도 좌표시스템(WGS84)의 좌표값으로 조회하기 위한 객체 생성
-        MapPoint.GeoCoordinate mapPointGeo = mmapPoint.getMapPointGeoCoord();
-        MapPoint currentMapPoint = MapPoint.mapPointWithGeoCoord(mapPointGeo.latitude, mapPointGeo.longitude);  // 현재 디바이스 위치 설정
+        mapViewContainer = (ViewGroup) root.findViewById(R.id.map_view);    // ViewGroup Container
+        mapViewContainer.addView(mapView);                                  // mapView attach
 
-        // 지도 화면의 중심점을 설정
-        mapView.setMapCenterPoint(currentMapPoint, true);
+        mapView.setMapViewEventListener(this);          // 지도 이동/확대/축소, 지도 화면 터치 (Single Tap / Double Tap / Long Press) 이벤트를 통보받을 수 있음
+        mapView.setCurrentLocationEventListener(this);  // 현위치 트래킹 이벤트를 통보 받을 수 있음
+        mapView.setPOIItemEventListener(this);          // POI 관련 이벤트를 통보 받을 수 있음
 
-        //트래킹 모드가 아닌 단순 현재위치 업데이트일 경우, 한번만 위치 업데이트하고 트래킹을 중단시키기 위한 로직
-        if (!isTrackingMode) {
-            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        }
+        mapView.setZoomLevel(1, true);  // 지도 화면의 확대/축소 레벨을 설정
+        mapView.zoomIn(true);   // 지도 화면을 한단계 확대
 
         // 지도 로드 완료 후 리사이클러뷰 데이터 받아오기
         getMapStoreData(new HashMap<>());
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapViewContainer.removeAllViews();      // ViewGroup에서 모든 자식 뷰를 제거
+        mapStoreRv.removeAllViewsInLayout();    // 리사이클러뷰 레이아웃 제거
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onCurrentLocationUpdate(MapView mmapView, MapPoint mmapPoint, float v) { }
 
     @Override
     public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) { }
@@ -559,7 +581,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
         // 선택한 마커 Position의 리사이클러뷰로 이동
-        mapStoreRv.smoothScrollToPosition(mapPOIItem.getTag());
+        mapStoreRv.scrollToPosition(mapPOIItem.getTag());
     }
 
     @Override

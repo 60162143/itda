@@ -3,7 +3,7 @@ package com.example.itda.ui.map;
 public class MapStoreData {
     private int mapStoreId;             // 가게 고유 아이디
     private String mapStoreName;        // 가게 명
-    private String mapStoreIamagePath;  // 가게 썸네일 경로
+    private String mapStoreImagePath;  // 가게 썸네일 경로
     private float mapStoreScore;        // 가게 별점
     private double mapStoreLatitude;    // 가게 위도
     private double mapStoreLongitude;   // 가게 경도
@@ -12,10 +12,10 @@ public class MapStoreData {
     private String mapStoreHashTag;     // 가게 해시태그
 
     // Constructor
-    public MapStoreData(int mapStoreId, String mapStoreName, String mapStoreIamagePath, float mapStoreScore, double mapStoreLatitude, double mapStoreLongitude, float mapStoreDistance, String mapStoreInfo, String mapStoreHashTag) {
+    public MapStoreData(int mapStoreId, String mapStoreName, String mapStoreImagePath, float mapStoreScore, double mapStoreLatitude, double mapStoreLongitude, float mapStoreDistance, String mapStoreInfo, String mapStoreHashTag) {
         this.mapStoreId = mapStoreId;
         this.mapStoreName = mapStoreName;
-        this.mapStoreIamagePath = mapStoreIamagePath;
+        this.mapStoreImagePath = mapStoreImagePath;
         this.mapStoreScore = mapStoreScore;
         this.mapStoreLatitude = mapStoreLatitude;
         this.mapStoreLongitude = mapStoreLongitude;
@@ -41,12 +41,12 @@ public class MapStoreData {
         this.mapStoreName = mapStoreName;
     }
 
-    public String getMapStoreIamagePath() {
-        return mapStoreIamagePath;
+    public String getMapStoreImagePath() {
+        return mapStoreImagePath;
     }
 
-    public void setMapStoreIamagePath(String mapStoreIamagePath) {
-        this.mapStoreIamagePath = mapStoreIamagePath;
+    public void setMapStoreImagePath(String mapStoreImagePath) {
+        this.mapStoreImagePath = mapStoreImagePath;
     }
 
     public float getMapStoreScore() {
