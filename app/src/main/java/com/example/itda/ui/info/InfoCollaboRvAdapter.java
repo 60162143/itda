@@ -2,12 +2,13 @@ package com.example.itda.ui.info;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,10 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdapter.CustomInfoCollaboViewHolder>{
 
-    private ArrayList<collaboData> Collabos = new ArrayList<>();    // 가게 데이터
+    private ArrayList<collaboData> Collabos = new ArrayList<>();    // 협업 가게 데이터
+
+    // 리사이클러뷰 클릭 리스너 인터페이스
+    private static onInfoCollaboRvClickListener rvClickListener = null;
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -32,8 +36,9 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
     private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
-    public InfoCollaboRvAdapter(Context context){
+    public InfoCollaboRvAdapter(Context context, onInfoCollaboRvClickListener clickListener){
         this.mContext = context;
+        rvClickListener = clickListener;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -43,7 +48,8 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
     public CustomInfoCollaboViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // layoutInflater로 xml객체화. viewHolder 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_info_collabo, parent, false);
-        return new CustomInfoCollaboViewHolder(view);
+
+        return new InfoCollaboRvAdapter.CustomInfoCollaboViewHolder(view);
     }
 
     // ViewHolder를 어떠한 데이터와 연결할 때 호출
@@ -63,7 +69,6 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
 
         holder.collaboDiscountRate.setText(collabo.getCollaboDiscountRate() + "% 할인");   // 협업 할인율 textView set
         holder.collaboStoreName.setText(collabo.getStoreName());                // 협업 가게 이름 textView set
-
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -72,7 +77,7 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
         return Collabos.size();
     }
 
-    // 가게 정보 Setter
+    // 협업 정보 Setter
     public void setCollabo(ArrayList<collaboData> collabo){
         this.Collabos = collabo;
     }
@@ -81,7 +86,7 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoCollaboViewHolder extends RecyclerView.ViewHolder {
-        ImageButton collaboStoreImage;      // 협업 가게 썸네일
+        ImageView collaboStoreImage;      // 협업 가게 썸네일
         TextView collaboDiscountRate;       // 협업 가게 할인 율
         TextView collaboStoreName;          // 협업 가게 이름
 
@@ -90,7 +95,20 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
             collaboStoreImage = itemView.findViewById(R.id.info_collabo_store_image);
             collaboDiscountRate = itemView.findViewById(R.id.info_collabo_discount_rate);
             collaboStoreName = itemView.findViewById(R.id.info_collabo_store_name);
+
+            // 이미지에 투명도 설정
+            collaboStoreImage.setColorFilter(Color.parseColor("#66000000"), PorterDuff.Mode.SRC_ATOP);
+
+            // 리사이클러뷰 클릭 이벤트 인터페이스 구현
+            // Fragment로 return
+            itemView.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition();
+
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onInfoCollaboRvClick(view, getAbsoluteAdapterPosition());
+                }
+
+            });
         }
     }
-
 }

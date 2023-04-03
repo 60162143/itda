@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,14 +59,19 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(store.getStoreThumbnailPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
-                .into(holder.main_store_image);     // 이미지를 보여줄 View를 지정
+                .into(holder.mainStoreImage);     // 이미지를 보여줄 View를 지정
 
-        holder.main_store_text.setText(store.getStoreName());   // 가게 이름 textView set
+        holder.mainStoreName.setText(store.getStoreName());                                 // 가게 이름
 
-        //메인 화면 이미지 클릭 시 버튼 리스너
-        holder.main_store_image.setOnClickListener(v -> {
+        holder.mainStoreScore.setText(String.valueOf(store.getStoreScore()));               // 가게 별점
+        holder.mainStoreReviewCount.setText(" (" + store.getStoreReviewCount() + ")");   // 가게 리뷰 수
+        holder.mainStoreHashTag.setText(store.getStoreHashTag());                           // 가게 해시태그
+
+        // 메인 화면 이미지 클릭 리스너
+        holder.mainStoreImage.setOnClickListener(v -> {
             intent = new Intent(mContext, InfoActivity.class);  // 상세화면으로 이동하기 위한 Intent 객체 선언
 
             // 데이터 송신을 위한 Parcelable interface 사용
@@ -74,6 +80,34 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
 
             mContext.startActivity(intent); // 새 Activity 인스턴스 시작
         });
+
+        // 찜버튼 기능 참고해서 만들자!!!
+//
+//        if(position < 2){
+//            holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_after_bookmark);
+//            holder.mainStoreBookmark.setChecked(true);
+//        }else{
+//            holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_before_bookmark);
+//            holder.mainStoreBookmark.setChecked(false);
+//        }
+//
+//        if(store.getStoreDistance() > 0){                                                   // 현위치에서 가게까지의 거리
+//            holder.mainStoreDistance.setText(String.format("%.2f km", store.getStoreDistance()));
+//        }else{
+//            holder.mainStoreDistance.setText("- km");
+//        }
+//
+//        // 메인 화면 찜버튼 클릭 리스너
+//        holder.mainStoreBookmark.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(holder.mainStoreBookmark.isChecked()){
+//                    holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_after_bookmark);
+//                }else{
+//                    holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_before_bookmark_white);
+//                }
+//            }
+//        });
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -91,13 +125,24 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomMainCategoryViewHolder extends RecyclerView.ViewHolder {
-        ImageButton main_store_image;   // 가게 썸네일
-        TextView main_store_text;       // 가게 이름
+        ImageButton mainStoreImage;     // 가게 썸네일
+        ToggleButton mainStoreBookmark; // 가게 찜 버튼
+        TextView mainStoreName;         // 가게 이름
+        TextView mainStoreDistance;     // 현 위치에서 가게까지의 거리
+        TextView mainStoreScore;        // 가게 별점
+        TextView mainStoreReviewCount;  // 가게 리뷰 수
+        TextView mainStoreHashTag;      // 가게 해시태그
 
         public CustomMainCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            main_store_image = itemView.findViewById(R.id.store_image);
-            main_store_text = itemView.findViewById(R.id.store_name);
+            mainStoreImage = itemView.findViewById(R.id.main_store_image);
+            mainStoreBookmark = itemView.findViewById(R.id.main_store_bookmark);
+
+            mainStoreName = itemView.findViewById(R.id.main_store_name);
+            mainStoreDistance = itemView.findViewById(R.id.main_store_distance);
+            mainStoreScore = itemView.findViewById(R.id.main_store_score);
+            mainStoreReviewCount = itemView.findViewById(R.id.main_store_review_count);
+            mainStoreHashTag = itemView.findViewById(R.id.main_store_hashtag);
         }
     }
 

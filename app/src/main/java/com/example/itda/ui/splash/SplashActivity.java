@@ -1,7 +1,12 @@
 package com.example.itda.ui.splash;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -27,11 +32,32 @@ public class SplashActivity extends Activity {
     private class splashHandler implements Runnable{
         @Override
         public void run() { // 시간 지난 후 실행할 코딩
-            // 메인 화면으로 이동
-            startActivity(new Intent(getApplication(), MainActivity.class));
+            boolean isConnected = isNetworkConnected(SplashActivity.this);
+            if (!isConnected) {
 
-            SplashActivity.this.finish();   // 로딩페이지 Activity Stack에서 제거
+                AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+                builder.setMessage("인터넷 연결 상태를 확인해주세요.")
+                        .setCancelable(false)
+                        .setPositiveButton("종료", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finishAffinity();
+                            }
+                        }).show();
+            } else {
+                // 메인 화면으로 이동
+                startActivity(new Intent(getApplication(), MainActivity.class));
+
+                SplashActivity.this.finish();   // 로딩페이지 Activity Stack에서 제거
+            }
         }
+    }
+
+    public boolean isNetworkConnected(Context context){
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
+        // connected to the internet
+        return activeNetwork != null;
     }
 
     @Override

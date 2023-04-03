@@ -249,12 +249,12 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                                                     , object.getString("storeNumber")               // 가게 번호
                                                     , object.getString("storeInfo")                 // 가게 간단 정보
                                                     , object.getInt("storeCategoryId")              // 가게가 속한 카테고리 고유 아이디
-                                                    , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
+                                                    , !object.isNull("storeThumbnailPath") ? HOST + object.getString("storeThumbnailPath") : HOST + "/ftpFileStorage/noImage.png"   // 가게 썸네일 이미지 경로
                                                     , object.getDouble("storeScore")                // 가게 별점
-                                                    , object.getString("storeWorkingTime"));        // 가게 운영 시간
-
-                                        select_store = new ArrayList<>();   // 가게 세부 정보 배열 객체 생성
-                                        select_store.add(selectStore);      // 데이터 추가
+                                                    , object.getString("storeWorkingTime")          // 가게 운영 시간
+                                                    , object.getString("storeHashTag")              // 가게 해시태그
+                                                    , object.getInt("storeReviewCount")            // 가게 리뷰 개수
+                                                    , 0); // // 현위치에서 가게까지의 거리
 
                                         lastTag = position; // 상세화면으로 이동할 리사이클러뷰의 태그 번호 ( 인덱스 번호 ) 저장
 
@@ -262,7 +262,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
                                         // 데이터 송신을 위한 Parcelable interface 사용
                                         // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
-                                        intent.putExtra("Store", (Parcelable) select_store.get(0));
+                                        intent.putExtra("Store", (Parcelable) selectStore);
 
                                         startActivity(intent);  // 새 Activity 인스턴스 시작
 
@@ -406,7 +406,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         // GET 방식 파라미터 설정
         String mapStorePath = MAPSTORE_PATH;
         mapStorePath += String.format("?latitude=%s", cur_lat);     // 위도 파라미터 설정
-        mapStorePath += String.format("&&longitude=%s", cur_lon);   // 경도 파라미터 ㅓㄹ정
+        mapStorePath += String.format("&&longitude=%s", cur_lon);   // 경도 파라미터 설정
 
         if(!param.isEmpty()){   // 검색어 입력되었을 경우 파라미터 입력
             mapStorePath += String.format("&&schText=%s",param.get("schText"));
@@ -431,7 +431,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
                         MapStoreData mapStore = new MapStoreData(object.getInt("storeId")   // 가게 고유 아이디
                                 , object.getString("storeName")                             // 가게 이름
-                                , HOST + object.getString("storeThumbnailPath")             // 가게 썸네일 이미지 경로
+                                , !object.isNull("storeThumbnailPath") ? HOST + object.getString("storeThumbnailPath") : HOST + "/ftpFileStorage/noImage.png"   // 가게 썸네일 이미지 경로
                                 , Float.parseFloat(object.getString("storeScore"))          // 가게 별점
                                 , object.getDouble("storeLatitude")                         // 가게 위도
                                 , object.getDouble("storeLongitude")                        // 가게 경도

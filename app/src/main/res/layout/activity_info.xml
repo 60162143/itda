@@ -83,10 +83,11 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:background="@drawable/border"
-                android:paddingVertical="20dp">
+                android:paddingVertical="10dp"
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="10"
@@ -94,10 +95,11 @@
                     android:weightSum="10">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:weightSum="10">
 
                         <TextView
                             android:id="@+id/info_store_name"
@@ -105,7 +107,8 @@
                             android:layout_height="wrap_content"
                             android:text="착한커피"
                             android:textStyle="bold"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            android:layout_weight="9"/>
 
                         <View
                             android:layout_width="0dp"
@@ -116,7 +119,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:layout_marginEnd="10dp">
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1">
 
                             <ImageView
                                 android:id="@+id/info_star_ic"
@@ -137,7 +141,7 @@
 
                     <TextView
                         android:id="@+id/info_information"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="가게 소개"
                         android:layout_marginVertical="10dp"
@@ -147,10 +151,10 @@
 
                     <TextView
                         android:id="@+id/info_hashtag"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="#커피 #디저트" />
+                        android:text="#해시태그" />
 
                 </LinearLayout>
 
@@ -168,7 +172,6 @@
                         android:id="@+id/info_store_image"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:scaleType="centerCrop"
                         android:layout_gravity="center"
                         android:padding="0dp"
                         android:contentDescription="StoreImage"
@@ -180,33 +183,48 @@
             <!--info 간단한 소개 화면 끝-->
 
 <!--            협업한 가게 나오는 화면 입니다-->
-            <TextView
-                android:id="@+id/collabo_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이어진 가게"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:layout_marginStart="20dp"
-                android:paddingTop="20dp"
-                android:visibility="gone"/>
-
-            <!-- 협업한 가게 나오는 화면 끝입니다-->
-
-
-            <!-- 운영시간, 주차 가능 여부 나오는 화면 입니다-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/info_collabo_rv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:paddingBottom="20dp"/>
+                android:orientation="vertical"
+                android:id="@+id/info_collabo_layout"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/info_collabo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Collaboration"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/info_collabo_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:paddingBottom="10dp"/>
+
+            </LinearLayout>
+            <!-- 협업한 가게 나오는 화면 끝입니다-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/border">
+                android:background="@drawable/border"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/info_service_layout">
+
+                <TextView
+                    android:id="@+id/info_service_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Service"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"/>
 
                 <!-- 운영 시간 나오는 화면 입니다-->
                 <LinearLayout
@@ -254,7 +272,7 @@
                         />
                 </LinearLayout>
 
-<!--            가게 간단 제공 서비스 나오는 화면 입니다-->
+<!--            가게 간단 제공 서비스 화면 입니다-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -280,7 +298,7 @@
 
                 </LinearLayout>
 
-                <!--            가게 간단 제공 서비스 나오는 화면 입니다-->
+                <!--            가게 제공 시설 여부 화면 입니다-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -315,13 +333,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/border">
+                android:background="@drawable/border"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/info_menu_layout">
+
+                <TextView
+                    android:id="@+id/info_menu_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Menu"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="10dp"
-                    android:id="@+id/info_menu_bar">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/info_menu_ic"
@@ -337,14 +364,14 @@
                         android:id="@+id/info_menu_plus_btn"
                         android:layout_width="60dp"
                         android:layout_height="25dp"
-                        android:text="+more"
+                        android:text="더보기 >"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
-                        android:textSize="8sp"
-                        android:background="@drawable/round_color"
+                        android:textSize="11sp"
+                        android:background="#00ff0000"
                         android:layout_marginVertical="5dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -354,8 +381,8 @@
                     android:id="@+id/info_menu_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:overScrollMode="never"/>
+                    android:layout_marginBottom="10dp"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 <!--            메뉴 화면 끝입니다.-->
@@ -365,7 +392,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/border">
+
+                <TextView
+                    android:id="@+id/info_map_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -375,7 +412,7 @@
                     android:paddingVertical="10dp">
 
                     <ImageView
-                        android:id="@+id/info_menu_map_ic"
+                        android:id="@+id/info_address_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_map"/>
@@ -398,15 +435,14 @@
                     app:cardElevation="10dp"
                     app:strokeColor="#7E57C2"
                     app:strokeWidth="1dp"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="20dp">
 
                     <!-- 지도 화면 -->
                     <LinearLayout
                         android:id="@+id/info_map_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        />
+                        android:orientation="vertical"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -418,41 +454,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
                 android:orientation="vertical"
-                android:background="@drawable/border">
+                android:background="@drawable/border"
+                android:id="@+id/info_photo_layout"
+                android:layout_marginBottom="10dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/info_photo_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="착한커피's Picture"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="20dp"/>
-
-                    <Button
-                        android:id="@+id/info_photo_plus_btn"
-                        android:layout_width="60dp"
-                        android:layout_height="25dp"
-                        android:text="+more"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center"
-                        android:textSize="8sp"
-                        android:background="@drawable/round_color"
-                        android:layout_marginVertical="5dp"
-                        />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/info_photo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Picture"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/info_photo_rv"
@@ -467,46 +481,44 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/info_review_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Review"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/info_review_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="착한커피's score"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="20dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp">
 
                     <ImageView
                         android:id="@+id/info_review_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_review"
-                        app:layout_constraintRight_toLeftOf="@id/info_review_plus_btn"
+                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="5dp"/>
 
-                    <TextView
+                    <Button
                         android:id="@+id/info_review_plus_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="리뷰쓰기"
-                        android:clickable="true"
-                        android:focusable="true"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:text="리뷰쓰기 >"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="20dp"/>
-
+                        android:layout_marginEnd="20dp"
+                        android:textSize="13sp"
+                        android:background="#00ff0000"
+                        android:layout_marginVertical="5dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -517,18 +529,12 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="리뷰 나올 자리"/>
-
             </LinearLayout>
 <!--            리뷰 화면 끝입니다-->
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 <!--    결제 버튼 입니다-->
     <LinearLayout
@@ -538,13 +544,13 @@
 
         <Button
             android:id="@+id/info_payment_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:text="결제하기"
-            android:background="@drawable/round"
-            android:layout_marginBottom="10dp"/>
-
+            android:textSize="14sp"
+            android:background="#00FFCE"/>
 
     </LinearLayout>
+    <!--    결제 버튼 끝입니다-->
 
 </LinearLayout>
