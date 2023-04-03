@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/info_photo_detail_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_test_image_white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/info_photo_detail_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유저명"
+            android:textColor="#ffffff"
+            android:layout_marginStart="20dp"/>
+
+        <ImageView
+            android:id="@+id/info_photo_detail_review_score_ic"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_star"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/info_photo_detail_review_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.8"
+            android:textColor="#ffffff"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingHorizontal="10dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/info_photo_detail_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="리뷰 내용"
+            android:textSize="11sp"
+            android:textColor="#ffffff"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <Button
+            android:id="@+id/info_photo_detail_plus_btn"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:text="더보기"
+            android:layout_gravity="end"
+            android:textSize="11sp"
+            android:background="#00ff0000"
+            android:textColor="#ffffff"/>
+
+    </LinearLayout>
+
+</FrameLayout>
