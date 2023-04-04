@@ -26,6 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.itda.ui.global.globalVariable;
 import com.example.itda.ui.home.MainStoreRvAdapter;
 import com.example.itda.ui.home.mainStoreData;
 
@@ -47,12 +48,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class InfoActivity extends Activity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener {
+public class InfoActivity extends Activity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener, onInfoReviewRvClickListener {
 
     private mainStoreData Store;    // 가게 데이터
     private ArrayList<collaboData> Collabo = new ArrayList<>(); // 협업 가게 데이터
     private ArrayList<menuData> Menu = new ArrayList<>();       // 메뉴 데이터
     private ArrayList<photoData> Photo = new ArrayList<>();     // 사진 데이터
+    private ArrayList<reviewData> Review = new ArrayList<>();   // 리뷰 데이터
 
     // ---------------- 최상단 Section ---------------------------
     private TextView infoMainStoreName; // 최상단 가게 이름
@@ -106,14 +108,15 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
 
     // ---------------- 사진 Section ---------------------
-    private RecyclerView infoPhotoRv;   // 사진 리사이클러뷰
-    private LinearLayout infoPhotoLayout;   // 사진 전체 레이아웃
-    private InfoPhotoRvAdapter infoPhotoAdapter;  // 사진 리사이클러뷰 어댑터
+    private RecyclerView infoPhotoRv;               // 사진 리사이클러뷰
+    private LinearLayout infoPhotoLayout;           // 사진 전체 레이아웃
+    private InfoPhotoRvAdapter infoPhotoAdapter;    // 사진 리사이클러뷰 어댑터
 
 
     // ---------------- 리뷰 Section ---------------------
     private Button infoReviewPlusBtn; // 리뷰 작성 버튼
     private RecyclerView infoReviewRv;  // 리뷰 리사이클러뷰
+    private InfoReviewRvAdapter infoReviewAdapter;  // 리뷰 리사이클러뷰 어댑터
 
     // ---------------- 결제 Section ---------------------
     private Button infoPaymentBtn; // 결제하기 버튼
@@ -124,11 +127,12 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
 
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
-    final static private String MAINSTORE_PATH = "/store/getMainStore.php";  // 가게 데이터 조회 Rest API
-    final static private String COLLABO_PATH = "/info/getInfoCollabo.php";  // 협업 가게 정보 데이터 조회 Rest API
-    final static private String MENU_PATH = "/info/getInfoMenu.php";        // 메뉴 정보 데이터 조회 Rest API
-    final static private String PHOTO_PATH = "/info/getInfoPhoto.php";      // 사진 정보 데이터 조회 Rest API
-    final static private String HOST = "http://no2955922.ivyro.net";        // Host 정보
+    private String MAINSTORE_PATH;  // 가게 데이터 조회 Rest API
+    private String COLLABO_PATH;    // 협업 가게 정보 데이터 조회 Rest API
+    private String MENU_PATH;       // 메뉴 정보 데이터 조회 Rest API
+    private String PHOTO_PATH;      // 사진 정보 데이터 조회 Rest API
+    private String REVIEW_PATH;     // 리뷰 정보 데이터 조회 Rest API
+    private String HOST;            // Host 정보
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,6 +146,14 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         }
 
         Store = getIntent().getParcelableExtra("Store");
+
+        // ---------------- Rest API 전역변수 SET---------------------------
+        MAINSTORE_PATH = ((globalVariable) getApplication()).getMainStorePath();    // 가게 데이터 조회 Rest API
+        COLLABO_PATH = ((globalVariable) getApplication()).getCollaboPath();        // 협업 가게 정보 데이터 조회 Rest API
+        MENU_PATH = ((globalVariable) getApplication()).getMenuPath();              // 메뉴 정보 데이터 조회 Rest API
+        PHOTO_PATH = ((globalVariable) getApplication()).getPhotoPath();            // 사진 정보 데이터 조회 Rest API
+        REVIEW_PATH = ((globalVariable) getApplication()).getReviewPath();          // 리뷰 정보 데이터 조회 Rest API
+        HOST = ((globalVariable) getApplication()).getHost();                       // Host 정보
 
         // ---------------- 최상단 Section ---------------------------
         infoMainStoreName.setText(Store.getStoreName());    // 최상단 가게 이름
@@ -238,9 +250,11 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
 
         // ---------------- 사진 Section ---------------------
-        getInfoPhoto();   // 사진 데이터 GET
+        getInfoPhoto();     // 사진 데이터 GET
+
 
         // ---------------- 리뷰 Section ---------------------
+        getInfoReview();    // 리뷰 데이터 GET
 
 
         // ---------------- 결제 Section ---------------------
@@ -263,7 +277,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
         mapViewContainer = (ViewGroup) findViewById(R.id.info_map_view);    // ViewGroup Container
         mapViewContainer.addView(mapView);                                  // mapView attach
-
+        
         double latitude = Store.getStoreLatitude();  // 첫 번째로 검색된 가게의 위도
         double longitude = Store.getStoreLongitude(); // 첫 번째로 검색된 가게의 경도
 
@@ -495,7 +509,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         String photoPath = PHOTO_PATH + String.format("?storeId=%s", Store.getStoreId());
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
-        StringRequest MenuRequest = new StringRequest(Request.Method.GET, HOST + photoPath, response -> {
+        StringRequest PhotoRequest = new StringRequest(Request.Method.GET, HOST + photoPath, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);             // Response를 JsonObject 객체로 생성
                 JSONArray photoArr = jsonObject.getJSONArray("photo");    // 객체에 menu라는 Key를 가진 JSONArray 생성
@@ -538,8 +552,55 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
             Log.d("getInfoPhotoError", "onErrorResponse : " + error);
         });
 
-        MenuRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-        requestQueue.add(MenuRequest);      // RequestQueue에 요청 추가
+        PhotoRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(PhotoRequest);      // RequestQueue에 요청 추가
+    }
+
+    // 리뷰 데이터 GET
+    private void getInfoReview(){
+        // GET 방식 파라미터 설정
+        String reviewPath = REVIEW_PATH + String.format("?storeId=%s", Store.getStoreId());
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
+        StringRequest ReviewRequest = new StringRequest(Request.Method.GET, HOST + reviewPath, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);             // Response를 JsonObject 객체로 생성
+                JSONArray reviewArr = jsonObject.getJSONArray("review"); // 객체에 menu라는 Key를 가진 JSONArray 생성
+
+                if(reviewArr.length() > 0) {
+                    for (int i = 0; i < reviewArr.length(); i++) {
+                        JSONObject object = reviewArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
+                        // 카테고리 데이터 생성 및 저장
+                        reviewData reviewData = new reviewData(
+                                object.getInt("reviewId")                       // 리뷰 고유 아이디
+                                , object.getInt("userId")                       // 유저 고유 아이디
+                                , object.getString("userName")                  // 유저 명
+                                , object.getInt("storeId")                      // 가게 고유 아이디
+                                , HOST + object.getString("userProfilePath")    // 유저 프로필 경로
+                                , object.getString("reviewDetail")              // 리뷰 내용
+                                , object.getInt("reviewScore")                  // 리뷰 별점
+                                , object.getInt("reviewHeartCount")             // 리뷰 좋아요 수
+                                , object.getString("reviewRegDate")             // 리뷰 작성 일자
+                                , object.getInt("reviewCommentCount"));         // 리뷰 댓글 수
+                        Review.add(reviewData); // 리뷰 정보 저장
+                    }
+
+                    infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this);  // 리사이클러뷰 어뎁터 객체 생성
+
+                    infoReviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                    infoReviewRv.setAdapter(infoReviewAdapter);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("getInfoReviewError", "onErrorResponse : " + error);
+        });
+
+        ReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(ReviewRequest);      // RequestQueue에 요청 추가
     }
 
     // 협업 리사이클러뷰 클릭 이벤트 인터페이스 구현
@@ -652,11 +713,31 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
     public void onInfoPhotoRvClick(View v, int position) {
         // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         // position이 4보다 작을 경우 사진 상세 화면으로 이동
-        // position이 4qhek 클 경우 사진 전체 화면으로 이동
+        // position이 4보다 클 경우 사진 전체 화면으로 이동
         Intent intent = new Intent(InfoActivity.this, position < 4 ? InfoPhotoActivity.class : InfoPhotoTotalActivity.class);
         intent.putParcelableArrayListExtra("Photo", Photo);
         intent.putExtra("Position", position);
         intent.putExtra("storeName", Store.getStoreName());
+        startActivity(intent);
+    }
+
+    // 리뷰 리사이클러뷰 클릭 이벤트 인터페이스 구현
+    @Override
+    public void onInfoReviewRvClick(View v, int position) {
+        reviewData review = Review.get(position);
+        ArrayList<photoData> photo = new ArrayList<>();
+
+        for(int i = 0; i < Photo.size(); i++){
+            if(review.getReviewId() == Photo.get(i).getReviewId()){
+                photo.add(Photo.get(i));
+            }
+        }
+        // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+        Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
+        intent.putParcelableArrayListExtra("Photo", photo);
+        intent.putExtra("reviewId", review.getReviewId());
+        intent.putExtra("storeName", Store.getStoreName());
+        intent.putExtra("review", review);
         startActivity(intent);
     }
 }

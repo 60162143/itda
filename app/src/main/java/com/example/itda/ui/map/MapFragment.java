@@ -36,6 +36,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.itda.R;
+import com.example.itda.ui.global.globalVariable;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
 import com.gun0912.tedpermission.PermissionListener;
@@ -77,9 +78,9 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
     private static RequestQueue requestQueue;    // Volley Library 사용을 위한 RequestQueue
 
-    final static private String MAPSTORE_PATH = "/store/getMapStore.php";   // 지도 내 가게 데이터 조회 Rest API
-    final static private String MAINSTORE_PATH = "/store/getMainStore.php"; // 가게 세부 데이터 조회 Rest API
-    final static private String HOST = "http://no2955922.ivyro.net";        // Host 정보
+    private String MAPSTORE_PATH;   // 지도 내 가게 데이터 조회 Rest API
+    private String MAINSTORE_PATH; // 가게 세부 데이터 조회 Rest API
+    private String HOST;        // Host 정보
 
     private boolean isTrackingMode = false;     // 현재 트래킹 모드인지 확인하는 Flag
     private int lastTag = -1;   // 상세화면 전환시 해당 태그 번호 저장 ( 현재 위치를 마지막 위치로 기억하기 위해 )
@@ -121,6 +122,10 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
     // 뷰 생성
     private void initView() {
+        // ---------------- Rest API 전역변수 SET---------------------------
+        MAPSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMapStorePath();   // 지도 내 가게 데이터 조회 Rest API
+        MAINSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath(); // 가게 정보 데이터 조회 Rest API
+        HOST = ((globalVariable) requireActivity().getApplication()).getHost();    // Host 정보
 
         ImageButton mapGPSBtn = (ImageButton) root.findViewById((R.id.gps_button));         // GPS 버튼
         EditText mapSchText = (EditText) root.findViewById((R.id.search_map_store));        // 검색어 입력창

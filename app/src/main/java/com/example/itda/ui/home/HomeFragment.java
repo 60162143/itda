@@ -29,6 +29,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.itda.R;
+import com.example.itda.ui.global.globalVariable;
 import com.example.itda.ui.info.InfoActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -62,10 +63,9 @@ public class HomeFragment extends Fragment {
 
     private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
-    final static private String CATEGORY_PATH = "/store/getCategory.php";   // 카테고리 데이터 조회 Rest API
-    final static private String MAINSTORE_PATH = "/store/getMainStore.php"; // 가게 정보 데이터 조회 Rest API
-    final static private String HOST = "http://no2955922.ivyro.net";        // Host 정보
-
+    private String CATEGORY_PATH;   // 카테고리 데이터 조회 Rest API
+    private String MAINSTORE_PATH; // 가게 정보 데이터 조회 Rest API
+    private String HOST;    // Host 정보
     private int touchPosition = -1;       // 현재 터치한 Position, 음수로 초기화
     private float xPosition = 0;          // 현재 터치한 x 좌표
 
@@ -104,6 +104,11 @@ public class HomeFragment extends Fragment {
 
         // View의 정의를 실제 View 객체로 만드는 역할
         root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // ---------------- Rest API 전역변수 SET---------------------------
+        CATEGORY_PATH = ((globalVariable) requireActivity().getApplication()).getCategoryPath();   // 카테고리 데이터 조회 Rest API
+        MAINSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath(); // 가게 정보 데이터 조회 Rest API
+        HOST = ((globalVariable) requireActivity().getApplication()).getHost();    // Host 정보
 
         CategoryRv = root.findViewById(R.id.main_category_rv);  // 카테고리 리사이클러뷰
         MainStoreRv = root.findViewById(R.id.main_store_rv);    // 상점 정보 리사이클러뷰

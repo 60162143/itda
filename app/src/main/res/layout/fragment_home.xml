@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/border">
+        android:background="@drawable/border_bottom">
 
         <!--검색 아이콘-->
         <ImageButton
@@ -54,7 +54,7 @@
                 android:id="@+id/main_category_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
+                android:background="@drawable/border_bottom"
                 android:paddingVertical="10dp"/>
 
             <!--가게 정보 리사이클러뷰-->

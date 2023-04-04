@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="@drawable/border_bottom">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_review_detail_back_ic"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginVertical="10dp"
+            android:src="@drawable/ic_back_arrow"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/info_review_detail_main_store_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/info_review_detail_back_ic"
+            android:layout_marginStart="20dp"
+            android:textSize="12sp"
+            android:text="가게 이름"
+            android:background="@drawable/round_color"
+            android:paddingHorizontal="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--카드뷰-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="5dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="1000dp">
+
+                            <ImageButton
+                                android:id="@+id/info_review_detail_user_profile"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/gray"
+                                android:padding="0dp"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/info_review_detail_user_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="유저명"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    android:layout_marginEnd="10dp"/>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="10dp">
+
+                                    <ImageButton
+                                        android:id="@+id/info_review_detail_heart_ic"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_heart_after"
+                                        android:layout_marginEnd="5dp"
+                                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                                    <TextView
+                                        android:id="@+id/info_review_detail_heart_count"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="24"
+                                        android:textColor="@color/black"
+                                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="end|center"
+                                    android:layout_marginEnd="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/info_review_detail_comment_ic"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_comment_after"
+                                        android:layout_marginEnd="5dp"
+                                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                                    <TextView
+                                        android:id="@+id/info_review_detail_comment_count"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="3"
+                                        android:textColor="@color/black"
+                                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="end|center">
+
+                                    <ImageView
+                                        android:id="@+id/info_review_detail_score_ic"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_star"
+                                        android:layout_marginEnd="5dp"
+                                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                                    <TextView
+                                        android:id="@+id/info_review_detail_score"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="4.8"
+                                        android:layout_marginEnd="5dp"
+                                        android:textColor="@color/black"
+                                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"/>
+
+                                <ImageButton
+                                    android:id="@+id/info_review_detail_delete_ic"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_delete"
+                                    android:layout_gravity="end|center_vertical"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/info_review_detail_regdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="2023년 4월 13일"
+                                android:textSize="11sp"
+                                android:layout_marginTop="3dp"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/info_review_detail_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="기대보다 향이 좋았던 공방\n 향수 만들기 원데이클래스는 미리 예약을 해야 하기에 디퓨저만 샀어요."
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="10dp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/info_review_detail_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/border_top_gray"
+                        android:layout_marginTop="15dp"
+                        android:paddingTop="4dp">
+
+                        <Button
+                            android:id="@+id/info_review_detail_heart_btn"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:background="#00ff0000"
+                            android:drawableStart="@drawable/ic_heart_before_gray"
+                            android:text="좋아요"
+                            android:textSize="11sp"
+                            android:textColor="#999999"
+                            android:gravity="end|center_vertical"
+                            android:layout_marginEnd="10dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/info_review_detail_comment_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:paddingHorizontal="10dp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <EditText
+                android:id="@+id/info_review_detail_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:hint="리뷰에 따뜻한 댓글을 달아주세요."
+                android:textSize="12sp"
+                android:background="@android:color/transparent"
+                android:paddingStart="20dp"
+                android:layout_weight="9"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/info_review_detail_comment_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="13sp"
+                android:background="@drawable/ic_send"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
