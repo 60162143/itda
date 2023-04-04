@@ -73,7 +73,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
             requestQueue = Volley.newRequestQueue(this);
         }
 
-        REVIEW_COMMENT_PATH = ((globalVariable) getApplication()).getReviewCommentPath();   // 리뷰 댓글 정보 데이터 조회 Rest API
+        REVIEW_COMMENT_PATH = ((globalVariable) getApplication()).getInfoReviewCommentPath();   // 리뷰 댓글 정보 데이터 조회 Rest API
         HOST = ((globalVariable) getApplication()).getHost();                               // Host 정보
 
         initView();

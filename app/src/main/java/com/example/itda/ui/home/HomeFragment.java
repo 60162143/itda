@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment{
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
         // ---------------- Rest API 전역변수 SET---------------------------
-        CATEGORY_PATH = ((globalVariable) requireActivity().getApplication()).getCategoryPath();   // 카테고리 데이터 조회 Rest API
+        CATEGORY_PATH = ((globalVariable) requireActivity().getApplication()).getMainCategoryPath();   // 카테고리 데이터 조회 Rest API
         MAINSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath(); // 가게 정보 데이터 조회 Rest API
         HOST = ((globalVariable) requireActivity().getApplication()).getHost();    // Host 정보
 

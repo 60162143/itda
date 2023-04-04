@@ -149,25 +149,24 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
         // ---------------- Rest API 전역변수 SET---------------------------
         MAINSTORE_PATH = ((globalVariable) getApplication()).getMainStorePath();    // 가게 데이터 조회 Rest API
-        COLLABO_PATH = ((globalVariable) getApplication()).getCollaboPath();        // 협업 가게 정보 데이터 조회 Rest API
-        MENU_PATH = ((globalVariable) getApplication()).getMenuPath();              // 메뉴 정보 데이터 조회 Rest API
-        PHOTO_PATH = ((globalVariable) getApplication()).getPhotoPath();            // 사진 정보 데이터 조회 Rest API
-        REVIEW_PATH = ((globalVariable) getApplication()).getReviewPath();          // 리뷰 정보 데이터 조회 Rest API
+        COLLABO_PATH = ((globalVariable) getApplication()).getInfoCollaboPath();    // 협업 가게 정보 데이터 조회 Rest API
+        MENU_PATH = ((globalVariable) getApplication()).getInfoMenuPath();          // 메뉴 정보 데이터 조회 Rest API
+        PHOTO_PATH = ((globalVariable) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
+        REVIEW_PATH = ((globalVariable) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
         HOST = ((globalVariable) getApplication()).getHost();                       // Host 정보
 
         // ---------------- 최상단 Section ---------------------------
         infoMainStoreName.setText(Store.getStoreName());    // 최상단 가게 이름
+
         // 최상단 뒤로가기 버튼 클릭 리스너
         infoBackIc.setOnClickListener(v -> finish());   // 버튼 클릭 시 Activity 종료
 
+        // 전화 번호 있을 시 전화 걸기 화면으로 전환 클릭 리스너
         if(!TextUtils.isEmpty(Store.getStoreNumber())){
-            infoCallIc.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String telNum = "tel:" + Store.getStoreNumber();
-                    Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(telNum));
-                    startActivity(mIntent);
-                }
+            infoCallIc.setOnClickListener(view -> {
+                String telNum = "tel:" + Store.getStoreNumber();
+                Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(telNum));
+                startActivity(mIntent);
             });
         }else{
             infoCallIc.setVisibility(View.GONE);
