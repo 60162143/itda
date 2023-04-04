@@ -24,7 +24,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdapter.CustomInfoCollaboViewHolder>{
 
-    private ArrayList<collaboData> Collabos = new ArrayList<>();    // 협업 가게 데이터
+    private ArrayList<infoCollaboData> Collabos = new ArrayList<>();    // 협업 가게 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoCollaboRvClickListener rvClickListener = null;
@@ -57,7 +57,7 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoCollaboViewHolder holder, int position) {
-        collaboData collabo = Collabos.get(position);     // 현재 position의 가게 정보
+        infoCollaboData collabo = Collabos.get(position);     // 현재 position의 가게 정보
 
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
@@ -78,7 +78,7 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
     }
 
     // 협업 정보 Setter
-    public void setCollabo(ArrayList<collaboData> collabo){
+    public void setCollabo(ArrayList<infoCollaboData> collabo){
         this.Collabos = collabo;
     }
 

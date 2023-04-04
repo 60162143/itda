@@ -2,14 +2,11 @@ package com.example.itda.ui.info;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,8 +23,8 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapter.CustomInfoReviewViewHolder> implements onInfoReviewPhotoRvClickListener{
 
-    private ArrayList<reviewData> Reviews;  // 리뷰 데이터
-    private ArrayList<photoData> Photos;    // 사진 데이터
+    private ArrayList<infoReviewData> Reviews;  // 리뷰 데이터
+    private ArrayList<infoPhotoData> Photos;    // 사진 데이터
     private String storeName;
 
     private static onInfoReviewRvClickListener rvClickListener = null;
@@ -39,7 +36,7 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
     private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
-    public InfoReviewRvAdapter(Context context, ArrayList<reviewData> reviews, ArrayList<photoData> Photos, String storeName, onInfoReviewRvClickListener clickListener){
+    public InfoReviewRvAdapter(Context context, ArrayList<infoReviewData> reviews, ArrayList<infoPhotoData> Photos, String storeName, onInfoReviewRvClickListener clickListener){
         this.mContext = context;
         this.Reviews = reviews;
         this.Photos = Photos;
@@ -63,7 +60,7 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoReviewViewHolder holder, int position) {
-        reviewData review = Reviews.get(position);     // 현재 position의 리뷰 정보
+        infoReviewData review = Reviews.get(position);     // 현재 position의 리뷰 정보
 
         // 유저 프로필 이미지
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
@@ -81,7 +78,7 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
         holder.reviewDetail.setText(review.getReviewDetail());
         holder.reviewCommentCnt.setText(String.valueOf(review.getReviewCommentCount()));
 
-        ArrayList<photoData> reviewPhoto = new ArrayList<>();
+        ArrayList<infoPhotoData> reviewPhoto = new ArrayList<>();
 
         for(int i = 0; i < Photos.size(); i++){
             if(Photos.get(i).getReviewId() == review.getReviewId()){

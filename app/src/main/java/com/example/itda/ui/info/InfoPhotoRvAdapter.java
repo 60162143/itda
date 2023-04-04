@@ -24,7 +24,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoPhotoRvAdapter extends RecyclerView.Adapter<InfoPhotoRvAdapter.CustomInfoPhotoViewHolder>{
 
-    private ArrayList<photoData> Photos;    // 사진 데이터
+    private ArrayList<infoPhotoData> Photos;    // 사진 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoPhotoRvClickListener rvClickListener = null;
@@ -36,7 +36,7 @@ public class InfoPhotoRvAdapter extends RecyclerView.Adapter<InfoPhotoRvAdapter.
     private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
-    public InfoPhotoRvAdapter(Context context, onInfoPhotoRvClickListener clickListener, ArrayList<photoData> photos){
+    public InfoPhotoRvAdapter(Context context, onInfoPhotoRvClickListener clickListener, ArrayList<infoPhotoData> photos){
         this.mContext = context;
         rvClickListener = clickListener;
         this.Photos = photos;
@@ -58,7 +58,7 @@ public class InfoPhotoRvAdapter extends RecyclerView.Adapter<InfoPhotoRvAdapter.
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoPhotoViewHolder holder, int position) {
-        photoData photo = Photos.get(position);     // 현재 position의 사진 정보
+        infoPhotoData photo = Photos.get(position);     // 현재 position의 사진 정보
 
         if(position == 4){
             // 이미지에 투명도 설정

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="11"
+        android:background="@drawable/border_bottom"
+        android:paddingVertical="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="0dp"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/collabo_prv_store_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="앞가게 명"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="false"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="20dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true">
+
+                    <ImageButton
+                        android:id="@+id/collabo_prv_store_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:background="@drawable/round"
+                        android:layout_gravity="center"
+                        android:padding="0dp"
+                        android:src="@drawable/ic_test_image"
+                        android:adjustViewBounds="true"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/collabo_prv_store_discount_condition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:text="할인 조건"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                android:id="@+id/collabo_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="가게 거리"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/collabo_arrow_ic"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_arrow_long" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="0dp"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/collabo_post_store_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="뒷가게 명"
+                    android:paddingStart="10dp"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="false"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="20dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true">
+
+                    <ImageButton
+                        android:id="@+id/collabo_post_store_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:background="@drawable/round"
+                        android:layout_gravity="center"
+                        android:padding="0dp"
+                        android:src="@drawable/ic_test_image"
+                        android:adjustViewBounds="true"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/collabo_post_store_discount_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:text="할인 율"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

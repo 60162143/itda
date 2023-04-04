@@ -2,18 +2,14 @@ package com.example.itda.ui.info;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.itda.R;
 
@@ -21,7 +17,7 @@ import java.util.ArrayList;
 
 public class InfoPhotoTotalActivity extends Activity implements onInfoPhotoTotalRvClickListener{
 
-    ArrayList<photoData> photo;     // 사진 데이터
+    ArrayList<infoPhotoData> photo;     // 사진 데이터
 
     private ImageButton infoPhotoBackIc;    // 상단 뒤로가기 버튼
     private Button infoPhotoStoreName;      // 상단 가게 이름

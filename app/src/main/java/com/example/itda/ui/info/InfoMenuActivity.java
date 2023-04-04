@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
-import com.example.itda.ui.home.mainStoreData;
 
 import java.util.ArrayList;
 
@@ -35,7 +34,7 @@ public class InfoMenuActivity extends Activity {
 
         // ArrayList를 받아올때 사용
         // putParcelableArrayListExtra로 넘긴 데이터를 받아올때 사용
-        ArrayList<menuData> Menu = getIntent().getParcelableArrayListExtra("Menu");
+        ArrayList<infoMenuData> Menu = getIntent().getParcelableArrayListExtra("Menu");
 
         InfoMenuRvAdapter infoMenuDetailAdapter = new InfoMenuRvAdapter(this, Menu, true);  // 리사이클러뷰 어뎁터 객체 생성
 

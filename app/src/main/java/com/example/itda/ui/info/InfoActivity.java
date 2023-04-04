@@ -27,11 +27,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.itda.ui.global.globalVariable;
-import com.example.itda.ui.home.MainStoreRvAdapter;
 import com.example.itda.ui.home.mainStoreData;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,10 +49,10 @@ import java.util.ArrayList;
 public class InfoActivity extends Activity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener, onInfoReviewRvClickListener {
 
     private mainStoreData Store;    // 가게 데이터
-    private ArrayList<collaboData> Collabo = new ArrayList<>(); // 협업 가게 데이터
-    private ArrayList<menuData> Menu = new ArrayList<>();       // 메뉴 데이터
-    private ArrayList<photoData> Photo = new ArrayList<>();     // 사진 데이터
-    private ArrayList<reviewData> Review = new ArrayList<>();   // 리뷰 데이터
+    private ArrayList<infoCollaboData> Collabo = new ArrayList<>(); // 협업 가게 데이터
+    private ArrayList<infoMenuData> Menu = new ArrayList<>();       // 메뉴 데이터
+    private ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
+    private ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
 
     // ---------------- 최상단 Section ---------------------------
     private TextView infoMainStoreName; // 최상단 가게 이름
@@ -423,7 +421,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                     for (int i = 0; i < collaboArr.length(); i++) {
                         JSONObject object = collaboArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
                         // 협업 데이터 생성 및 저장
-                        collaboData collaboData = new collaboData(
+                        infoCollaboData infoCollaboData = new infoCollaboData(
                                 object.getInt("storeId")                      // 가게 고유 아이디
                                 , object.getString("storeName")                 // 가게 이름
                                 , object.getString("storeAddress")              // 가게 주소
@@ -441,7 +439,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                                 , object.getInt("collaboStoreId")               // 협업 뒷 가게 고유 아이디
                                 , object.getInt("collaboDiscountCondition")     // 앞 가게 할인 조건 ( 최소 금액 )
                                 , object.getInt("collaboDiscountRate"));        // 뒷 가게 할인율 ( 정수 )
-                        Collabo.add(collaboData); // 협업 정보 저장
+                        Collabo.add(infoCollaboData); // 협업 정보 저장
                     }
 
                     infoCollaboAdapter = new InfoCollaboRvAdapter(this, this);  // 리사이클러뷰 어뎁터 객체 생성
@@ -480,13 +478,13 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                     for (int i = 0; i < menuArr.length(); i++) {
                         JSONObject object = menuArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
                         // 메뉴 데이터 생성 및 저장
-                        menuData menuData = new menuData(
+                        infoMenuData infoMenuData = new infoMenuData(
                                 object.getInt("menuId")         // 메뉴 고유 아이디
                                 , object.getInt("storeId")      // 가게 고유 아이디
                                 , object.getString("menuName")  // 메뉴 명
                                 , object.getInt("menuPrice")    // 메뉴 가격
                                 , object.getInt("menuOrder"));  // 메뉴 정렬 순서
-                        Menu.add(menuData); // 메뉴 정보 저장
+                        Menu.add(infoMenuData); // 메뉴 정보 저장
                     }
 
                     // 어뎁터 생성 및 Set
@@ -532,7 +530,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                     for (int i = 0; i < photoArr.length(); i++) {
                         JSONObject object = photoArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
                         // 카테고리 데이터 생성 및 저장
-                        photoData photoData = new photoData(
+                        infoPhotoData infoPhotoData = new infoPhotoData(
                                 object.getInt("photoId")                    // 사진 고유 아이디
                                 , object.getInt("userId")                   // 유저 고유 아이디
                                 , object.getInt("reviewId")                 // 리뷰 고유 아이디
@@ -540,7 +538,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                                 , HOST + object.getString("photoImagePath") // 사진 이미지 경로
                                 , object.getString("reviewDetail")          // 리뷰 내용
                                 , object.getInt("reviewScore"));            // 리뷰 별점
-                        Photo.add(photoData); // 사진 정보 저장
+                        Photo.add(infoPhotoData); // 사진 정보 저장
                     }
 
                     infoPhotoAdapter = new InfoPhotoRvAdapter(this, this, Photo);  // 리사이클러뷰 어뎁터 객체 생성
@@ -585,7 +583,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                     for (int i = 0; i < reviewArr.length(); i++) {
                         JSONObject object = reviewArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
                         // 카테고리 데이터 생성 및 저장
-                        reviewData reviewData = new reviewData(
+                        infoReviewData infoReviewData = new infoReviewData(
                                 object.getInt("reviewId")                       // 리뷰 고유 아이디
                                 , object.getInt("userId")                       // 유저 고유 아이디
                                 , object.getString("userName")                  // 유저 명
@@ -596,7 +594,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                                 , object.getInt("reviewHeartCount")             // 리뷰 좋아요 수
                                 , object.getString("reviewRegDate")             // 리뷰 작성 일자
                                 , object.getInt("reviewCommentCount"));         // 리뷰 댓글 수
-                        Review.add(reviewData); // 리뷰 정보 저장
+                        Review.add(infoReviewData); // 리뷰 정보 저장
                     }
 
                     infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this);  // 리사이클러뷰 어뎁터 객체 생성
@@ -633,7 +631,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         TextView discount_info = infoCollaboDialog.findViewById(R.id.info_collabo_coupon);  // 할인 정보
 
         // 값 세팅
-        collaboData collabo = Collabo.get(position);    // 현재 Position의 협업 데이터
+        infoCollaboData collabo = Collabo.get(position);    // 현재 Position의 협업 데이터
 
         preStoreName.setText(Store.getStoreName());     // 앞가게 명
         postStoreName.setText(collabo.getStoreName());    // 뒷가게 명
@@ -738,8 +736,8 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
     // 리뷰 리사이클러뷰 클릭 이벤트 인터페이스 구현
     @Override
     public void onInfoReviewRvClick(View v, int position) {
-        reviewData review = Review.get(position);
-        ArrayList<photoData> photo = new ArrayList<>();
+        infoReviewData review = Review.get(position);
+        ArrayList<infoPhotoData> photo = new ArrayList<>();
 
         for(int i = 0; i < Photo.size(); i++){
             if(review.getReviewId() == Photo.get(i).getReviewId()){

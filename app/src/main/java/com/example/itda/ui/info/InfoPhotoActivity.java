@@ -1,18 +1,13 @@
 package com.example.itda.ui.info;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
 import com.example.itda.R;
 
 import java.util.ArrayList;
@@ -37,7 +32,7 @@ public class InfoPhotoActivity extends Activity {
 
         // ArrayList를 받아올때 사용
         // putParcelableArrayListExtra로 넘긴 데이터를 받아올때 사용
-        ArrayList<photoData> photo = getIntent().getParcelableArrayListExtra("Photo");  // 사진 데이터
+        ArrayList<infoPhotoData> photo = getIntent().getParcelableArrayListExtra("Photo");  // 사진 데이터
 
         InfoPhotoDetailRvAdapter infoPhotoDetailAdapter = new InfoPhotoDetailRvAdapter(this, photo);  // 리사이클러뷰 어뎁터 객체 생성
 

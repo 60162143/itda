@@ -3,7 +3,7 @@ package com.example.itda.ui.info;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class photoData implements Parcelable {
+public class infoPhotoData implements Parcelable {
     private int photoId;            // 리뷰 사진 고유 아이디
     private int userId;             // 리뷰 작성자 고유 아이디
     private int reviewId;           // 리뷰 고유 아이디
@@ -13,7 +13,7 @@ public class photoData implements Parcelable {
     private int reviewScore;        // 리뷰 점수
 
     // Constructor
-    public photoData(int photoId, int userId, int reviewId, String userName, String photoPath, String reviewDetail, int reviewScore) {
+    public infoPhotoData(int photoId, int userId, int reviewId, String userName, String photoPath, String reviewDetail, int reviewScore) {
         this.photoId = photoId;
         this.userId = userId;
         this.reviewId = reviewId;
@@ -24,7 +24,7 @@ public class photoData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected photoData(Parcel in) {
+    protected infoPhotoData(Parcel in) {
         photoId = in.readInt();
         userId = in.readInt();
         reviewId = in.readInt();
@@ -36,16 +36,16 @@ public class photoData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<photoData> CREATOR = new Creator<photoData>() {
+    public static final Creator<infoPhotoData> CREATOR = new Creator<infoPhotoData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public photoData createFromParcel(Parcel in) {
-            return new photoData(in);
+        public infoPhotoData createFromParcel(Parcel in) {
+            return new infoPhotoData(in);
         }
 
         @Override
-        public photoData[] newArray(int size) {
-            return new photoData[size];
+        public infoPhotoData[] newArray(int size) {
+            return new infoPhotoData[size];
         }
     };
 

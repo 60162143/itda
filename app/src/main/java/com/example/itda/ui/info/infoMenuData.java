@@ -3,14 +3,14 @@ package com.example.itda.ui.info;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class menuData implements Parcelable {
+public class infoMenuData implements Parcelable {
     private int menuId;         // 메뉴 고유 아이디
     private int storeId;        // 가게 고유 아이디
     private String menuName;    // 메뉴 이름
     private int menuPrice;      // 메뉴 가격
     private int menuOrder;      // 메뉴 정렬 순서
 
-    public menuData(int menuId, int storeId, String menuName, int menuPrice, int menuOrder) {
+    public infoMenuData(int menuId, int storeId, String menuName, int menuPrice, int menuOrder) {
         this.menuId = menuId;
         this.storeId = storeId;
         this.menuName = menuName;
@@ -19,7 +19,7 @@ public class menuData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected menuData(Parcel in) {
+    protected infoMenuData(Parcel in) {
         menuId = in.readInt();
         storeId = in.readInt();
         menuName = in.readString();
@@ -29,16 +29,16 @@ public class menuData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<menuData> CREATOR = new Creator<menuData>() {
+    public static final Creator<infoMenuData> CREATOR = new Creator<infoMenuData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public menuData createFromParcel(Parcel in) {
-            return new menuData(in);
+        public infoMenuData createFromParcel(Parcel in) {
+            return new infoMenuData(in);
         }
 
         @Override
-        public menuData[] newArray(int size) {
-            return new menuData[size];
+        public infoMenuData[] newArray(int size) {
+            return new infoMenuData[size];
         }
     };
 

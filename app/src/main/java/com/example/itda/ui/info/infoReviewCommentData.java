@@ -3,7 +3,7 @@ package com.example.itda.ui.info;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class reviewCommentData implements Parcelable {
+public class infoReviewCommentData implements Parcelable {
     private int reviewCommentId;            // 리뷰 댓글 고유 아이디
     private int reviewId;                   // 리뷰 고유 아이디
     private int userId;                     // 유저 고유 아이디
@@ -13,7 +13,7 @@ public class reviewCommentData implements Parcelable {
     private String userName;                // 유저 명
     private String userProfilePath;         // 유저 프로필 이미지
 
-    public reviewCommentData(int reviewCommentId
+    public infoReviewCommentData(int reviewCommentId
             , int reviewId
             , int userId
             , int storeId
@@ -32,7 +32,7 @@ public class reviewCommentData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected reviewCommentData(Parcel in) {
+    protected infoReviewCommentData(Parcel in) {
         reviewCommentId = in.readInt();
         reviewId = in.readInt();
         userId = in.readInt();
@@ -45,16 +45,16 @@ public class reviewCommentData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<reviewCommentData> CREATOR = new Creator<reviewCommentData>() {
+    public static final Creator<infoReviewCommentData> CREATOR = new Creator<infoReviewCommentData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public reviewCommentData createFromParcel(Parcel in) {
-            return new reviewCommentData(in);
+        public infoReviewCommentData createFromParcel(Parcel in) {
+            return new infoReviewCommentData(in);
         }
 
         @Override
-        public reviewCommentData[] newArray(int size) {
-            return new reviewCommentData[size];
+        public infoReviewCommentData[] newArray(int size) {
+            return new infoReviewCommentData[size];
         }
     };
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -55,9 +54,9 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
 
     private String storeName;   // 가게 이름
     private int reviewId;       // 리뷰 고유 아이디
-    private reviewData Review; // 리뷰 데이터
-    private ArrayList<photoData> Photos; // 리뷰 사진 데이터
-    private ArrayList<reviewCommentData> ReviewComments = new ArrayList<>(); // 리뷰 댓글 데이터
+    private infoReviewData Review; // 리뷰 데이터
+    private ArrayList<infoPhotoData> Photos; // 리뷰 사진 데이터
+    private ArrayList<infoReviewCommentData> ReviewComments = new ArrayList<>(); // 리뷰 댓글 데이터
 
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
     private String REVIEW_COMMENT_PATH;    // 리뷰 댓글 정보 데이터 조회 Rest API
@@ -150,7 +149,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
                     for (int i = 0; i < reviewCommentArr.length(); i++) {
                         JSONObject object = reviewCommentArr.getJSONObject(i);        // 배열 원소 하나하나 꺼내서 JSONObject 생성
                         // 카테고리 데이터 생성 및 저장
-                        reviewCommentData reviewCommentData = new reviewCommentData(
+                        infoReviewCommentData infoReviewCommentData = new infoReviewCommentData(
                                 object.getInt("reviewCommentId")                        // 리뷰 댓글 고유 아이디
                                 , object.getInt("reviewId")                             // 리뷰 고유 아이디
                                 , object.getInt("userId")                               // 유저 고유 아이디
@@ -159,7 +158,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
                                 , object.getString("reviewRegDate")                     // 리뷰 작성 일자
                                 , object.getString("userName")                          // 유저 명
                                 , HOST + object.getString("userProfilePath")); // 유저 프로필 사진
-                        ReviewComments.add(reviewCommentData); // 리뷰 정보 저장
+                        ReviewComments.add(infoReviewCommentData); // 리뷰 정보 저장
                     }
 
                     InfoReviewCommentRvAdapter infoReviewCommentRvAdapter= new InfoReviewCommentRvAdapter(this, ReviewComments);  // 리사이클러뷰 어뎁터 객체 생성

@@ -2,8 +2,6 @@ package com.example.itda.ui.info;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDetailRvAdapter.CustomInfoPhotoDetailViewHolder>{
 
-    private ArrayList<photoData> Photos;    // 사진 데이터
+    private ArrayList<infoPhotoData> Photos;    // 사진 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -34,7 +32,7 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
     private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
-    public InfoPhotoDetailRvAdapter(Context context, ArrayList<photoData> photos){
+    public InfoPhotoDetailRvAdapter(Context context, ArrayList<infoPhotoData> photos){
         this.mContext = context;
         this.Photos = photos;
     }
@@ -55,7 +53,7 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoPhotoDetailViewHolder holder, int position) {
-        photoData photo = Photos.get(position);     // 현재 position의 사진 정보
+        infoPhotoData photo = Photos.get(position);     // 현재 position의 사진 정보
 
         holder.photoReviewUserName.setText(photo.getUserName());
         holder.photoReviewScore.setText(String.valueOf(photo.getReviewScore()));

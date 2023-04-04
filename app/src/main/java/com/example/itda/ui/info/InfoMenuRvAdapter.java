@@ -1,24 +1,20 @@
 package com.example.itda.ui.info;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.itda.R;
 
 import java.util.ArrayList;
 
 public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private ArrayList<menuData> Menus;    // 메뉴 데이터
+    private ArrayList<infoMenuData> Menus;    // 메뉴 데이터
     private boolean menuPlusBtn;          // 메뉴 더보기 버튼을 클릭했는지 여부
 
     // Activity Content
@@ -26,7 +22,7 @@ public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.Cu
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
 
-    public InfoMenuRvAdapter(Context context, ArrayList<menuData> menus, boolean menuPlusBtn){
+    public InfoMenuRvAdapter(Context context, ArrayList<infoMenuData> menus, boolean menuPlusBtn){
         this.Menus = menus;
         this.mContext = context;
         this.menuPlusBtn = menuPlusBtn;
@@ -41,7 +37,7 @@ public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.Cu
 
     @Override
     public void onBindViewHolder(@NonNull InfoMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        menuData menu = Menus.get(position);     // 현재 position의 가게 정보
+        infoMenuData menu = Menus.get(position);     // 현재 position의 가게 정보
         holder.infoMenuName.setText(menu.getMenuName());   // 협업 할인율 textView set
         if(menu.getMenuPrice() != 0){
             holder.infoMenuPrice.setText(String.valueOf(menu.getMenuPrice()) + " 원");   // 협업 할인율 textView set

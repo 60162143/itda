@@ -3,7 +3,7 @@ package com.example.itda.ui.info;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class reviewData implements Parcelable {
+public class infoReviewData implements Parcelable {
     private int reviewId;           // 리뷰 고유 아이디
     private int userId;             // 유저 고유 아이디
     private String userName;        // 유저 명
@@ -15,7 +15,7 @@ public class reviewData implements Parcelable {
     private String reviewRegDate;   // 리뷰 작성 일자
     private int reviewCommentCount; // 리뷰 댓글 수
 
-    public reviewData(int reviewId, int userId, String userName, int storeId, String userProfilePath, String reviewDetail, int reviewScore, int reviewHeartCount, String reviewRegDate, int reviewCommentCount) {
+    public infoReviewData(int reviewId, int userId, String userName, int storeId, String userProfilePath, String reviewDetail, int reviewScore, int reviewHeartCount, String reviewRegDate, int reviewCommentCount) {
         this.reviewId = reviewId;
         this.userId = userId;
         this.userName = userName;
@@ -29,7 +29,7 @@ public class reviewData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected reviewData(Parcel in) {
+    protected infoReviewData(Parcel in) {
         reviewId = in.readInt();
         userId = in.readInt();
         userName = in.readString();
@@ -44,16 +44,16 @@ public class reviewData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<reviewData> CREATOR = new Creator<reviewData>() {
+    public static final Creator<infoReviewData> CREATOR = new Creator<infoReviewData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public reviewData createFromParcel(Parcel in) {
-            return new reviewData(in);
+        public infoReviewData createFromParcel(Parcel in) {
+            return new infoReviewData(in);
         }
 
         @Override
-        public reviewData[] newArray(int size) {
-            return new reviewData[size];
+        public infoReviewData[] newArray(int size) {
+            return new infoReviewData[size];
         }
     };
 

@@ -1,9 +1,6 @@
 package com.example.itda.ui.info;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class collaboData /*implements Parcelable*/ {
+public class infoCollaboData /*implements Parcelable*/ {
     private int StoreId;                    // 가게 고유 아이디
     private String StoreName;               // 가게 명
     private String StoreAddress;            // 가게 주소
@@ -24,7 +21,7 @@ public class collaboData /*implements Parcelable*/ {
 
     // Constructor
 
-    public collaboData(int storeId
+    public infoCollaboData(int storeId
             , String storeName
             , String storeAddress
             , String storeDetail

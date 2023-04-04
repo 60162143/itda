@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +21,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotalRvAdapter.CustomInfoPhotoTotalViewHolder>{
 
-    private ArrayList<photoData> Photos;    // 사진 데이터
+    private ArrayList<infoPhotoData> Photos;    // 사진 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoPhotoTotalRvClickListener rvClickListener = null;
@@ -35,7 +33,7 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
     private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
-    public InfoPhotoTotalRvAdapter(Context context, onInfoPhotoTotalRvClickListener clickListener, ArrayList<photoData> photos){
+    public InfoPhotoTotalRvAdapter(Context context, onInfoPhotoTotalRvClickListener clickListener, ArrayList<infoPhotoData> photos){
         this.mContext = context;
         rvClickListener = clickListener;
         this.Photos = photos;
@@ -57,7 +55,7 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoPhotoTotalViewHolder holder, int position) {
-        photoData photo = Photos.get(position);     // 현재 position의 사진 정보
+        infoPhotoData photo = Photos.get(position);     // 현재 position의 사진 정보
 
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적

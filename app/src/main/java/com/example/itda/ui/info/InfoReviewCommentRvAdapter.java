@@ -1,7 +1,6 @@
 package com.example.itda.ui.info;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +21,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoReviewCommentRvAdapter extends RecyclerView.Adapter<InfoReviewCommentRvAdapter.CustomInfoReviewCommentViewHolder>{
 
-    private ArrayList<reviewCommentData> ReviewComments;  // 리뷰 댓글 데이터
+    private ArrayList<infoReviewCommentData> ReviewComments;  // 리뷰 댓글 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -31,7 +29,7 @@ public class InfoReviewCommentRvAdapter extends RecyclerView.Adapter<InfoReviewC
     private final Context mContext;
 
     // Constructor
-    public InfoReviewCommentRvAdapter(Context context, ArrayList<reviewCommentData> reviewComments){
+    public InfoReviewCommentRvAdapter(Context context, ArrayList<infoReviewCommentData> reviewComments){
         this.mContext = context;
         this.ReviewComments = reviewComments;
     }
@@ -52,7 +50,7 @@ public class InfoReviewCommentRvAdapter extends RecyclerView.Adapter<InfoReviewC
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoReviewCommentViewHolder holder, int position) {
-        reviewCommentData reviewComment = ReviewComments.get(position);     // 현재 position의 리뷰 댓글 정보
+        infoReviewCommentData reviewComment = ReviewComments.get(position);     // 현재 position의 리뷰 댓글 정보
 
         // 유저 프로필 이미지
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
