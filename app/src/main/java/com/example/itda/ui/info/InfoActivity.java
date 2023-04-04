@@ -277,7 +277,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
         mapViewContainer = (ViewGroup) findViewById(R.id.info_map_view);    // ViewGroup Container
         mapViewContainer.addView(mapView);                                  // mapView attach
-        
+
         double latitude = Store.getStoreLatitude();  // 첫 번째로 검색된 가게의 위도
         double longitude = Store.getStoreLongitude(); // 첫 번째로 검색된 가게의 경도
 

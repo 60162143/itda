@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
     private View root;                      // Fragment root view
 
     private RecyclerView CategoryRv;     // 카테고리 리사이클러뷰
@@ -70,6 +70,8 @@ public class HomeFragment extends Fragment {
     private float xPosition = 0;          // 현재 터치한 x 좌표
 
     private boolean gpsPossible = false;    // Gps 사용 가능 여부
+
+    private long backKeyPressedTime;   // 뒤로 가기 버튼 클릭 시간
 
     // Gps 권한 허용 확인
     PermissionListener permissionlistener = new PermissionListener() {
