@@ -160,6 +160,21 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         // 최상단 뒤로가기 버튼 클릭 리스너
         infoBackIc.setOnClickListener(v -> finish());   // 버튼 클릭 시 Activity 종료
 
+        if(!TextUtils.isEmpty(Store.getStoreNumber())){
+            infoCallIc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String telNum = "tel:" + Store.getStoreNumber();
+                    Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(telNum));
+                    startActivity(mIntent);
+                }
+            });
+        }else{
+            infoCallIc.setVisibility(View.GONE);
+        }
+
+
+
         // ---------------- 가게 정보 Section ---------------------
         infoStoreName.setText(Store.getStoreName());        // 가게 이름
         infoStarScore.setText(String.valueOf(Store.getStoreScore()));   // 가게 별점
