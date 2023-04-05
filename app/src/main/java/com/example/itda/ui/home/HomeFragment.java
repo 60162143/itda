@@ -55,9 +55,7 @@ public class HomeFragment extends Fragment{
     private CategoryRvAdapter CategoryAdapter;       // 카테고리 리사이클러뷰 어뎁터
     private MainStoreRvAdapter MainStoreAdapter;     // 가게 정보 리사이클러뷰 어뎁터
 
-    private LocationManager lm;     // 위치 정보 매니저
-    private Location loc_Current;   // 현재 위치 객체
-    private Location cur_loc;
+    private Location locCurrent;   // 현재 위치 객체
 
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
 
@@ -70,8 +68,6 @@ public class HomeFragment extends Fragment{
     private float xPosition = 0;          // 현재 터치한 x 좌표
 
     private boolean gpsPossible = false;    // Gps 사용 가능 여부
-
-    private long backKeyPressedTime;   // 뒤로 가기 버튼 클릭 시간
 
     // Gps 권한 허용 확인
     PermissionListener permissionlistener = new PermissionListener() {
@@ -115,6 +111,7 @@ public class HomeFragment extends Fragment{
         CategoryRv = root.findViewById(R.id.main_category_rv);  // 카테고리 리사이클러뷰
         MainStoreRv = root.findViewById(R.id.main_store_rv);    // 상점 정보 리사이클러뷰
 
+        // 위치 정보 매니저
         LocationManager lm = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);    // 위치관리자 객체 생성
 
         //Location loc_Current = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ? lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) : lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -123,16 +120,12 @@ public class HomeFragment extends Fragment{
             //Toast.makeText(root.getContext(), "권한 허용을 하지 않으면 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
             checkPermissions(); // Gps 권한 확인
         }else{
-
+            // 현재 위치 좌표
             // LocattionMananger.GPS_PROVIDER : GPS들로부터 현재 위치 확인, 정확도 높음, 실내 사용 불가
             // LocationManager.NETWORK_PROVIDER : 기지국들로부터 현재 위치 확인, 정확도 낮음, 실내 사용 가능
             // 실내에서 테스트 하기 위해 NETWORK_PROVIDER로 설정
-            loc_Current = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            locCurrent = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-            // 현재 위치 좌표
-            cur_loc = new Location("cur_loc"); // Location 객체 생성
-            cur_loc.setLatitude(loc_Current.getLatitude());     // 현재 위도 SET
-            cur_loc.setLongitude(loc_Current.getLongitude());   // 현재 경도 SET
             gpsPossible = true; // Gps 활성화 체크
         }
 
@@ -275,7 +268,7 @@ public class HomeFragment extends Fragment{
                         point.setLatitude(object.getDouble("storeLatitude"));
                         point.setLongitude(object.getDouble("storeLongitude"));
 
-                        distance = cur_loc.distanceTo(point);
+                        distance = locCurrent.distanceTo(point);
                     }
 
                     mainStoreData mainStore = new mainStoreData(

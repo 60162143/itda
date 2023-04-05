@@ -37,8 +37,8 @@ public class CollaboFragment extends Fragment {
 
     public static RequestQueue requestQueue;
 
-    private String HOST;
-    private String COLLABO_URL;
+    private String HOST;        // Host 정보
+    private String COLLABO_URL; // 협업 가게 정보 데이터 조회 Rest API
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
