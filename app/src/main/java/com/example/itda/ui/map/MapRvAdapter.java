@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreViewHolder> {
 
-    private ArrayList<MapStoreData> Stores = new ArrayList<>(); // 가게 데이터
+    private ArrayList<MapStoreData> Stores; // 가게 데이터
 
-    private MapView mapView;    // 지도 데이터
+    private MapView MapView;    // 지도 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -30,8 +30,10 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
     private Context mContext;
 
     // Constructor
-    public MapRvAdapter(Context context){
+    public MapRvAdapter(Context context, ArrayList<MapStoreData> stores, MapView mapView){
         this.mContext = context;
+        this.Stores = stores;
+        this.MapView = mapView;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -78,20 +80,6 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
     @Override
     public int getItemCount() {
         return Stores.size();
-    }
-
-    // 가게 정보 Setter
-    public void setStores(ArrayList<MapStoreData> stores){
-        this.Stores = stores;
-    }
-
-    // 지도 정보 Getter & Setter
-    public MapView getMapView() {
-        return mapView;
-    }
-
-    public void setMapView(MapView mapView) {
-        this.mapView = mapView;
     }
 
     // adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)

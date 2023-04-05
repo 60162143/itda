@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
@@ -21,12 +20,11 @@ public class MainActivity extends FragmentActivity {
     // 메인 화면 홈버튼
     public FloatingActionButton fab_main;
 
-    Context context;
     private long pressedTime = 0;   // 뒤로가기 버튼 입력시간이 담길 long 객체
 
     // 리스너 생성
     public interface OnBackPressedListener{
-        public void onBack();
+        void onBack();
     }
 
     // 리스너 객체 생성
@@ -49,16 +47,14 @@ public class MainActivity extends FragmentActivity {
         } else {
             Log.e("!!!", "Listener is null");
             if ( pressedTime == 0 ) {
-                Snackbar.make(findViewById(R.id.main_layout),
-                        " 한 번 더 누르면 종료됩니다." , Snackbar.LENGTH_LONG).show();
+                Toast.makeText(this, " 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
                 pressedTime = System.currentTimeMillis();
             }
             else {
                 int seconds = (int) (System.currentTimeMillis() - pressedTime);
 
                 if ( seconds > 2000 ) {
-                    Snackbar.make(findViewById(R.id.main_layout),
-                            " 한 번 더 누르면 종료됩니다." , Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(this, " 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
                     pressedTime = 0 ;
                 }
                 else {

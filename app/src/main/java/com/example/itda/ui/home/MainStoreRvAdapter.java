@@ -24,18 +24,18 @@ import java.util.ArrayList;
 // findViewById() 메소드 호출을 줄여 효과적으로 퍼포먼스 개선을 할 수 있는 패턴이다.
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.CustomMainCategoryViewHolder>{
-
-    private ArrayList<mainStoreData> Stores = new ArrayList<>();    // 가게 데이터
+    final private ArrayList<mainStoreData> Stores;    // 가게 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
-    private Intent intent;  // 상세 페이지로 전환을 위한 객체
+    private Intent intent;  // 페이지 전환을 위한 객체
 
     // Constructor
-    public MainStoreRvAdapter(Context context){
+    public MainStoreRvAdapter(Context context, ArrayList<mainStoreData> store){
         this.mContext = context;
+        this.Stores = store;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -45,6 +45,7 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     public MainStoreRvAdapter.CustomMainCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // layoutInflater로 xml객체화. viewHolder 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_main_store, parent, false);
+
         return new CustomMainCategoryViewHolder(view);
     }
 
@@ -62,13 +63,17 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
-                .into(holder.mainStoreImage);     // 이미지를 보여줄 View를 지정
+                .into(holder.mainStoreImage);       // 이미지를 보여줄 View를 지정
 
-        holder.mainStoreName.setText(store.getStoreName());                                 // 가게 이름
+        holder.mainStoreName.setText(store.getStoreName()); // 가게 이름
 
-        holder.mainStoreScore.setText(String.valueOf(store.getStoreScore()));               // 가게 별점
-        holder.mainStoreReviewCount.setText(" (" + store.getStoreReviewCount() + ")");   // 가게 리뷰 수
-        holder.mainStoreHashTag.setText(store.getStoreHashTag());                           // 가게 해시태그
+        holder.mainStoreScore.setText(String.valueOf(store.getStoreScore()));   // 가게 별점
+
+        // 가게 리뷰 수
+        String reviewCount = " (" + store.getStoreReviewCount() + ")";
+        holder.mainStoreReviewCount.setText(reviewCount);
+
+        holder.mainStoreHashTag.setText(store.getStoreHashTag());   // 가게 해시태그
 
         // 메인 화면 이미지 클릭 리스너
         holder.mainStoreImage.setOnClickListener(v -> {
@@ -114,11 +119,6 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     @Override
     public int getItemCount() {
         return Stores.size();
-    }
-
-    // 가게 정보 Setter
-    public void setStores(ArrayList<mainStoreData> stores){
-        this.Stores = stores;
     }
 
     // adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)

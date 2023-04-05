@@ -20,7 +20,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPhotoRvAdapter.CustomInfoReviewPhotoViewHolder>{
 
-    private ArrayList<infoPhotoData> Photos = new ArrayList<>();    // 사진 데이터
+    private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoReviewPhotoRvClickListener rvClickListener = null;
@@ -59,6 +59,7 @@ public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPho
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(photo.getPhotoPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);           // 이미지를 보여줄 View를 지정
@@ -83,8 +84,9 @@ public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPho
             // 리사이클러뷰 클릭 이벤트 인터페이스 구현
             // Fragment로 return
             itemView.setOnClickListener(view -> {
-                int pos = getAbsoluteAdapterPosition();
+                int pos = getAbsoluteAdapterPosition(); // 현재 position
 
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
                     rvClickListener.onInfoReviewPhotoRvClick(view, getAbsoluteAdapterPosition());
                 }

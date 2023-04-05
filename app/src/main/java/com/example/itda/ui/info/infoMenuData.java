@@ -10,6 +10,7 @@ public class infoMenuData implements Parcelable {
     private int menuPrice;      // 메뉴 가격
     private int menuOrder;      // 메뉴 정렬 순서
 
+    // Constructor
     public infoMenuData(int menuId, int storeId, String menuName, int menuPrice, int menuOrder) {
         this.menuId = menuId;
         this.storeId = storeId;
@@ -61,7 +62,7 @@ public class infoMenuData implements Parcelable {
     }
     //=======================================================================
 
-
+    // Getter, Setter
     public int getMenuId() {
         return menuId;
     }

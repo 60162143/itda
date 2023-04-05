@@ -3,7 +3,6 @@ package com.example.itda.ui.splash;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -38,12 +37,7 @@ public class SplashActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
                 builder.setMessage("인터넷 연결 상태를 확인해주세요.")
                         .setCancelable(false)
-                        .setPositiveButton("종료", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finishAffinity();
-                            }
-                        }).show();
+                        .setPositiveButton("종료", (dialogInterface, i) -> finishAffinity()).show();
             } else {
                 // 메인 화면으로 이동
                 startActivity(new Intent(getApplication(), MainActivity.class));

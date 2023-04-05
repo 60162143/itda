@@ -20,7 +20,12 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.CustomCategoryViewHolder> {
 
-    private ArrayList<mainCategoryData> Categories = new ArrayList<>(); // 카테고리 데이터
+    private final ArrayList<mainCategoryData> Categories; // 카테고리 데이터
+
+    // Constructor
+    public CategoryRvAdapter(ArrayList<mainCategoryData> categories) {
+        this.Categories = categories;
+    }
 
     // ViewHolder를 새로 만들어야 할 때 호출
     // 각 아이템을 위한 XML 레이아웃을 활용한 뷰 객체를 생성하고 이를 뷰 홀더 객체에 담아 리턴
@@ -29,6 +34,7 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
     public CategoryRvAdapter.CustomCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // layoutInflater로 xml객체화. viewHolder 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_main_category, parent, false);
+
         return new CustomCategoryViewHolder(view);
     }
 
@@ -43,11 +49,12 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(category.getImagePath()))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.Circle_Category);      // 이미지를 보여줄 View를 지정
 
-        holder.Name_Category.setText(category.getCategoryNm()); //카테고리명 textView set
+        holder.Name_Category.setText(category.getCategoryNm()); // 카테고리 명
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -56,20 +63,16 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
         return Categories.size();
     }
 
-    // 카테고리 정보 Setter
-    public void setCategories(ArrayList<mainCategoryData> categories){
-        this.Categories = categories;
-    }
-
     // adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomCategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView Circle_Category;  // 카테고리 이미지
-        TextView Name_Category;     //카테고리 명
+        TextView Name_Category;     // 카테고리 명
 
         public CustomCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+
             Circle_Category = itemView.findViewById(R.id.category_image);
             Name_Category = itemView.findViewById(R.id.category_name);
         }

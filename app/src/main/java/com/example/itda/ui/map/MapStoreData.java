@@ -12,7 +12,16 @@ public class MapStoreData {
     private String mapStoreHashTag;     // 가게 해시태그
 
     // Constructor
-    public MapStoreData(int mapStoreId, String mapStoreName, String mapStoreImagePath, float mapStoreScore, double mapStoreLatitude, double mapStoreLongitude, float mapStoreDistance, String mapStoreInfo, String mapStoreHashTag) {
+    public MapStoreData(int mapStoreId
+            , String mapStoreName
+            , String mapStoreImagePath
+            , float mapStoreScore
+            , double mapStoreLatitude
+            , double mapStoreLongitude
+            , float mapStoreDistance
+            , String mapStoreInfo
+            , String mapStoreHashTag) {
+
         this.mapStoreId = mapStoreId;
         this.mapStoreName = mapStoreName;
         this.mapStoreImagePath = mapStoreImagePath;

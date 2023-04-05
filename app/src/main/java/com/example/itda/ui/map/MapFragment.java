@@ -59,22 +59,21 @@ import java.util.Map;
 // MapViewEventListener : 지도 이동/확대/축소, 지도 화면 터치 (Single Tap / Double Tap / Long Press) 이벤트를 통보받을 수 있음
 // POIItemEventListener : POI 관련 이벤트를 통보 받을 수 있음
 // POI = Point Of Interest, 지도 내 마커를 의미
-public class MapFragment extends Fragment implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
+public class MapFragment extends Fragment
+        implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
 
-    private View root;                      // Fragment root view
-    private ViewGroup mapViewContainer;     // mapView를 포함시킬 View Container
-    private MapView mapView;                // 카카오 지도 View
+    private View root;  // Fragment root view
+    private ViewGroup mapViewContainer; // mapView를 포함시킬 View Container
+    private MapView mapView;    // 카카오 지도 View
 
-    private LocationManager lm;          // 위치관리자 객체
-    private LinearLayoutManager llm;     // 수평, 수직으로 ViewHolder 표현하기 위한 Layout 관리 클래스
-    private InputMethodManager imm;      // 화면에 나오는 soft 키보드를 제어하는 클래스
-    private Intent intent;               // 상세 화면 전환을 위한 변수
+    private LocationManager lm; // 위치관리자 객체
+    private LinearLayoutManager llm;    // 수평, 수직으로 ViewHolder 표현하기 위한 Layout 관리 클래스
+    private Intent intent;  // 상세 화면 전환을 위한 변수
 
-    private RecyclerView mapStoreRv;        // 가게 정보 리사이클러뷰
+    private RecyclerView mapStoreRv;    // 가게 정보 리사이클러뷰
     private MapRvAdapter mapStoreAdapter;   // 가게 정보 리사이클러뷰 어뎁터
 
     private ArrayList<MapStoreData> map_store = new ArrayList<>();      // 지도 내 상점 정보
-    private ArrayList<mainStoreData> select_store = new ArrayList<>();  // 선택한 가게의 Detail 정보
 
     private static RequestQueue requestQueue;    // Volley Library 사용을 위한 RequestQueue
 
@@ -96,7 +95,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            initView();
+            initView(); // 뷰 생성
         }
 
         @Override
@@ -123,13 +122,13 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
     // 뷰 생성
     private void initView() {
         // ---------------- Rest API 전역변수 SET---------------------------
-        MAPSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMapStorePath();   // 지도 내 가게 데이터 조회 Rest API
-        MAINSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath(); // 가게 정보 데이터 조회 Rest API
-        HOST = ((globalVariable) requireActivity().getApplication()).getHost();    // Host 정보
+        MAPSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMapStorePath();    // 지도 내 가게 데이터 조회 Rest API
+        MAINSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath();  // 가게 정보 데이터 조회 Rest API
+        HOST = ((globalVariable) requireActivity().getApplication()).getHost(); // Host 정보
 
-        ImageButton mapGPSBtn = (ImageButton) root.findViewById((R.id.gps_button));         // GPS 버튼
-        EditText mapSchText = (EditText) root.findViewById((R.id.search_map_store));        // 검색어 입력창
-        ImageButton mapRefreshBtn = (ImageButton) root.findViewById((R.id.refresh_button)); // 새로고침 버튼
+        ImageButton mapGPSBtn = root.findViewById((R.id.gps_button));       // GPS 버튼
+        EditText mapSchText = root.findViewById((R.id.search_map_store));   // 검색어 입력창
+        ImageButton mapRefreshBtn = root.findViewById((R.id.refresh_button));   // 새로고침 버튼
 
         mapStoreRv = root.findViewById(R.id.map_store_rv);  // 지도 내 가게 정보 리사이클러뷰
 
@@ -141,13 +140,15 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         // 시스템 - 레벨 서비스
         // 시스템에서 제공하는 디바이스나 안드로이드 프레임워크내 기능을 다른 어플리케이션과 공유하고자 시스템으로부터 객체를 얻을 떄 사용
         // INPUT_METHOD_SERVICE : 입력 방법을 관리하는 InputMethodManager
-        imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
+        // 화면에 나오는 soft 키보드를 제어하는 클래스
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
 
         // ======== 리사이클러뷰 Touch 이벤트 리스너 ===================
         mapStoreRv.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                isTrackingMode = false;     // 현재 위치 트래킹 모드 해제
+                isTrackingMode = false; // 현재 위치 트래킹 모드 해제
+
                 // 현위치 트랙킹 모드 및 나침반 모드 Off
                 mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
 
@@ -161,24 +162,29 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                     // 누르고 움직였을 때
                     case MotionEvent.ACTION_MOVE:{
                         dragFlag = true;    // 드래그 중
+
                         if(firstDragFlag){  // 터치후 계속 드래그 하고 있다면 ACTION_MOVE가 계속 일어날 것임으로 무브를 시작한 첫번째 터치만 값을 저장
                             startXPosition = e.getX();  //첫번째 터치의 X(너비)를 저장
                             firstDragFlag = false;      //두번째 MOVE가 실행되지 못하도록 플래그 변경
                         }
-                        break;
 
+                        break;
                     }
                     // 누른걸 땠을 때
                     case MotionEvent.ACTION_UP : {
                         float endPosition = e.getX();   // X 좌표
-                        firstDragFlag = true;           // 드래그 모드 플래그
+                        firstDragFlag = true;   // 드래그 모드 플래그
 
-                        double sel_lat;     // 현재 Position의 위도
-                        double sel_lon;     // 현재 Position의 경도
+                        double sel_lat; // 현재 Position의 위도
+                        double sel_lon; // 현재 Position의 경도
 
-                        if(dragFlag){
+                        llm = (LinearLayoutManager) mapStoreRv.getLayoutManager();
+
+                        if(dragFlag){   // 드래그 중이면
                             // 슬라이드 범위 계산, 중간 이상으로 슬라이스 시 다음 또는 이전 Position 으로 이동
-                            if((startXPosition < endPosition) && (endPosition - startXPosition) > 10 && endPosition > (float)display_width / 2){        // 왼쪽으로 슬라이드 ( 다음 Position 이동 )
+                            if((startXPosition < endPosition) && (endPosition - startXPosition) > 10 && endPosition > (float)display_width / 2){    // 왼쪽으로 슬라이드 ( 다음 Position 이동 )
+
+                                assert llm != null; // 참이면 그냥 지나가고, 거짓이면 AssertionError 예외가 발생
                                 mapStoreRv.smoothScrollToPosition(llm.findFirstVisibleItemPosition());  // 현재 뷰에서 최상단에 보이는 아이템의 위치로 이동
 
                                 sel_lat = map_store.get(llm.findFirstVisibleItemPosition()).getMapStoreLatitude();  // 현재 뷰에서 최상단에 보이는 아이템의 위치의 위도
@@ -191,6 +197,8 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
                                 mapView.selectPOIItem(mapView.getPOIItems()[llm.findFirstVisibleItemPosition()], true); // 선택한 가게의 마커 선택
                             }else if((startXPosition > endPosition) && (startXPosition - endPosition) > 10 && endPosition < (float)display_width / 2){  // 오른쪽으로 슬라이드 ( 이전 Position 이동 )
+
+                                assert llm != null; // 참이면 그냥 지나가고, 거짓이면 AssertionError 예외가 발생
                                 mapStoreRv.smoothScrollToPosition(llm.findLastVisibleItemPosition());   // 현재 뷰에서 최 하단에 보이는 아이템의 위치로 이동
 
                                 sel_lat = map_store.get(llm.findLastVisibleItemPosition()).getMapStoreLatitude();   // 현재 뷰에서 최하단에 보이는 아이템의 위치의 위도
@@ -203,6 +211,8 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
                                 mapView.selectPOIItem(mapView.getPOIItems()[llm.findLastVisibleItemPosition()], true);  // 선택한 가게의 마커 선택
                             }else if((startXPosition < endPosition) && (endPosition - startXPosition) > 10){            // 왼쪽으로 슬라이드 ( 이동 X )
+
+                                assert llm != null; // 참이면 그냥 지나가고, 거짓이면 AssertionError 예외가 발생
                                 mapStoreRv.smoothScrollToPosition(llm.findLastVisibleItemPosition());   // 현재 뷰에서 최 하단에 보이는 아이템의 위치로 이동
 
                                 sel_lat = map_store.get(llm.findLastVisibleItemPosition()).getMapStoreLatitude();   // 현재 뷰에서 최하단에 보이는 아이템의 위치의 위도
@@ -215,6 +225,8 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
                                 mapView.selectPOIItem(mapView.getPOIItems()[llm.findLastVisibleItemPosition()], true);  // 선택한 가게의 마커 선택
                             }else if((startXPosition > endPosition) && (startXPosition - endPosition) > 10){        // 오른쪽으로 슬라이드 ( 이동 X )
+
+                                assert llm != null; // 참이면 그냥 지나가고, 거짓이면 AssertionError 예외가 발생
                                 mapStoreRv.smoothScrollToPosition(llm.findFirstVisibleItemPosition());  // 현재 뷰에서 최상단에 보이는 아이템의 위치로 이동
 
                                 sel_lat = map_store.get(llm.findFirstVisibleItemPosition()).getMapStoreLatitude();  // 현재 뷰에서 최상단에 보이는 아이템의 위치의 위도
@@ -226,7 +238,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                                 mapView.setMapCenterPoint(selectMapPoint, true);    // 지도 화면의 중심점 설정
 
                                 mapView.selectPOIItem(mapView.getPOIItems()[llm.findFirstVisibleItemPosition()], true); // 선택한 가게의 마커 선택
-                            }else{      // 단순 터치 일 경우 ( 슬라이드 X )
+                            }else{  // 단순 터치 일 경우 ( 슬라이드 X )
                                 View child = rv.findChildViewUnder(e.getX(), e.getY()); // 지정된 점 위의 view를 찾아주는 메서드
                                 assert child != null : "RecyclerView Child is Null";    // View가 null일 경우 Exception 발생
 
@@ -244,26 +256,26 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                                         JSONObject object = mainStoreArr.getJSONObject(0);              // 첫번째 원소의 값으로 JSONObject 생성
 
                                         mainStoreData selectStore = new mainStoreData(
-                                                      object.getInt("storeId")                      // 가게 고유 아이디
-                                                    , object.getString("storeName")                 // 가게 이름
-                                                    , object.getString("storeAddress")              // 가게 주소
-                                                    , object.getString("storeDetail")               // 가게 간단 제공 서비스
-                                                    , object.getString("storeFacility")             // 가게 제공 시설 여부
-                                                    , object.getDouble("storeLatitude")             // 가게 위도
-                                                    , object.getDouble("storeLongitude")            // 가게 경도
-                                                    , object.getString("storeNumber")               // 가게 번호
-                                                    , object.getString("storeInfo")                 // 가게 간단 정보
-                                                    , object.getInt("storeCategoryId")              // 가게가 속한 카테고리 고유 아이디
-                                                    , !object.isNull("storeThumbnailPath") ? HOST + object.getString("storeThumbnailPath") : HOST + "/ftpFileStorage/noImage.png"   // 가게 썸네일 이미지 경로
-                                                    , object.getDouble("storeScore")                // 가게 별점
-                                                    , object.getString("storeWorkingTime")          // 가게 운영 시간
-                                                    , object.getString("storeHashTag")              // 가게 해시태그
-                                                    , object.getInt("storeReviewCount")            // 가게 리뷰 개수
-                                                    , 0); // // 현위치에서 가게까지의 거리
+                                                      object.getInt("storeId")                          // 가게 고유 아이디
+                                                    , object.getString("storeName")                     // 가게 이름
+                                                    , object.getString("storeAddress")                  // 가게 주소
+                                                    , object.getString("storeDetail")                   // 가게 간단 제공 서비스
+                                                    , object.getString("storeFacility")                 // 가게 제공 시설 여부
+                                                    , object.getDouble("storeLatitude")                 // 가게 위도
+                                                    , object.getDouble("storeLongitude")                // 가게 경도
+                                                    , object.getString("storeNumber")                   // 가게 번호
+                                                    , object.getString("storeInfo")                     // 가게 간단 정보
+                                                    , object.getInt("storeCategoryId")                  // 가게가 속한 카테고리 고유 아이디
+                                                    , HOST + object.getString("storeThumbnailPath")     // 가게 썸네일 이미지 경로
+                                                    , object.getDouble("storeScore")                    // 가게 별점
+                                                    , object.getString("storeWorkingTime")              // 가게 운영 시간
+                                                    , object.getString("storeHashTag")                  // 가게 해시태그
+                                                    , object.getInt("storeReviewCount")                 // 가게 리뷰 개수
+                                                    , 0);                                          // 현위치에서 가게까지의 거리
 
                                         lastTag = position; // 상세화면으로 이동할 리사이클러뷰의 태그 번호 ( 인덱스 번호 ) 저장
 
-                                        intent = new Intent(getActivity(), InfoActivity.class);             // 상세화면으로 이동하기 위한 Intent 객체 선언
+                                        intent = new Intent(getActivity(), InfoActivity.class); // 상세화면으로 이동하기 위한 Intent 객체 선언
 
                                         // 데이터 송신을 위한 Parcelable interface 사용
                                         // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
@@ -276,7 +288,7 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
                                     }
                                 }, error -> {
                                     // 통신 에러시 로그 출력
-                                    Log.d("Error", "onErrorResponse : " + error);
+                                    Log.d("getMapSelectStoreError", "onErrorResponse : " + error);
                                 });
 
                                 selectStoreRequest.setShouldCache(false);   // 이전 결과가 있어도 새로 요청하여 출력
@@ -342,13 +354,15 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
             // 엔터키 입력 Event
             if((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
                 mapSchText.setSelection(mapSchText.length());   // 커서위치 설정
-                // 지도 로드 완료 후 리사이클러뷰 데이터 받아오기
+
                 Map<String, String> param = new HashMap<>();
                 param.put("schText", mapSchText.getText().toString());  // 파라미터 설정
+
                 getMapStoreData(param);     // 가게 데이터 GET
+
                 return true;    // 받은 터치를 없어겠다는 의미
             }
-            return false;       // 받은 터치를 다른곳에서도 사용할 수 있게 남겨두겠다는 의미
+            return false;   // 받은 터치를 다른곳에서도 사용할 수 있게 남겨두겠다는 의미
         });
 
         // 검색 EditText 입력시 키보드 내려가게
@@ -372,17 +386,18 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         // 새로고침 버튼 클릭 리스너
         mapRefreshBtn.setOnClickListener(view -> {
             mapSchText.setText(""); // 검색어 초기화
-            getMapStoreData(new HashMap<>());
+
+            getMapStoreData(new HashMap<>());   // 가게 데이터 GET
+
             imm.hideSoftInputFromWindow(mapSchText.getWindowToken(),0); // 키보드 내려줌
         });
     }
 
     // 가게 데이터 가져오는곳
     public void getMapStoreData(Map<String, String> param){
-        llm = new LinearLayoutManager(getActivity());       // LayoutManager 객체 생성
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL); // 수평 레이아웃으로 설정
-        mapStoreRv.setHasFixedSize(true);                   // 리사이클러뷰 높이, 너비 변경 제한
-        mapStoreRv.setLayoutManager(llm);                   // 리사이클러뷰 Layout 설정
+        // LayoutManager 객체 생성
+        llm = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+        mapStoreRv.setLayoutManager(llm);
 
         mapView.removeAllPOIItems();    // 지도 화면에 추가된 모든 POI Item들을 제거
         map_store = new ArrayList<>();  // 지도 내 가게 정보 객체 생성
@@ -404,10 +419,6 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         double cur_lat = loc_Current.getLatitude();     // 현재 위치의 위도
         double cur_lon = loc_Current.getLongitude();    // 현재 위치의 경도
 
-        Location cur_loc = new Location("cur_loc"); // Location 객체 생성
-        cur_loc.setLatitude(cur_lat);   // 현재 위도 SET
-        cur_loc.setLongitude(cur_lon);  // 현재 경도 SET
-
         // GET 방식 파라미터 설정
         String mapStorePath = MAPSTORE_PATH;
         mapStorePath += String.format("?latitude=%s", cur_lat);     // 위도 파라미터 설정
@@ -418,12 +429,12 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         }
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
-        StringRequest MapStoreRequest = new StringRequest(Request.Method.GET, HOST + mapStorePath, response -> {
+        StringRequest mapStoreRequest = new StringRequest(Request.Method.GET, HOST + mapStorePath, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);                 // Response를 JsonObject 객체로 생성
                 JSONArray mapStoreArr = jsonObject.getJSONArray("store");   // 객체에 store라는 Key를 가진 JSONArray 생성
 
-                int index = lastTag != -1 ? lastTag : 0;    // 마지막으로 보여진 리사이클러뷰로 이동하기 위한 index
+                int lastTagIndex = lastTag != -1 ? lastTag : 0;    // 마지막으로 보여진 리사이클러뷰로 이동하기 위한 index
 
                 if(mapStoreArr.length() > 0){
                     for(int i = 0; i < mapStoreArr.length(); i++){
@@ -431,54 +442,53 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
 
                         // 현재 위치에서 가게 까지의 거리 계산을 위한 좌표
                         Location point = new Location(object.getString("storeName"));   // 가게 위치 Location 객체 생성
-                        point.setLatitude(object.getDouble("storeLatitude"));
-                        point.setLongitude(object.getDouble("storeLongitude"));
+                        point.setLatitude(object.getDouble("storeLatitude"));       // 가게 위도
+                        point.setLongitude(object.getDouble("storeLongitude"));     // 가게 경도
 
                         MapStoreData mapStore = new MapStoreData(object.getInt("storeId")   // 가게 고유 아이디
                                 , object.getString("storeName")                             // 가게 이름
-                                , !object.isNull("storeThumbnailPath") ? HOST + object.getString("storeThumbnailPath") : HOST + "/ftpFileStorage/noImage.png"   // 가게 썸네일 이미지 경로
+                                , HOST + object.getString("storeThumbnailPath")             // 가게 썸네일 이미지 경로
                                 , Float.parseFloat(object.getString("storeScore"))          // 가게 별점
                                 , object.getDouble("storeLatitude")                         // 가게 위도
                                 , object.getDouble("storeLongitude")                        // 가게 경도
-                                , cur_loc.distanceTo(point) / 1000                                // 현재 위치에서 떨어진 거리, 단위 : m
+                                , loc_Current.distanceTo(point) / 1000                            // 현재 위치에서 떨어진 거리, 단위 : km
                                 , object.getString("storeInfo")                             // 가게 간단 정보
                                 , object.getString("storeHashTag"));                        // 가게 해시태그
 
                         map_store.add(mapStore);    // 가게 데이터 추가
 
                         // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
-                        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(map_store.get(i).getMapStoreLatitude(), map_store.get(i).getMapStoreLongitude());
+                        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(object.getDouble("storeLatitude"), object.getDouble("storeLongitude"));
 
-                        MapPOIItem marker = new MapPOIItem();                       // POI 객체 생성
-                        marker.setItemName(map_store.get(i).getMapStoreName());     // POI Item 아이콘이 선택되면 나타나는 말풍선(Callout Balloon)에 POI Item 이름이 보여짐
-                        marker.setTag(i);                                           // MapView 객체에 등록된 POI Item들 중 특정 POI Item을 찾기 위한 식별자로 사용
-                        marker.setMapPoint(MARKER_POINT);                           // POI Item의 지도상 좌표를 설정
+                        MapPOIItem marker = new MapPOIItem();   // POI 객체 생성
+                        marker.setItemName(object.getString("storeName"));    // POI Item 아이콘이 선택되면 나타나는 말풍선(Callout Balloon)에 POI Item 이름이 보여짐
+                        marker.setTag(i);   // MapView 객체에 등록된 POI Item들 중 특정 POI Item을 찾기 위한 식별자로 사용
+                        marker.setMapPoint(MARKER_POINT);   // POI Item의 지도상 좌표를 설정
                         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);        //  (클릭 전)기본으로 제공하는 BluePin 마커 모양의 색.
                         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // (클릭 후) 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
                         mapView.addPOIItem(marker); // 지도화면에 POI Item 아이콘(마커)를 추가
                     }
 
-                    double last_lat = map_store.get(index).getMapStoreLatitude();  // 마지막으로 검색된 가게의 위도
-                    double last_lon = map_store.get(index).getMapStoreLongitude(); // 마지막으로 검색된 가게의 경도
+                    double last_lat = map_store.get(lastTagIndex).getMapStoreLatitude();  // 마지막으로 검색된 가게의 위도
+                    double last_lon = map_store.get(lastTagIndex).getMapStoreLongitude(); // 마지막으로 검색된 가게의 경도
 
                     // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
                     MapPoint lastMapPoint = MapPoint.mapPointWithGeoCoord(last_lat, last_lon);
 
-                    mapView.setMapCenterPoint(lastMapPoint, true);         // 지도 화면의 중심점을 설정
+                    mapView.setMapCenterPoint(lastMapPoint, true);  // 지도 화면의 중심점을 설정
 
-                    mapView.selectPOIItem(mapView.getPOIItems()[index], true);  // 선택한 가게의 마커 선택
+                    mapView.selectPOIItem(mapView.getPOIItems()[lastTagIndex], true);  // 선택한 가게의 마커 선택
 
                 }else{
                     // 검색 결과가 없을 시 Toast 메시지 출력
                     Toast.makeText(getContext(), "검색 결과가 없습니다.",Toast.LENGTH_SHORT).show();
                 }
-                mapStoreAdapter = new MapRvAdapter(getActivity());  // 리사이클러뷰 어뎁터 객체 생성
-                mapStoreAdapter.setStores(map_store);               // 어뎁터 객체에 가게 정보 저장
-                mapStoreAdapter.setMapView(mapView);                // 어뎁터 객체에 지도 정보 저장
-                mapStoreRv.setAdapter(mapStoreAdapter);             // 리사이클러뷰 어뎁터 객체 지정
 
-                mapStoreRv.scrollToPosition(index);
+                mapStoreAdapter = new MapRvAdapter(getActivity(), map_store, mapView);  // 리사이클러뷰 어뎁터 객체 생성
+                mapStoreRv.setAdapter(mapStoreAdapter); // 리사이클러뷰 어뎁터 객체 지정
+
+                mapStoreRv.scrollToPosition(lastTagIndex); // 마지막으로 검색된 position으로 이동
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -488,8 +498,8 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
             Log.d("getMapStoreDataError", "onErrorResponse : " + error);
         });
 
-        MapStoreRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-        requestQueue.add(MapStoreRequest);      // RequestQueue에 요청 추가
+        mapStoreRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(mapStoreRequest);      // RequestQueue에 요청 추가
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -518,11 +528,11 @@ public class MapFragment extends Fragment implements MapView.CurrentLocationEven
         mapView = new MapView(root.getContext());   // mapView 객체 생성
 
         mapViewContainer = (ViewGroup) root.findViewById(R.id.map_view);    // ViewGroup Container
-        mapViewContainer.addView(mapView);                                  // mapView attach
+        mapViewContainer.addView(mapView);  // mapView attach
 
-        mapView.setMapViewEventListener(this);          // 지도 이동/확대/축소, 지도 화면 터치 (Single Tap / Double Tap / Long Press) 이벤트를 통보받을 수 있음
+        mapView.setMapViewEventListener(this);  // 지도 이동/확대/축소, 지도 화면 터치 (Single Tap / Double Tap / Long Press) 이벤트를 통보받을 수 있음
         mapView.setCurrentLocationEventListener(this);  // 현위치 트래킹 이벤트를 통보 받을 수 있음
-        mapView.setPOIItemEventListener(this);          // POI 관련 이벤트를 통보 받을 수 있음
+        mapView.setPOIItemEventListener(this);  // POI 관련 이벤트를 통보 받을 수 있음
 
         mapView.setZoomLevel(1, true);  // 지도 화면의 확대/축소 레벨을 설정
         mapView.zoomIn(true);   // 지도 화면을 한단계 확대

@@ -3,54 +3,54 @@ package com.example.itda.ui.global;
 import android.app.Application;
 
 public class globalVariable extends Application {
-    final private String host = "http://no2955922.ivyro.net";        // Host 정보
-    final private String mainCategoryPath = "/store/getCategory.php";   // 카테고리 데이터 조회 Rest API
-    final private String mainStorePath = "/store/getMainStore.php"; // 가게 정보 데이터 조회 Rest API
-    final private String mapStorePath = "/map/getMapStore.php";   // 지도 내 가게 데이터 조회 Rest API
-    final private String infoCollaboPath = "/info/getInfoCollabo.php";  // 협업 가게 정보 데이터 조회 Rest API
-    final private String infoMenuPath = "/info/getInfoMenu.php";        // 메뉴 정보 데이터 조회 Rest API
-    final private String infoPhotoPath = "/info/getInfoPhoto.php";      // 사진 정보 데이터 조회 Rest API
-    final private String infoReviewPath = "/info/getInfoReview.php";    // 리뷰 정보 데이터 조회 Rest API
-    final private String infoReviewCommentPath = "/info/getInfoReviewComment.php";    // 리뷰 댓글 정보 데이터 조회 Rest API
-    final private String collaboPath = "/collabo/getCollabo.php";    // 협업 데이터 조회 Rest API
 
+    // Host 정보
     public String getHost() {
-        return host;
+        return "http://no2955922.ivyro.net";
     }
 
+    // 카테고리 데이터 조회 Rest API
     public String getMainCategoryPath() {
-        return mainCategoryPath;
+        return "/store/getCategory.php";
     }
 
+    // 가게 정보 데이터 조회 Rest API
     public String getMainStorePath() {
-        return mainStorePath;
+        return "/store/getMainStore.php";
     }
 
+    // 지도 내 가게 데이터 조회 Rest API
     public String getMapStorePath() {
-        return mapStorePath;
+        return "/map/getMapStore.php";
     }
 
+    // 협업 가게 정보 데이터 조회 Rest API
     public String getInfoCollaboPath() {
-        return infoCollaboPath;
+        return "/info/getInfoCollabo.php";
     }
 
+    // 메뉴 정보 데이터 조회 Rest API
     public String getInfoMenuPath() {
-        return infoMenuPath;
+        return "/info/getInfoMenu.php";
     }
 
+    // 사진 정보 데이터 조회 Rest API
     public String getInfoPhotoPath() {
-        return infoPhotoPath;
+        return "/info/getInfoPhoto.php";
     }
 
+    // 리뷰 정보 데이터 조회 Rest API
     public String getInfoReviewPath() {
-        return infoReviewPath;
+        return "/info/getInfoReview.php";
     }
 
+    // 리뷰 댓글 정보 데이터 조회 Rest API
     public String getInfoReviewCommentPath() {
-        return infoReviewCommentPath;
+        return "/info/getInfoReviewComment.php";
     }
 
+    // 협업 데이터 조회 Rest API
     public String getCollaboPath() {
-        return collaboPath;
+        return "/collabo/getCollabo.php";
     }
 }

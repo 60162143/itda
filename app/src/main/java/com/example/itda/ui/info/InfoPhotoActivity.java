@@ -23,9 +23,13 @@ public class InfoPhotoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_photo);
 
-        initView();
+        initView(); // 뷰 생성
 
-        String storeName = getIntent().getExtras().getString("storeName");  // 가게 명
+        // 뒤로 가기 버튼 클릭 시 Activity 종료
+        infoPhotoBackIc.setOnClickListener(view -> finish());
+
+        // 가게 명
+        String storeName = getIntent().getExtras().getString("storeName");
         infoPhotoStoreName.setText(storeName);
 
         int position = getIntent().getIntExtra("Position", 0);  // 선택한 사진 position
@@ -36,19 +40,16 @@ public class InfoPhotoActivity extends Activity {
 
         InfoPhotoDetailRvAdapter infoPhotoDetailAdapter = new InfoPhotoDetailRvAdapter(this, photo);  // 리사이클러뷰 어뎁터 객체 생성
 
-        infoPhotoDetailSlider.setOffscreenPageLimit(1);
+        infoPhotoDetailSlider.setOffscreenPageLimit(1); // viewpager를 사용할 때 이전 혹은 다음페이지를 몇개까지 미리 로딩할지 정하는 함수
         infoPhotoDetailSlider.setAdapter(infoPhotoDetailAdapter);
 
-        infoPhotoDetailSlider.setCurrentItem(position);
+        infoPhotoDetailSlider.setCurrentItem(position); // 현재 position으로 이동
     }
 
     private void initView(){
         infoPhotoBackIc = findViewById(R.id.info_photo_back_ic);            // 상단 뒤로가기 버튼
         infoPhotoStoreName = findViewById(R.id.info_photo_main_store_name); // 상단 가게 이름
         infoPhotoDetailSlider = findViewById(R.id.info_photo_detail_slider);  // 사진 슬라이더 뷰페이저
-
-        // 뒤로 가기 버튼 클릭 시 Activity 종료
-        infoPhotoBackIc.setOnClickListener(view -> finish());
     }
 }
 

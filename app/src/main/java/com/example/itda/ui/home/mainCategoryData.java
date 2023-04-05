@@ -2,10 +2,10 @@ package com.example.itda.ui.home;
 
 public class mainCategoryData {
     private int categoryId;     // 카테고리 고유 아이디
-    private String categoryNm;  // 카테고리명
+    private String categoryNm;  // 카테고리 명
     private String imagePath;   // 카테고리 이미지 경로
 
-    // 생성자
+    // Constructor
     public mainCategoryData(int categoryId, String categoryNm, String imagePath) {
         this.categoryId = categoryId;
         this.categoryNm = categoryNm;

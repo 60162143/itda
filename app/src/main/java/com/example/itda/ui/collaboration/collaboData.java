@@ -3,19 +3,17 @@ package com.example.itda.ui.collaboration;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.itda.ui.home.mainStoreData;
-
 public class collaboData implements Parcelable {
-    private int collaboId;
-    private int prvStoreId;
-    private int postStoreId;
-    private int prvDiscountCondition;
-    private int postDiscountRate;
-    private String prvStoreName;
-    private String postStoreName;
-    private String prvStoreImagePath;
-    private String postStoreImagePath;
-    private float collaboDistance;
+    private int collaboId;              // 협업 고유 아이디
+    private int prvStoreId;             // 앞 가게 고유 아이디
+    private int postStoreId;            // 뒷 가게 고유 아이디
+    private int prvDiscountCondition;   // 앞 가게 할인 조건
+    private int postDiscountRate;       // 뒷 가게 할인 율
+    private String prvStoreName;        // 앞 가게 명
+    private String postStoreName;       // 뒷 가게 명
+    private String prvStoreImagePath;   // 앞 가게 썸네일 이미지
+    private String postStoreImagePath;  // 뒷 가게 썸네일 이미지
+    private String collaboDistance;     // 가게 간 거리
 
     public collaboData(int collaboId
             , int prvStoreId
@@ -26,7 +24,7 @@ public class collaboData implements Parcelable {
             , String postStoreName
             , String prvStoreImagePath
             , String postStoreImagePath
-            , float collaboDistance) {
+            , String collaboDistance) {
         this.collaboId = collaboId;
         this.prvStoreId = prvStoreId;
         this.postStoreId = postStoreId;
@@ -50,7 +48,7 @@ public class collaboData implements Parcelable {
         postStoreName = in.readString();
         prvStoreImagePath = in.readString();
         postStoreImagePath = in.readString();
-        collaboDistance = in.readFloat();
+        collaboDistance = in.readString();
     }
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
@@ -88,7 +86,7 @@ public class collaboData implements Parcelable {
         dest.writeString(postStoreName);
         dest.writeString(prvStoreImagePath);
         dest.writeString(postStoreImagePath);
-        dest.writeFloat(collaboDistance);
+        dest.writeString(collaboDistance);
     }
     //=======================================================================
 
@@ -164,11 +162,11 @@ public class collaboData implements Parcelable {
         this.postStoreImagePath = postStoreImagePath;
     }
 
-    public float getCollaboDistance() {
+    public String getCollaboDistance() {
         return collaboDistance;
     }
 
-    public void setCollaboDistance(float collaboDistance) {
+    public void setCollaboDistance(String collaboDistance) {
         this.collaboDistance = collaboDistance;
     }
 }

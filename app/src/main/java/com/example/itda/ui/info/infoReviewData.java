@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class infoReviewData implements Parcelable {
-    private int reviewId;           // 리뷰 고유 아이디
-    private int userId;             // 유저 고유 아이디
-    private String userName;        // 유저 명
-    private int storeId;            // 가게 고유 아이디
+    private int reviewId;   // 리뷰 고유 아이디
+    private int userId;     // 유저 고유 아이디
+    private String userName;    // 유저 명
+    private int storeId;        // 가게 고유 아이디
     private String userProfilePath; // 유저 프로필 이미지 경로
     private String reviewDetail;    // 리뷰 내용
     private int reviewScore;        // 리뷰 별점
@@ -15,7 +15,18 @@ public class infoReviewData implements Parcelable {
     private String reviewRegDate;   // 리뷰 작성 일자
     private int reviewCommentCount; // 리뷰 댓글 수
 
-    public infoReviewData(int reviewId, int userId, String userName, int storeId, String userProfilePath, String reviewDetail, int reviewScore, int reviewHeartCount, String reviewRegDate, int reviewCommentCount) {
+    // Constructor
+    public infoReviewData(int reviewId
+            , int userId
+            , String userName
+            , int storeId
+            , String userProfilePath
+            , String reviewDetail
+            , int reviewScore
+            , int reviewHeartCount
+            , String reviewRegDate
+            , int reviewCommentCount) {
+
         this.reviewId = reviewId;
         this.userId = userId;
         this.userName = userName;

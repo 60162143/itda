@@ -26,8 +26,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalVariable;
-import com.example.itda.ui.home.HomeSearchActivity;
-import com.example.itda.ui.home.MainStoreRvAdapter;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
 import com.gun0912.tedpermission.PermissionListener;
@@ -39,14 +37,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+// ViewHolder 패턴은, 각 뷰의 객체를 ViewHolder에 보관함으로써 뷰의 내용을 업데이트 하기 위한
+// findViewById() 메소드 호출을 줄여 효과적으로 퍼포먼스 개선을 할 수 있는 패턴이다.
+// ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.CustomCollaboViewHolder>{
-    private ArrayList<collaboData> Collaboes;   // 협업 데이터
+    private final ArrayList<collaboData> Collaboes;   // 협업 데이터
     private String HOST;        // Host 정보
     private String STORE_URL;   // 가게 정보 데이터 조회 Rest API
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
 
-    private LocationManager lm;     // 위치 관리자 객체
-    private Location locCurrent;   // 현재 위치 객체
+    private Location locCurrent;            // 현재 위치 객체
     private boolean gpsPossible = false;    // Gps 사용 가능 여부
 
     // Activity Content
@@ -54,6 +54,7 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
 
+    // Constructor
     public CollaboRvAdapter(Context context, ArrayList<collaboData> collabos){
         this.mContext = context;
         this.Collaboes = collabos;
@@ -63,7 +64,7 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            gpsPossible = true;
+            gpsPossible = true; // Gps 사용 가능 여부
         }
 
         @Override
@@ -86,9 +87,12 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
                 .check();
     }
 
+    // ViewHolder를 새로 만들어야 할 때 호출
+    // 각 아이템을 위한 XML 레이아웃을 활용한 뷰 객체를 생성하고 이를 뷰 홀더 객체에 담아 리턴
     @NonNull
     @Override
     public CollaboRvAdapter.CustomCollaboViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // layoutInflater로 xml객체화. viewHolder 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_collabo, parent, false);
 
         STORE_URL = ((globalVariable) mContext.getApplicationContext()).getMainStorePath(); // 가게 상세 데이터 조회 Rest API
@@ -99,7 +103,8 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
             requestQueue = Volley.newRequestQueue(mContext);
         }
 
-        lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);    // 위치관리자 객체 생성
+        // 위치 관리자 객체
+        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);    // 위치관리자 객체 생성
 
         //Location loc_Current = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ? lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) : lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         // ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION 퍼미션 체크
@@ -117,26 +122,31 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
         return new CustomCollaboViewHolder(view);
     }
 
+    // ViewHolder를 어떠한 데이터와 연결할 때 호출
+    // 뷰 홀더 객체들의 레이아웃을 채움
+    // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CollaboRvAdapter.CustomCollaboViewHolder holder, int position) {
-        collaboData collabo = Collaboes.get(position);
+        collaboData collabo = Collaboes.get(position);  // 현재 Position 협업 데이터
 
         // 앞가게
         holder.prv_store_name.setText(collabo.getPrvStoreName());   // 앞 가게 명
 
         // 앞 가게 썸네일 이미지
         Glide.with(holder.itemView)
-                .load(Uri.parse(collabo.getPrvStoreImagePath()))
+                .load(Uri.parse(collabo.getPrvStoreImagePath()))    // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)
-                .fallback(R.drawable.ic_fallback)
-                .into(holder.prv_store_image);
-        holder.prv_store_discount_condition.setText(collabo.getPrvDiscountCondition() + "원 이상 결제");
+                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .into(holder.prv_store_image);      // 이미지를 보여줄 View를 지정
+
+        // 앞 가게 할인 조건
+        String discountCondition = collabo.getPrvDiscountCondition() + "원 이상 결제";
+        holder.prv_store_discount_condition.setText(discountCondition);
 
         // 앞 가게 이미지 클릭 리스너
         holder.prv_store_image.setOnClickListener(view -> {
             String storePath = STORE_URL + "?storeId=" + collabo.getPrvStoreId();
-            System.out.println(storePath);
 
             // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
             StringRequest storeRequest = new StringRequest(Request.Method.GET, HOST + storePath, response -> {
@@ -152,10 +162,10 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
                     if (gpsPossible) {
                         // 가게 위치 좌표
                         Location point = new Location(object.getString("storeName"));   // 가게 위치 Location 객체 생성
-                        point.setLatitude(object.getDouble("storeLatitude"));
-                        point.setLongitude(object.getDouble("storeLongitude"));
+                        point.setLatitude(object.getDouble("storeLatitude"));       // 위도
+                        point.setLongitude(object.getDouble("storeLongitude"));     // 경도
 
-                        distance = locCurrent.distanceTo(point);
+                        distance = locCurrent.distanceTo(point);    // 거리
                     }
 
                     mainStoreData prvStore = new mainStoreData(
@@ -176,7 +186,7 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
                             , object.getInt("storeReviewCount")             // 가게 리뷰 개수
                             , distance / 1000); // 현위치에서 가게까지의 거리
 
-                    Intent intent = new Intent(mContext, InfoActivity.class);  // 가게 검색 Activity 화면으로 이동하기 위한 Intent 객체 선언
+                    Intent intent = new Intent(mContext, InfoActivity.class);  // 가게 상세 화면으로 이동하기 위한 Intent 객체 선언
 
                     // 데이터 송신을 위한 Parcelable interface 사용
                     // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
@@ -206,7 +216,10 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
                 .error(R.drawable.ic_error)
                 .fallback(R.drawable.ic_fallback)
                 .into(holder.post_store_image);
-        holder.post_store_discount_rate.setText(collabo.getPostDiscountRate() + "% 할인");
+
+        // 뒷 가게 할인율
+        String discountRate = collabo.getPostDiscountRate() + "% 할인";
+        holder.post_store_discount_rate.setText(discountRate);
 
         // 뒷 가게 이미지 클릭 리스너
         holder.post_store_image.setOnClickListener(view -> {
@@ -226,10 +239,10 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
                     if (gpsPossible) {
                         // 가게 위치 좌표
                         Location point = new Location(object.getString("storeName"));   // 가게 위치 Location 객체 생성
-                        point.setLatitude(object.getDouble("storeLatitude"));
-                        point.setLongitude(object.getDouble("storeLongitude"));
+                        point.setLatitude(object.getDouble("storeLatitude"));       // 위도
+                        point.setLongitude(object.getDouble("storeLongitude"));     // 경도
 
-                        distance = locCurrent.distanceTo(point);
+                        distance = locCurrent.distanceTo(point);    // 거리
                     }
 
                     mainStoreData postStore = new mainStoreData(
@@ -250,7 +263,7 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
                             , object.getInt("storeReviewCount")             // 가게 리뷰 개수
                             , distance / 1000); // 현위치에서 가게까지의 거리
 
-                    Intent intent = new Intent(mContext, InfoActivity.class);  // 가게 검색 Activity 화면으로 이동하기 위한 Intent 객체 선언
+                    Intent intent = new Intent(mContext, InfoActivity.class);  // 가게 상세 화면으로 이동하기 위한 Intent 객체 선언
 
                     // 데이터 송신을 위한 Parcelable interface 사용
                     // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
@@ -271,25 +284,31 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
         });
 
         // 가게 간 거리
-        holder.distance.setText(collabo.getCollaboDistance() + " km");
+        String distanceStr = collabo.getCollaboDistance() + " km";
+        holder.distance.setText(distanceStr);
     }
 
+    // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
     @Override
     public int getItemCount() {
         return Collaboes.size();
     }
 
-    public class CustomCollaboViewHolder extends RecyclerView.ViewHolder {
-        ImageButton prv_store_image;
-        ImageButton post_store_image;
-        TextView prv_store_name;
-        TextView post_store_name;
-        TextView prv_store_discount_condition;
-        TextView post_store_discount_rate;
-        TextView distance;
+    // adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
+    // itemView를 저장하는 custom viewHolder 생성
+    // findViewById & 각종 event 작업
+    public static class CustomCollaboViewHolder extends RecyclerView.ViewHolder {
+        ImageButton prv_store_image;            // 앞 가게 썸네일 이미지
+        ImageButton post_store_image;           // 뒷 가게 썸네일 이미지
+        TextView prv_store_name;                // 앞 가게 명
+        TextView post_store_name;               // 뒷 가게 명
+        TextView prv_store_discount_condition;  // 앞 가게 할인 조건
+        TextView post_store_discount_rate;      // 뒷 가게 할인 율
+        TextView distance;                      // 가게 간 거리
 
         public CustomCollaboViewHolder(@NonNull View itemView) {
             super(itemView);
+
             prv_store_image = itemView.findViewById(R.id.collabo_prv_store_image);
             post_store_image = itemView.findViewById(R.id.collabo_post_store_image);
             prv_store_name = itemView.findViewById(R.id.collabo_prv_store_name);

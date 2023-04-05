@@ -1,7 +1,6 @@
 package com.example.itda.ui.info;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdapter.CustomInfoCollaboViewHolder>{
 
-    private ArrayList<infoCollaboData> Collabos = new ArrayList<>();    // 협업 가게 데이터
+    private final ArrayList<infoCollaboData> Collabos;    // 협업 가게 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoCollaboRvClickListener rvClickListener = null;
@@ -33,12 +32,12 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
     // 어플리케이션의 현재 상태를 갖고 있음
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
-    private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
-    public InfoCollaboRvAdapter(Context context, onInfoCollaboRvClickListener clickListener){
+    public InfoCollaboRvAdapter(Context context, onInfoCollaboRvClickListener clickListener, ArrayList<infoCollaboData> collabo){
         this.mContext = context;
         rvClickListener = clickListener;
+        this.Collabos = collabo;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -61,14 +60,19 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
 
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
-        Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
-                .load(Uri.parse(collabo.getStoreThumbnailPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+        // 협업 가게 썸네일 이미지
+        Glide.with(holder.itemView) // View, Fragment 혹은 Activity로부터 Context를 GET
+                .load(Uri.parse(collabo.getStoreThumbnailPath()))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
-                .into(holder.collaboStoreImage);     // 이미지를 보여줄 View를 지정
+                .into(holder.collaboStoreImage);    // 이미지를 보여줄 View를 지정
 
-        holder.collaboDiscountRate.setText(collabo.getCollaboDiscountRate() + "% 할인");   // 협업 할인율 textView set
-        holder.collaboStoreName.setText(collabo.getStoreName());                // 협업 가게 이름 textView set
+        // 협업 할인 율
+        String discountRate = collabo.getCollaboDiscountRate() + "% 할인";
+        holder.collaboDiscountRate.setText(discountRate);
+
+        holder.collaboStoreName.setText(collabo.getStoreName());    // 협업 가게 명
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -77,18 +81,13 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
         return Collabos.size();
     }
 
-    // 협업 정보 Setter
-    public void setCollabo(ArrayList<infoCollaboData> collabo){
-        this.Collabos = collabo;
-    }
-
     // adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoCollaboViewHolder extends RecyclerView.ViewHolder {
-        ImageView collaboStoreImage;      // 협업 가게 썸네일
-        TextView collaboDiscountRate;       // 협업 가게 할인 율
-        TextView collaboStoreName;          // 협업 가게 이름
+        ImageView collaboStoreImage;    // 협업 가게 썸네일
+        TextView collaboDiscountRate;   // 협업 가게 할인 율
+        TextView collaboStoreName;      // 협업 가게 이름
 
         public CustomInfoCollaboViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,18 +95,17 @@ public class InfoCollaboRvAdapter extends RecyclerView.Adapter<InfoCollaboRvAdap
             collaboDiscountRate = itemView.findViewById(R.id.info_collabo_discount_rate);
             collaboStoreName = itemView.findViewById(R.id.info_collabo_store_name);
 
-            // 이미지에 투명도 설정
+            // 썸네일 이미지에 투명도 설정
             collaboStoreImage.setColorFilter(Color.parseColor("#66000000"), PorterDuff.Mode.SRC_ATOP);
 
             // 리사이클러뷰 클릭 이벤트 인터페이스 구현
-            // Fragment로 return
             itemView.setOnClickListener(view -> {
-                int pos = getAbsoluteAdapterPosition();
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
 
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
                     rvClickListener.onInfoCollaboRvClick(view, getAbsoluteAdapterPosition());
                 }
-
             });
         }
     }

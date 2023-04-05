@@ -1,7 +1,6 @@
 package com.example.itda.ui.info;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotalRvAdapter.CustomInfoPhotoTotalViewHolder>{
 
-    private ArrayList<infoPhotoData> Photos;    // 사진 데이터
+    private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoPhotoTotalRvClickListener rvClickListener = null;
@@ -30,7 +29,6 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
     // 어플리케이션의 현재 상태를 갖고 있음
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
-    private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
     public InfoPhotoTotalRvAdapter(Context context, onInfoPhotoTotalRvClickListener clickListener, ArrayList<infoPhotoData> photos){
@@ -59,9 +57,9 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
 
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
-        Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
-                .load(Uri.parse(photo.getPhotoPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
-                .placeholder(R.drawable.logo)
+        Glide.with(holder.itemView) // View, Fragment 혹은 Activity로부터 Context를 GET
+                .load(Uri.parse(photo.getPhotoPath()))  // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);           // 이미지를 보여줄 View를 지정
@@ -77,7 +75,7 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoPhotoTotalViewHolder extends RecyclerView.ViewHolder {
-        ImageView photoImage;           // 사진 이미지
+        ImageView photoImage;   // 사진 이미지
 
         public CustomInfoPhotoTotalViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,8 +84,9 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
 
             // 리사이클러뷰 클릭 이벤트 인터페이스 구현
             itemView.setOnClickListener(view -> {
-                int pos = getAbsoluteAdapterPosition();
+                int pos = getAbsoluteAdapterPosition(); // 현재 position
 
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
                     rvClickListener.onInfoPhotoTotalRvClick(view, getAbsoluteAdapterPosition());
                 }

@@ -1,7 +1,6 @@
 package com.example.itda.ui.info;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +22,12 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDetailRvAdapter.CustomInfoPhotoDetailViewHolder>{
 
-    private ArrayList<infoPhotoData> Photos;    // 사진 데이터
+    private final ArrayList<infoPhotoData> Photos;  // 사진 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
-    private Intent intent;  // 상세 페이지로 전환을 위한 객체
 
     // Constructor
     public InfoPhotoDetailRvAdapter(Context context, ArrayList<infoPhotoData> photos){
@@ -53,16 +51,18 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull CustomInfoPhotoDetailViewHolder holder, int position) {
-        infoPhotoData photo = Photos.get(position);     // 현재 position의 사진 정보
+        infoPhotoData photo = Photos.get(position); // 현재 position의 사진 정보
 
-        holder.photoReviewUserName.setText(photo.getUserName());
-        holder.photoReviewScore.setText(String.valueOf(photo.getReviewScore()));
-        holder.photoReview.setText(photo.getReviewDetail());
+        holder.photoReviewUserName.setText(photo.getUserName());    // 유저 명
+        holder.photoReviewScore.setText(String.valueOf(photo.getReviewScore()));    // 리뷰 별점
+        holder.photoReview.setText(photo.getReviewDetail());    // 리뷰 내용
 
+        // 유저 프로필 이미지
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(photo.getPhotoPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);           // 이미지를 보여줄 View를 지정
@@ -78,11 +78,11 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoPhotoDetailViewHolder extends RecyclerView.ViewHolder {
-        ImageView photoImage;           // 사진 이미지
+        ImageView photoImage;   // 사진 이미지
         TextView photoReviewUserName;   // 리뷰 작성 유저 명
-        TextView photoReviewScore;      // 리뷰 별점
-        TextView photoReview;           // 리뷰 내용
-        Button photoReviewMore;         // 리뷰 내용 더보기
+        TextView photoReviewScore;  // 리뷰 별점
+        TextView photoReview;       // 리뷰 내용
+        Button photoReviewMore;     // 리뷰 내용 더보기
         public CustomInfoPhotoDetailViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -93,18 +93,14 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
             photoReviewMore = itemView.findViewById(R.id.info_photo_detail_plus_btn);
 
             // 리뷰 더보기 클릭 리스너
-            photoReviewMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 더보기일 경우 텍스트 전문 보이기
-                    // 접기일 경우 텍스트 1줄만 보이기
-                    if(photoReviewMore.getText() == "더보기"){
-                        photoReview.setMaxLines(100);
-                        photoReviewMore.setText("접기");
-                    }else{
-                        photoReview.setMaxLines(1);
-                        photoReviewMore.setText("더보기");
-                    }
+            photoReviewMore.setOnClickListener(view -> {
+                // 더보기일 경우 텍스트 전문 보이기
+                if(photoReviewMore.getText() == "더보기"){
+                    photoReview.setMaxLines(100);
+                    photoReviewMore.setText("접기");
+                }else{  // 접기일 경우 텍스트 1줄만 보이기
+                    photoReview.setMaxLines(1);
+                    photoReviewMore.setText("더보기");
                 }
             });
         }

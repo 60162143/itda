@@ -64,9 +64,10 @@
 
             <Button
                 android:id="@+id/login_enter_bt"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="로그인"
+                android:background="@drawable/round_color"
                 app:layout_constraintTop_toBottomOf="@id/login_password_et"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -128,42 +129,20 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginVertical="10dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
             <ImageButton
                 android:id="@+id/login_kakao_logo_btn"
-                android:src="@drawable/kakao_logo"
+                android:src="@drawable/kakao_talk_32dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/login_facebook_logo_btn"/>
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"/>
 
-            <ImageButton
-                android:id="@+id/login_facebook_logo_btn"
-                android:src="@drawable/facebook_logo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/login_kakao_logo_btn"
-                app:layout_constraintRight_toLeftOf="@+id/login_naver_logo_btn"
-                />
-
-            <ImageButton
-                android:id="@+id/login_naver_logo_btn"
-                android:src="@drawable/naver_logo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/login_facebook_logo_btn"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
