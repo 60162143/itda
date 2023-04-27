@@ -1,13 +1,96 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.MyApplication" parent="Base.Theme.AppCompat.Light.DarkActionBar">
-
         <item name="android:windowBackground">@color/white</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>
 
+        <!--custom font-family 적용-->
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
     </style>
 
     <style name="SearchViewStyle" parent="Theme.MyApplication">
         <item name="searchIcon">@drawable/ic_search</item>
     </style>
+
+    <!--NumberPicker 적용-->
+    <style name="NumberPickerText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/gray03</item>
+        <item name="colorControlNormal">@color/gray03</item>
+    </style>
+
+    <!-- Custom font 적용 -->
+    <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/koddiudongothic_regular</item>
+    </style>
+
+    <style name="customButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:fontFamily">@font/koddiudongothic_regular</item>
+    </style>
+
+    <style name="customEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/koddiudongothic_regular</item>
+    </style>
+
+<!--    토스트 디자인을 정의-->
+<!--    stTextBold : 텍스트 스타일 Bold 유무-->
+<!--    stTextColor : 텍스트 색상-->
+<!--    stFont : 폰트-->
+<!--    stTextSize : 텍스트 사이즈-->
+<!--    stColorBackground : 배경색-->
+<!--    stStrokeWidth : 테두리 두께-->
+<!--    stStrokeColor : 테두리 색상-->
+<!--    stIconStart : 왼쪽에 나타날 아이콘-->
+<!--    stIconEnd : 오른쪽에 나타날 아이콘-->
+<!--    stLength : 지속 시간  LONG or SHORT-->
+<!--    stGravity : 위치  top or center-->
+<!--    stRadius : 가장자리 둥글게-->
+
+    <style name="orangeToast">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#FFFFFF</item>
+        <item name="stFont">@font/koddiudongothic_bold</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">#FFCB7C</item>
+<!--        <item name="stStrokeWidth">3dp</item>-->
+<!--        <item name="stStrokeColor">#fff</item>-->
+<!--        <item name="stIconStart">@drawable/favorite</item>-->
+<!--        <item name="stIconEnd">@drawable/favorite</item>-->
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">20dp</item>
+    </style>
+
+    <style name="redToast">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#FFFFFF</item>
+        <item name="stFont">@font/koddiudongothic_bold</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">#F97997</item>
+        <!--        <item name="stStrokeWidth">3dp</item>-->
+        <!--        <item name="stStrokeColor">#fff</item>-->
+        <!--        <item name="stIconStart">@drawable/favorite</item>-->
+        <!--        <item name="stIconEnd">@drawable/favorite</item>-->
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">20dp</item>
+    </style>
+
+    <style name="blueToast">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#FFFFFF</item>
+        <item name="stFont">@font/koddiudongothic_bold</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">#78ADE5</item>
+        <!--        <item name="stStrokeWidth">3dp</item>-->
+        <!--        <item name="stStrokeColor">#fff</item>-->
+        <!--        <item name="stIconStart">@drawable/favorite</item>-->
+        <!--        <item name="stIconEnd">@drawable/favorite</item>-->
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">20dp</item>
+    </style>
+
 </resources>

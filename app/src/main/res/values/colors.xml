@@ -7,7 +7,37 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="main_color">#9cf4d8</color>
+    <color name="main_color">#70E6BF</color>
     <color name="Yellow">#FFEB3B</color>
     <color name="Green">#4CAF50</color>
+
+    <color name="green01">#D6FCF0</color>
+    <color name="green02">#9EF3D7</color>
+    <color name="green03">#70E6BF</color>
+    <color name="green04">#4AD5A7</color>
+    <color name="green05">#2ABD8D</color>
+
+    <color name="blue01">#D9EAFC</color>
+    <color name="blue02">#A4CBF3</color>
+    <color name="blue03">#78ADE5</color>
+    <color name="blue04">#5492D3</color>
+    <color name="blue05">#3476BA</color>
+
+    <color name="orange01">#FFEFD8</color>
+    <color name="orange02">#FFDBA6</color>
+    <color name="orange03">#FFCB7C</color>
+    <color name="orange04">#FFBC59</color>
+    <color name="orange05">#FFB039</color>
+
+    <color name="red01">#FED8E1</color>
+    <color name="red02">#FCA4B9</color>
+    <color name="red03">#F97997</color>
+    <color name="red04">#F5557A</color>
+    <color name="red05">#EF3560</color>
+
+    <color name="gray01">#BDBCBC</color>
+    <color name="gray02">#8D8D8D</color>
+    <color name="gray03">#5E5E5E</color>
+    <color name="gray04">#232323</color>
+    <color name="gray05">#040303</color>
 </resources>

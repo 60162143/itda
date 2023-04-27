@@ -50,8 +50,8 @@ dependencies {
     // Glide Library
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-    // 원형 이미지뷰 CircleImageView 라이브러리
-    //implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // Toast 커스텀 Library
+    implementation 'io.github.muddz:styleabletoast:2.4.0'
 
     // Volley Library
     implementation 'com.android.volley:volley:1.2.1'
@@ -66,6 +66,7 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
+    implementation files('libs\\ftp4j-1.7.2.jar')
 
     // 테스트 시에만 적용
     // Junit : 보이지 않고 숨겨진 단위 테스트를 끌어내어 정형화시켜

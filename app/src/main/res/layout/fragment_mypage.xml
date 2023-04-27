@@ -45,7 +45,8 @@
             android:background="@drawable/round_color"
             android:text="Login"
             android:textSize="12sp"
-            android:textColor="#5E5E5E"/>
+            android:textColor="#5E5E5E"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
@@ -54,8 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:orientation="vertical"
-        android:paddingTop="20dp"
-        android:visibility="gone">
+        android:paddingTop="20dp">
+<!--        android:visibility="gone">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,21 +67,23 @@
 
             <Button
                 android:id="@+id/mypage_logout_btn"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
                 android:background="@drawable/round_color"
                 android:text="Logout"
-                android:textSize="11sp"
+                android:textSize="8sp"
+                android:textStyle="bold"
                 android:textColor="#5E5E5E"
-                android:layout_marginEnd="20dp"/>
+                android:layout_marginEnd="10dp"/>
 
             <Button
                 android:id="@+id/mypage_edit_btn"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
                 android:background="@drawable/round_gray"
                 android:text="Edit"
-                android:textSize="11sp"
+                android:textSize="8sp"
+                android:textStyle="bold"
                 android:textColor="#5E5E5E"/>
 
         </LinearLayout>
@@ -91,13 +94,24 @@
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/mypage_user_profile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/round_circle"
-                android:textColor="#5E5E5E"
-                android:textSize="12sp" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="1000dp">
+
+                <ImageButton
+                    android:id="@+id/mypage_user_profile"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/gray"
+                    android:padding="0dp"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"/>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/mypage_user_name"
@@ -114,18 +128,23 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_horizontal|center_vertical">
+        android:paddingHorizontal="10dp">
 
         <LinearLayout
+            android:id="@+id/mypage_bookmark_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_marginHorizontal="10dp">
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/mypage_heart_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
                 android:id="@+id/mypage_bookmark_btn"
@@ -141,16 +160,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Marked"
-                android:textColor="#5E5E5E"/>
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:textColor="#5E5E5E"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mypage_heart_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_marginHorizontal="10dp">
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintLeft_toRightOf="@id/mypage_bookmark_layout"
+            app:layout_constraintRight_toLeftOf="@id/mypage_review_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
                 android:id="@+id/mypage_heart_btn"
@@ -166,16 +193,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Heart"
-                android:textColor="#5E5E5E"/>
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:textColor="#5E5E5E"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mypage_review_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_marginHorizontal="10dp">
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintLeft_toRightOf="@id/mypage_heart_layout"
+            app:layout_constraintRight_toLeftOf="@id/mypage_photo_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
                 android:id="@+id/mypage_review_btn"
@@ -191,16 +226,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Review"
-                android:textColor="#5E5E5E"/>
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:textColor="#5E5E5E"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mypage_photo_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_marginHorizontal="10dp">
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintLeft_toRightOf="@id/mypage_review_layout"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
                 android:id="@+id/mypage_photo_btn"
@@ -216,9 +259,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Photo"
-                android:textColor="#5E5E5E"/>
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:textColor="#5E5E5E"
+                android:textStyle="bold"/>
 
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

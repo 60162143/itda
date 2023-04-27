@@ -26,7 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.itda.ui.global.globalVariable;
+import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.home.mainStoreData;
 
 import androidx.annotation.Nullable;
@@ -149,12 +149,12 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
 
         // ---------------- Rest API 전역변수 SET---------------------------
-        STORE_PATH = ((globalVariable) getApplication()).getMainStorePath();    // 가게 데이터 조회 Rest API
-        COLLABO_PATH = ((globalVariable) getApplication()).getInfoCollaboPath();    // 협업 가게 정보 데이터 조회 Rest API
-        MENU_PATH = ((globalVariable) getApplication()).getInfoMenuPath();          // 메뉴 정보 데이터 조회 Rest API
-        PHOTO_PATH = ((globalVariable) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
-        REVIEW_PATH = ((globalVariable) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
-        HOST = ((globalVariable) getApplication()).getHost();                       // Host 정보
+        STORE_PATH = ((globalMethod) getApplication()).getMainStorePath();    // 가게 데이터 조회 Rest API
+        COLLABO_PATH = ((globalMethod) getApplication()).getInfoCollaboPath();    // 협업 가게 정보 데이터 조회 Rest API
+        MENU_PATH = ((globalMethod) getApplication()).getInfoMenuPath();          // 메뉴 정보 데이터 조회 Rest API
+        PHOTO_PATH = ((globalMethod) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
+        REVIEW_PATH = ((globalMethod) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
+        HOST = ((globalMethod) getApplication()).getHost();                       // Host 정보
 
 
         // ---------------- 최상단 Section ---------------------------

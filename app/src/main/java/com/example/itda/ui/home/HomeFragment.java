@@ -28,7 +28,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.itda.R;
-import com.example.itda.ui.global.globalVariable;
+import com.example.itda.ui.global.globalMethod;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -104,9 +104,9 @@ public class HomeFragment extends Fragment{
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
         // ---------------- Rest API 전역변수 SET---------------------------
-        CATEGORY_PATH = ((globalVariable) requireActivity().getApplication()).getMainCategoryPath();    // 카테고리 데이터 조회 Rest API
-        STORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath();      // 가게 정보 데이터 조회 Rest API
-        HOST = ((globalVariable) requireActivity().getApplication()).getHost(); // Host 정보
+        CATEGORY_PATH = ((globalMethod) requireActivity().getApplication()).getMainCategoryPath();    // 카테고리 데이터 조회 Rest API
+        STORE_PATH = ((globalMethod) requireActivity().getApplication()).getMainStorePath();      // 가게 정보 데이터 조회 Rest API
+        HOST = ((globalMethod) requireActivity().getApplication()).getHost(); // Host 정보
 
         CategoryRv = root.findViewById(R.id.main_category_rv);  // 카테고리 리사이클러뷰
         MainStoreRv = root.findViewById(R.id.main_store_rv);    // 상점 정보 리사이클러뷰

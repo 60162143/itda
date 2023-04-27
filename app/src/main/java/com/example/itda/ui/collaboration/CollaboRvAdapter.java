@@ -25,7 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
-import com.example.itda.ui.global.globalVariable;
+import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
 import com.gun0912.tedpermission.PermissionListener;
@@ -95,8 +95,8 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
         // layoutInflater로 xml객체화. viewHolder 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_collabo, parent, false);
 
-        STORE_URL = ((globalVariable) mContext.getApplicationContext()).getMainStorePath(); // 가게 상세 데이터 조회 Rest API
-        HOST = ((globalVariable) mContext.getApplicationContext()).getHost();               // Host 정보
+        STORE_URL = ((globalMethod) mContext.getApplicationContext()).getMainStorePath(); // 가게 상세 데이터 조회 Rest API
+        HOST = ((globalMethod) mContext.getApplicationContext()).getHost();               // Host 정보
 
         // RequestQueue 객체 생성 ( 초기에만 생성 )
         if (requestQueue == null) {

@@ -21,7 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
-import com.example.itda.ui.global.globalVariable;
+import com.example.itda.ui.global.globalMethod;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,8 +68,8 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
             requestQueue = Volley.newRequestQueue(this);
         }
 
-        REVIEW_COMMENT_PATH = ((globalVariable) getApplication()).getInfoReviewCommentPath();   // 리뷰 댓글 정보 데이터 조회 Rest API
-        HOST = ((globalVariable) getApplication()).getHost();   // Host 정보
+        REVIEW_COMMENT_PATH = ((globalMethod) getApplication()).getInfoReviewCommentPath();   // 리뷰 댓글 정보 데이터 조회 Rest API
+        HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
 
         initView();
 

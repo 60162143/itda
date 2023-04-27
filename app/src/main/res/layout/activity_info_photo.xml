@@ -21,7 +21,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_back_arrow_white"
+            android:src="@drawable/ic_arrow_back_white"
             android:background="@android:color/transparent"/>
 
         <Button

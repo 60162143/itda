@@ -36,7 +36,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.itda.R;
-import com.example.itda.ui.global.globalVariable;
+import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
 import com.gun0912.tedpermission.PermissionListener;
@@ -122,9 +122,9 @@ public class MapFragment extends Fragment
     // 뷰 생성
     private void initView() {
         // ---------------- Rest API 전역변수 SET---------------------------
-        MAPSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMapStorePath();    // 지도 내 가게 데이터 조회 Rest API
-        MAINSTORE_PATH = ((globalVariable) requireActivity().getApplication()).getMainStorePath();  // 가게 정보 데이터 조회 Rest API
-        HOST = ((globalVariable) requireActivity().getApplication()).getHost(); // Host 정보
+        MAPSTORE_PATH = ((globalMethod) requireActivity().getApplication()).getMapStorePath();    // 지도 내 가게 데이터 조회 Rest API
+        MAINSTORE_PATH = ((globalMethod) requireActivity().getApplication()).getMainStorePath();  // 가게 정보 데이터 조회 Rest API
+        HOST = ((globalMethod) requireActivity().getApplication()).getHost(); // Host 정보
 
         ImageButton mapGPSBtn = root.findViewById((R.id.gps_button));       // GPS 버튼
         EditText mapSchText = root.findViewById((R.id.search_map_store));   // 검색어 입력창

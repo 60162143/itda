@@ -16,7 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.itda.R;
-import com.example.itda.ui.global.globalVariable;
+import com.example.itda.ui.global.globalMethod;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +41,8 @@ public class CollaboFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_collabo, container, false);
 
-        COLLABO_URL = ((globalVariable) requireActivity().getApplication()).getCollaboPath();   // 협업 정보 데이터 조회 Rest API
-        HOST = ((globalVariable) requireActivity().getApplication()).getHost();                 // Host 정보
+        COLLABO_URL = ((globalMethod) requireActivity().getApplication()).getCollaboPath();   // 협업 정보 데이터 조회 Rest API
+        HOST = ((globalMethod) requireActivity().getApplication()).getHost();                 // Host 정보
 
         // RequestQueue 객체 생성 ( 초기에만 생성 )
         if(requestQueue == null){
