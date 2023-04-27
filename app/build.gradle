@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 33
 
@@ -14,6 +17,10 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "FTP_HOST", properties["ftp.host"]
+        buildConfigField "String", "FTP_ID", properties["ftp.id"]
+        buildConfigField "String", "FTP_PASSWORD", properties["ftp.password"]
     }
 
     buildTypes {
