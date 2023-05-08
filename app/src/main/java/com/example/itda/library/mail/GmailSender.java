@@ -1,11 +1,11 @@
-package com.example.itda.ui.login;
-
+package com.example.itda.library.mail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -16,14 +16,14 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class GMailSender extends javax.mail.Authenticator {
+public class GmailSender extends javax.mail.Authenticator{
     private String mailhost = "smtp.gmail.com";
     private String user;
     private String password;
     private Session session;
     private String emailCode;
 
-    public GMailSender(String user, String password) {
+    public GmailSender(String user, String password) {
         this.user = user;
         this.password = password;
         emailCode = createEmailCode();
@@ -47,16 +47,17 @@ public class GMailSender extends javax.mail.Authenticator {
     } //생성된 이메일 인증코드 반환
 
     private String createEmailCode() { //이메일 인증코드 생성
-        String[] str = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
-                "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        String newCode = new String();
+        StringBuilder newCode = new StringBuilder();
+        Random random = new Random();
 
-        for (int x = 0; x < 8; x++) {
-            int random = (int) (Math.random() * str.length);
-            newCode += str[random];
+        for (int x = 0; x < 6; x++) {
+            int createNum = random.nextInt(9);
+            newCode.append(createNum);
         }
 
-        return newCode;
+        System.out.println("newCode : " + newCode);
+
+        return newCode.toString();
     }
 
     protected PasswordAuthentication getPasswordAuthentication() {
@@ -65,9 +66,8 @@ public class GMailSender extends javax.mail.Authenticator {
     }
 
     public synchronized void sendMail(String subject, String body, String recipients) throws Exception {
-        System.out.println("sendMail");
         MimeMessage message = new MimeMessage(session);
-        DataHandler handler = new DataHandler((DataSource) new ByteArrayDataSource(body.getBytes(), "text/plain")); //본문 내용을 byte단위로 쪼개어 전달
+        DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain")); //본문 내용을 byte단위로 쪼개어 전달
         message.setSender(new InternetAddress(user));  //본인 이메일 설정
         message.setSubject(subject); //해당 이메일의 본문 설정
         message.setDataHandler(handler);
@@ -117,4 +117,3 @@ public class GMailSender extends javax.mail.Authenticator {
         }
     }
 }
-

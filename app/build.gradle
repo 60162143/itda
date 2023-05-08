@@ -21,6 +21,9 @@ android {
         buildConfigField "String", "FTP_HOST", properties["ftp.host"]
         buildConfigField "String", "FTP_ID", properties["ftp.id"]
         buildConfigField "String", "FTP_PASSWORD", properties["ftp.password"]
+
+        buildConfigField "String", "MAIL_EMAIL", properties["mail.email"]
+        buildConfigField "String", "MAIL_PASSWORD", properties["mail.password"]
     }
 
     buildTypes {
@@ -73,7 +76,7 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
-    implementation files('libs\\ftp4j-1.7.2.jar')
+    implementation files('libs/ftp4j-1.7.2.jar')
 
     // 테스트 시에만 적용
     // Junit : 보이지 않고 숨겨진 단위 테스트를 끌어내어 정형화시켜

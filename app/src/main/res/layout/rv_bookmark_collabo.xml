@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="11"
+    android:background="@drawable/border_bottom"
+    android:paddingVertical="10dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mypage_bookmark_collabo_pre_store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="0dp"
+        android:layout_weight="5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mypage_bookmark_collabo_prv_store_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="5dp"
+                android:paddingHorizontal="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="앞가게 명"
+                android:textSize="13sp"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="false"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="20dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:layout_marginVertical="10dp">
+
+                <ImageButton
+                    android:id="@+id/mypage_bookmark_collabo_prv_store_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/round"
+                    android:layout_gravity="center"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_test_image"
+                    android:adjustViewBounds="true"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/mypage_bookmark_collabo_prv_store_condition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="5dp"
+                android:paddingHorizontal="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="할인 조건"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/mypage_bookmark_collabo_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="1.4km"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/mypage_bookmark_collabo_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_long" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mypage_bookmark_collabo_post_store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/arrow"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="0dp"
+        android:layout_weight="5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mypage_bookmark_collabo_post_store_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="5dp"
+                android:text="뒷가게 명"
+                android:paddingHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="false"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="20dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:layout_marginVertical="10dp">
+
+                <ImageButton
+                    android:id="@+id/mypage_bookmark_collabo_post_store_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/round"
+                    android:layout_gravity="center"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_test_image"
+                    android:adjustViewBounds="true"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/mypage_bookmark_collabo_post_store_discount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="5dp"
+                android:paddingHorizontal="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="할인 율"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

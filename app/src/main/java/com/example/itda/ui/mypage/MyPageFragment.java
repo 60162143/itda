@@ -78,11 +78,15 @@ public class MyPageFragment extends Fragment {
 
         // activityResultLauncher 초기화
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == 9001){ // resultCode가 9001로 넘어왔다면
+            if(result.getResultCode() == 9001){ // resultCode가 9001로 넘어왔다면 로그인 완료 후 넘어옴
                 loginDataSet(); // 로그인 정보 SET
 
                 linearLayoutBefore.setVisibility(View.GONE);
                 linearLayoutAfter.setVisibility(View.VISIBLE);
+            }else if(result.getResultCode() == 9002){ // resultCode가 9002로 넘어왔다면 프로필 변경 후 넘어옴
+                loginDataSet(); // 로그인 정보 SET
+            }else if(result.getResultCode() == 1001){ // resultCode가 1001로 넘어왔다면 찜 목록 화면에서 넘어옴
+
             }
         });
 
@@ -110,7 +114,35 @@ public class MyPageFragment extends Fragment {
         myPageEditBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
 
-            startActivity(intent);
+            activityResultLauncher.launch(intent);
+        });
+
+        // 내 정보 찜 목록 버튼 클릭 리스너
+        myPageBookmarkBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MyPageBookmarkActivity.class);
+
+            activityResultLauncher.launch(intent);
+        });
+
+        // 내 정보 좋아요 목록 버튼 클릭 리스너
+        myPageHeartBtn.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
+//
+//            activityResultLauncher.launch(intent);
+        });
+
+        // 내 정보 리뷰 목록 버튼 클릭 리스너
+        myPageReviewBtn.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
+//
+//            activityResultLauncher.launch(intent);
+        });
+
+        // 내 정보 사진 목록 버튼 클릭 리스너
+        myPagePhotoBtn.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
+//
+//            activityResultLauncher.launch(intent);
         });
 
         return root;

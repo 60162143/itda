@@ -8,11 +8,24 @@ import android.widget.Toast;
 import com.example.itda.R;
 
 public class globalMethod extends Application {
+
+    /******************************* Data ***********************************/
     // Host 정보
     public String getHost() {
         return "http://no2955922.ivyro.net";
     }
 
+    // 기본 프로필 이미지 경로
+    public String getNoProfilePath() {
+        return "/ftpFileStorage/noUser.png";
+    }
+
+    // 기본 가게 이미지 경로
+    public String getNoStoreImagePath() {
+        return "/ftpFileStorage/noImage.png";
+    }
+
+    /********************************* API ***********************************/
     // 카테고리 데이터 조회 Rest API
     public String getMainCategoryPath() {
         return "/store/getCategory.php";
@@ -78,6 +91,32 @@ public class globalMethod extends Application {
         return "/mypage/updateUserBirthday.php";
     }
 
+    // 유저 프로필 변경 Rest API
+    public String getUpdateUserProfilePath() {
+        return "/mypage/updateUserProfile.php";
+    }
+
+    // 유저 프로필 기본 이미지 변경 Rest API
+    public String getDeleteUserProfilePath() {
+        return "/mypage/deleteUserProfile.php";
+    }
+
+    // 유저 비밀번호 변경 Rest API
+    public String getUpdateUserPasswordPath() {
+        return "/mypage/updateUserPassword.php";
+    }
+
+    // 유저 찜한 가게 목록 조회 Rest API
+    public String getBookmarkStorePath() {
+        return "/mypage/getBookmarkStore.php";
+    }
+
+    // 유저 찜한 협업 목록 조회 Rest API
+    public String getBookmarkCollaboPath() {
+        return "/mypage/getBookmarkCollabo.php";
+    }
+
+    /*********************************** Method *************************************/
     // 로그인 체크
     public boolean loginChecked() {
         SharedPreferences auto = this.getSharedPreferences("user", Activity.MODE_PRIVATE);
@@ -85,20 +124,5 @@ public class globalMethod extends Application {
         int userId = auto.getInt("userId", 0);  // 유저 아이디
 
         return userId != 0; // 유저 아이디가 있으면 true, 없으면 false Return
-    }
-
-    // FTP 호스트 정보
-    public String getFTPHost() {
-        return "------";
-    }
-
-    // FTP 호스트 아이디
-    public String getFTPUserId() {
-        return "------";
-    }
-
-    // FTP 호스트 비밀번호
-    public String getFTPUserPassword() {
-        return "------";
     }
 }

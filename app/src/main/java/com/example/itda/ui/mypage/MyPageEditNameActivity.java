@@ -67,12 +67,12 @@ public class MyPageEditNameActivity extends Activity {
 
         userName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
                 // 텍스트가 입력되기 전에 Call back
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // 텍스트가 변경 될때마다 Call back
                 if(!User.getString("userName", "").equals(charSequence.toString()) && !charSequence.toString().isEmpty()){
                     userNameBtn.setEnabled(true);

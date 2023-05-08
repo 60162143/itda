@@ -15,6 +15,7 @@
 
     <application
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
@@ -98,6 +99,21 @@
 
         <!--내 정보 생일 수정 액티비티-->
         <activity android:name="com.example.itda.ui.mypage.MyPageEditBirthdayActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--내 정보 비밀번호 수정 액티비티-->
+        <activity android:name="com.example.itda.ui.mypage.MyPageEditPasswordActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--내 정보 비밀번호 찾기 액티비티-->
+        <activity android:name="com.example.itda.ui.mypage.MyPageEditLostPasswordActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--내 정보 찜 목록 액티비티-->
+        <activity android:name="com.example.itda.ui.mypage.MyPageBookmarkActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 

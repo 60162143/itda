@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:background="@drawable/round_gray"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="프로필 이미지 변경"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginVertical="10dp"/>
+
+    <Button
+        android:id="@+id/mypage_edit_user_profile_gallery_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:text="갤러리에서 선택"
+        android:gravity="start|center"
+        android:drawableEnd="@drawable/ic_arrow_front"
+        android:layout_marginVertical="10dp"/>
+
+    <Button
+        android:id="@+id/mypage_edit_user_profile_basic_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:text="기본 이미지로 변경"
+        android:gravity="start|center"
+        android:drawableEnd="@drawable/ic_arrow_front"
+        android:layout_marginVertical="10dp"/>
+
+    <Button
+        android:id="@+id/mypage_edit_user_profile_close_btn"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/round_color"
+        android:text="닫기"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginVertical="10dp"/>
+
+</LinearLayout>

@@ -140,7 +140,7 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
                             // SharedPreferences를 가져와서 거기서 Editor 객체를 가져와 put 메소드를 사용
                             SharedPreferences.Editor autoLoginEdit = auto.edit();
 
-                            autoLoginEdit.putString("userBirthday", birthDay);  // 유저 번호
+                            autoLoginEdit.putString("userBirthday", birthDay);  // 유저 생일
 
                             autoLoginEdit.apply();  // 데이터를 저장
 
@@ -159,7 +159,7 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
                     }
                 }, error -> {
                     // 통신 에러시 로그 출력
-                    Log.d("updateNumberError", "onErrorResponse : " + error);
+                    Log.d("updateBirthdayError", "onErrorResponse : " + error);
                 }) {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
