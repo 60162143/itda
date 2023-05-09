@@ -32,6 +32,7 @@
 
     <style name="customEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
         <item name="android:fontFamily">@font/koddiudongothic_regular</item>
+        <item name="android:textColor">@color/gray05</item>
     </style>
 
 <!--    토스트 디자인을 정의-->

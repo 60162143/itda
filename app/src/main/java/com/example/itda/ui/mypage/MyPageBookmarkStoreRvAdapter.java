@@ -25,9 +25,12 @@ public class MyPageBookmarkStoreRvAdapter extends RecyclerView.Adapter<MyPageBoo
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private Context mContext;
 
+    private static onMyPageBookmarkStoreRvClickListener rvClickListener = null;
+
     // Constructor
-    public MyPageBookmarkStoreRvAdapter(Context context, ArrayList<MyPageBookmarkStoreData> stores){
+    public MyPageBookmarkStoreRvAdapter(Context context, onMyPageBookmarkStoreRvClickListener clickListener, ArrayList<MyPageBookmarkStoreData> stores){
         this.mContext = context;
+        rvClickListener = clickListener;
         this.Stores = stores;
     }
 
@@ -36,7 +39,7 @@ public class MyPageBookmarkStoreRvAdapter extends RecyclerView.Adapter<MyPageBoo
     @NonNull
     @Override
     public CustomStoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_bookmark_store, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_mypage_bookmark_store, parent, false);
 
         return new CustomStoreViewHolder(view);
     }
@@ -81,6 +84,7 @@ public class MyPageBookmarkStoreRvAdapter extends RecyclerView.Adapter<MyPageBoo
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomStoreViewHolder extends RecyclerView.ViewHolder {
+        ImageView delBtn;    // 찜한 목록 삭제 버튼
         ImageView bookmarkStoreImage;    // 가게 썸네일
         TextView bookmarkStoreName;      // 가게 명
         TextView bookmarkStoreDistance;  // 현재 위치에서 가게까지의 거리
@@ -90,12 +94,31 @@ public class MyPageBookmarkStoreRvAdapter extends RecyclerView.Adapter<MyPageBoo
 
         public CustomStoreViewHolder(@NonNull View itemView) {
             super(itemView);
+            delBtn = itemView.findViewById(R.id.mypage_bookmark_store_del_btn);
             bookmarkStoreImage = itemView.findViewById(R.id.bookmark_store_image);
             bookmarkStoreName = itemView.findViewById(R.id.bookmark_store_name);
             bookmarkStoreDistance = itemView.findViewById(R.id.bookmark_store_distance);
             bookmarkStoreStarScore = itemView.findViewById(R.id.bookmark_star_score);
             bookmarkStoreInfo = itemView.findViewById(R.id.bookmark_store_info);
             bookmarkStoreHashTag = itemView.findViewById(R.id.bookmark_store_hashTag);
+
+            delBtn.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMyPageBookmarkStoreRvClickListener(view, getAbsoluteAdapterPosition(), "delete");
+                }
+            });
+
+            bookmarkStoreImage.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMyPageBookmarkStoreRvClickListener(view, getAbsoluteAdapterPosition(), "storeImage");
+                }
+            });
         }
     }
 }

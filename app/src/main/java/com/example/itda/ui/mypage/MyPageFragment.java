@@ -35,7 +35,6 @@ public class MyPageFragment extends Fragment {
     private ImageButton myPageUserProfile;      // 유저 프로필 이미지
     private TextView myPageUserName;            // 유저 명
     private ImageButton myPageBookmarkBtn;      // 찜 목록 버튼
-    private ImageButton myPageHeartBtn;         // 좋아요 목록 버튼
     private ImageButton myPageReviewBtn;        // 리뷰 목록 버튼
     private ImageButton myPagePhotoBtn;         // 사진 목록 버튼
     private LinearLayout linearLayoutBefore;    // 로그인 전 레이아웃 전체
@@ -124,13 +123,6 @@ public class MyPageFragment extends Fragment {
             activityResultLauncher.launch(intent);
         });
 
-        // 내 정보 좋아요 목록 버튼 클릭 리스너
-        myPageHeartBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
-//
-//            activityResultLauncher.launch(intent);
-        });
-
         // 내 정보 리뷰 목록 버튼 클릭 리스너
         myPageReviewBtn.setOnClickListener(v -> {
 //            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
@@ -157,7 +149,6 @@ public class MyPageFragment extends Fragment {
         myPageUserProfile = root.findViewById(R.id.mypage_user_profile);
         myPageUserName = root.findViewById(R.id.mypage_user_name);
         myPageBookmarkBtn = root.findViewById(R.id.mypage_bookmark_btn);
-        myPageHeartBtn = root.findViewById(R.id.mypage_heart_btn);
         myPageReviewBtn = root.findViewById(R.id.mypage_review_btn);
         myPagePhotoBtn = root.findViewById(R.id.mypage_photo_btn);
 

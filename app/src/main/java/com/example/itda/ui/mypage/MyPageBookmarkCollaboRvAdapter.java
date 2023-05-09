@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
+import com.example.itda.ui.info.onInfoCollaboRvClickListener;
 
 import java.util.ArrayList;
 
@@ -25,9 +26,12 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private Context mContext;
 
+    private static onMyPageBookmarkCollaboRvClickListener rvClickListener = null;
+
     // Constructor
-    public MyPageBookmarkCollaboRvAdapter(Context context, ArrayList<MyPageBookmarkCollaboData> collabos){
+    public MyPageBookmarkCollaboRvAdapter(Context context, onMyPageBookmarkCollaboRvClickListener clickListener, ArrayList<MyPageBookmarkCollaboData> collabos){
         this.mContext = context;
+        rvClickListener = clickListener;
         this.Collabos = collabos;
     }
 
@@ -36,7 +40,7 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
     @NonNull
     @Override
     public CustomBookmarkCollaboViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_bookmark_collabo, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_mypage_bookmark_collabo, parent, false);
 
         return new CustomBookmarkCollaboViewHolder(view);
     }
@@ -90,6 +94,7 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomBookmarkCollaboViewHolder extends RecyclerView.ViewHolder {
+        ImageView delBtn;    // 찜한 목록 삭제 버튼
         ImageView prvStoreImage;    // 앞 가게 이미지
         ImageView postStoreImage;    // 뒷 가게 이미지
         TextView prvStoreName;      // 앞 가게 명
@@ -100,6 +105,7 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
 
         public CustomBookmarkCollaboViewHolder(@NonNull View itemView) {
             super(itemView);
+            delBtn = itemView.findViewById(R.id.mypage_bookmark_collabo_del_btn);
             prvStoreImage = itemView.findViewById(R.id.mypage_bookmark_collabo_prv_store_image);
             postStoreImage = itemView.findViewById(R.id.mypage_bookmark_collabo_post_store_image);
             prvStoreName = itemView.findViewById(R.id.mypage_bookmark_collabo_prv_store_name);
@@ -107,6 +113,33 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
             prvStoreDiscountCondition = itemView.findViewById(R.id.mypage_bookmark_collabo_prv_store_condition);
             postStoreDiscountRate = itemView.findViewById(R.id.mypage_bookmark_collabo_post_store_discount);
             distance = itemView.findViewById(R.id.mypage_bookmark_collabo_distance);
+
+            delBtn.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMyPageBookmarkCollaboRvClickListener(view, getAbsoluteAdapterPosition(), "delete");
+                }
+            });
+
+            prvStoreImage.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMyPageBookmarkCollaboRvClickListener(view, getAbsoluteAdapterPosition(), "prvImage");
+                }
+            });
+
+            postStoreImage.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMyPageBookmarkCollaboRvClickListener(view, getAbsoluteAdapterPosition(), "postImage");
+                }
+            });
         }
     }
 }

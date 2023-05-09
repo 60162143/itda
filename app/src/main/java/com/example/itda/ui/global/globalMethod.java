@@ -111,9 +111,19 @@ public class globalMethod extends Application {
         return "/mypage/getBookmarkStore.php";
     }
 
+    // 유저 찜한 가게 목록 삭제 Rest API
+    public String deleteBookmarkStorePath() {
+        return "/mypage/deleteBookmarkStore.php";
+    }
+
     // 유저 찜한 협업 목록 조회 Rest API
     public String getBookmarkCollaboPath() {
         return "/mypage/getBookmarkCollabo.php";
+    }
+
+    // 유저 찜한 협업 목록 삭제 Rest API
+    public String deleteBookmarkCollaboPath() {
+        return "/mypage/deleteBookmarkCollabo.php";
     }
 
     /*********************************** Method *************************************/

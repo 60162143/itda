@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <!--카드뷰-->
     <androidx.cardview.widget.CardView
@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
-        app:cardUseCompatPadding="true"
-        app:cardCornerRadius="20dp">
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,25 +24,41 @@
                 android:id="@+id/item_bookmark_store_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardUseCompatPadding="false"
-                app:cardElevation="0dp"
-                app:contentPadding="0dp"
                 android:layout_gravity="center"
+                android:adjustViewBounds="true"
                 app:cardCornerRadius="20dp"
-                android:adjustViewBounds="true">
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="0dp">
 
-                <!--가게 썸네일-->
-                <ImageView
-                    android:id="@+id/bookmark_store_image"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/round"
-                    android:contentDescription="TODO"
-                    android:padding="0dp"
-                    android:src="@drawable/ic_test_image"
-                    app:cardCornerRadius="20dp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!--가게 썸네일-->
+                    <ImageView
+                        android:id="@+id/bookmark_store_image"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/round"
+                        android:contentDescription="TODO"
+                        android:padding="0dp"
+                        android:src="@drawable/ic_test_image"
+                        app:cardCornerRadius="20dp" />
+
+                    <ImageButton
+                        android:id="@+id/mypage_bookmark_store_del_btn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_bookmark_after"
+                        android:background="@android:color/transparent"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"/>
+
+                </FrameLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -56,26 +72,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:layout_weight="2">
+                    android:weightSum="10">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="7">
+                        android:layout_weight="7"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/bookmark_store_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:text="가게 이름"
                             android:textColor="@color/gray05"
-                            android:textStyle="bold"
                             android:textSize="18sp"
-                            android:maxLines="1"
-                            android:ellipsize="end">
+                            android:textStyle="bold">
 
                         </TextView>
 
@@ -83,8 +99,8 @@
                             android:id="@+id/bookmark_store_distance"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="1.4km"
-                            android:paddingVertical="2dp">
+                            android:paddingVertical="2dp"
+                            android:text="1.4km">
 
                         </TextView>
 
@@ -103,16 +119,16 @@
                             android:layout_height="24dp"
                             android:layout_gravity="end"
                             android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_star"
-                            android:foregroundGravity="center"/>
+                            android:foregroundGravity="center"
+                            android:src="@drawable/ic_star" />
 
                         <TextView
                             android:id="@+id/bookmark_star_score"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
-                            android:text="4.8"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:text="4.8">
 
                         </TextView>
 
@@ -124,11 +140,11 @@
                     android:id="@+id/bookmark_store_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="테스트 입니다. 테스트 입니다."
-                    android:maxLines="3"
+                    android:layout_weight="7"
                     android:ellipsize="end"
-                    android:textSize="13sp"
-                    android:layout_weight="7">
+                    android:maxLines="3"
+                    android:text="테스트 입니다. 테스트 입니다."
+                    android:textSize="13sp">
 
                 </TextView>
 
@@ -136,10 +152,10 @@
                     android:id="@+id/bookmark_store_hashTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="#테스트1 #테스트2"
                     android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="#70E6BF">
+                    android:text="#테스트1 #테스트2"
+                    android:textColor="#70E6BF"
+                    android:textStyle="bold">
 
                 </TextView>
 
