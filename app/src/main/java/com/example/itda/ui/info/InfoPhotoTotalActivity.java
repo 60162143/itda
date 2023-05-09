@@ -20,7 +20,7 @@ public class InfoPhotoTotalActivity extends Activity implements onInfoPhotoTotal
 
     private ImageButton infoPhotoBackIc;    // 상단 뒤로가기 버튼
     private Button infoPhotoStoreName;      // 상단 가게 이름
-    private RecyclerView infoMenuTotalRv;   // 사진 전체 리사이클러뷰
+    private RecyclerView infoPhotoTotalRv;   // 사진 전체 리사이클러뷰
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,20 +42,20 @@ public class InfoPhotoTotalActivity extends Activity implements onInfoPhotoTotal
 
         InfoPhotoTotalRvAdapter infoPhotoTotalAdapter = new InfoPhotoTotalRvAdapter(this,this , Photo);  // 리사이클러뷰 어뎁터 객체 생성
 
-        infoMenuTotalRv.setLayoutManager(new GridLayoutManager(this, 3));
-        infoMenuTotalRv.setAdapter(infoPhotoTotalAdapter);
+        infoPhotoTotalRv.setLayoutManager(new GridLayoutManager(this, 3));
+        infoPhotoTotalRv.setAdapter(infoPhotoTotalAdapter);
     }
 
     // 뷰 생성
     private void initView(){
         infoPhotoBackIc = findViewById(R.id.info_photo_total_back_ic);  // 상단 뒤로가기 버튼
         infoPhotoStoreName = findViewById(R.id.info_photo_total_main_store_name);   // 상단 가게 이름
-        infoMenuTotalRv = findViewById(R.id.info_photo_total_rv);   // 사진 슬라이더 뷰페이저
+        infoPhotoTotalRv = findViewById(R.id.info_photo_total_rv);   // 사진 전체 리사이클러뷰
     }
 
     // 사진 리사이클러뷰 클릭 이벤트 인터페이스 구현
     @Override
-    public void onInfoPhotoTotalRvClick(View v, int position) {
+    public void onInfoPhotoTotalRvClick(View v, int position, String flag) {
         // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         Intent intent = new Intent(InfoPhotoTotalActivity.this, InfoPhotoActivity.class);
 

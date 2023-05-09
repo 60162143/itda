@@ -131,6 +131,11 @@ public class globalMethod extends Application {
         return "/mypage/deleteReview.php";
     }
 
+    // 유저 업로드한 사진 삭제 Rest API
+    public String deletePhotoPath() {
+        return "/mypage/deletePhoto.php";
+    }
+
     /*********************************** Method *************************************/
     // 로그인 체크
     public boolean loginChecked() {

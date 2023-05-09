@@ -134,9 +134,9 @@ public class MyPageFragment extends Fragment {
 
         // 내 정보 사진 목록 버튼 클릭 리스너
         myPagePhotoBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
-//
-//            activityResultLauncher.launch(intent);
+            Intent intent = new Intent(getActivity(), MyPagePhotoActivity.class);
+
+            activityResultLauncher.launch(intent);
         });
 
         return root;

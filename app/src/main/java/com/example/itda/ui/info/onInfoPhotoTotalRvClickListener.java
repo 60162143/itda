@@ -3,5 +3,5 @@ package com.example.itda.ui.info;
 import android.view.View;
 
 public interface onInfoPhotoTotalRvClickListener {
-    void onInfoPhotoTotalRvClick(View v, int position);
+    void onInfoPhotoTotalRvClick(View v, int position, String flag);
 }

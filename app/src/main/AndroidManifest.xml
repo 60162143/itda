@@ -127,6 +127,11 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
+        <!--내 정보 사지 목록 액티비티-->
+        <activity android:name="com.example.itda.ui.mypage.MyPagePhotoActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
         <activity android:name="com.example.itda.ui.login.PasswordActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>

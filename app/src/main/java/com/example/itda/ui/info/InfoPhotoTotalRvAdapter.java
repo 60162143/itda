@@ -88,7 +88,7 @@ public class InfoPhotoTotalRvAdapter extends RecyclerView.Adapter<InfoPhotoTotal
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onInfoPhotoTotalRvClick(view, getAbsoluteAdapterPosition());
+                    rvClickListener.onInfoPhotoTotalRvClick(view, getAbsoluteAdapterPosition(), "image");
                 }
             });
         }
