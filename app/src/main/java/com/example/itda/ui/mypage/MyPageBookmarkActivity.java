@@ -335,7 +335,7 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
 
     // 가게 리사이클러뷰 클릭 리스너
     @Override
-    public void onMyPageBookmarkStoreRvClickListener(View v, int position, String flag) {
+    public void onMyPageBookmarkStoreRvClick(View v, int position, String flag) {
         if(flag.equals("delete")){  // 찜 목록 삭제 버튼 클릭
             bookmarkDeleteDialog.show();
 
@@ -403,7 +403,7 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
 
     // 협업 리사이클러뷰 클릭 리스너
     @Override
-    public void onMyPageBookmarkCollaboRvClickListener(View v, int position, String flag) {
+    public void onMyPageBookmarkCollaboRvClick(View v, int position, String flag) {
         if(flag.equals("delete")){  // 찜 목록 삭제 버튼 클릭
             bookmarkDeleteDialog.show();
 

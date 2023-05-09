@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_bottom"
+    android:paddingBottom="10dp">
 
     <!--카드뷰-->
     <androidx.cardview.widget.CardView
@@ -64,7 +66,8 @@
                             android:text="유저명"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            android:layout_marginEnd="10dp"/>
+                            android:layout_marginEnd="10dp"
+                            android:layout_gravity="center_vertical"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -148,8 +151,8 @@
 
                         <ImageButton
                             android:id="@+id/info_review_delete_ic"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:src="@drawable/ic_delete"
                             android:layout_gravity="end|center_vertical"/>
 
@@ -185,6 +188,7 @@
                 android:layout_height="wrap_content"/>
 
             <LinearLayout
+                android:id="@+id/info_review_btn_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

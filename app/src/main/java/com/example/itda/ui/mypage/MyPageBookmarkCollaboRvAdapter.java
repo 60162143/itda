@@ -119,7 +119,7 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onMyPageBookmarkCollaboRvClickListener(view, getAbsoluteAdapterPosition(), "delete");
+                    rvClickListener.onMyPageBookmarkCollaboRvClick(view, getAbsoluteAdapterPosition(), "delete");
                 }
             });
 
@@ -128,7 +128,7 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onMyPageBookmarkCollaboRvClickListener(view, getAbsoluteAdapterPosition(), "prvImage");
+                    rvClickListener.onMyPageBookmarkCollaboRvClick(view, getAbsoluteAdapterPosition(), "prvImage");
                 }
             });
 
@@ -137,7 +137,7 @@ public class MyPageBookmarkCollaboRvAdapter extends RecyclerView.Adapter<MyPageB
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onMyPageBookmarkCollaboRvClickListener(view, getAbsoluteAdapterPosition(), "postImage");
+                    rvClickListener.onMyPageBookmarkCollaboRvClick(view, getAbsoluteAdapterPosition(), "postImage");
                 }
             });
         }

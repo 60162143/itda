@@ -117,6 +117,16 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
+        <!--내 정보 리뷰 목록 액티비티-->
+        <activity android:name="com.example.itda.ui.mypage.MyPageReviewActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--내 정보 리뷰 목록 상세 액티비티-->
+        <activity android:name="com.example.itda.ui.mypage.MyPageReviewDetailActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
         <activity android:name="com.example.itda.ui.login.PasswordActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>

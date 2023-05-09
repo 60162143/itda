@@ -126,6 +126,11 @@ public class globalMethod extends Application {
         return "/mypage/deleteBookmarkCollabo.php";
     }
 
+    // 유저 작성한 리뷰 삭제 Rest API
+    public String deleteReviewPath() {
+        return "/mypage/deleteReview.php";
+    }
+
     /*********************************** Method *************************************/
     // 로그인 체크
     public boolean loginChecked() {

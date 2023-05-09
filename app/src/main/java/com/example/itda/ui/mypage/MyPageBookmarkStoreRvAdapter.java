@@ -107,7 +107,7 @@ public class MyPageBookmarkStoreRvAdapter extends RecyclerView.Adapter<MyPageBoo
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onMyPageBookmarkStoreRvClickListener(view, getAbsoluteAdapterPosition(), "delete");
+                    rvClickListener.onMyPageBookmarkStoreRvClick(view, getAbsoluteAdapterPosition(), "delete");
                 }
             });
 
@@ -116,7 +116,7 @@ public class MyPageBookmarkStoreRvAdapter extends RecyclerView.Adapter<MyPageBoo
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onMyPageBookmarkStoreRvClickListener(view, getAbsoluteAdapterPosition(), "storeImage");
+                    rvClickListener.onMyPageBookmarkStoreRvClick(view, getAbsoluteAdapterPosition(), "storeImage");
                 }
             });
         }

@@ -86,6 +86,8 @@ public class MyPageFragment extends Fragment {
                 loginDataSet(); // 로그인 정보 SET
             }else if(result.getResultCode() == 1001){ // resultCode가 1001로 넘어왔다면 찜 목록 화면에서 넘어옴
 
+            }else if(result.getResultCode() == 1002){ // resultCode가 1001로 넘어왔다면 리뷰 목록 화면에서 넘어옴
+
             }
         });
 
@@ -125,9 +127,9 @@ public class MyPageFragment extends Fragment {
 
         // 내 정보 리뷰 목록 버튼 클릭 리스너
         myPageReviewBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), MyPageEditActivity.class);
-//
-//            activityResultLauncher.launch(intent);
+            Intent intent = new Intent(getActivity(), MyPageReviewActivity.class);
+
+            activityResultLauncher.launch(intent);
         });
 
         // 내 정보 사진 목록 버튼 클릭 리스너
