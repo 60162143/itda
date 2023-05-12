@@ -39,16 +39,15 @@
                     android:adjustViewBounds="true"
                     android:background="@android:color/transparent"/>
 
-                    <ToggleButton
+                    <Button
                         android:id="@+id/main_store_bookmark"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/ic_bookmark_before_white"
+                        android:background="@drawable/bookmark_selector_white"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_gravity="end|top"
-                        android:textOn=""
-                        android:textOff=""/>
+                        android:visibility="gone"/>
 
             </androidx.cardview.widget.CardView>
 

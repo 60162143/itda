@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.itda.MainActivity;
 import com.example.itda.ui.global.globalMethod;
+import com.example.itda.ui.home.HomeSearchActivity;
+import com.example.itda.ui.home.mainBookmarkStoreData;
 import com.example.itda.ui.home.mainStoreData;
 
 import androidx.annotation.Nullable;
@@ -35,6 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
+import com.example.itda.ui.mypage.MyPageEditActivity;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -45,6 +52,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.github.muddz.styleabletoast.StyleableToast;
 
 public class InfoActivity extends Activity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener, onInfoReviewRvClickListener {
 
@@ -54,11 +65,18 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
     private final ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
     private final ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
 
+    private boolean loginFlag = false;   // 로그인 여부
+
+    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
+
     // ---------------- 최상단 Section ---------------------------
     private TextView infoMainStoreName; // 최상단 가게 이름
     private ImageButton infoBackIc;     // 최상단 뒤로가기 버튼
     private ImageButton infoCallIc;     // 최상단 전화 버튼
     private ImageButton infoBookmarkIc; // 최상단 찜 버튼
+
+    private ArrayList<mainBookmarkStoreData> BookmarkStore = new ArrayList<>();  // 유저 찜한 가게 목록
+    private int bookmarkStoreIndex = -1; // 현재 가게의 찜한 목록 데이터의 인덱스
 
 
     // ---------------- 가게 정보 Section ---------------------
@@ -113,9 +131,11 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
 
     // ---------------- 리뷰 Section ---------------------
+    private LinearLayout infoReviewLayout;             // 리뷰 전체 레이아웃
     private Button infoReviewPlusBtn; // 리뷰 작성 버튼
     private RecyclerView infoReviewRv;  // 리뷰 리사이클러뷰
     private InfoReviewRvAdapter infoReviewAdapter;  // 리뷰 리사이클러뷰 어댑터
+    private TextView infoReviewNoDataTxt;     // 리뷰 데이터 없음 표시 텍스트
 
 
     // ---------------- 결제 Section ---------------------
@@ -132,6 +152,8 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
     private String MENU_PATH;       // 메뉴 정보 데이터 조회 Rest API
     private String PHOTO_PATH;      // 사진 정보 데이터 조회 Rest API
     private String REVIEW_PATH;     // 리뷰 정보 데이터 조회 Rest API
+    private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
+    private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
     private String HOST;            // Host 정보
 
     @Override
@@ -146,6 +168,9 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
             requestQueue = Volley.newRequestQueue(this);
         }
 
+        // 유저 전역 변수 GET
+        User = getSharedPreferences("user", Activity.MODE_PRIVATE);
+
         Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
 
         // ---------------- Rest API 전역변수 SET---------------------------
@@ -154,14 +179,21 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         MENU_PATH = ((globalMethod) getApplication()).getInfoMenuPath();          // 메뉴 정보 데이터 조회 Rest API
         PHOTO_PATH = ((globalMethod) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
         REVIEW_PATH = ((globalMethod) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
+        DELETE_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).deleteBookmarkStorePath();      // 유저 찜한 가게 목록 삭제 Rest API
+        INSERT_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).insertBookmarkStorePath();      // 유저 찜한 가게 목록 추가 Rest API
         HOST = ((globalMethod) getApplication()).getHost();                       // Host 정보
-
 
         // ---------------- 최상단 Section ---------------------------
         infoMainStoreName.setText(Store.getStoreName());    // 최상단 가게 이름
 
         // 최상단 뒤로가기 버튼 클릭 리스너
-        infoBackIc.setOnClickListener(v -> finish());   // 버튼 클릭 시 Activity 종료
+        infoBackIc.setOnClickListener(v -> {
+            Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+            setResult(2000, intent);    // 결과 코드와 intent 값 전달
+            finish();   // 버튼 클릭 시 Activity 종료
+        });
 
         // 전화 번호 있을 시 전화 걸기 화면으로 전환 클릭 리스너
         if(!TextUtils.isEmpty(Store.getStoreNumber())){
@@ -174,6 +206,37 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
             infoCallIc.setVisibility(View.GONE);    // 전화 아이콘 숨김
         }
 
+        // 찜이 되어 있을경우 레이아웃 변경
+        // 로그인이 되어 있는지 확인
+        if(((globalMethod) getApplication()).loginChecked()){
+            loginFlag = true;
+
+            BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
+            for(int i = 0; i < BookmarkStore.size(); i++){
+                if(Store.getStoreId() == BookmarkStore.get(i).getStoreId()){
+                    bookmarkStoreIndex = i;
+                    infoBookmarkIc.setSelected(true);
+                }
+            }
+        }
+
+        // 찜 버튼 클릭 리스너
+        infoBookmarkIc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(loginFlag){  // 로그인이 되어있으면
+                    if(infoBookmarkIc.isSelected()){    // 찜 버튼이 눌러져 있으면
+                        infoBookmarkIc.setSelected(false);
+                        deleteBookmarkStore(bookmarkStoreIndex);    // 찜 목록에서 제거
+                    }else{
+                        infoBookmarkIc.setSelected(true);
+                        insertBookmarkStore(User.getInt("userId", 0), Store.getStoreId());  // 찜 목록에 추가
+                    }
+                }else{
+                    StyleableToast.makeText(getApplicationContext(), "로그인 해야 이용하실 수 있습니다.", R.style.redToast).show();
+                }
+            }
+        });
 
         // ---------------- 가게 정보 Section ---------------------
         infoStoreName.setText(Store.getStoreName());        // 가게 이름
@@ -355,6 +418,23 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         mapViewContainer.removeView(mapView);
     }
 
+
+    // 휴대폰 뒤로가기 버튼 클릭 이벤트
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+            setResult(2000, intent);    // 결과 코드와 intent 값 전달
+            finish();   // 버튼 클릭 시 Activity 종료
+
+            return true;
+        }
+        return false;
+    }
+
+
     private void initView(){
         // ---------------- 최상단 Section ---------------------------
         infoMainStoreName = findViewById(R.id.info_main_store_name);    // 최상단 가게 이름
@@ -409,9 +489,10 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
 
         // ---------------- 리뷰 Section ---------------------
+        infoReviewLayout = findViewById(R.id.info_review_layout); // 리뷰 전체 레이아웃
         infoReviewPlusBtn = findViewById(R.id.info_review_plus_btn);    // 리뷰 작성 버튼
         infoReviewRv = findViewById(R.id.info_review_rv);   // 리뷰 리사이클러뷰
-
+        infoReviewNoDataTxt = findViewById(R.id.info_review_nodata);   // 리뷰 데이터 없음 표시 텍스트
 
         // ---------------- 결제 Section ---------------------
         infoPaymentBtn = findViewById(R.id.info_payment_btn);   // 결제 버튼
@@ -612,6 +693,8 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                     infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this);  // 리사이클러뷰 어뎁터 객체 생성
                     infoReviewRv.setAdapter(infoReviewAdapter); // 리사이클러뷰 어뎁터 객체 지정
 
+                }else{
+                    infoReviewNoDataTxt.setVisibility(View.VISIBLE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -732,6 +815,90 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                 + collabo.getCollaboDiscountRate() + "% 할인";
 
         discount_info.setText(dis_info);
+    }
+
+    // 유저 찜한 가게 삭제
+    private void deleteBookmarkStore(int index){
+        Map<String, String> param = new HashMap<>();
+
+        param.put("bmkStId", String.valueOf(BookmarkStore.get(index).getBmkStoreId()));   // 삭제할 찜한 가게 목록 고유 아이디
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+        StringRequest deleteBookmarkRequest = new StringRequest(Request.Method.POST, HOST + DELETE_BOOKMARK_STORE_PATH, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                String success = jsonObject.getString("success");
+
+                if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                    StyleableToast.makeText(this, "삭제 성공!", R.style.blueToast).show();
+
+                    BookmarkStore.remove(index);   // 데이터 삭제
+
+                    bookmarkStoreIndex = -1;  // 현재 가게의 찜한 목록 데이터의 인덱스 초기화
+
+                }else{
+                    StyleableToast.makeText(this, "삭제 실패...", R.style.redToast).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("deleteBookmarkStoreError", "onErrorResponse : " + error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // php로 설정값을 보낼 수 있음 ( POST )
+                return param;
+            }
+        };
+
+        deleteBookmarkRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(deleteBookmarkRequest);      // RequestQueue에 요청 추가
+    }
+
+    // 유저 찜한 가게 추가
+    private void insertBookmarkStore(int userId, int storeId){
+        Map<String, String> param = new HashMap<>();
+
+        param.put("userId", String.valueOf(userId));   // 유저 고유 아이디
+        param.put("storeId", String.valueOf(storeId));   // 찜할 가게 고유 아이디
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+        StringRequest insertBookmarkRequest = new StringRequest(Request.Method.POST, HOST + INSERT_BOOKMARK_STORE_PATH, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                String success = jsonObject.getString("success");
+
+                if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                    StyleableToast.makeText(this, "추가 성공!", R.style.blueToast).show();
+
+                    // 데이터 추가
+                    BookmarkStore.add(new mainBookmarkStoreData(
+                            Integer.parseInt(jsonObject.getString("bmkStId"))
+                            , storeId
+                    ));
+
+                    bookmarkStoreIndex = BookmarkStore.size() - 1;  // 현재 가게의 찜한 목록 데이터의 인덱스 SET
+                }else{
+                    StyleableToast.makeText(this, "추가 실패...", R.style.redToast).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("insertBookmarkStoreError", "onErrorResponse : " + error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // php로 설정값을 보낼 수 있음 ( POST )
+                return param;
+            }
+        };
+
+        insertBookmarkRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(insertBookmarkRequest);      // RequestQueue에 요청 추가
     }
 
     // 사진 리사이클러뷰 클릭 이벤트 인터페이스 구현

@@ -1,5 +1,6 @@
 package com.example.itda.ui.home;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,18 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
 
     private final ArrayList<mainCategoryData> Categories; // 카테고리 데이터
 
+    // 리사이클러뷰 클릭 리스너 인터페이스
+    private static onMainStoreRvClickListener rvClickListener = null;
+
+    // Activity Content
+    // 어플리케이션의 현재 상태를 갖고 있음
+    // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
+    private final Context mContext;
+
     // Constructor
-    public CategoryRvAdapter(ArrayList<mainCategoryData> categories) {
+    public CategoryRvAdapter(Context context
+            , ArrayList<mainCategoryData> categories) {
+        this.mContext = context;
         this.Categories = categories;
     }
 
@@ -57,6 +68,11 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
         holder.Name_Category.setText(category.getCategoryNm()); // 카테고리 명
     }
 
+    // 리스너 설정
+    public void setonMainStoreRvClickListener(onMainStoreRvClickListener rvClickListener) {
+        CategoryRvAdapter.rvClickListener = rvClickListener;
+    }
+
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
     @Override
     public int getItemCount() {
@@ -75,6 +91,16 @@ public class CategoryRvAdapter extends RecyclerView.Adapter<CategoryRvAdapter.Cu
 
             Circle_Category = itemView.findViewById(R.id.category_image);
             Name_Category = itemView.findViewById(R.id.category_name);
+
+            // 리사이클러뷰 이미지 클릭 이벤트 인터페이스 구현
+            itemView.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMainStoreRvClick(view, getAbsoluteAdapterPosition(), "image");
+                }
+            });
         }
     }
 }

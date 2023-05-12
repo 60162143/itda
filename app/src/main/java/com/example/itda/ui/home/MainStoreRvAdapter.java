@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -16,26 +17,47 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
+import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.info.InfoActivity;
+import com.example.itda.ui.info.onInfoCollaboRvClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // ViewHolder 패턴은, 각 뷰의 객체를 ViewHolder에 보관함으로써 뷰의 내용을 업데이트 하기 위한
 // findViewById() 메소드 호출을 줄여 효과적으로 퍼포먼스 개선을 할 수 있는 패턴이다.
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.CustomMainCategoryViewHolder>{
     final private ArrayList<mainStoreData> Stores;    // 가게 데이터
+    private ArrayList<mainBookmarkStoreData> BookmarkStores;    // 찜한 가게 데이터
+
+    // 리사이클러뷰 클릭 리스너 인터페이스
+    private static onMainStoreRvClickListener rvClickListener = null;
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
-    private Intent intent;  // 페이지 전환을 위한 객체
 
     // Constructor
-    public MainStoreRvAdapter(Context context, ArrayList<mainStoreData> store){
+    // 프래그먼트에서 생성, 리스너는 따로 SET
+    public MainStoreRvAdapter(Context context
+            , ArrayList<mainStoreData> store
+            , ArrayList<mainBookmarkStoreData> bookmarkStore){
         this.mContext = context;
         this.Stores = store;
+        this.BookmarkStores = bookmarkStore;
+    }
+
+    // 액티비티에서 생성
+    public MainStoreRvAdapter(Context context
+            , onMainStoreRvClickListener clickListener
+            , ArrayList<mainStoreData> store
+            , ArrayList<mainBookmarkStoreData> bookmarkStore){
+        this.mContext = context;
+        rvClickListener = clickListener;
+        this.Stores = store;
+        this.BookmarkStores = bookmarkStore;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -65,54 +87,48 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.mainStoreImage);       // 이미지를 보여줄 View를 지정
 
+        // 로그인이 되어있을 경우 찜 버튼 보이기
+        if(((globalMethod) mContext.getApplicationContext()).loginChecked()){
+            holder.mainStoreBookmark.setVisibility(View.VISIBLE);
+
+            // 찜한 가게 목록이 있을 경우 찜 버튼 활성화
+            if(BookmarkStores != null && BookmarkStores.size() > 0){
+                for(int i = 0; i < BookmarkStores.size(); i++){
+                    if(store.getStoreId() == BookmarkStores.get(i).getStoreId()){
+                        holder.mainStoreBookmark.setSelected(true);
+
+                        break;
+                    }
+                }
+            }
+        }
+
         holder.mainStoreName.setText(store.getStoreName()); // 가게 이름
 
         holder.mainStoreScore.setText(String.valueOf(store.getStoreScore()));   // 가게 별점
+
+        // 거리가 10m 이상인 경우만 거리 표시
+        if(store.getStoreDistance() <= 0.01){
+            holder.mainStoreDistance.setText("10m 이내");
+        }else{
+            holder.mainStoreDistance.setText(String.format("%.2f", store.getStoreDistance()) + "km");
+        }
 
         // 가게 리뷰 수
         String reviewCount = " (" + store.getStoreReviewCount() + ")";
         holder.mainStoreReviewCount.setText(reviewCount);
 
         holder.mainStoreHashTag.setText(store.getStoreHashTag());   // 가게 해시태그
+    }
 
-        // 메인 화면 이미지 클릭 리스너
-        holder.mainStoreImage.setOnClickListener(v -> {
-            intent = new Intent(mContext, InfoActivity.class);  // 상세화면으로 이동하기 위한 Intent 객체 선언
+    // 리스너 설정
+    public void setonMainStoreRvClickListener(onMainStoreRvClickListener rvClickListener) {
+        MainStoreRvAdapter.rvClickListener = rvClickListener;
+    }
 
-            // 데이터 송신을 위한 Parcelable interface 사용
-            // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
-            intent.putExtra("Store", (Parcelable) store);
-
-            mContext.startActivity(intent); // 새 Activity 인스턴스 시작
-        });
-
-        // 찜버튼 기능 참고해서 만들자!!!
-//
-//        if(position < 2){
-//            holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_after_bookmark);
-//            holder.mainStoreBookmark.setChecked(true);
-//        }else{
-//            holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_before_bookmark);
-//            holder.mainStoreBookmark.setChecked(false);
-//        }
-//
-//        if(store.getStoreDistance() > 0){                                                   // 현위치에서 가게까지의 거리
-//            holder.mainStoreDistance.setText(String.format("%.2f km", store.getStoreDistance()));
-//        }else{
-//            holder.mainStoreDistance.setText("- km");
-//        }
-//
-//        // 메인 화면 찜버튼 클릭 리스너
-//        holder.mainStoreBookmark.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(holder.mainStoreBookmark.isChecked()){
-//                    holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_after_bookmark);
-//                }else{
-//                    holder.mainStoreBookmark.setBackgroundResource(R.drawable.ic_before_bookmark_white);
-//                }
-//            }
-//        });
+    // 찜한 가게 목록 설정
+    public void setbookmarkStores(ArrayList<mainBookmarkStoreData> bookmarkStores) {
+        BookmarkStores = bookmarkStores;
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -126,7 +142,7 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     // findViewById & 각종 event 작업
     public static class CustomMainCategoryViewHolder extends RecyclerView.ViewHolder {
         ImageButton mainStoreImage;     // 가게 썸네일
-        ToggleButton mainStoreBookmark; // 가게 찜 버튼
+        Button mainStoreBookmark; // 가게 찜 버튼
         TextView mainStoreName;         // 가게 이름
         TextView mainStoreDistance;     // 현 위치에서 가게까지의 거리
         TextView mainStoreScore;        // 가게 별점
@@ -143,6 +159,32 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
             mainStoreScore = itemView.findViewById(R.id.main_store_score);
             mainStoreReviewCount = itemView.findViewById(R.id.main_store_review_count);
             mainStoreHashTag = itemView.findViewById(R.id.main_store_hashtag);
+
+            // 리사이클러뷰 이미지 클릭 이벤트 인터페이스 구현
+            mainStoreImage.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMainStoreRvClick(view, getAbsoluteAdapterPosition(), "image");
+                }
+            });
+
+            // 리사이클러뷰 찜 버튼 클릭 이벤트 인터페이스 구현
+            mainStoreBookmark.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    if(mainStoreBookmark.isSelected()){
+                        mainStoreBookmark.setSelected(false);
+                        rvClickListener.onMainStoreRvClick(view, getAbsoluteAdapterPosition(), "bookmarkDelete");
+                    }else{
+                        mainStoreBookmark.setSelected(true);
+                        rvClickListener.onMainStoreRvClick(view, getAbsoluteAdapterPosition(), "bookmarkInsert");
+                    }
+                }
+            });
         }
     }
 

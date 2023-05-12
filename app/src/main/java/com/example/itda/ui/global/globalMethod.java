@@ -36,6 +36,11 @@ public class globalMethod extends Application {
         return "/store/getMainStore.php";
     }
 
+    // 유저 찜한 가게 목록 ( 간단 정보 ) 조회 Rest API
+    public String getMainBookmarkStorePath() {
+        return "/store/getMainBookmarkStore.php";
+    }
+
     // 지도 내 가게 데이터 조회 Rest API
     public String getMapStorePath() {
         return "/map/getMapStore.php";
@@ -114,6 +119,11 @@ public class globalMethod extends Application {
     // 유저 찜한 가게 목록 삭제 Rest API
     public String deleteBookmarkStorePath() {
         return "/mypage/deleteBookmarkStore.php";
+    }
+
+    // 유저 찜한 가게 목록 추가 Rest API
+    public String insertBookmarkStorePath() {
+        return "/mypage/insertBookmarkStore.php";
     }
 
     // 유저 찜한 협업 목록 조회 Rest API
