@@ -176,8 +176,16 @@ public class HomeFragment extends Fragment{
                 assert result.getData() != null;
                 BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");    // 찜한 목록 데이터 GET
 
+                mainStoreData storeData = result.getData().getParcelableExtra("store");    // 찜한 목록 데이터 GET
+                int position = result.getData().getIntExtra("viewPosition", 0);    // 찜한 목록 데이터 GET
+
                 // 찜 목록 데이터 SET
                 MainStoreAdapter.setbookmarkStores(BookmarkStore);
+
+                // 가게 데이터 SET
+                MainStore.set(position, storeData);
+                MainStoreAdapter.setStores(MainStore);
+
                 MainStoreAdapter.notifyDataSetChanged();    // 리사이클러뷰 데이터 변경
             }
         });
@@ -320,6 +328,7 @@ public class HomeFragment extends Fragment{
                         // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
                         intent.putExtra("Store", (Parcelable) MainStore.get(position));
                         intent.putExtra("bookmarkStore", BookmarkStore);
+                        intent.putExtra("viewPosition", position);
 
                         // startActivityForResult가 아닌 ActivityResultLauncher의 launch 메서드로 intent 실행
                         activityResultLauncher.launch(intent);

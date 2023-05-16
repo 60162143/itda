@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,13 +37,17 @@ import com.example.itda.ui.home.HomeSearchActivity;
 import com.example.itda.ui.home.mainBookmarkStoreData;
 import com.example.itda.ui.home.mainStoreData;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
 import com.example.itda.ui.mypage.MyPageEditActivity;
+import com.example.itda.ui.mypage.MyPageEditNameActivity;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -51,22 +57,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
-public class InfoActivity extends Activity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener, onInfoReviewRvClickListener {
+public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener, onInfoReviewRvClickListener {
 
     private mainStoreData Store;    // 가게 데이터
     private final ArrayList<infoCollaboData> Collabo = new ArrayList<>(); // 협업 가게 데이터
     private final ArrayList<infoMenuData> Menu = new ArrayList<>();       // 메뉴 데이터
-    private final ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
-    private final ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
+    private ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
+    private ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
 
-    private boolean loginFlag = false;   // 로그인 여부
 
+    private int viewPosition;   // 메인 가게 리사이클러뷰의 현재 가게 position
     private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
 
     // ---------------- 최상단 Section ---------------------------
@@ -146,6 +153,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
     private NestedScrollView infoScrollView; // 스크롤 뷰
 
 
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
     private String STORE_PATH;  // 가게 데이터 조회 Rest API
     private String COLLABO_PATH;    // 협업 가게 정보 데이터 조회 Rest API
@@ -155,6 +163,8 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
     private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
     private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
     private String HOST;            // Host 정보
+
+    private boolean isLoginFlag = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -172,6 +182,9 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
+        viewPosition = getIntent().getExtras().getInt("viewPosition");    // 메인 가게 리사이클러뷰의 현재 가게 position
+
+        isLoginFlag = ((globalMethod) getApplication()).loginChecked(); // 로그인 유무
 
         // ---------------- Rest API 전역변수 SET---------------------------
         STORE_PATH = ((globalMethod) getApplication()).getMainStorePath();    // 가게 데이터 조회 Rest API
@@ -191,6 +204,9 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
             Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
             intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+            intent.putExtra("store", Store);
+            intent.putExtra("viewPosition", viewPosition);
+
             setResult(2000, intent);    // 결과 코드와 intent 값 전달
             finish();   // 버튼 클릭 시 Activity 종료
         });
@@ -208,9 +224,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
         // 찜이 되어 있을경우 레이아웃 변경
         // 로그인이 되어 있는지 확인
-        if(((globalMethod) getApplication()).loginChecked()){
-            loginFlag = true;
-
+        if(isLoginFlag){
             BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
             for(int i = 0; i < BookmarkStore.size(); i++){
                 if(Store.getStoreId() == BookmarkStore.get(i).getStoreId()){
@@ -224,7 +238,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         infoBookmarkIc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(loginFlag){  // 로그인이 되어있으면
+                if(isLoginFlag){  // 로그인이 되어있으면
                     if(infoBookmarkIc.isSelected()){    // 찜 버튼이 눌러져 있으면
                         infoBookmarkIc.setSelected(false);
                         deleteBookmarkStore(bookmarkStoreIndex);    // 찜 목록에서 제거
@@ -240,7 +254,6 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
         // ---------------- 가게 정보 Section ---------------------
         infoStoreName.setText(Store.getStoreName());        // 가게 이름
-        infoStarScore.setText(String.valueOf(Store.getStoreScore()));   // 가게 별점
         infoInformation.setText(Store.getStoreInfo());      // 가게 간단 정보
         infoHashtag.setText(Store.getStoreHashTag());       // 가게 해시태그
 
@@ -344,9 +357,41 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         // ---------------- 리뷰 Section ---------------------
         getInfoReview();    // 리뷰 데이터 GET
 
+        // 리뷰 작성 버튼 클릭 리스너
+        infoReviewPlusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isLoginFlag){
+                    Intent intent = new Intent(InfoActivity.this, InfoReviewInsertActivity.class);
+
+                    intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
+                    intent.putExtra("userId", User.getInt("userId", 0)); // 유저 고유 아이디
+
+                    activityResultLauncher.launch(intent);
+                }else{
+                    StyleableToast.makeText(getApplicationContext(), "로그인 후 이용하실 수 있습니다.", R.style.redToast).show();
+                }
+            }
+        });
+
 
         // ---------------- 결제 Section ---------------------
 
+
+        // ---------------- 화면전환 Section ---------------------
+        // activityResultLauncher 초기화
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == 1000) { // resultCode가 1000으로 넘어왔다면 리뷰 작성 완료
+
+                getInfoPhoto();     // 사진 데이터 GET
+                //infoPhotoAdapter.notifyDataSetChanged();
+
+                Review = new ArrayList<>(); // 리뷰 데이터 초기화
+                getInfoReview();    // 리뷰 데이터 GET
+
+                infoStarScore.setText(String.valueOf(Store.getStoreScore()));   // 가게 별점
+            }
+        });
     }
 
 
@@ -418,7 +463,6 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         mapViewContainer.removeView(mapView);
     }
 
-
     // 휴대폰 뒤로가기 버튼 클릭 이벤트
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -426,6 +470,9 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
             Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
             intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+            intent.putExtra("store", Store);
+            intent.putExtra("viewPosition", viewPosition);
+
             setResult(2000, intent);    // 결과 코드와 intent 값 전달
             finish();   // 버튼 클릭 시 Activity 종료
 
@@ -433,7 +480,6 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
         }
         return false;
     }
-
 
     private void initView(){
         // ---------------- 최상단 Section ---------------------------
@@ -513,7 +559,10 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
                 JSONArray collaboArr = jsonObject.getJSONArray("collabo");  // 객체에 collabo라는 Key를 가진 JSONArray 생성
 
+
+
                 if(collaboArr.length() > 0) {
+                    System.out.println("length : " + collaboArr.length());
                     for (int i = 0; i < collaboArr.length(); i++) {
                         JSONObject object = collaboArr.getJSONObject(i);    // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
@@ -548,6 +597,7 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
 
                     infoCollaboLayout.setPadding(0, 10, 0, 10); // 협업 레이아웃 전체 Padding 부여
                 }else{  // 협업 데이터 없을 경우 전체 레이아웃 숨김
+                    System.out.println("length : no");
                     infoCollaboLayout.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
@@ -668,6 +718,8 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
                 JSONArray reviewArr = jsonObject.getJSONArray("review"); // 객체에 review라는 Key를 가진 JSONArray 생성
 
+                double starScoreTotal = 0;  // 리뷰 총 별점
+
                 if(reviewArr.length() > 0) {
                     for (int i = 0; i < reviewArr.length(); i++) {
                         JSONObject object = reviewArr.getJSONObject(i); // 배열 원소 하나하나 꺼내서 JSONObject 생성
@@ -685,7 +737,9 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                                 , object.getString("reviewRegDate")             // 리뷰 작성 일자
                                 , object.getInt("reviewCommentCount"));         // 리뷰 댓글 수
 
-                        Review.add(infoReviewData); // 리뷰 정보 저장
+                        Review.add(0, infoReviewData); // 리뷰 정보 저장
+
+                        starScoreTotal += object.getInt("reviewScore"); // 리뷰 총 별점
                     }
                     // LayoutManager 객체 생성
                     infoReviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -693,8 +747,15 @@ public class InfoActivity extends Activity implements onInfoCollaboRvClickListen
                     infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this);  // 리사이클러뷰 어뎁터 객체 생성
                     infoReviewRv.setAdapter(infoReviewAdapter); // 리사이클러뷰 어뎁터 객체 지정
 
+                    // 리뷰 별점 Set
+                    Store.setStoreReviewCount(Review.size());   // 리뷰 수
+                    Store.setStoreScore(Math.round(starScoreTotal / Review.size() * 10.0) / 10.0);  // 리뷰 별점
+                    infoStarScore.setText(String.valueOf(Store.getStoreScore()));
+
+                    infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
                 }else{
-                    infoReviewNoDataTxt.setVisibility(View.VISIBLE);
+                    infoStarScore.setText(String.valueOf(0.0));   // 별점 초기화
+                    infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -122,7 +122,7 @@ public class MyPageEditActivity extends AppCompatActivity{
             }else if(result.getResultCode() == 3000){ // resultCode가 3000으로 넘어왔다면 생일 변경
                 userBirthdayBtn.setText(User.getString("userBirthday", "-")); // 유저 생일
             }else if(result.getResultCode() == 4000){ // resultCode가 4000으로 넘어왔다면 비밀번호 변경
-                System.out.println("비밀번호 변경 완료!");
+
             }else if(result.getResultCode() == RESULT_OK){  // 갤러리에서 프로필 변경
                 Intent intent = result.getData();
                 Uri uri = intent.getData(); // 선택한 갤러리 URI 정보
@@ -172,8 +172,6 @@ public class MyPageEditActivity extends AppCompatActivity{
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(userProfile);      // 이미지를 보여줄 View를 지정
-
-        System.out.println("userEmail : " + User.getString("userEmail", ""));
 
         userEmailBtn.setText(User.getString("userEmail", "")); // 유저 이메일
         userNameBtn.setText(User.getString("userName", "")); // 유저 명

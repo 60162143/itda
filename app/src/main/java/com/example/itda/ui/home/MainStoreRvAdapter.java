@@ -28,7 +28,7 @@ import java.util.List;
 // findViewById() 메소드 호출을 줄여 효과적으로 퍼포먼스 개선을 할 수 있는 패턴이다.
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.CustomMainCategoryViewHolder>{
-    final private ArrayList<mainStoreData> Stores;    // 가게 데이터
+    private ArrayList<mainStoreData> Stores;    // 가게 데이터
     private ArrayList<mainBookmarkStoreData> BookmarkStores;    // 찜한 가게 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
@@ -105,7 +105,7 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
 
         holder.mainStoreName.setText(store.getStoreName()); // 가게 이름
 
-        holder.mainStoreScore.setText(String.valueOf(store.getStoreScore()));   // 가게 별점
+        holder.mainStoreScore.setText(String.format("%.1f", store.getStoreScore()));   // 가게 별점
 
         // 거리가 10m 이상인 경우만 거리 표시
         if(store.getStoreDistance() <= 0.01){
@@ -129,6 +129,11 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     // 찜한 가게 목록 설정
     public void setbookmarkStores(ArrayList<mainBookmarkStoreData> bookmarkStores) {
         BookmarkStores = bookmarkStores;
+    }
+
+    // 찜한 가게 목록 설정
+    public void setStores(ArrayList<mainStoreData> stores) {
+        Stores = stores;
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -187,5 +192,4 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
             });
         }
     }
-
 }

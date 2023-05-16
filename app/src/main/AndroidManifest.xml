@@ -40,39 +40,45 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <!--가게 상세 정보 액티비티-->
-        <activity android:name="com.example.itda.ui.info.InfoActivity"
-            android:theme="@style/Theme.MyApplication">
-        </activity>
-
         <!--가게 검색 화면 액티비티-->
         <activity android:name="com.example.itda.ui.home.HomeSearchActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <!--메뉴 상세 정보 액티비티-->
+        <!--가게 상세 정보 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--가게 상세 정보 내 메뉴 상세 정보 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoMenuActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <!--지도 상세 정보 액티비티-->
+        <!--가게 상세 정보 내 지도 상세 정보 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoMapActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <!--사진 상세 정보 액티비티-->
+        <!--가게 상세 정보 내 사진 상세 정보 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoPhotoActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <!--전체 사진 리스트 액티비티-->
+        <!--가게 상세 정보 내 전체 사진 리스트 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoPhotoTotalActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <!--리뷰 리스트 액티비티-->
+        <!--가게 상세 정보 내 리뷰 리스트 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoReviewActivity"
             android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--가게 상세 정보 내 리뷰 추가 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoReviewInsertActivity"
+            android:theme="@style/Theme.MyApplication"
+            android:windowSoftInputMode="adjustNothing">
         </activity>
 
         <!--로그인 액티비티-->
@@ -127,7 +133,7 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <!--내 정보 사지 목록 액티비티-->
+        <!--내 정보 사진 목록 액티비티-->
         <activity android:name="com.example.itda.ui.mypage.MyPagePhotoActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>

@@ -57,7 +57,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/bookmark_selector_black"
+            android:src="@drawable/selector_bookmark_black"
             android:background="#00000000"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -107,8 +107,10 @@
                             android:layout_height="wrap_content"
                             android:text="착한커피"
                             android:textStyle="bold"
-                            android:textSize="20sp"
-                            android:layout_weight="9"/>
+                            android:textSize="18sp"
+                            android:layout_weight="9"
+                            android:layout_gravity="center"
+                            android:textColor="@color/gray05"/>
 
                         <View
                             android:layout_width="0dp"
@@ -118,7 +120,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="end"
+                            android:gravity="center|end"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1">
 
@@ -127,13 +130,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_star"
-                                android:layout_marginEnd="10dp"/>
+                                android:layout_marginEnd="5dp"/>
 
                             <TextView
                                 android:id="@+id/info_star_score"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="4.8"/>
+                                android:text="4.8"
+                                android:textStyle="bold"
+                                android:textColor="@color/gray04"
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -154,7 +160,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="#해시태그" />
+                        android:text="#해시태그"
+                        android:textColor="@color/green04"/>
 
                 </LinearLayout>
 
@@ -266,7 +273,7 @@
                         android:id="@+id/info_working_time_up_arrow_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_up_arrow"
+                        android:src="@drawable/ic_arrow_up"
                         android:layout_marginStart="10dp"
                         android:visibility="gone"
                         android:background="@android:color/transparent"

@@ -43,7 +43,7 @@
                         android:id="@+id/main_store_bookmark"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/bookmark_selector_white"
+                        android:background="@drawable/selector_bookmark_white"
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_gravity="end|top"

@@ -25,6 +25,11 @@ public class globalMethod extends Application {
         return "/ftpFileStorage/noImage.png";
     }
 
+    // 추가할 이미지 기본 화면 정보
+    public String getImagePlusPath() {
+        return "/ftpFileStorage/imagePlus.png";
+    }
+
     /********************************* API ***********************************/
     // 카테고리 데이터 조회 Rest API
     public String getMainCategoryPath() {
@@ -64,6 +69,16 @@ public class globalMethod extends Application {
     // 리뷰 정보 데이터 조회 Rest API
     public String getInfoReviewPath() {
         return "/info/getInfoReview.php";
+    }
+
+    // 리뷰 추가 Rest API
+    public String insertInfoReviewPath() {
+        return "/info/insertInfoReview.php";
+    }
+
+    // 리뷰 사진 추가 Rest API
+    public String insertInfoReviewPhotoPath() {
+        return "/info/insertInfoReviewPhoto.php";
     }
 
     // 리뷰 댓글 정보 데이터 조회 Rest API
