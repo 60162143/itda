@@ -181,7 +181,7 @@ public class MyPageReviewActivity extends Activity implements onMyPageReviewRvCl
                                 , object.getString("reviewRegDate")             // 리뷰 작성 일자
                                 , object.getInt("reviewCommentCount"));         // 리뷰 댓글 수
 
-                        Review.add(infoReviewData); // 리뷰 정보 저장
+                        Review.add(0, infoReviewData); // 리뷰 정보 저장
                     }
                     // LayoutManager 객체 생성
                     reviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

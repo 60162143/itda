@@ -60,7 +60,7 @@
 <!--        <item name="stIconStart">@drawable/favorite</item>-->
 <!--        <item name="stIconEnd">@drawable/favorite</item>-->
         <item name="stLength">SHORT</item>
-        <item name="stGravity">top</item>
+        <item name="stGravity">center</item>
         <item name="stRadius">20dp</item>
     </style>
 

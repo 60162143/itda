@@ -27,7 +27,9 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
     private final ArrayList<infoReviewData> Reviews;  // 리뷰 데이터
     private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
     private final String storeName; // 가게 명
+    private final int userId; // 로그인 유저 고유 아이디
 
+    private final boolean isLoginFlag;  // 로그인 유무
     private static onInfoReviewRvClickListener rvClickListener = null;
 
     // Activity Content
@@ -40,13 +42,17 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
             , ArrayList<infoReviewData> reviews
             , ArrayList<infoPhotoData> Photos
             , String storeName
-            , onInfoReviewRvClickListener clickListener){
+            , onInfoReviewRvClickListener clickListener
+            , boolean isLoginFlag
+            , int userId){
 
         this.mContext = context;
         this.Reviews = reviews;
         this.Photos = Photos;
         this.storeName = storeName;
         rvClickListener = clickListener;
+        this.isLoginFlag = isLoginFlag;
+        this.userId = userId;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -66,6 +72,13 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
     @Override
     public void onBindViewHolder(@NonNull CustomInfoReviewViewHolder holder, int position) {
         infoReviewData review = Reviews.get(position);  // 현재 position의 리뷰 정보
+
+        // 로그인 유무에 따른 삭제버튼 활성화
+        if(isLoginFlag && userId == review.getUserId()){
+            holder.reviewDeleteBtn.setVisibility(View.VISIBLE);
+        }else{
+            holder.reviewDeleteBtn.setVisibility(View.GONE);
+        }
 
         // 유저 프로필 이미지
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
@@ -154,7 +167,17 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
 
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onInfoReviewRvClick(view, getAbsoluteAdapterPosition());
+                    rvClickListener.onInfoReviewRvClick(view, getAbsoluteAdapterPosition(), "total");
+                }
+            });
+
+            // 리사이클러뷰 클릭 이벤트 인터페이스 구현
+            reviewDeleteBtn.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onInfoReviewRvClick(view, getAbsoluteAdapterPosition(), "delete");
                 }
             });
         }

@@ -15,6 +15,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class MainActivity extends FragmentActivity {
     // 화면의 최상위에 고정되어 있는 버튼
     // 메인 화면 홈버튼
@@ -47,14 +49,16 @@ public class MainActivity extends FragmentActivity {
         } else {
             Log.e("!!!", "Listener is null");
             if ( pressedTime == 0 ) {
-                Toast.makeText(this, " 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(this, "한 번 더 누르면 종료됩니다.", R.style.orangeToast).show();
+                //Toast.makeText(this, " 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
                 pressedTime = System.currentTimeMillis();
             }
             else {
                 int seconds = (int) (System.currentTimeMillis() - pressedTime);
 
                 if ( seconds > 2000 ) {
-                    Toast.makeText(this, " 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(this, "한 번 더 누르면 종료됩니다.", R.style.orangeToast).show();
+                    //Toast.makeText(this, " 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
                     pressedTime = 0 ;
                 }
                 else {
@@ -82,7 +86,8 @@ public class MainActivity extends FragmentActivity {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
         if(!isConnected){
-            Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", R.style.redToast).show();
+            //Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
             finish();   // Activity 종료
         }
 

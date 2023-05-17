@@ -497,9 +497,7 @@ public class InfoReviewInsertActivity extends AppCompatActivity implements onInf
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("asd1", "!!!!!!!!!!!!!!!!!!!!!!!!!");
                     insertInfoReviewPhoto(reviewId, name, ets, size);
-                    Log.d("asd2", "@@@@@@@@@@@@@@@@@@@@@@@@");
                     //StyleableToast.makeText(getApplicationContext(), "변경 완료", R.style.blueToast).show();
                 }
             });

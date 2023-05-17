@@ -287,11 +287,6 @@ public class HomeFragment extends Fragment{
                         distance = locCurrent.distanceTo(point);
                     }
 
-//                    if(i == 0){
-//                        System.out.println("lat : " + locCurrent.getLatitude());
-//                        System.out.println("lon : " + locCurrent.getLongitude());
-//                    }
-
                     mainStoreData mainStore = new mainStoreData(
                               object.getInt("storeId")                      // 가게 고유 아이디
                             , object.getString("storeName")                 // 가게 이름
@@ -327,7 +322,7 @@ public class HomeFragment extends Fragment{
                         // 데이터 송신을 위한 Parcelable interface 사용
                         // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
                         intent.putExtra("Store", (Parcelable) MainStore.get(position));
-                        intent.putExtra("bookmarkStore", BookmarkStore);
+                        intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
                         intent.putExtra("viewPosition", position);
 
                         // startActivityForResult가 아닌 ActivityResultLauncher의 launch 메서드로 intent 실행
@@ -424,7 +419,7 @@ public class HomeFragment extends Fragment{
                     // 데이터 송신을 위한 Parcelable interface 사용
                     // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
                     intent.putParcelableArrayListExtra("Store", searchStore);
-                    intent.putParcelableArrayListExtra("BookmarkStore", BookmarkStore);
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
 
                     // startActivityForResult가 아닌 ActivityResultLauncher의 launch 메서드로 intent 실행
                     activityResultLauncher.launch(intent);
@@ -472,7 +467,7 @@ public class HomeFragment extends Fragment{
             }
         }, error -> {
             // 통신 에러시 로그 출력
-            Log.d("getSearchMainStoreError", "onErrorResponse : " + error);
+            Log.d("getBookmarkStoreError", "onErrorResponse : " + error);
         });
 
         bookmarkStoreRequest.setShouldCache(false); // 이전 결과가 있어도 새로 요청하여 출력

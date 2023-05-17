@@ -380,6 +380,8 @@
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
                         android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray05"
                         android:background="#00ff0000"
                         android:layout_marginVertical="5dp"/>
 
@@ -515,11 +517,13 @@
                     <Button
                         android:id="@+id/info_review_plus_btn"
                         android:layout_width="80dp"
-                        android:layout_height="20dp"
+                        android:layout_height="40dp"
                         android:text="리뷰쓰기 >"
                         android:layout_marginEnd="20dp"
                         android:textSize="13sp"
-                        android:background="#00ff0000"/>
+                        android:background="#00ff0000"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray05"/>
 
                 </LinearLayout>
 

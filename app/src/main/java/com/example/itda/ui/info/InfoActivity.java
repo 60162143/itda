@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.example.itda.MainActivity;
 import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.home.HomeSearchActivity;
+import com.example.itda.ui.home.mainBookmarkCollaboData;
 import com.example.itda.ui.home.mainBookmarkStoreData;
 import com.example.itda.ui.home.mainStoreData;
 
@@ -48,6 +49,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.itda.R;
 import com.example.itda.ui.mypage.MyPageEditActivity;
 import com.example.itda.ui.mypage.MyPageEditNameActivity;
+import com.example.itda.ui.mypage.MyPageReviewActivity;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -83,6 +85,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private ImageButton infoBookmarkIc; // 최상단 찜 버튼
 
     private ArrayList<mainBookmarkStoreData> BookmarkStore = new ArrayList<>();  // 유저 찜한 가게 목록
+    private ArrayList<mainBookmarkCollaboData> BookmarkCollabo = new ArrayList<>();  // 유저 찜한 협업 목록
     private int bookmarkStoreIndex = -1; // 현재 가게의 찜한 목록 데이터의 인덱스
 
 
@@ -99,7 +102,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private InfoCollaboRvAdapter infoCollaboAdapter;    // 협업 가게 리사이클러뷰 어뎁터
     private Dialog infoCollaboDialog;                   // 협업 팝업 다이얼로그
     private LinearLayout infoCollaboLayout;             // 헙업 전체 레이아웃
-
+    private int bookmarkCollaboIndex = -1; // 현재 찜한 협업 목록중 클릭한 협업 데이터의 인덱스
 
     // ---------------- 운영 정보 Section ---------------------
     private TextView infoWorkingTime;           // 가게 운영 시간
@@ -152,6 +155,9 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     // ---------------- Nested ScrollView ---------------------
     private NestedScrollView infoScrollView; // 스크롤 뷰
 
+    // ---------------- Dialog ---------------------
+    private Dialog reviewDeleteDialog;   // 작성한 리뷰 목록 삭제 다이얼로그
+
 
     private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
     private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
@@ -160,8 +166,12 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private String MENU_PATH;       // 메뉴 정보 데이터 조회 Rest API
     private String PHOTO_PATH;      // 사진 정보 데이터 조회 Rest API
     private String REVIEW_PATH;     // 리뷰 정보 데이터 조회 Rest API
+    private String DELETE_REVIEW_PATH;     // 작성 리뷰 삭제 Rest API
     private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
     private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
+    private String BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
+    private String DELETE_BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 삭제 Rest API
+    private String INSERT_BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 추가 Rest API
     private String HOST;            // Host 정보
 
     private boolean isLoginFlag = false;
@@ -183,6 +193,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
         Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
         viewPosition = getIntent().getExtras().getInt("viewPosition");    // 메인 가게 리사이클러뷰의 현재 가게 position
+        BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
 
         isLoginFlag = ((globalMethod) getApplication()).loginChecked(); // 로그인 유무
 
@@ -192,8 +203,12 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         MENU_PATH = ((globalMethod) getApplication()).getInfoMenuPath();          // 메뉴 정보 데이터 조회 Rest API
         PHOTO_PATH = ((globalMethod) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
         REVIEW_PATH = ((globalMethod) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
+        DELETE_REVIEW_PATH = ((globalMethod) getApplication()).deleteReviewPath();      // 작성 리뷰 삭제 Rest API
         DELETE_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).deleteBookmarkStorePath();      // 유저 찜한 가게 목록 삭제 Rest API
         INSERT_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).insertBookmarkStorePath();      // 유저 찜한 가게 목록 추가 Rest API
+        BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).getMainBookmarkCollaboPath();      // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
+        DELETE_BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).deleteBookmarkCollaboPath();      // 유저 찜한 협업 목록 삭제 Rest API
+        INSERT_BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).insertBookmarkCollaboPath();      // 유저 찜한 협업 목록 추가 Rest API
         HOST = ((globalMethod) getApplication()).getHost();                       // Host 정보
 
         // ---------------- 최상단 Section ---------------------------
@@ -224,12 +239,12 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
         // 찜이 되어 있을경우 레이아웃 변경
         // 로그인이 되어 있는지 확인
-        if(isLoginFlag){
-            BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
+        if(isLoginFlag && BookmarkStore.size() > 0){
             for(int i = 0; i < BookmarkStore.size(); i++){
                 if(Store.getStoreId() == BookmarkStore.get(i).getStoreId()){
                     bookmarkStoreIndex = i;
                     infoBookmarkIc.setSelected(true);
+                    break;
                 }
             }
         }
@@ -273,6 +288,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         // ---------------- 협업 Section ---------------------
         getInfoCollabo();   // 협업 가게 데이터 GET
 
+        getBookmarkCollabo();  // 유저 찜한 협업 목록 데이터 GET
 
         // ---------------- 운영 정보 Section ---------------------
         // 가게 운영 시간
@@ -540,6 +556,13 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         infoReviewRv = findViewById(R.id.info_review_rv);   // 리뷰 리사이클러뷰
         infoReviewNoDataTxt = findViewById(R.id.info_review_nodata);   // 리뷰 데이터 없음 표시 텍스트
 
+        // 리뷰 삭제 Dialog 팝업
+        reviewDeleteDialog = new Dialog(InfoActivity.this);  // Dialog 초기화
+        reviewDeleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);    // 타이틀 제거
+        reviewDeleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  // 배경 색 제거
+        reviewDeleteDialog.setContentView(R.layout.dl_delete); // xml 레이아웃 파일과 연결
+
+
         // ---------------- 결제 Section ---------------------
         infoPaymentBtn = findViewById(R.id.info_payment_btn);   // 결제 버튼
 
@@ -562,7 +585,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
 
                 if(collaboArr.length() > 0) {
-                    System.out.println("length : " + collaboArr.length());
                     for (int i = 0; i < collaboArr.length(); i++) {
                         JSONObject object = collaboArr.getJSONObject(i);    // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
@@ -597,7 +619,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
                     infoCollaboLayout.setPadding(0, 10, 0, 10); // 협업 레이아웃 전체 Padding 부여
                 }else{  // 협업 데이터 없을 경우 전체 레이아웃 숨김
-                    System.out.println("length : no");
                     infoCollaboLayout.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
@@ -744,7 +765,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                     // LayoutManager 객체 생성
                     infoReviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-                    infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this);  // 리사이클러뷰 어뎁터 객체 생성
+                    infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this, isLoginFlag, User.getInt("userId", 0));  // 리사이클러뷰 어뎁터 객체 생성
                     infoReviewRv.setAdapter(infoReviewAdapter); // 리사이클러뷰 어뎁터 객체 지정
 
                     // 리뷰 별점 Set
@@ -779,16 +800,34 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         TextView postStoreName = infoCollaboDialog.findViewById(R.id.info_collabo_post_store_name);     // 뒷가게 명
 
         ImageButton preStoreImage = infoCollaboDialog.findViewById(R.id.info_collabo_previous_store_image); // 앞가게 썸네일
-        ImageButton postStoreImage = infoCollaboDialog.findViewById(R.id.info_collabo_post_store_image);    // 앞가게 썸네일
+        ImageButton postStoreImage = infoCollaboDialog.findViewById(R.id.info_collabo_post_store_image);    // 뒷가게 썸네일
 
         TextView distance = infoCollaboDialog.findViewById(R.id.info_collabo_distance);     // 두 가게 사이 거리
         TextView discount_info = infoCollaboDialog.findViewById(R.id.info_collabo_coupon);  // 할인 정보
+
+        ImageButton bookmarkBtn = infoCollaboDialog.findViewById(R.id.info_collabo_bookmark_btn);    // 협업 데이터 찜 버튼
 
         // 값 세팅
         infoCollaboData collabo = Collabo.get(position);    // 현재 Position의 협업 데이터
 
         preStoreName.setText(Store.getStoreName());     // 앞가게 명
         postStoreName.setText(collabo.getStoreName());  // 뒷가게 명
+
+        // 찜이 되어 있을경우 레이아웃 변경
+        // 로그인이 되어 있는지 확인
+        if(isLoginFlag) {
+            if(!BookmarkCollabo.isEmpty()){
+                for(int i = 0; i < BookmarkCollabo.size(); i++){
+                    if(collabo.getCollaboId() == BookmarkCollabo.get(i).getCollaboId()){
+                        bookmarkCollaboIndex = i;
+                        bookmarkBtn.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }else{
+            bookmarkBtn.setVisibility(View.GONE);
+        }
 
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
@@ -808,6 +847,28 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(postStoreImage);  // 이미지를 보여줄 View를 지정
+
+        // 가게 간 거리 계산을 위한 좌표
+        Location prePoint = new Location(Store.getStoreName());     // 앞 가게 위치 Location 객체 생성
+        prePoint.setLatitude(Store.getStoreLatitude());     // 위도
+        prePoint.setLongitude(Store.getStoreLongitude());   // 경도
+
+        // 가게 간 거리 계산을 위한 좌표
+        Location postPoint = new Location(collabo.getStoreName());  // 뒷 가게 위치 Location 객체 생성
+        postPoint.setLatitude(collabo.getStoreLatitude());      // 위도
+        postPoint.setLongitude(collabo.getStoreLongitude());    // 경도
+
+        // 가게 간 거리
+        String distanceStr = prePoint.distanceTo(postPoint) / 1000 + " km";
+        distance.setText(distanceStr);
+
+        // 할인 정보
+        String dis_info = Store.getStoreName() + "에서 "
+                + collabo.getCollaboDiscountCondition() +"원 이상 결제 시 "
+                + collabo.getStoreName() + "에서 "
+                + collabo.getCollaboDiscountRate() + "% 할인";
+
+        discount_info.setText(dis_info);
 
         // 뒷가게 이미지 클릭 리스너
         postStoreImage.setOnClickListener(view -> {
@@ -842,6 +903,9 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                     Intent intent = new Intent(InfoActivity.this, InfoActivity.class); // 가게 상세화면 Activity로 이동하기 위한 Intent 객체 선언
 
                     intent.putExtra("Store", mainStore);    // 가게 데이터
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 찜한 가게 목록 데이터 ( Intent 종료시 반환하기 위한 데이터 )
+
                     startActivity(intent);  // 새 Activity 인스턴스 시작
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -855,27 +919,23 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             requestQueue.add(postStoreRequest);     // RequestQueue에 요청 추가
         });
 
-        // 가게 간 거리 계산을 위한 좌표
-        Location prePoint = new Location(Store.getStoreName());     // 앞 가게 위치 Location 객체 생성
-        prePoint.setLatitude(Store.getStoreLatitude());     // 위도
-        prePoint.setLongitude(Store.getStoreLongitude());   // 경도
-
-        // 가게 간 거리 계산을 위한 좌표
-        Location postPoint = new Location(collabo.getStoreName());  // 뒷 가게 위치 Location 객체 생성
-        postPoint.setLatitude(collabo.getStoreLatitude());      // 위도
-        postPoint.setLongitude(collabo.getStoreLongitude());    // 경도
-
-        // 가게 간 거리
-        String distanceStr = prePoint.distanceTo(postPoint) / 1000 + " km";
-        distance.setText(distanceStr);
-
-        // 할인 정보
-        String dis_info = Store.getStoreName() + "에서 "
-                + collabo.getCollaboDiscountCondition() +"원 이상 결제 시 "
-                + collabo.getStoreName() + "에서 "
-                + collabo.getCollaboDiscountRate() + "% 할인";
-
-        discount_info.setText(dis_info);
+        // 찜 버튼 클릭 리스너
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isLoginFlag){  // 로그인이 되어있으면
+                    if(bookmarkBtn.isSelected()){    // 찜 버튼이 눌러져 있으면
+                        bookmarkBtn.setSelected(false);
+                        deleteBookmarkCollabo(bookmarkCollaboIndex);    // 찜 목록에서 제거
+                    }else{
+                        bookmarkBtn.setSelected(true);
+                        insertBookmarkCollabo(User.getInt("userId", 0), collabo.getCollaboId());  // 찜 목록에 추가
+                    }
+                }else{
+                    StyleableToast.makeText(getApplicationContext(), "로그인 해야 이용하실 수 있습니다.", R.style.redToast).show();
+                }
+            }
+        });
     }
 
     // 유저 찜한 가게 삭제
@@ -979,26 +1039,208 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
     // 리뷰 리사이클러뷰 클릭 이벤트 인터페이스 구현
     @Override
-    public void onInfoReviewRvClick(View v, int position) {
-        infoReviewData review = Review.get(position);       // 리뷰 데이터
-        ArrayList<infoPhotoData> photo = new ArrayList<>(); // 리뷰 사진 데이터
+    public void onInfoReviewRvClick(View v, int position, String flag) {
+        if(flag.equals("total")){
+            infoReviewData review = Review.get(position);       // 리뷰 데이터
+            ArrayList<infoPhotoData> photo = new ArrayList<>(); // 리뷰 사진 데이터
 
-        // 현재 리뷰에 속한 시진 데이터만 저장
-        for(int i = 0; i < Photo.size(); i++){
-            if(review.getReviewId() == Photo.get(i).getReviewId()){
-                photo.add(Photo.get(i));
+            // 현재 리뷰에 속한 사진 데이터만 저장
+            for(int i = 0; i < Photo.size(); i++){
+                if(review.getReviewId() == Photo.get(i).getReviewId()){
+                    photo.add(Photo.get(i));
+                }
             }
+
+            // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+            Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
+
+            intent.putParcelableArrayListExtra("Photo", photo); // 사진 데이터
+            intent.putExtra("reviewId", review.getReviewId());  // 리뷰 고유 아이디
+            intent.putExtra("storeName", Store.getStoreName()); // 가게 명
+            intent.putExtra("review", review);                  // 리뷰 데이터
+
+            startActivity(intent);  // 새 Activity 인스턴스 시작
+        }else if(flag.equals("delete")){
+            reviewDeleteDialog.show();
+
+            // 뷰 정의
+            TextView dlTitle = reviewDeleteDialog.findViewById(R.id.dl_title);  // 다이얼로그 타이틀
+            Button dlConfirmBtn = reviewDeleteDialog.findViewById(R.id.dl_confirm_btn);  // 다이얼로그 확인 버튼
+            Button dlCloseBtn = reviewDeleteDialog.findViewById(R.id.dl_close_btn);  // 다이얼로그 닫기 버튼
+
+            // 데이터 SET
+            dlTitle.setText("작성한 리뷰를 삭제하시겠습니까?");
+            dlConfirmBtn.setText("삭제");
+
+            // 삭제 버튼 클릭 리스너
+            dlConfirmBtn.setOnClickListener(view -> {
+                Map<String, String> param = new HashMap<>();
+                param.put("reviewId", String.valueOf(Review.get(position).getReviewId()));   // 삭제할 리뷰 고유 아이디
+
+                // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+                StringRequest deleteReviewRequest = new StringRequest(Request.Method.POST, HOST + DELETE_REVIEW_PATH, response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                        String success = jsonObject.getString("success");
+
+                        if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                            StyleableToast.makeText(getApplicationContext(), "삭제 성공!", R.style.blueToast).show();
+
+                            reviewDeleteDialog.dismiss();  // 다이얼로그 닫기
+
+                            Review.remove(position);   // 데이터 삭제
+                            infoReviewAdapter.notifyItemRemoved(position); // 리사이클러뷰 데이터 삭제
+
+                            // 데이터가 없을 경우 없다는 텍스트 표시
+                            if(Review.size() == 0){
+                                infoReviewRv.setVisibility(View.GONE);
+                                infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
+                            }else{
+                                infoReviewRv.setVisibility(View.VISIBLE);
+                                infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
+                            }
+                        }else{
+                            StyleableToast.makeText(getApplicationContext(), "삭제 실패...", R.style.redToast).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    // 통신 에러시 로그 출력
+                    Log.d("deleteReviewError", "onErrorResponse : " + error);
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        // php로 설정값을 보낼 수 있음 ( POST )
+                        return param;
+                    }
+                };
+
+                deleteReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+                requestQueue.add(deleteReviewRequest);      // RequestQueue에 요청 추가
+            });
+
+            // 닫기 버튼 클릭 리스너
+            dlCloseBtn.setOnClickListener(view1 -> reviewDeleteDialog.dismiss());
         }
+    }
 
-        // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
-        Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
+    // 유저 찜한 협업 정보 Return
+    private void getBookmarkCollabo(){
+        // GET 방식 파라미터 설정
+        String bookmarkCollaboPath = BOOKMARK_COLLABO_PATH;
+        bookmarkCollaboPath += String.format("?userId=%s", User.getInt("userId", 0));     // 유저 고유 아이디
 
-        intent.putParcelableArrayListExtra("Photo", photo); // 사진 데이터
-        intent.putExtra("reviewId", review.getReviewId());  // 리뷰 고유 아이디
-        intent.putExtra("storeName", Store.getStoreName()); // 가게 명
-        intent.putExtra("review", review);                  // 리뷰 데이터
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
+        StringRequest bookmarkCollaboRequest = new StringRequest(Request.Method.GET, HOST + bookmarkCollaboPath, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);                 // Response를 JsonObject 객체로 생성
+                JSONArray bookmarkCollaboArr = jsonObject.getJSONArray("bookmarkCollabo");  // 객체에 store라는 Key를 가진 JSONArray 생성
 
-        startActivity(intent);  // 새 Activity 인스턴스 시작
+                if(bookmarkCollaboArr.length() > 0) {
+                    for (int i = 0; i < bookmarkCollaboArr.length(); i++) {
+                        JSONObject object = bookmarkCollaboArr.getJSONObject(i);          // 배열 원소 하나하나 꺼내서 JSONObject 생성
+
+                        mainBookmarkCollaboData bookmarkCollabo = new mainBookmarkCollaboData(
+                                object.getInt("bookmarkCollaboId")                        // 찜한 협업 목록 고유 아이디
+                                , object.getInt("collaboId")); // 협업 고유 아이디
+
+                        BookmarkCollabo.add(bookmarkCollabo);  // 협업 정보 저장
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("getBookmarkCollaboError", "onErrorResponse : " + error);
+        });
+
+        bookmarkCollaboRequest.setShouldCache(false); // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(bookmarkCollaboRequest);     // RequestQueue에 요청 추가
+    }
+
+    // 유저 찜한 가게 삭제
+    private void deleteBookmarkCollabo(int index){
+        Map<String, String> param = new HashMap<>();
+
+        param.put("bmkCobId", String.valueOf(BookmarkCollabo.get(index).getBmkCollaboId()));   // 삭제할 찜한 협업 목록 고유 아이디
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+        StringRequest deleteBookmarkCollaboRequest = new StringRequest(Request.Method.POST, HOST + DELETE_BOOKMARK_COLLABO_PATH, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                String success = jsonObject.getString("success");
+
+                if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                    StyleableToast.makeText(this, "삭제 성공!", R.style.blueToast).show();
+
+                    BookmarkCollabo.remove(index);   // 데이터 삭제
+
+                }else{
+                    StyleableToast.makeText(this, "삭제 실패...", R.style.redToast).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("deleteBookmarkCollaboError", "onErrorResponse : " + error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // php로 설정값을 보낼 수 있음 ( POST )
+                return param;
+            }
+        };
+
+        deleteBookmarkCollaboRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(deleteBookmarkCollaboRequest);      // RequestQueue에 요청 추가
+    }
+
+    // 유저 찜한 가게 추가
+    private void insertBookmarkCollabo(int userId, int collaboId){
+        Map<String, String> param = new HashMap<>();
+
+        param.put("userId", String.valueOf(userId));   // 유저 고유 아이디
+        param.put("collaboId", String.valueOf(collaboId));   // 찜할 협업 목록 고유 아이디
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+        StringRequest insertBookmarkCollaboRequest = new StringRequest(Request.Method.POST, HOST + INSERT_BOOKMARK_COLLABO_PATH, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                String success = jsonObject.getString("success");
+
+                if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                    StyleableToast.makeText(this, "추가 성공!", R.style.blueToast).show();
+
+                    // 데이터 추가
+                    BookmarkCollabo.add(new mainBookmarkCollaboData(
+                            Integer.parseInt(jsonObject.getString("bmkCobId"))
+                            , collaboId
+                    ));
+
+                }else{
+                    StyleableToast.makeText(this, "추가 실패...", R.style.redToast).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("insertBookmarkCollaboError", "onErrorResponse : " + error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // php로 설정값을 보낼 수 있음 ( POST )
+                return param;
+            }
+        };
+
+        insertBookmarkCollaboRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(insertBookmarkCollaboRequest);      // RequestQueue에 요청 추가
     }
 }
 
