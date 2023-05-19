@@ -21,9 +21,11 @@ import java.util.ArrayList;
 public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPhotoRvAdapter.CustomInfoReviewPhotoViewHolder>{
 
     private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
+    private int reviewId; // 리뷰 고유 아이디
 
     // 리사이클러뷰 클릭 리스너 인터페이스
     private static onInfoReviewPhotoRvClickListener rvClickListener = null;
+    private static onInfoReviewDetailPhotoRvClickListener rvDetailClickListener = null;
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -31,10 +33,26 @@ public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPho
     private final Context mContext;
 
     // Constructor
-    public InfoReviewPhotoRvAdapter(Context context, onInfoReviewPhotoRvClickListener clickListener, ArrayList<infoPhotoData> photos){
+    // InfoActivity 리뷰 내 사진 클릭 생성자
+    public InfoReviewPhotoRvAdapter(Context context
+            , onInfoReviewPhotoRvClickListener clickListener
+            , ArrayList<infoPhotoData> photos
+            , int reviewId){
         this.mContext = context;
         rvClickListener = clickListener;
         this.Photos = photos;
+        this.reviewId = reviewId;
+    }
+
+    // ReviewActivity 리뷰 사진 클릭 생성자
+    public InfoReviewPhotoRvAdapter(Context context
+            , onInfoReviewDetailPhotoRvClickListener clickListener
+            , ArrayList<infoPhotoData> photos
+            , int reviewId){
+        this.mContext = context;
+        rvDetailClickListener = clickListener;
+        this.Photos = photos;
+        this.reviewId = reviewId;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -63,6 +81,17 @@ public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPho
                 .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);           // 이미지를 보여줄 View를 지정
+
+        holder.photoImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(rvClickListener == null){    // 리뷰 상세 화면에서 클릭
+                    rvDetailClickListener.onInfoReviewDetailPhotoRvClick(view, holder.getAbsoluteAdapterPosition(), reviewId);
+                }else{  // Info 화면에서 클릭
+                    rvClickListener.onInfoReviewPhotoRvClick(view, holder.getAbsoluteAdapterPosition(), reviewId);
+                }
+            }
+        });
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -76,21 +105,11 @@ public class InfoReviewPhotoRvAdapter extends RecyclerView.Adapter<InfoReviewPho
     // findViewById & 각종 event 작업
     public static class CustomInfoReviewPhotoViewHolder extends RecyclerView.ViewHolder {
         ImageView photoImage;   // 사진 이미지
+
         public CustomInfoReviewPhotoViewHolder(@NonNull View itemView) {
             super(itemView);
 
             photoImage = itemView.findViewById(R.id.info_review_photo_image);
-
-            // 리사이클러뷰 클릭 이벤트 인터페이스 구현
-            // Fragment로 return
-            itemView.setOnClickListener(view -> {
-                int pos = getAbsoluteAdapterPosition(); // 현재 position
-
-                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
-                if(pos != RecyclerView.NO_POSITION){
-                    rvClickListener.onInfoReviewPhotoRvClick(view, getAbsoluteAdapterPosition());
-                }
-            });
         }
     }
 }

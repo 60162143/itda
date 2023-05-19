@@ -20,6 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.itda.MainActivity;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
 
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvClickListener{
+public class InfoReviewActivity extends Activity implements onInfoReviewDetailPhotoRvClickListener{
     private ImageButton infoReviewBackIc;       // 상단 뒤로가기 버튼
     private ImageButton infoReviewUserProfile;  // 유저 프로필 사진
 
@@ -74,7 +75,9 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
         initView();
 
         // 뒤로 가기 버튼 클릭 시 Activity 종료
-        infoReviewBackIc.setOnClickListener(view -> finish());
+        infoReviewBackIc.setOnClickListener(view -> {
+            finish();
+        });
 
         // 가게 명
         storeName = getIntent().getExtras().getString("storeName");
@@ -106,7 +109,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
         Photos = getIntent().getParcelableArrayListExtra("Photo");  // 사진 데이터
 
         // 리사이클러뷰 어뎁터 객체 생성
-        InfoReviewPhotoRvAdapter InfoReviewPhotoRvAdapter = new InfoReviewPhotoRvAdapter(this, this, Photos);
+        InfoReviewPhotoRvAdapter InfoReviewPhotoRvAdapter = new InfoReviewPhotoRvAdapter(this, this, Photos, reviewId);
 
         // 리사이클러뷰 어뎁터 객체 생성
         infoReviewPhotoRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -184,7 +187,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewPhotoRvC
 
     // 사진 리사이클러뷰 클릭 이벤트 구현
     @Override
-    public void onInfoReviewPhotoRvClick(View v, int position) {
+    public void onInfoReviewDetailPhotoRvClick(View v, int position, int reviewId) {
         // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         Intent intent = new Intent(InfoReviewActivity.this, InfoPhotoActivity.class);
 

@@ -103,7 +103,7 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
         holder.reviewPhotoRv.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
 
         // 리사이클러뷰 어뎁터 객체 생성
-        InfoReviewPhotoRvAdapter infoReviewPhotoAdapter = new InfoReviewPhotoRvAdapter(mContext, this, reviewPhoto);
+        InfoReviewPhotoRvAdapter infoReviewPhotoAdapter = new InfoReviewPhotoRvAdapter(mContext, this, reviewPhoto, review.getReviewId());
         holder.reviewPhotoRv.setAdapter(infoReviewPhotoAdapter);    // 리사이클러뷰 어뎁터 객체 지정
     }
 
@@ -115,11 +115,20 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
 
     // 사진 리사이클러뷰 클릭 이벤트 구현
     @Override
-    public void onInfoReviewPhotoRvClick(View v, int position) {
+    public void onInfoReviewPhotoRvClick(View v, int position, int reviewId) {
+        ArrayList<infoPhotoData> reviewPhoto = new ArrayList<>();   // 리뷰 사진 데이터
+
+        // 리뷰에 속한 사진 데이터만 저장
+        for(int i = 0; i < Photos.size(); i++){
+            if(Photos.get(i).getReviewId() == reviewId){
+                reviewPhoto.add(Photos.get(i));
+            }
+        }
+
         // 리뷰 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         Intent intent = new Intent(mContext, InfoPhotoActivity.class);
 
-        intent.putParcelableArrayListExtra("Photo", Photos);    // 사진 데이터
+        intent.putParcelableArrayListExtra("Photo", reviewPhoto);    // 사진 데이터
         intent.putExtra("Position", position);      // 현재 position
         intent.putExtra("storeName", storeName);    // 가게 명
 

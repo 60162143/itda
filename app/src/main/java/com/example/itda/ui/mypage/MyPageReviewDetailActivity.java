@@ -115,7 +115,7 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
         Photos = getIntent().getParcelableArrayListExtra("Photo");  // 사진 데이터
 
         // 리사이클러뷰 어뎁터 객체 생성
-        InfoReviewPhotoRvAdapter InfoReviewPhotoRvAdapter = new InfoReviewPhotoRvAdapter(this, this, Photos);
+        InfoReviewPhotoRvAdapter InfoReviewPhotoRvAdapter = new InfoReviewPhotoRvAdapter(this, this, Photos, reviewId);
 
         // 리사이클러뷰 어뎁터 객체 생성
         infoReviewPhotoRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -196,7 +196,7 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
 
     // 사진 리사이클러뷰 클릭 이벤트 구현
     @Override
-    public void onInfoReviewPhotoRvClick(View v, int position) {
+    public void onInfoReviewPhotoRvClick(View v, int position, int reviewId) {
         // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         Intent intent = new Intent(MyPageReviewDetailActivity.this, InfoPhotoActivity.class);
 

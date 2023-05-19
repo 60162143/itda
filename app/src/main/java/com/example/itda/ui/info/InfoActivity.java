@@ -410,7 +410,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         });
     }
 
-
     // Activity 이동간 mapView는 1개만 띄워져 있어야 하기 때문에
     // onCreate가 아닌 onResume에서 mapview 객체 생성
     //
