@@ -14,6 +14,7 @@ public class infoReviewData implements Parcelable {
     private int reviewHeartCount;   // 리뷰 좋아요 수
     private String reviewRegDate;   // 리뷰 작성 일자
     private int reviewCommentCount; // 리뷰 댓글 수
+    private int reviewHeartIsClick; // 로그인 했을 경우 좋아요 눌렀는지 확인 Flag ( 누른 경우 : 1, 안눌렀거나 비로그인 시 : 0 )
 
     // Constructor
     public infoReviewData(int reviewId
@@ -25,7 +26,8 @@ public class infoReviewData implements Parcelable {
             , int reviewScore
             , int reviewHeartCount
             , String reviewRegDate
-            , int reviewCommentCount) {
+            , int reviewCommentCount
+            , int reviewHeartIsClick) {
 
         this.reviewId = reviewId;
         this.userId = userId;
@@ -37,6 +39,7 @@ public class infoReviewData implements Parcelable {
         this.reviewHeartCount = reviewHeartCount;
         this.reviewRegDate = reviewRegDate;
         this.reviewCommentCount = reviewCommentCount;
+        this.reviewHeartIsClick = reviewHeartIsClick;
     }
 
     // Parcelable interface Constructor
@@ -51,6 +54,7 @@ public class infoReviewData implements Parcelable {
         reviewHeartCount = in.readInt();
         reviewRegDate = in.readString();
         reviewCommentCount = in.readInt();
+        reviewHeartIsClick = in.readInt();
     }
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
@@ -89,6 +93,7 @@ public class infoReviewData implements Parcelable {
         dest.writeInt(reviewHeartCount);
         dest.writeString(reviewRegDate);
         dest.writeInt(reviewCommentCount);
+        dest.writeInt(reviewHeartIsClick);
     }
     //=======================================================================
 
@@ -171,5 +176,13 @@ public class infoReviewData implements Parcelable {
 
     public void setReviewCommentCount(int reviewCommentCount) {
         this.reviewCommentCount = reviewCommentCount;
+    }
+
+    public int getReviewHeartIsClick() {
+        return reviewHeartIsClick;
+    }
+
+    public void setReviewHeartIsClick(int reviewHeartIsClick) {
+        this.reviewHeartIsClick = reviewHeartIsClick;
     }
 }

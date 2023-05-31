@@ -86,6 +86,11 @@ public class globalMethod extends Application {
         return "/info/insertInfoReviewPhoto.php";
     }
 
+    // 리뷰 좋아요 갱신 Rest API
+    public String updateInfoReviewHeartPath() {
+        return "/info/updateInfoReviewHeart.php";
+    }
+
     // 리뷰 댓글 정보 데이터 조회 Rest API
     public String getInfoReviewCommentPath() {
         return "/info/getInfoReviewComment.php";

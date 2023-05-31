@@ -179,7 +179,8 @@ public class MyPageReviewActivity extends Activity implements onMyPageReviewRvCl
                                 , object.getInt("reviewScore")                  // 리뷰 별점
                                 , object.getInt("reviewHeartCount")             // 리뷰 좋아요 수
                                 , object.getString("reviewRegDate")             // 리뷰 작성 일자
-                                , object.getInt("reviewCommentCount"));         // 리뷰 댓글 수
+                                , object.getInt("reviewCommentCount")           // 리뷰 댓글 수
+                                , object.getInt("reviewHeartIsClick"));         // 로그인 했을 경우 좋아요 눌렀는지 확인 Flag ( 누른 경우 : 1, 안눌렀거나 비로그인 시 : 0 )
 
                         Review.add(0, infoReviewData); // 리뷰 정보 저장
                     }

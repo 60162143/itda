@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapter.CustomInfoReviewViewHolder>
         implements onInfoReviewPhotoRvClickListener{
 
-    private final ArrayList<infoReviewData> Reviews;  // 리뷰 데이터
+    private ArrayList<infoReviewData> Reviews;  // 리뷰 데이터
     private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
     private final String storeName; // 가게 명
     private final int userId; // 로그인 유저 고유 아이디
@@ -80,6 +81,9 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
             holder.reviewDeleteBtn.setVisibility(View.GONE);
         }
 
+        // 좋아요를 눌렀는지 표시
+        holder.reviewHeartBtn.setSelected(review.getReviewHeartIsClick() == 1);
+
         // 유저 프로필 이미지
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
@@ -120,6 +124,10 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
         return Reviews.size();
     }
 
+    public void setReviews(ArrayList<infoReviewData> reviews){
+        Reviews = reviews;
+    }
+
     // 사진 리사이클러뷰 클릭 이벤트 구현
     @Override
     public void onInfoReviewPhotoRvClick(View v, int position, int reviewId) {
@@ -147,8 +155,8 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
     // findViewById & 각종 event 작업
     public static class CustomInfoReviewViewHolder extends RecyclerView.ViewHolder {
         ImageButton userProfile;        // 유저 프로필 이미지
-        ImageButton reviewHeartIc;      // 리뷰 좋아요 아이콘
         ImageButton reviewDeleteBtn;    // 리뷰 삭제 버튼
+        Button reviewHeartBtn;      // 리뷰 좋아요 버튼
         TextView userName;  // 유저 명
         TextView reviewRegDate;     // 리뷰 작성 일자
         TextView reviewHeartCnt;    // 리뷰 좋아요 수
@@ -161,8 +169,8 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
             super(itemView);
 
             userProfile = itemView.findViewById(R.id.info_review_user_image);
-            reviewHeartIc = itemView.findViewById(R.id.info_review_heart_ic);
             reviewDeleteBtn = itemView.findViewById(R.id.info_review_delete_ic);
+            reviewHeartBtn = itemView.findViewById(R.id.info_review_heart_btn);
             userName = itemView.findViewById(R.id.info_review_user_name);
             reviewRegDate = itemView.findViewById(R.id.info_review_regdate);
             reviewHeartCnt = itemView.findViewById(R.id.info_review_heart_count);
@@ -188,6 +196,20 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
                 // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
                 if(pos != RecyclerView.NO_POSITION){
                     rvClickListener.onInfoReviewRvClick(view, getAbsoluteAdapterPosition(), "delete");
+                }
+            });
+
+            // 리사이클러뷰 좋아요 버튼 클릭 이벤트 인터페이스 구현
+            reviewHeartBtn.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    if(reviewHeartBtn.isSelected()){
+                        rvClickListener.onInfoReviewRvClick(view, getAbsoluteAdapterPosition(), "heartDelete");
+                    }else{
+                        rvClickListener.onInfoReviewRvClick(view, getAbsoluteAdapterPosition(), "heartInsert");
+                    }
                 }
             });
         }

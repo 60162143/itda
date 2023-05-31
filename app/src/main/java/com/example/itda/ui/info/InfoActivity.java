@@ -167,6 +167,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private String PHOTO_PATH;      // 사진 정보 데이터 조회 Rest API
     private String REVIEW_PATH;     // 리뷰 정보 데이터 조회 Rest API
     private String DELETE_REVIEW_PATH;     // 작성 리뷰 삭제 Rest API
+    private String UPDATE_REVIEW_HEART_PATH;      // 리뷰 좋아요 갱신 Rest API
     private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
     private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
     private String BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
@@ -204,6 +205,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         PHOTO_PATH = ((globalMethod) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
         REVIEW_PATH = ((globalMethod) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
         DELETE_REVIEW_PATH = ((globalMethod) getApplication()).deleteReviewPath();      // 작성 리뷰 삭제 Rest API
+        UPDATE_REVIEW_HEART_PATH = ((globalMethod) getApplication()).updateInfoReviewHeartPath();      // 리뷰 좋아요 갱신 Rest API
         DELETE_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).deleteBookmarkStorePath();      // 유저 찜한 가게 목록 삭제 Rest API
         INSERT_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).insertBookmarkStorePath();      // 유저 찜한 가게 목록 추가 Rest API
         BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).getMainBookmarkCollaboPath();      // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
@@ -406,6 +408,16 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 getInfoReview();    // 리뷰 데이터 GET
 
                 infoStarScore.setText(String.valueOf(Store.getStoreScore()));   // 가게 별점
+            }else if(result.getResultCode() == 2000) { // resultCode가 2000으로 넘어왔다면 리뷰 상세 화면에서 넘어옴
+
+                int position = result.getData().getIntExtra("position", 0); // 리뷰 리사이클러뷰 position
+                infoReviewData review = result.getData().getParcelableExtra("review");  // 변경된 리뷰 데이터
+
+                Review.set(position, review);   // 리뷰 데이터 변경
+
+                // 리사이클러뷰 갱신
+                infoReviewAdapter.setReviews(Review);
+                infoReviewAdapter.notifyItemChanged(position);
             }
         });
     }
@@ -570,6 +582,9 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         infoScrollView = findViewById(R.id.info_scroll_view);   // 스크롤 뷰
     }
 
+    // ---------------- 협업 Section Start ---------------------
+
+
     // 협업 가게 데이터 GET
     private void getInfoCollabo(){
         // GET 방식 파라미터 설정
@@ -630,163 +645,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
         CollaboRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(CollaboRequest);      // RequestQueue에 요청 추가
-    }
-
-    // 메뉴 데이터 GET
-    private void getInfoMenu(){
-        // GET 방식 파라미터 설정
-        String menuPath = MENU_PATH + String.format("?storeId=%s", Store.getStoreId());
-
-        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
-        StringRequest MenuRequest = new StringRequest(Request.Method.GET, HOST + menuPath, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                JSONArray menuArr = jsonObject.getJSONArray("menu");    // 객체에 menu라는 Key를 가진 JSONArray 생성
-
-                if(menuArr.length() > 0) {
-                    for (int i = 0; i < menuArr.length(); i++) {
-                        JSONObject object = menuArr.getJSONObject(i);   // 배열 원소 하나하나 꺼내서 JSONObject 생성
-
-                        // 메뉴 데이터 생성 및 저장
-                        infoMenuData infoMenuData = new infoMenuData(
-                                object.getInt("menuId")         // 메뉴 고유 아이디
-                                , object.getInt("storeId")      // 가게 고유 아이디
-                                , object.getString("menuName")  // 메뉴 명
-                                , object.getInt("menuPrice")    // 메뉴 가격
-                                , object.getInt("menuOrder"));  // 메뉴 정렬 순서
-
-                        Menu.add(infoMenuData); // 메뉴 정보 저장
-                    }
-                    // LayoutManager 객체 생성
-                    infoMenuRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-
-                    infoMenuAdapter = new InfoMenuRvAdapter(this, Menu, false);  // 리사이클러뷰 어뎁터 객체 생성
-                    infoMenuRv.setAdapter(infoMenuAdapter); // 리사이클러뷰 어뎁터 객체 지정
-
-                    infoMenuLayout.setPadding(0, 10, 0, 10);    // 메뉴 레이아웃 전체 Padding 부여
-                }else{  // 메뉴 데이터 없을 경우 전체 레이아웃 숨김
-                    infoMenuLayout.setVisibility(View.GONE);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error -> {
-            // 통신 에러시 로그 출력
-            Log.d("getInfoMenuError", "onErrorResponse : " + error);
-        });
-
-        MenuRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-        requestQueue.add(MenuRequest);      // RequestQueue에 요청 추가
-    }
-
-    // 사진 데이터 GET
-    private void getInfoPhoto(){
-        // GET 방식 파라미터 설정
-        String photoPath = PHOTO_PATH + String.format("?storeId=%s", Store.getStoreId());
-
-        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
-        StringRequest PhotoRequest = new StringRequest(Request.Method.GET, HOST + photoPath, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                JSONArray photoArr = jsonObject.getJSONArray("photo");  // 객체에 photo라는 Key를 가진 JSONArray 생성
-
-                if(photoArr.length() > 0) {
-                    for (int i = 0; i < photoArr.length(); i++) {
-                        JSONObject object = photoArr.getJSONObject(i);  // 배열 원소 하나하나 꺼내서 JSONObject 생성
-
-                        // 사진 데이터 생성 및 저장
-                        infoPhotoData infoPhotoData = new infoPhotoData(
-                                object.getInt("photoId")                    // 사진 고유 아이디
-                                , object.getInt("userId")                   // 유저 고유 아이디
-                                , object.getInt("reviewId")                 // 리뷰 고유 아이디
-                                , object.getString("userName")              // 유저 명
-                                , HOST + object.getString("photoImagePath") // 사진 이미지 경로
-                                , object.getString("reviewDetail")          // 리뷰 내용
-                                , object.getInt("reviewScore"));            // 리뷰 별점
-                        Photo.add(infoPhotoData); // 사진 정보 저장
-                    }
-                    // LayoutManager 객체 생성
-                    infoPhotoRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-
-                    infoPhotoAdapter = new InfoPhotoRvAdapter(this, this, Photo);  // 리사이클러뷰 어뎁터 객체 생성
-                    infoPhotoRv.setAdapter(infoPhotoAdapter);   // 리사이클러뷰 어뎁터 객체 지정
-
-                    infoPhotoLayout.setPadding(0, 10, 0, 10);   // 사진 레이아웃 전체 Padding 부여
-                }else{  // 사진 데이터 없을 경우 전체 레이아웃 숨김
-                    infoPhotoLayout.setVisibility(View.GONE);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error -> {
-            // 통신 에러시 로그 출력
-            Log.d("getInfoPhotoError", "onErrorResponse : " + error);
-        });
-
-        PhotoRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-        requestQueue.add(PhotoRequest);      // RequestQueue에 요청 추가
-    }
-
-    // 리뷰 데이터 GET
-    private void getInfoReview(){
-        // GET 방식 파라미터 설정
-        String reviewPath = REVIEW_PATH + String.format("?storeId=%s", Store.getStoreId());
-
-        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
-        StringRequest ReviewRequest = new StringRequest(Request.Method.GET, HOST + reviewPath, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                JSONArray reviewArr = jsonObject.getJSONArray("review"); // 객체에 review라는 Key를 가진 JSONArray 생성
-
-                double starScoreTotal = 0;  // 리뷰 총 별점
-
-                if(reviewArr.length() > 0) {
-                    for (int i = 0; i < reviewArr.length(); i++) {
-                        JSONObject object = reviewArr.getJSONObject(i); // 배열 원소 하나하나 꺼내서 JSONObject 생성
-
-                        // 리뷰 데이터 생성 및 저장
-                        infoReviewData infoReviewData = new infoReviewData(
-                                object.getInt("reviewId")                       // 리뷰 고유 아이디
-                                , object.getInt("userId")                       // 유저 고유 아이디
-                                , object.getString("userName")                  // 유저 명
-                                , object.getInt("storeId")                      // 가게 고유 아이디
-                                , HOST + object.getString("userProfilePath")    // 유저 프로필 경로
-                                , object.getString("reviewDetail")              // 리뷰 내용
-                                , object.getInt("reviewScore")                  // 리뷰 별점
-                                , object.getInt("reviewHeartCount")             // 리뷰 좋아요 수
-                                , object.getString("reviewRegDate")             // 리뷰 작성 일자
-                                , object.getInt("reviewCommentCount"));         // 리뷰 댓글 수
-
-                        Review.add(0, infoReviewData); // 리뷰 정보 저장
-
-                        starScoreTotal += object.getInt("reviewScore"); // 리뷰 총 별점
-                    }
-                    // LayoutManager 객체 생성
-                    infoReviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-
-                    infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this, isLoginFlag, User.getInt("userId", 0));  // 리사이클러뷰 어뎁터 객체 생성
-                    infoReviewRv.setAdapter(infoReviewAdapter); // 리사이클러뷰 어뎁터 객체 지정
-
-                    // 리뷰 별점 Set
-                    Store.setStoreReviewCount(Review.size());   // 리뷰 수
-                    Store.setStoreScore(Math.round(starScoreTotal / Review.size() * 10.0) / 10.0);  // 리뷰 별점
-                    infoStarScore.setText(String.valueOf(Store.getStoreScore()));
-
-                    infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
-                }else{
-                    infoStarScore.setText(String.valueOf(0.0));   // 별점 초기화
-                    infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error -> {
-            // 통신 에러시 로그 출력
-            Log.d("getInfoReviewError", "onErrorResponse : " + error);
-        });
-
-        ReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-        requestQueue.add(ReviewRequest);      // RequestQueue에 요청 추가
     }
 
     // 협업 리사이클러뷰 클릭 이벤트 인터페이스 구현
@@ -937,6 +795,367 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         });
     }
 
+    // ---------------- 협업 Section End ---------------------
+
+
+
+    // ---------------- 메뉴 Section Start ---------------------
+
+
+    // 메뉴 데이터 GET
+    private void getInfoMenu(){
+        // GET 방식 파라미터 설정
+        String menuPath = MENU_PATH + String.format("?storeId=%s", Store.getStoreId());
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
+        StringRequest MenuRequest = new StringRequest(Request.Method.GET, HOST + menuPath, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                JSONArray menuArr = jsonObject.getJSONArray("menu");    // 객체에 menu라는 Key를 가진 JSONArray 생성
+
+                if(menuArr.length() > 0) {
+                    for (int i = 0; i < menuArr.length(); i++) {
+                        JSONObject object = menuArr.getJSONObject(i);   // 배열 원소 하나하나 꺼내서 JSONObject 생성
+
+                        // 메뉴 데이터 생성 및 저장
+                        infoMenuData infoMenuData = new infoMenuData(
+                                object.getInt("menuId")         // 메뉴 고유 아이디
+                                , object.getInt("storeId")      // 가게 고유 아이디
+                                , object.getString("menuName")  // 메뉴 명
+                                , object.getInt("menuPrice")    // 메뉴 가격
+                                , object.getInt("menuOrder"));  // 메뉴 정렬 순서
+
+                        Menu.add(infoMenuData); // 메뉴 정보 저장
+                    }
+                    // LayoutManager 객체 생성
+                    infoMenuRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+                    infoMenuAdapter = new InfoMenuRvAdapter(this, Menu, false);  // 리사이클러뷰 어뎁터 객체 생성
+                    infoMenuRv.setAdapter(infoMenuAdapter); // 리사이클러뷰 어뎁터 객체 지정
+
+                    infoMenuLayout.setPadding(0, 10, 0, 10);    // 메뉴 레이아웃 전체 Padding 부여
+                }else{  // 메뉴 데이터 없을 경우 전체 레이아웃 숨김
+                    infoMenuLayout.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("getInfoMenuError", "onErrorResponse : " + error);
+        });
+
+        MenuRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(MenuRequest);      // RequestQueue에 요청 추가
+    }
+
+
+    // ---------------- 메뉴 Section End ---------------------
+
+
+    // ---------------- 사진 Section Start ---------------------
+
+
+    // 사진 데이터 GET
+    private void getInfoPhoto(){
+        // GET 방식 파라미터 설정
+        String photoPath = PHOTO_PATH + String.format("?storeId=%s", Store.getStoreId());
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
+        StringRequest PhotoRequest = new StringRequest(Request.Method.GET, HOST + photoPath, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                JSONArray photoArr = jsonObject.getJSONArray("photo");  // 객체에 photo라는 Key를 가진 JSONArray 생성
+
+                if(photoArr.length() > 0) {
+                    for (int i = 0; i < photoArr.length(); i++) {
+                        JSONObject object = photoArr.getJSONObject(i);  // 배열 원소 하나하나 꺼내서 JSONObject 생성
+
+                        // 사진 데이터 생성 및 저장
+                        infoPhotoData infoPhotoData = new infoPhotoData(
+                                object.getInt("photoId")                    // 사진 고유 아이디
+                                , object.getInt("userId")                   // 유저 고유 아이디
+                                , object.getInt("reviewId")                 // 리뷰 고유 아이디
+                                , object.getString("userName")              // 유저 명
+                                , HOST + object.getString("photoImagePath") // 사진 이미지 경로
+                                , object.getString("reviewDetail")          // 리뷰 내용
+                                , object.getInt("reviewScore"));            // 리뷰 별점
+                        Photo.add(infoPhotoData); // 사진 정보 저장
+                    }
+                    // LayoutManager 객체 생성
+                    infoPhotoRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+
+                    infoPhotoAdapter = new InfoPhotoRvAdapter(this, this, Photo);  // 리사이클러뷰 어뎁터 객체 생성
+                    infoPhotoRv.setAdapter(infoPhotoAdapter);   // 리사이클러뷰 어뎁터 객체 지정
+
+                    infoPhotoLayout.setPadding(0, 10, 0, 10);   // 사진 레이아웃 전체 Padding 부여
+                }else{  // 사진 데이터 없을 경우 전체 레이아웃 숨김
+                    infoPhotoLayout.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("getInfoPhotoError", "onErrorResponse : " + error);
+        });
+
+        PhotoRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(PhotoRequest);      // RequestQueue에 요청 추가
+    }
+
+    // 사진 리사이클러뷰 클릭 이벤트 인터페이스 구현
+    @Override
+    public void onInfoPhotoRvClick(View v, int position) {
+        // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+        // position이 4보다 작을 경우 사진 상세 화면으로 이동
+        // position이 4보다 클 경우 사진 전체 화면으로 이동
+        Intent intent = new Intent(InfoActivity.this, position < 4 ? InfoPhotoActivity.class : InfoPhotoTotalActivity.class);
+
+        intent.putParcelableArrayListExtra("Photo", Photo);     // 사진 데이터
+        intent.putExtra("Position", position);                  // 현재 Position
+        intent.putExtra("storeName", Store.getStoreName());     // 가게 명
+
+        startActivity(intent);  // 새 Activity 인스턴스 시작
+    }
+
+
+    // ---------------- 사진 Section End ---------------------
+
+
+    // ---------------- 리뷰 Section Start ---------------------
+
+    // 리뷰 데이터 GET
+    private void getInfoReview(){
+        // GET 방식 파라미터 설정
+        String reviewPath = REVIEW_PATH + String.format("?storeId=%s", Store.getStoreId());
+
+        if(isLoginFlag){
+            reviewPath += String.format("&&loginUserId=%s", User.getInt("userId", 0));   // 로그인 유저 고유 아이디
+       }
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
+        StringRequest ReviewRequest = new StringRequest(Request.Method.GET, HOST + reviewPath, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                JSONArray reviewArr = jsonObject.getJSONArray("review"); // 객체에 review라는 Key를 가진 JSONArray 생성
+
+                double starScoreTotal = 0;  // 리뷰 총 별점
+
+                if(reviewArr.length() > 0) {
+                    for (int i = 0; i < reviewArr.length(); i++) {
+                        JSONObject object = reviewArr.getJSONObject(i); // 배열 원소 하나하나 꺼내서 JSONObject 생성
+
+                        // 리뷰 데이터 생성 및 저장
+                        infoReviewData infoReviewData = new infoReviewData(
+                                object.getInt("reviewId")                       // 리뷰 고유 아이디
+                                , object.getInt("userId")                       // 유저 고유 아이디
+                                , object.getString("userName")                  // 유저 명
+                                , object.getInt("storeId")                      // 가게 고유 아이디
+                                , HOST + object.getString("userProfilePath")    // 유저 프로필 경로
+                                , object.getString("reviewDetail")              // 리뷰 내용
+                                , object.getInt("reviewScore")                  // 리뷰 별점
+                                , object.getInt("reviewHeartCount")             // 리뷰 좋아요 수
+                                , object.getString("reviewRegDate")             // 리뷰 작성 일자
+                                , object.getInt("reviewCommentCount")           // 리뷰 댓글 수
+                                , object.getInt("reviewHeartIsClick"));         // 로그인 했을 경우 좋아요 눌렀는지 확인 Flag ( 누른 경우 : 1, 안눌렀거나 비로그인 시 : 0 )
+
+                        Review.add(0, infoReviewData); // 리뷰 정보 저장
+
+                        starScoreTotal += object.getInt("reviewScore"); // 리뷰 총 별점
+                    }
+                    // LayoutManager 객체 생성
+                    infoReviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+                    infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this, isLoginFlag, User.getInt("userId", 0));  // 리사이클러뷰 어뎁터 객체 생성
+                    infoReviewRv.setAdapter(infoReviewAdapter); // 리사이클러뷰 어뎁터 객체 지정
+
+                    // 리뷰 별점 Set
+                    Store.setStoreReviewCount(Review.size());   // 리뷰 수
+                    Store.setStoreScore(Math.round(starScoreTotal / Review.size() * 10.0) / 10.0);  // 리뷰 별점
+                    infoStarScore.setText(String.valueOf(Store.getStoreScore()));
+
+                    infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
+                }else{
+                    infoStarScore.setText(String.valueOf(0.0));   // 별점 초기화
+                    infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("getInfoReviewError", "onErrorResponse : " + error);
+        });
+
+        ReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(ReviewRequest);      // RequestQueue에 요청 추가
+    }
+
+    // 리뷰 리사이클러뷰 클릭 이벤트 인터페이스 구현
+    @Override
+    public void onInfoReviewRvClick(View v, int position, String flag) {
+        if(flag.equals("total")){
+            infoReviewData review = Review.get(position);       // 리뷰 데이터
+            ArrayList<infoPhotoData> photo = new ArrayList<>(); // 리뷰 사진 데이터
+
+            // 현재 리뷰에 속한 사진 데이터만 저장
+            for(int i = 0; i < Photo.size(); i++){
+                if(review.getReviewId() == Photo.get(i).getReviewId()){
+                    photo.add(Photo.get(i));
+                }
+            }
+
+            // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+            Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
+
+            intent.putParcelableArrayListExtra("Photo", photo); // 사진 데이터
+            intent.putExtra("reviewId", review.getReviewId());  // 리뷰 고유 아이디
+            intent.putExtra("storeName", Store.getStoreName()); // 가게 명
+            intent.putExtra("review", review);                  // 리뷰 데이터
+            intent.putExtra("position", position);              // 현재 리사이클러뷰 position
+            intent.putExtra("isLoginFlag", isLoginFlag);        // 현재 로그인 여부
+
+            activityResultLauncher.launch(intent);  // 새 Activity 인스턴스 시작
+        }else if(flag.equals("delete")){
+            reviewDeleteDialog.show();
+
+            // 뷰 정의
+            TextView dlTitle = reviewDeleteDialog.findViewById(R.id.dl_title);  // 다이얼로그 타이틀
+            Button dlConfirmBtn = reviewDeleteDialog.findViewById(R.id.dl_confirm_btn);  // 다이얼로그 확인 버튼
+            Button dlCloseBtn = reviewDeleteDialog.findViewById(R.id.dl_close_btn);  // 다이얼로그 닫기 버튼
+
+            // 데이터 SET
+            dlTitle.setText("작성한 리뷰를 삭제하시겠습니까?");
+            dlConfirmBtn.setText("삭제");
+
+            // 삭제 버튼 클릭 리스너
+            dlConfirmBtn.setOnClickListener(view -> {
+                Map<String, String> param = new HashMap<>();
+                param.put("reviewId", String.valueOf(Review.get(position).getReviewId()));   // 삭제할 리뷰 고유 아이디
+
+                // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+                StringRequest deleteReviewRequest = new StringRequest(Request.Method.POST, HOST + DELETE_REVIEW_PATH, response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                        String success = jsonObject.getString("success");
+
+                        if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                            StyleableToast.makeText(getApplicationContext(), "삭제 성공!", R.style.blueToast).show();
+
+                            reviewDeleteDialog.dismiss();  // 다이얼로그 닫기
+
+                            Review.remove(position);   // 데이터 삭제
+                            infoReviewAdapter.notifyItemRemoved(position); // 리사이클러뷰 데이터 삭제
+
+                            // 데이터가 없을 경우 없다는 텍스트 표시
+                            if(Review.size() == 0){
+                                infoReviewRv.setVisibility(View.GONE);
+                                infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
+                            }else{
+                                infoReviewRv.setVisibility(View.VISIBLE);
+                                infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
+                            }
+                        }else{
+                            StyleableToast.makeText(getApplicationContext(), "삭제 실패...", R.style.redToast).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    // 통신 에러시 로그 출력
+                    Log.d("deleteReviewError", "onErrorResponse : " + error);
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        // php로 설정값을 보낼 수 있음 ( POST )
+                        return param;
+                    }
+                };
+
+                deleteReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+                requestQueue.add(deleteReviewRequest);      // RequestQueue에 요청 추가
+            });
+
+            // 닫기 버튼 클릭 리스너
+            dlCloseBtn.setOnClickListener(view1 -> reviewDeleteDialog.dismiss());
+
+        }else if(flag.equals("heartInsert")){   // 리뷰 좋아요 추가
+            if(isLoginFlag){    // 로그인 시 이용 가능
+                infoReviewData review = Review.get(position);       // 리뷰 데이터
+                updateReviewHeart(review.getReviewId(), 1, position);
+            }else{
+                StyleableToast.makeText(this, "로그인 후 이용해주세요!", R.style.orangeToast).show();
+            }
+        }else if(flag.equals("heartDelete")){   // 리뷰 좋아요 삭제
+            if(isLoginFlag){    // 로그인 시 이용 가능
+                infoReviewData review = Review.get(position);       // 리뷰 데이터
+                updateReviewHeart(review.getReviewId(), -1, position);
+            }else{
+                StyleableToast.makeText(this, "로그인 후 이용해주세요!", R.style.orangeToast).show();
+            }
+        }
+    }
+
+    // 리뷰 좋아요 수정
+    private void updateReviewHeart(int reviewId, int flag, int position){
+        Map<String, String> param = new HashMap<>();
+
+        param.put("reviewId", String.valueOf(reviewId));   // 수정할 리뷰 고유 아이디
+        param.put("userId", String.valueOf(User.getInt("userId", 0)));   // 수정할 유저 고유 아이디
+        param.put("flag", String.valueOf(flag));   // 증가 +1, 감소 -1
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+        StringRequest updateReviewHeartRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_REVIEW_HEART_PATH, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                String success = jsonObject.getString("success");
+
+                if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                    if(flag == 1){  // 좋아요 추가
+                        Review.get(position).setReviewHeartIsClick(1);  // 좋아요 클릭 여부 ( 누름 )
+                        Review.get(position).setReviewHeartCount(Review.get(position).getReviewHeartCount() + 1);   // 좋아요 수
+
+                        StyleableToast.makeText(this, "좋아요 추가 성공!", R.style.blueToast).show();
+                    }else{  // 좋아요 취소
+                        Review.get(position).setReviewHeartIsClick(0);  // 좋아요 클릭 여부 ( 누름 취소 )
+                        Review.get(position).setReviewHeartCount(Review.get(position).getReviewHeartCount() - 1);   // 좋아요 수
+
+                        StyleableToast.makeText(this, "좋아요 삭제 성공!", R.style.blueToast).show();
+                    }
+
+                    infoReviewAdapter.setReviews(Review);
+                    infoReviewAdapter.notifyItemChanged(position);
+                }else{
+                    StyleableToast.makeText(this, "좋아요 갱신 실패...", R.style.redToast).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("updateReviewHeartError", "onErrorResponse : " + error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // php로 설정값을 보낼 수 있음 ( POST )
+                return param;
+            }
+        };
+
+        updateReviewHeartRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(updateReviewHeartRequest);      // RequestQueue에 요청 추가
+    }
+
+
+    // ---------------- 리뷰 Section End ---------------------
+
+
+    // ---------------- 찜 Section Start ---------------------
+
+
     // 유저 찜한 가게 삭제
     private void deleteBookmarkStore(int index){
         Map<String, String> param = new HashMap<>();
@@ -1021,110 +1240,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         requestQueue.add(insertBookmarkRequest);      // RequestQueue에 요청 추가
     }
 
-    // 사진 리사이클러뷰 클릭 이벤트 인터페이스 구현
-    @Override
-    public void onInfoPhotoRvClick(View v, int position) {
-        // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
-        // position이 4보다 작을 경우 사진 상세 화면으로 이동
-        // position이 4보다 클 경우 사진 전체 화면으로 이동
-        Intent intent = new Intent(InfoActivity.this, position < 4 ? InfoPhotoActivity.class : InfoPhotoTotalActivity.class);
-
-        intent.putParcelableArrayListExtra("Photo", Photo);     // 사진 데이터
-        intent.putExtra("Position", position);                  // 현재 Position
-        intent.putExtra("storeName", Store.getStoreName());     // 가게 명
-
-        startActivity(intent);  // 새 Activity 인스턴스 시작
-    }
-
-    // 리뷰 리사이클러뷰 클릭 이벤트 인터페이스 구현
-    @Override
-    public void onInfoReviewRvClick(View v, int position, String flag) {
-        if(flag.equals("total")){
-            infoReviewData review = Review.get(position);       // 리뷰 데이터
-            ArrayList<infoPhotoData> photo = new ArrayList<>(); // 리뷰 사진 데이터
-
-            // 현재 리뷰에 속한 사진 데이터만 저장
-            for(int i = 0; i < Photo.size(); i++){
-                if(review.getReviewId() == Photo.get(i).getReviewId()){
-                    photo.add(Photo.get(i));
-                }
-            }
-
-            // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
-            Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
-
-            intent.putParcelableArrayListExtra("Photo", photo); // 사진 데이터
-            intent.putExtra("reviewId", review.getReviewId());  // 리뷰 고유 아이디
-            intent.putExtra("storeName", Store.getStoreName()); // 가게 명
-            intent.putExtra("review", review);                  // 리뷰 데이터
-
-            startActivity(intent);  // 새 Activity 인스턴스 시작
-        }else if(flag.equals("delete")){
-            reviewDeleteDialog.show();
-
-            // 뷰 정의
-            TextView dlTitle = reviewDeleteDialog.findViewById(R.id.dl_title);  // 다이얼로그 타이틀
-            Button dlConfirmBtn = reviewDeleteDialog.findViewById(R.id.dl_confirm_btn);  // 다이얼로그 확인 버튼
-            Button dlCloseBtn = reviewDeleteDialog.findViewById(R.id.dl_close_btn);  // 다이얼로그 닫기 버튼
-
-            // 데이터 SET
-            dlTitle.setText("작성한 리뷰를 삭제하시겠습니까?");
-            dlConfirmBtn.setText("삭제");
-
-            // 삭제 버튼 클릭 리스너
-            dlConfirmBtn.setOnClickListener(view -> {
-                Map<String, String> param = new HashMap<>();
-                param.put("reviewId", String.valueOf(Review.get(position).getReviewId()));   // 삭제할 리뷰 고유 아이디
-
-                // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
-                StringRequest deleteReviewRequest = new StringRequest(Request.Method.POST, HOST + DELETE_REVIEW_PATH, response -> {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                        String success = jsonObject.getString("success");
-
-                        if(!TextUtils.isEmpty(success) && success.equals("1")) {
-                            StyleableToast.makeText(getApplicationContext(), "삭제 성공!", R.style.blueToast).show();
-
-                            reviewDeleteDialog.dismiss();  // 다이얼로그 닫기
-
-                            Review.remove(position);   // 데이터 삭제
-                            infoReviewAdapter.notifyItemRemoved(position); // 리사이클러뷰 데이터 삭제
-
-                            // 데이터가 없을 경우 없다는 텍스트 표시
-                            if(Review.size() == 0){
-                                infoReviewRv.setVisibility(View.GONE);
-                                infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
-                            }else{
-                                infoReviewRv.setVisibility(View.VISIBLE);
-                                infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
-                            }
-                        }else{
-                            StyleableToast.makeText(getApplicationContext(), "삭제 실패...", R.style.redToast).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }, error -> {
-                    // 통신 에러시 로그 출력
-                    Log.d("deleteReviewError", "onErrorResponse : " + error);
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        // php로 설정값을 보낼 수 있음 ( POST )
-                        return param;
-                    }
-                };
-
-                deleteReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-                requestQueue.add(deleteReviewRequest);      // RequestQueue에 요청 추가
-            });
-
-            // 닫기 버튼 클릭 리스너
-            dlCloseBtn.setOnClickListener(view1 -> reviewDeleteDialog.dismiss());
-        }
-    }
-
     // 유저 찜한 협업 정보 Return
     private void getBookmarkCollabo(){
         // GET 방식 파라미터 설정
@@ -1160,7 +1275,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         requestQueue.add(bookmarkCollaboRequest);     // RequestQueue에 요청 추가
     }
 
-    // 유저 찜한 가게 삭제
+    // 유저 찜한 협업 목록 삭제
     private void deleteBookmarkCollabo(int index){
         Map<String, String> param = new HashMap<>();
 
@@ -1199,7 +1314,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         requestQueue.add(deleteBookmarkCollaboRequest);      // RequestQueue에 요청 추가
     }
 
-    // 유저 찜한 가게 추가
+    // 유저 찜한 협업 목록 추가
     private void insertBookmarkCollabo(int userId, int collaboId){
         Map<String, String> param = new HashMap<>();
 
@@ -1241,5 +1356,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         insertBookmarkCollaboRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(insertBookmarkCollaboRequest);      // RequestQueue에 요청 추가
     }
+
+    // ---------------- 찜 Section End ---------------------
 }
 
