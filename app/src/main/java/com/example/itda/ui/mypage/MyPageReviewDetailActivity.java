@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,7 +52,7 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
     private TextView infoReviewContent; // 리뷰 내용
 
     private LinearLayout infoReviewHeartLayout; // 좋아요 전체 레이아웃
-    private LinearLayout infoReviewCommentLayout;   // 댓글 작성 전체 레이아웃
+    private FrameLayout infoReviewCommentLayout;   // 댓글 작성 전체 레이아웃
 
     private RecyclerView infoReviewPhotoRv;     // 리뷰 사진 리사이클러뷰
     private RecyclerView infoReviewCommentRv;   // 리뷰 댓글 리사이클러뷰
@@ -139,7 +140,7 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
         infoReviewCommentRv = findViewById(R.id.info_review_detail_comment_rv);         // 리뷰 댓글 리사이클러뷰
         infoReviewComment = findViewById(R.id.info_review_detail_comment);              // 리뷰 댓글
         infoReviewHeartLayout = findViewById(R.id.info_review_heart_layout);         // 리뷰 댓글 리사이클러뷰
-        infoReviewCommentLayout = findViewById(R.id.info_review_comment_layout);              // 리뷰 댓글
+        infoReviewCommentLayout = findViewById(R.id.info_review_comment_layout);        // 리뷰 댓글 전체 레이아웃
 
         infoReviewHeartLayout.setVisibility(View.GONE);
         infoReviewCommentLayout.setVisibility(View.GONE);

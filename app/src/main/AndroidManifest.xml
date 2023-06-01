@@ -72,7 +72,8 @@
 
         <!--가게 상세 정보 내 리뷰 리스트 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoReviewActivity"
-            android:theme="@style/Theme.MyApplication">
+            android:theme="@style/Theme.MyApplication"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <!--가게 상세 정보 내 리뷰 추가 액티비티-->

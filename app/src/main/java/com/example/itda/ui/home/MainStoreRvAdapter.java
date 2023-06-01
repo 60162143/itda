@@ -131,9 +131,14 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
         BookmarkStores = bookmarkStores;
     }
 
-    // 찜한 가게 목록 설정
-    public void setStores(ArrayList<mainStoreData> stores) {
-        Stores = stores;
+    // 리뷰 갯수 설정
+    public void setReviewCount(int index, int count) {
+        Stores.get(index).setStoreReviewCount(count);
+    }
+
+    // 가게 별점 설정
+    public void setStoreScore(int index, double score) {
+        Stores.get(index).setStoreScore(score);
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환

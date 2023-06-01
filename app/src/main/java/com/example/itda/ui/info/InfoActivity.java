@@ -47,6 +47,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
+import com.example.itda.ui.mypage.MyPageBookmarkActivity;
 import com.example.itda.ui.mypage.MyPageEditActivity;
 import com.example.itda.ui.mypage.MyPageEditNameActivity;
 import com.example.itda.ui.mypage.MyPageReviewActivity;
@@ -75,7 +76,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
 
 
-    private int viewPosition;   // 메인 가게 리사이클러뷰의 현재 가게 position
+    private int storeId;   // 가게 고유 아이디
     private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
 
     // ---------------- 최상단 Section ---------------------------
@@ -175,7 +176,8 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private String INSERT_BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 추가 Rest API
     private String HOST;            // Host 정보
 
-    private boolean isLoginFlag = false;
+    private boolean isLoginFlag = false;    // 로그인 여부
+    private String intentPageName;  // intent된 페이지 명
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -193,8 +195,9 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
-        viewPosition = getIntent().getExtras().getInt("viewPosition");    // 메인 가게 리사이클러뷰의 현재 가게 position
+        storeId = getIntent().getExtras().getInt("storeId");    // 메인 가게 리사이클러뷰의 현재 가게 position
         BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
+        intentPageName = getIntent().getExtras().getString("pageName");    // intent된 페이지 명
 
         isLoginFlag = ((globalMethod) getApplication()).loginChecked(); // 로그인 유무
 
@@ -218,14 +221,55 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
         // 최상단 뒤로가기 버튼 클릭 리스너
         infoBackIc.setOnClickListener(v -> {
-            Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+            if(intentPageName.equals("HomeFragment")){  // 페이지 명 : HomeFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
-            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-            intent.putExtra("store", Store);
-            intent.putExtra("viewPosition", viewPosition);
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                intent.putExtra("storeId", storeId);
+                intent.putExtra("reviewCount", Store.getStoreReviewCount());
+                intent.putExtra("score", Store.getStoreScore());
 
-            setResult(2000, intent);    // 결과 코드와 intent 값 전달
-            finish();   // 버튼 클릭 시 Activity 종료
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("HomeSearchActivity")){  // 페이지 명 : HomeSearchActivity
+                Intent intent = new Intent(InfoActivity.this, HomeSearchActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("MapFragment")){  // 페이지 명 : MapFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                intent.putExtra("storeId", storeId);
+                intent.putExtra("score", Store.getStoreScore());
+
+                setResult(3000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("infoActivity")){  // 페이지 명 : infoActivity
+                Intent intent = new Intent(InfoActivity.this, InfoActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(3000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("MyPageBookmarkActivity")){  // 페이지 명 : MyPageBookmarkActivity
+                Intent intent = new Intent(InfoActivity.this, MyPageBookmarkActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                intent.putExtra("storeId", Store.getStoreId());
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("CollaboFragment")){  // 페이지 명 : CollaboFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }
         });
 
         // 전화 번호 있을 시 전화 걸기 화면으로 전환 클릭 리스너
@@ -241,7 +285,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
         // 찜이 되어 있을경우 레이아웃 변경
         // 로그인이 되어 있는지 확인
-        if(isLoginFlag && BookmarkStore.size() > 0){
+        if(isLoginFlag && BookmarkStore != null && BookmarkStore.size() > 0){
             for(int i = 0; i < BookmarkStore.size(); i++){
                 if(Store.getStoreId() == BookmarkStore.get(i).getStoreId()){
                     bookmarkStoreIndex = i;
@@ -418,6 +462,8 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 // 리사이클러뷰 갱신
                 infoReviewAdapter.setReviews(Review);
                 infoReviewAdapter.notifyItemChanged(position);
+            }else if(result.getResultCode() == 3000) { // resultCode가 2000으로 넘어왔다면 infoActivity에서 넘어옴
+                BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");  // 찜한 목록 데이터
             }
         });
     }
@@ -494,14 +540,55 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+            if(intentPageName.equals("HomeFragment")){  // 페이지 명 : HomeFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
-            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-            intent.putExtra("store", Store);
-            intent.putExtra("viewPosition", viewPosition);
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                intent.putExtra("storeId", storeId);
+                intent.putExtra("reviewCount", Store.getStoreReviewCount());
+                intent.putExtra("score", Store.getStoreScore());
 
-            setResult(2000, intent);    // 결과 코드와 intent 값 전달
-            finish();   // 버튼 클릭 시 Activity 종료
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("HomeSearchActivity")){  // 페이지 명 : HomeSearchActivity
+                Intent intent = new Intent(InfoActivity.this, HomeSearchActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("MapFragment")){  // 페이지 명 : MapFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                intent.putExtra("storeId", storeId);
+                intent.putExtra("score", Store.getStoreScore());
+
+                setResult(3000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("infoActivity")){  // 페이지 명 : infoActivity
+                Intent intent = new Intent(InfoActivity.this, InfoActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(3000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("MyPageBookmarkActivity")){  // 페이지 명 : MyPageBookmarkActivity
+                Intent intent = new Intent(InfoActivity.this, MyPageBookmarkActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                intent.putExtra("storeId", Store.getStoreId());
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("CollaboFragment")){  // 페이지 명 : CollaboFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }
 
             return true;
         }
@@ -760,10 +847,11 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                     Intent intent = new Intent(InfoActivity.this, InfoActivity.class); // 가게 상세화면 Activity로 이동하기 위한 Intent 객체 선언
 
                     intent.putExtra("Store", mainStore);    // 가게 데이터
+                    intent.putExtra("pageName", "infoActivity");    // 가게 데이터
 
                     intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 찜한 가게 목록 데이터 ( Intent 종료시 반환하기 위한 데이터 )
 
-                    startActivity(intent);  // 새 Activity 인스턴스 시작
+                    activityResultLauncher.launch(intent);  // 새 Activity 인스턴스 시작
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

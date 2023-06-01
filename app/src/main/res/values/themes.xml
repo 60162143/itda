@@ -79,6 +79,21 @@
         <item name="stRadius">20dp</item>
     </style>
 
+    <style name="redCenterToast">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#FFFFFF</item>
+        <item name="stFont">@font/koddiudongothic_bold</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">#F97997</item>
+        <!--        <item name="stStrokeWidth">3dp</item>-->
+        <!--        <item name="stStrokeColor">#fff</item>-->
+        <!--        <item name="stIconStart">@drawable/favorite</item>-->
+        <!--        <item name="stIconEnd">@drawable/favorite</item>-->
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">20dp</item>
+    </style>
+
     <style name="blueToast">
         <item name="stTextBold">true</item>
         <item name="stTextColor">#FFFFFF</item>

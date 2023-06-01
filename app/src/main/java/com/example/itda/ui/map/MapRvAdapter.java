@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
+import com.example.itda.ui.global.globalMethod;
+import com.example.itda.ui.home.MainStoreRvAdapter;
+import com.example.itda.ui.home.mainBookmarkStoreData;
+import com.example.itda.ui.home.onMainStoreRvClickListener;
 
 import net.daum.mf.map.api.MapView;
 
@@ -21,8 +26,11 @@ import java.util.ArrayList;
 public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreViewHolder> {
 
     private ArrayList<MapStoreData> Stores; // 가게 데이터
-
     private MapView MapView;    // 지도 데이터
+    private ArrayList<mainBookmarkStoreData> BookmarkStores;    // 찜한 가게 데이터
+
+    // 리사이클러뷰 클릭 리스너 인터페이스
+    private static onMapStoreRvClickListener rvClickListener = null;
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -30,10 +38,14 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
     private Context mContext;
 
     // Constructor
-    public MapRvAdapter(Context context, ArrayList<MapStoreData> stores, MapView mapView){
+    public MapRvAdapter(Context context
+            , ArrayList<MapStoreData> stores
+            , MapView mapView
+            , ArrayList<mainBookmarkStoreData> bookmarkStore){
         this.mContext = context;
         this.Stores = stores;
         this.MapView = mapView;
+        this.BookmarkStores = bookmarkStore;
     }
 
     // ViewHolder를 새로 만들어야 할 때 호출
@@ -61,6 +73,22 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.mapStoreImage);        // 이미지를 보여줄 View를 지정
 
+        // 로그인이 되어있을 경우 찜 버튼 보이기
+        if(((globalMethod) mContext.getApplicationContext()).loginChecked()){
+            holder.mapStoreBookmark.setVisibility(View.VISIBLE);
+
+            // 찜한 가게 목록이 있을 경우 찜 버튼 활성화
+            if(BookmarkStores != null && BookmarkStores.size() > 0){
+                for(int i = 0; i < BookmarkStores.size(); i++){
+                    if(store.getMapStoreId() == BookmarkStores.get(i).getStoreId()){
+                        holder.mapStoreBookmark.setSelected(true);
+
+                        break;
+                    }
+                }
+            }
+        }
+
         holder.mapStoreName.setText(store.getMapStoreName());   // 가게 이름 SET
 
         // 거리가 10m 이상인 경우만 거리 표시
@@ -74,6 +102,21 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
         holder.mapStoreInfo.setText(store.getMapStoreInfo());   // 가게 간단 정보 SET
 
         holder.mapStoreHashTag.setText(store.getMapStoreHashTag());   // 추후 추가
+    }
+
+    // 리스너 설정
+    public void setonMapStoreRvClickListener(onMapStoreRvClickListener rvClickListener) {
+        MapRvAdapter.rvClickListener = rvClickListener;
+    }
+
+    // 찜한 가게 목록 설정
+    public void setbookmarkStores(ArrayList<mainBookmarkStoreData> bookmarkStores) {
+        BookmarkStores = bookmarkStores;
+    }
+
+    // 가게 별점 설정
+    public void setStoreScore(int index, double score) {
+        Stores.get(index).setMapStoreScore((float) score);
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -93,6 +136,8 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
         TextView mapStoreInfo;      // 가게 간단 정보
         TextView mapStoreHashTag;   // 가게 해시태그
 
+        Button mapStoreBookmark;   // 가게 찜 버튼
+
         public CustomStoreViewHolder(@NonNull View itemView) {
             super(itemView);
             mapStoreImage = itemView.findViewById(R.id.map_store_image);
@@ -101,6 +146,33 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
             mapStoreStarScore = itemView.findViewById(R.id.map_star_score);
             mapStoreInfo = itemView.findViewById(R.id.map_store_info);
             mapStoreHashTag = itemView.findViewById(R.id.map_store_hashTag);
+            mapStoreBookmark = itemView.findViewById(R.id.map_store_bookmark);
+
+            // 리사이클러뷰 찜 버튼 클릭 이벤트 인터페이스 구현
+            itemView.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMapStoreRvClick(view, getAbsoluteAdapterPosition(), "total");
+                }
+            });
+
+            // 리사이클러뷰 찜 버튼 클릭 이벤트 인터페이스 구현
+            mapStoreBookmark.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 Position
+
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    if(mapStoreBookmark.isSelected()){
+                        mapStoreBookmark.setSelected(false);
+                        rvClickListener.onMapStoreRvClick(view, getAbsoluteAdapterPosition(), "bookmarkDelete");
+                    }else{
+                        mapStoreBookmark.setSelected(true);
+                        rvClickListener.onMapStoreRvClick(view, getAbsoluteAdapterPosition(), "bookmarkInsert");
+                    }
+                }
+            });
         }
     }
 }

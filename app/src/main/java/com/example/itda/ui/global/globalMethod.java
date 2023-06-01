@@ -96,6 +96,11 @@ public class globalMethod extends Application {
         return "/info/getInfoReviewComment.php";
     }
 
+    // 리뷰 댓글 정보 데이터 추가 Rest API
+    public String insertInfoReviewCommentPath() {
+        return "/info/insertInfoReviewComment.php";
+    }
+
     // 협업 데이터 조회 Rest API
     public String getCollaboPath() {
         return "/collabo/getCollabo.php";

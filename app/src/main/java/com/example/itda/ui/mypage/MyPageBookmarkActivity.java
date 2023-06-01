@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -27,7 +28,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,9 +42,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.itda.MainActivity;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
+import com.example.itda.ui.home.HomeSearchActivity;
 import com.example.itda.ui.home.MainStoreRvAdapter;
+import com.example.itda.ui.home.mainBookmarkStoreData;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
 import com.example.itda.ui.info.onInfoCollaboRvClickListener;
@@ -62,7 +69,7 @@ import java.util.Map;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
-public class MyPageBookmarkActivity extends Activity implements onMyPageBookmarkStoreRvClickListener, onMyPageBookmarkCollaboRvClickListener {
+public class MyPageBookmarkActivity extends AppCompatActivity implements onMyPageBookmarkStoreRvClickListener, onMyPageBookmarkCollaboRvClickListener {
     private ImageButton backIc; // 상단 뒤로가기 버튼
 
     private Button bookmarkStoreBtn;  // 찜한 가게 버튼
@@ -79,7 +86,10 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
 
     private final ArrayList<mainStoreData> MainStore = new ArrayList<>();  // 가게 정보 저장
     private ArrayList<MyPageBookmarkStoreData> bookmarkStoreData = new ArrayList<>();      // 유저 찜한 가게 데이터
+    private ArrayList<mainBookmarkStoreData> infoBookmarkStoreData = new ArrayList<>();      // 유저 찜한 가게 간단 데이터 ( intent용 )
     private ArrayList<MyPageBookmarkCollaboData> bookmarkCollaboData = new ArrayList<>();      // 유저 찜한 협업 목록 데이터
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
 
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
     private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
@@ -134,6 +144,29 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
         BOOKMARK_STORE_DELETE_PATH = ((globalMethod) getApplication()).deleteBookmarkStorePath();    // 유저 찜한 가게 목록 삭제 Rest API
         BOOKMARK_COLLABO_DELETE_PATH = ((globalMethod) getApplication()).deleteBookmarkCollaboPath();    // 유저 찜한 협업 목록 삭제 Rest API
 
+        // activityResultLauncher 초기화
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == 2000){   // resultCode가 2000로 넘어왔다면 InfoActivity에서 넘어온것
+                infoBookmarkStoreData = result.getData().getParcelableArrayListExtra("bookmarkStore");    // 찜한 목록 데이터 GET
+
+                int storeId = result.getData().getIntExtra("storeId", 0);   // 가게 고유 아이디
+
+                // 찜 목록에서 제거 되었는지 확인
+                if(infoBookmarkStoreData != null && infoBookmarkStoreData.size() > 0){
+                    if(infoBookmarkStoreData.size() != bookmarkStoreData.size()){
+                        for(int i = 0; i < bookmarkStoreData.size(); i++){
+                            if(bookmarkStoreData.get(i).getStoreId() == storeId){
+                                bookmarkStoreData.remove(i);
+                                bookmarkStoreAdapter.notifyItemRemoved(i);  // 리사이클러뷰 데이터 삭제
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         initView(); // 뷰 생성
 
         // 유저 전역 변수 GET
@@ -184,6 +217,17 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
         // ************* 데이터 가져오기 *******************
         getBookmarkStoreData(); // 찜한 가게 목록 가져오기
         getBookmarkCollaboData(); // 찜한 협업 목록 가져오기
+    }
+
+    // 휴대폰 뒤로가기 버튼 클릭 이벤트
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            finish();
+
+            return true;
+        }
+        return false;
     }
 
     // 뷰 생성
@@ -256,7 +300,7 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
                                 , loc_Current.distanceTo(point) / 1000                            // 현재 위치에서 떨어진 거리, 단위 : km
                                 , object.getString("storeInfo")                             // 가게 간단 정보
                                 , object.getString("storeHashTag")                          // 가게 해시태그
-                                , object.getString("bookmarkStoreId"));                     // 찜한 가게 목록 고유 아이디
+                                , object.getInt("bookmarkStoreId"));                        // 찜한 가게 목록 고유 아이디
 
                         bookmarkStoreData.add(bookmarkStore);    // 가게 데이터 추가
                     }
@@ -527,13 +571,28 @@ public class MyPageBookmarkActivity extends Activity implements onMyPageBookmark
                         , object.getInt("storeReviewCount")             // 가게 리뷰 개수
                         , distance / 1000); // 현위치에서 가게까지의 거리
 
+                infoBookmarkStoreData = new ArrayList<>();      // 유저 찜한 가게 간단 데이터 ( intent를 위한 데이터 )
+
+                // intent를 위한 찜 목록 간단 데이터 SET
+                if(bookmarkStoreData != null && bookmarkStoreData.size() > 0){
+                    for(int i = 0; i < bookmarkStoreData.size(); i++){
+                        infoBookmarkStoreData.add(new mainBookmarkStoreData(
+                                bookmarkStoreData.get(i).getBookmarkStoreId()
+                                , bookmarkStoreData.get(i).getStoreId()
+                        ));
+                    }
+                }
+
                 Intent intent = new Intent(MyPageBookmarkActivity.this, InfoActivity.class);  // 상세화면으로 이동하기 위한 Intent 객체 선언
 
                 // 데이터 송신을 위한 Parcelable interface 사용
                 // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
                 intent.putExtra("Store", (Parcelable) mainStore);
+                intent.putParcelableArrayListExtra("bookmarkStore", infoBookmarkStoreData);
+                intent.putExtra("pageName", "MyPageBookmarkActivity");
 
-                startActivity(intent); // 새 Activity 인스턴스 시작
+                // startActivityForResult가 아닌 ActivityResultLauncher의 launch 메서드로 intent 실행
+                activityResultLauncher.launch(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

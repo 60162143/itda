@@ -167,26 +167,69 @@ public class HomeFragment extends Fragment{
                 mainSchText.setText("");    // 검색어 초기화
 
                 assert result.getData() != null;
-                BookmarkStore = result.getData().getParcelableArrayListExtra("BookmarkStore");    // 찜한 목록 데이터 GET
+                BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");    // 찜한 목록 데이터 GET
 
                 // 찜 목록 데이터 SET
                 MainStoreAdapter.setbookmarkStores(BookmarkStore);
+
+                // 가게 리사이클러뷰 클릭 리스너
+                MainStoreAdapter.setonMainStoreRvClickListener((v, position, flag) -> {
+                    switch (flag) {
+                        case "image":    // 가게 이미지 클릭 시
+                            intent = new Intent(getActivity(), InfoActivity.class);  // 상세화면으로 이동하기 위한 Intent 객체 선언
+
+                            // 데이터 송신을 위한 Parcelable interface 사용
+                            // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
+                            intent.putExtra("Store", (Parcelable) MainStore.get(position));
+                            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                            intent.putExtra("pageName", "HomeFragment");
+
+                            // startActivityForResult가 아닌 ActivityResultLauncher의 launch 메서드로 intent 실행
+                            activityResultLauncher.launch(intent);
+                            break;
+                        case "bookmarkDelete":     // 찜 버튼 클릭 시
+                            int index = 0;  // 찜한 가게 목록 데이터의 index
+
+                            // 찜한 목록중 선택한 데이터의 가게 고유 아이디 구하기
+                            for (int i = 0; i < BookmarkStore.size(); i++) {
+                                if (BookmarkStore.get(i).getStoreId() == MainStore.get(position).getStoreId()) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+
+                            deleteBookmarkStore(index); // 찜한 가게 제거
+
+                            break;
+                        case "bookmarkInsert":
+                            insertBookmarkStore(User.getInt("userId", 0), MainStore.get(position).getStoreId());    // 찜한 가게 추가
+
+                            break;
+                    }
+                });
+
                 MainStoreAdapter.notifyDataSetChanged();    // 리사이클러뷰 데이터 변경
-            }else if(result.getResultCode() == 2000){ // resultCode가 1000로 넘어왔다면 InfoActivity에서 넘어온것
+            }else if(result.getResultCode() == 2000){   // resultCode가 2000로 넘어왔다면 InfoActivity에서 넘어온것
                 assert result.getData() != null;
                 BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");    // 찜한 목록 데이터 GET
 
-                mainStoreData storeData = result.getData().getParcelableExtra("store");    // 찜한 목록 데이터 GET
-                int position = result.getData().getIntExtra("viewPosition", 0);    // 찜한 목록 데이터 GET
-
                 // 찜 목록 데이터 SET
                 MainStoreAdapter.setbookmarkStores(BookmarkStore);
 
-                // 가게 데이터 SET
-                MainStore.set(position, storeData);
-                MainStoreAdapter.setStores(MainStore);
+                int storeId = result.getData().getIntExtra("storeId", 0);   // 가게 고유 아이디
+                int index = 0;  // 가게 데이터 index ( 리사이클러뷰 position )
 
-                MainStoreAdapter.notifyDataSetChanged();    // 리사이클러뷰 데이터 변경
+                for(int i = 0; i < MainStore.size(); i++){
+                    if(MainStore.get(i).getStoreId() == storeId){
+                        index = i;  // index 겸 position
+
+                        MainStoreAdapter.setReviewCount(index, result.getData().getIntExtra("reviewCount", 0)); // 리뷰 갯수 SET
+                        MainStoreAdapter.setStoreScore(index, result.getData().getDoubleExtra("score", 0)); // 별점 SET
+                        MainStoreAdapter.notifyItemChanged(index);  // 리사이클러뷰 데이터 변경
+
+                        break;
+                    }
+                }
             }
         });
 
@@ -323,7 +366,8 @@ public class HomeFragment extends Fragment{
                         // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
                         intent.putExtra("Store", (Parcelable) MainStore.get(position));
                         intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                        intent.putExtra("viewPosition", position);
+                        intent.putExtra("storeId", MainStore.get(position).getStoreId());
+                        intent.putExtra("pageName", "HomeFragment");
 
                         // startActivityForResult가 아닌 ActivityResultLauncher의 launch 메서드로 intent 실행
                         activityResultLauncher.launch(intent);

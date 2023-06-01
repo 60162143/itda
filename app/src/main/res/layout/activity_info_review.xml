@@ -40,8 +40,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/info_review_detail_scrollView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -254,46 +255,32 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/info_review_comment_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="bottom">
+        android:orientation="horizontal"
+        android:background="@drawable/border_top_gray">
 
-        <LinearLayout
-            android:id="@+id/info_review_comment_layout"
+        <EditText
+            android:id="@+id/info_review_detail_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            android:background="@drawable/border_top_gray">
+            android:hint="리뷰에 따뜻한 댓글을 달아주세요."
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:paddingStart="20dp"
+            android:paddingVertical="15dp"/>
 
-            <EditText
-                android:id="@+id/info_review_detail_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:hint="리뷰에 따뜻한 댓글을 달아주세요."
-                android:textSize="12sp"
-                android:background="@android:color/transparent"
-                android:paddingStart="20dp"
-                android:layout_weight="9"/>
+        <ImageButton
+            android:id="@+id/info_review_detail_comment_btn"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textSize="13sp"
+            android:src="@drawable/ic_send"
+            android:layout_gravity="right|center_vertical"
+            android:background="@android:color/transparent"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/info_review_detail_comment_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="20dp"
-                android:textSize="13sp"
-                android:background="@drawable/ic_send"
-                android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

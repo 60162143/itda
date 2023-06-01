@@ -2,18 +2,22 @@ package com.example.itda.ui.info;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +48,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
 
     private Button infoReviewStoreName;     // 상단 가게 이름
     private Button infoReviewHeartBtn;      // 리뷰 좋아요 버튼
-    private Button infoReviewCommentBtn;    // 리뷰 댓글 등록 버튼
+    private ImageButton infoReviewCommentBtn;    // 리뷰 댓글 등록 버튼
 
     private TextView infoReviewUserName;        // 유저 명
     private TextView infoReviewHeartCount;      // 리뷰 좋아요 수
@@ -53,8 +57,12 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
     private TextView infoReviewRegDate; // 리뷰 작성 일자
     private TextView infoReviewContent; // 리뷰 내용
 
+    private NestedScrollView infoReviewScrollView;  // 스크롤뷰 전체
+
     private RecyclerView infoReviewPhotoRv;     // 리뷰 사진 리사이클러뷰
     private RecyclerView infoReviewCommentRv;   // 리뷰 댓글 리사이클러뷰
+
+    private InfoReviewCommentRvAdapter infoReviewCommentRvAdapter;  // 댓글 리사이클러뷰 어뎁터
 
     private EditText infoReviewComment; // 리뷰 댓글 내용
 
@@ -67,8 +75,12 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
     private final ArrayList<infoReviewCommentData> ReviewComments = new ArrayList<>(); // 리뷰 댓글 데이터
 
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
+
+    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
+
     private String REVIEW_COMMENT_PATH; // 리뷰 댓글 정보 데이터 조회 Rest API
     private String UPDATE_REVIEW_HEART_PATH;      // 리뷰 좋아요 갱신 Rest API
+    private String INSERT_REVIEW_COMMENT_PATH;      // 리뷰 댓글 추가 Rest API
     private String HOST;    // Host 정보
 
     @Override
@@ -81,8 +93,12 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
             requestQueue = Volley.newRequestQueue(this);
         }
 
+        // 유저 전역 변수 GET
+        User = getSharedPreferences("user", Activity.MODE_PRIVATE);
+
         REVIEW_COMMENT_PATH = ((globalMethod) getApplication()).getInfoReviewCommentPath();   // 리뷰 댓글 정보 데이터 조회 Rest API
         UPDATE_REVIEW_HEART_PATH = ((globalMethod) getApplication()).updateInfoReviewHeartPath();      // 리뷰 좋아요 갱신 Rest API
+        INSERT_REVIEW_COMMENT_PATH = ((globalMethod) getApplication()).insertInfoReviewCommentPath();      // 리뷰 댓글 추가 Rest API
         HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
 
         initView();
@@ -139,10 +155,10 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
             infoReviewHeartBtn.setSelected(true);
         }
 
-        // 리사이클러뷰 어뎁터 객체 생성
+        // 사진 리사이클러뷰 어뎁터 객체 생성
         InfoReviewPhotoRvAdapter InfoReviewPhotoRvAdapter = new InfoReviewPhotoRvAdapter(this, this, Photos, reviewId);
 
-        // 리사이클러뷰 어뎁터 객체 생성
+        // 사진 리사이클러뷰 어뎁터 객체 생성
         infoReviewPhotoRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         infoReviewPhotoRv.setAdapter(InfoReviewPhotoRvAdapter); // 리사이클러뷰 어뎁터 객체 지정
 
@@ -153,6 +169,25 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
             if(isLoginFlag){    // 로그인 여부 확인
                 int flag = Review.getReviewHeartIsClick() == 0 ? 1 : -1;    // 좋아요 추가 시 1, 삭제 시 -1
                 updateReviewHeart(Review.getReviewId(), flag);  // 리뷰 좋아요 수정
+            }else{
+                StyleableToast.makeText(getApplicationContext(), "로그인 후 이용해주세요!", R.style.orangeToast).show();
+            }
+        });
+
+        // 리뷰 댓글 작성 버튼 클릭 리스너
+        infoReviewCommentBtn.setOnClickListener(view -> {
+            if(isLoginFlag){    // 로그인 여부 확인]
+                if(!TextUtils.isEmpty(infoReviewComment.getText().toString())){ // 텍스트를 입력했을 경우
+                    // 키보드 내리기
+                    InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    insertReviewComment(infoReviewComment.getText().toString());    // 댓글 추가
+
+                    infoReviewComment.setText("");  // 댓글 내용 초기화
+                }else{
+                    StyleableToast.makeText(getApplicationContext(), "작성할 댓글을 입력해주세요.", R.style.redCenterToast).show();
+                }
             }else{
                 StyleableToast.makeText(getApplicationContext(), "로그인 후 이용해주세요!", R.style.orangeToast).show();
             }
@@ -188,6 +223,7 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
         infoReviewScore = findViewById(R.id.info_review_detail_score);                  // 리뷰 별점
         infoReviewRegDate = findViewById(R.id.info_review_detail_regdate);              // 리뷰 작성 일자
         infoReviewContent = findViewById(R.id.info_review_detail_content);              // 리뷰 내용
+        infoReviewScrollView = findViewById(R.id.info_review_detail_scrollView);        // 리뷰 스크롤뷰 전체
         infoReviewPhotoRv = findViewById(R.id.info_review_detail_photo);                // 리뷰 사진 리사이클러뷰
         infoReviewCommentRv = findViewById(R.id.info_review_detail_comment_rv);         // 리뷰 댓글 리사이클러뷰
         infoReviewComment = findViewById(R.id.info_review_detail_comment);              // 리뷰 댓글
@@ -221,15 +257,15 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
 
                         ReviewComments.add(infoReviewCommentData); // 리뷰 정보 저장
                     }
-
-                    // LayoutManager 객체 생성
-                    infoReviewCommentRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-
-                    // 리사이클러뷰 어뎁터 객체 생성
-                    InfoReviewCommentRvAdapter infoReviewCommentRvAdapter= new InfoReviewCommentRvAdapter(this, ReviewComments);
-                    infoReviewCommentRv.setAdapter(infoReviewCommentRvAdapter); // 리사이클러뷰 어뎁터 객체 지정
-
                 }
+
+                // LayoutManager 객체 생성
+                infoReviewCommentRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+                // 댓글 리사이클러뷰 어뎁터 객체 생성
+                infoReviewCommentRvAdapter = new InfoReviewCommentRvAdapter(this, ReviewComments);
+                infoReviewCommentRv.setAdapter(infoReviewCommentRvAdapter); // 리사이클러뷰 어뎁터 객체 지정
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -241,7 +277,6 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
         ReviewCommentRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(ReviewCommentRequest);      // RequestQueue에 요청 추가
     }
-
 
     // 리뷰 좋아요 수정
     private void updateReviewHeart(int reviewId, int flag){
@@ -296,6 +331,67 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
         requestQueue.add(updateReviewHeartRequest);      // RequestQueue에 요청 추가
     }
 
+    // 리뷰 댓글 추가
+    private void insertReviewComment(String comment){
+        Map<String, String> param = new HashMap<>();
+
+        param.put("reviewId", String.valueOf(reviewId));   // 댓글 작성 리뷰 고유 아이디
+        param.put("userId", String.valueOf(Review.getUserId()));   // 댓글 작성 유저 고유 아이디
+        param.put("comment", comment);   // 댓글 작성 내용
+
+        // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+        StringRequest insertReviewCommentRequest = new StringRequest(Request.Method.POST, HOST + INSERT_REVIEW_COMMENT_PATH, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                String success = jsonObject.getString("success");
+
+                if(!TextUtils.isEmpty(success) && success.equals("1")) {
+                    StyleableToast.makeText(this, "댓글 추가 성공!", R.style.blueToast).show();
+
+                    // 리뷰 댓글 데이터 생성 및 저장
+                    infoReviewCommentData newCommentData = new infoReviewCommentData(
+                            jsonObject.getInt("reviewCommentId")        // 리뷰 댓글 고유 아이디
+                            , reviewId                                        // 리뷰 고유 아이디
+                            , User.getInt("userId", 0)                  // 유저 고유 아이디
+                            , Review.getStoreId()                            // 가게 고유 아이디
+                            , comment                                             // 리뷰 내용
+                            , jsonObject.getString("reviewCommentRegDate")  // 리뷰 작성 일자
+                            , User.getString("userName", "")                // 유저 명
+                            , User.getString("userProfileImage", ""));      // 유저 프로필 사진
+
+                    ReviewComments.add(newCommentData); // 리뷰 댓글 데이터 추가
+
+                    infoReviewCommentRvAdapter.notifyItemInserted(ReviewComments.size() - 1);   // 리사이클러뷰 갱신
+
+                    // 리뷰 댓글 수 +1
+                    Review.setReviewCommentCount(Review.getReviewCommentCount() + 1);
+                    infoReviewCommentCount.setText(String.valueOf(Review.getReviewCommentCount()));
+
+                    infoReviewCommentRv.scrollToPosition(ReviewComments.size() - 1);
+
+                    scrollDown();   // 전체 스크롤뷰 맨 밑으로 이동
+                }else{
+                    StyleableToast.makeText(this, "댓글 추가 실패...", R.style.redToast).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            // 통신 에러시 로그 출력
+            Log.d("insertReviewCommentError", "onErrorResponse : " + error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // php로 설정값을 보낼 수 있음 ( POST )
+                return param;
+            }
+        };
+
+        insertReviewCommentRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(insertReviewCommentRequest);      // RequestQueue에 요청 추가
+    }
+
     // 사진 리사이클러뷰 클릭 이벤트 구현
     @Override
     public void onInfoReviewDetailPhotoRvClick(View v, int position, int reviewId) {
@@ -307,6 +403,16 @@ public class InfoReviewActivity extends Activity implements onInfoReviewDetailPh
         intent.putExtra("storeName", storeName);    // 가게 명
 
         startActivity(intent);  // 새 Activity 인스턴스 시작
+    }
+
+    // 스크롤뷰 아래로 이동하는 메서드
+    private void scrollDown(){
+        infoReviewScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                infoReviewScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
     }
 }
 

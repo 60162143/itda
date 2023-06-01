@@ -3,15 +3,21 @@ package com.example.itda.ui.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,13 +35,14 @@ import com.example.itda.ui.mypage.MyPageEditActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
-public class HomeSearchActivity extends Activity implements onMainStoreRvClickListener{
+public class HomeSearchActivity extends AppCompatActivity implements onMainStoreRvClickListener{
     private ImageButton homeSearchBackIc;   // 상단 뒤로가기 버튼
     private RecyclerView mainStoreRv;       // 가게 데이터 리사이클러뷰
     private MainStoreRvAdapter MainStoreAdapter;    // 리사이클러뷰 어뎁터 객체
@@ -46,6 +53,8 @@ public class HomeSearchActivity extends Activity implements onMainStoreRvClickLi
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
 
     private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
 
     private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
     private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
@@ -68,6 +77,17 @@ public class HomeSearchActivity extends Activity implements onMainStoreRvClickLi
             requestQueue = Volley.newRequestQueue(this);
         }
 
+        // activityResultLauncher 초기화
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == 2000){ // resultCode가 2000으로 넘어왔다면 InfoActivity에서 넘어옴
+                BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");
+
+                // 찜 목록 데이터 SET
+                MainStoreAdapter.setbookmarkStores(BookmarkStore);
+                MainStoreAdapter.notifyDataSetChanged();    // 리사이클러뷰 데이터 변경
+            }
+        });
+
         initView(); // 뷰 생성
 
         // 뒤로 가기 버튼 클릭 시 Activity 종료
@@ -75,7 +95,7 @@ public class HomeSearchActivity extends Activity implements onMainStoreRvClickLi
             // ResultCode와 데이터 값 전달을 위한 intent객체 생성
             Intent intent = new Intent(HomeSearchActivity.this, MainActivity.class);
 
-            intent.putParcelableArrayListExtra("BookmarkStore", BookmarkStore);
+            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
             setResult(1000, intent);    // 결과 코드와 intent 값 전달
             finish();
         });
@@ -89,7 +109,7 @@ public class HomeSearchActivity extends Activity implements onMainStoreRvClickLi
         // ArrayList를 받아올때 사용
         // putParcelableArrayListExtra로 넘긴 데이터를 받아올때 사용
         Store = getIntent().getParcelableArrayListExtra("Store");
-        BookmarkStore = getIntent().getParcelableArrayListExtra("BookmarkStore");
+        BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");
 
         MainStoreAdapter = new MainStoreRvAdapter(this, this, Store, BookmarkStore);  // 리사이클러뷰 어뎁터 객체 생성
         mainStoreRv.setAdapter(MainStoreAdapter);   // 리사이클러뷰 어뎁터 객체 지정
@@ -102,7 +122,7 @@ public class HomeSearchActivity extends Activity implements onMainStoreRvClickLi
             // ResultCode와 데이터 값 전달을 위한 intent객체 생성
             Intent intent = new Intent(HomeSearchActivity.this, MainActivity.class);
 
-            intent.putParcelableArrayListExtra("BookmarkStore", BookmarkStore);
+            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
             setResult(1000, intent);    // 결과 코드와 intent 값 전달
             finish();
 
@@ -126,8 +146,10 @@ public class HomeSearchActivity extends Activity implements onMainStoreRvClickLi
             // 데이터 송신을 위한 Parcelable interface 사용
             // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
             intent.putExtra("Store", (Parcelable) Store.get(position));
+            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+            intent.putExtra("pageName", "HomeSearchActivity");
 
-            startActivity(intent); // 새 Activity 인스턴스 시작
+            activityResultLauncher.launch(intent);  // 새 Activity 인스턴스 시작
         }else if(flag.equals("bookmarkDelete")){
             int index = 0;  // 찜한 가게 목록 데이터의 index
 

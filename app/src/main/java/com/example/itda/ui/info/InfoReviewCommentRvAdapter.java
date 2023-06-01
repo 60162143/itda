@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 // ViewHolder 패턴은, 각 뷰의 객체를 ViewHolder에 보관함으로써 뷰의 내용을 업데이트 하기 위한
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoReviewCommentRvAdapter extends RecyclerView.Adapter<InfoReviewCommentRvAdapter.CustomInfoReviewCommentViewHolder>{
 
-    private final ArrayList<infoReviewCommentData> ReviewComments;  // 리뷰 댓글 데이터
+    private ArrayList<infoReviewCommentData> ReviewComments;  // 리뷰 댓글 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
