@@ -87,6 +87,8 @@ public class MapRvAdapter extends RecyclerView.Adapter<MapRvAdapter.CustomStoreV
                     }
                 }
             }
+        }else{
+            holder.mapStoreBookmark.setVisibility(View.GONE);
         }
 
         holder.mapStoreName.setText(store.getMapStoreName());   // 가게 이름 SET

@@ -26,6 +26,8 @@ import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.login.LoginActivity;
 import com.example.itda.R;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class MyPageFragment extends Fragment {
     private View root;                      // Fragment root view
     private Button myPageSetBtn;                // 설정 버튼
@@ -46,6 +48,8 @@ public class MyPageFragment extends Fragment {
 
     private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
 
+    private boolean isLoginFlag = false;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_mypage, container, false);
@@ -57,6 +61,8 @@ public class MyPageFragment extends Fragment {
 
         display_width = size.x;     // 디바이스 가로 길이 저장
         display_height = size.y;    // 디바이스 세로 길이 저장
+
+        isLoginFlag = ((globalMethod) requireActivity().getApplicationContext()).loginChecked();    // 로그인 여부
 
         initView();
 
@@ -120,23 +126,35 @@ public class MyPageFragment extends Fragment {
 
         // 내 정보 찜 목록 버튼 클릭 리스너
         myPageBookmarkBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MyPageBookmarkActivity.class);
+            if(isLoginFlag){
+                Intent intent = new Intent(getActivity(), MyPageBookmarkActivity.class);
 
-            activityResultLauncher.launch(intent);
+                activityResultLauncher.launch(intent);
+            }else{
+                StyleableToast.makeText(root.getContext(), "로그인 후 이용해주세요!", R.style.orangeToast).show();
+            }
         });
 
         // 내 정보 리뷰 목록 버튼 클릭 리스너
         myPageReviewBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MyPageReviewActivity.class);
+            if(isLoginFlag){
+                Intent intent = new Intent(getActivity(), MyPageReviewActivity.class);
 
-            activityResultLauncher.launch(intent);
+                activityResultLauncher.launch(intent);
+            }else{
+                StyleableToast.makeText(root.getContext(), "로그인 후 이용해주세요!", R.style.orangeToast).show();
+            }
         });
 
         // 내 정보 사진 목록 버튼 클릭 리스너
         myPagePhotoBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MyPagePhotoActivity.class);
+            if(isLoginFlag){
+                Intent intent = new Intent(getActivity(), MyPagePhotoActivity.class);
 
-            activityResultLauncher.launch(intent);
+                activityResultLauncher.launch(intent);
+            }else{
+                StyleableToast.makeText(root.getContext(), "로그인 후 이용해주세요!", R.style.orangeToast).show();
+            }
         });
 
         return root;
