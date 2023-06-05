@@ -139,7 +139,7 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
-        <activity android:name="com.example.itda.ui.login.PasswordActivity"
+        <activity android:name="com.example.itda.ui.login.LoginLostPasswordActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
 

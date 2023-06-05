@@ -101,15 +101,23 @@ public class globalMethod extends Application {
         return "/info/insertInfoReviewComment.php";
     }
 
+
     // 협업 데이터 조회 Rest API
     public String getCollaboPath() {
         return "/collabo/getCollabo.php";
     }
 
+
     // 로그인 데이터 조회 Rest API
     public String getLoginPath() {
         return "/login/getLoginUser.php";
     }
+
+    // 이메일로 유저 고유 아이디 조회 Rest API
+    public String getLoginUserIdPath() {
+        return "/login/getLoginUserId.php";
+    }
+
 
     // 마이페이지 유저 이름 변경 Rest API
     public String getUpdateUserNamePath() {
@@ -165,7 +173,8 @@ public class globalMethod extends Application {
     public String deleteBookmarkCollaboPath() {
         return "/mypage/deleteBookmarkCollabo.php";
     }
-    // 유저 찜한 가게 목록 추가 Rest API
+
+    // 유저 찜한 협업 목록 추가 Rest API
     public String insertBookmarkCollaboPath() {
         return "/mypage/insertBookmarkCollabo.php";
     }

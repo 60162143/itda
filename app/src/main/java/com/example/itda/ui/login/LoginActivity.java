@@ -3,19 +3,15 @@ package com.example.itda.ui.login;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -59,9 +55,6 @@ public class LoginActivity extends Activity {
     private String HOST;            // Host 정보
 
     private Intent intent;  // 화면 이동을 위한 Intent 객체 선언
-
-    boolean isKeyboardShowing = false;
-    int keypadBaseHeight = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,7 +150,7 @@ public class LoginActivity extends Activity {
 
         // 비밀번호 찾기 클릭 리스너
         LoginPasswordSearchBtn.setOnClickListener(v -> {
-            intent = new Intent(getApplicationContext(), PasswordActivity.class);
+            intent = new Intent(getApplicationContext(), LoginLostPasswordActivity.class);
             startActivity(intent);
         });
 
