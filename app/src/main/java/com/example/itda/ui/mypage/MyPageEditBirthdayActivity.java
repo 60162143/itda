@@ -110,6 +110,7 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
             userDay.setMaxValue(cal.getActualMaximum(Calendar.DAY_OF_MONTH));   // getActualMaximum 함수를 호출하면 기준이된 월의 말일 계산
         });
 
+        // 유저 생일 변경 버튼 클릭 리스너
         userBirthdayBtn.setOnClickListener(view -> {
             String birthDay = userYear.getValue() + "."
                     + (userMonth.getValue() < 10 ? "0" + userMonth.getValue() : userMonth.getValue()) + "."
