@@ -126,6 +126,7 @@ public class MyPageFragment extends Fragment {
 
         // 내 정보 찜 목록 버튼 클릭 리스너
         myPageBookmarkBtn.setOnClickListener(v -> {
+            System.out.println("isLoginFlag : " + isLoginFlag);
             if(isLoginFlag){
                 Intent intent = new Intent(getActivity(), MyPageBookmarkActivity.class);
 

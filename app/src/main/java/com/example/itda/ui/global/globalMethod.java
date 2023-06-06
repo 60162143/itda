@@ -118,6 +118,16 @@ public class globalMethod extends Application {
         return "/login/getLoginUserId.php";
     }
 
+    // 유저 회원가입 Rest API
+    public String insertLoginUserPath() {
+        return "/login/insertLoginUser.php";
+    }
+
+    // 유저 회원가입 추가 정보 Update Rest API
+    public String updateLoginUserOptionPath() {
+        return "/login/updateLoginUserOption.php";
+    }
+
 
     // 마이페이지 유저 이름 변경 Rest API
     public String getUpdateUserNamePath() {

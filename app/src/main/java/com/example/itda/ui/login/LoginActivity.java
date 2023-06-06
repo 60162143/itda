@@ -13,7 +13,10 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,7 +39,7 @@ import java.util.Map;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
     private loginUserData User;    // 가게 데이터
 
     private ScrollView LoginTotalScrollView;    // 전체 스크롤뷰 레이아웃
@@ -49,6 +52,8 @@ public class LoginActivity extends Activity {
     private Button LoginBtn;           // 로그인 버튼
 
     private ImageButton LoginKakaoBtn;  // 카카오 로그인 버튼
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
 
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
     private String LOGIN_PATH;      // 로그인 정보 데이터 조회 Rest API
@@ -68,6 +73,13 @@ public class LoginActivity extends Activity {
 
         HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
         LOGIN_PATH = ((globalMethod) getApplication()).getLoginPath();    // 로그인 정보 데이터 조회 Rest API
+
+        // activityResultLauncher 초기화
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == 1000){ // resultCode가 1000으로 넘어왔다면 회원가입 완료
+                Log.d("msg", "membership Success!!");
+            }
+        });
 
         initView(); // 뷰 생성
 
@@ -150,14 +162,16 @@ public class LoginActivity extends Activity {
 
         // 비밀번호 찾기 클릭 리스너
         LoginPasswordSearchBtn.setOnClickListener(v -> {
-            intent = new Intent(getApplicationContext(), LoginLostPasswordActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(LoginActivity.this, LoginLostPasswordActivity.class);
+
+            activityResultLauncher.launch(intent);
         });
 
         // 회원가입 클릭 리스너
         LoginMembershipBtn.setOnClickListener(v -> {
-            intent = new Intent(getApplicationContext(), MembershipActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(LoginActivity.this, LoginMembershipActivity.class);
+
+            activityResultLauncher.launch(intent);
         });
 
         // 이메일 EditText 엔터키 입력 리스너
