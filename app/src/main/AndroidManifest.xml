@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:name=".ui.global.globalMethod">
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="8c941ca74f96358c3816c091017b5f77" />
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="${KAKAO_LOGIN_API_KEY}" />
         <activity android:name="com.example.itda.ui.splash.SplashActivity"
             android:theme="@style/Theme.MyApplication"
             android:exported="true">
@@ -130,6 +130,18 @@
         <!--내 정보 사진 목록 액티비티-->
         <activity android:name="com.example.itda.ui.mypage.MyPagePhotoActivity"
             android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--Kakao 로그인 화면으로 이동하기 위한 kakao.sdk에 존재하는 AuthCodeHandler를 추가-->
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="oauth"
+                    android:scheme="${KAKAO_LOGIN_API_KEY}" />
+            </intent-filter>
         </activity>
 
         <!--로그인 액티비티-->

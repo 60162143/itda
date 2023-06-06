@@ -24,6 +24,12 @@ android {
 
         buildConfigField "String", "MAIL_EMAIL", properties["mail.email"]
         buildConfigField "String", "MAIL_PASSWORD", properties["mail.password"]
+
+        buildConfigField "String", "KAKAO_LOGIN_API_KEY", properties["kakao_login_api_key"]
+
+        // 매니페스트에서 사용이 가능하다. 구글맵 같은 경우가 이에 해당한다.
+        // 키 - 값으로 저장된다.
+        manifestPlaceholders = [KAKAO_LOGIN_API_KEY: "@string/kakao_api_key"]
     }
 
     buildTypes {
@@ -68,6 +74,11 @@ dependencies {
 
     // TedPermission Library
     implementation 'gun0912.ted:tedpermission:2.0.0'
+
+    // Kakao Login
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
+
+    // ---------- Files ----------------
 
     // Kakao Map API Library
     implementation files('libs/libDaumMapAndroid.jar')
