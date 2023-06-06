@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,9 +21,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.login.LoginActivity;
-import com.example.itda.R;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -159,6 +158,13 @@ public class MyPageFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        isLoginFlag = ((globalMethod) requireActivity().getApplicationContext()).loginChecked();    // 로그인 여부
     }
 
     // 뷰 생성
