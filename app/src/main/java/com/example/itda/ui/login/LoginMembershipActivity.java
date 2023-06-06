@@ -198,8 +198,7 @@ public class LoginMembershipActivity extends AppCompatActivity {
                 authNumberTimer.stopAnimator();
             }
 
-            //authNumberTimer.start(180000);  // 3분 타이머 실행
-            authNumberTimer.start(30000);  // 1분 타이머 실행
+            authNumberTimer.start(180000);  // 3분 타이머 실행
 
             // 타이머 텍스트 변경 리스너
             authNumberTimer.addTextChangedListener(new TextWatcher() {
