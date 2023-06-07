@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,27 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
         holder.photoReviewUserName.setText(photo.getUserName());    // 유저 명
         holder.photoReviewScore.setText(String.valueOf(photo.getReviewScore()));    // 리뷰 별점
         holder.photoReview.setText(photo.getReviewDetail());    // 리뷰 내용
+
+        // TextView Ellipsis 상태인지 아닌지 확인
+        // holder.textView.onPredraw()로 뷰가 다 그려졌는지 확인 후 holder.textViewr.getLayout()이 null이 아닌 상태에서만 가능
+        holder.photoReview.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                int ellipseCount = holder.photoReview.getLayout().getEllipsisCount(holder.photoReview.getLayout().getLineCount()-1);
+
+                // Ellipsis 상태이면 0 이상이 나옴
+                if (ellipseCount > 0) { // 말줄임이 사용된 상태
+
+                }else{  // 말줄임이 사용되지 않은 상태
+
+                    holder.photoReviewMore.setVisibility(View.GONE);
+                }
+
+                holder.photoReview.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                return true;
+            }
+        });
 
         // 유저 프로필 이미지
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
