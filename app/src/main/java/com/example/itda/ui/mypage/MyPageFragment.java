@@ -114,6 +114,8 @@ public class MyPageFragment extends Fragment {
             autoLoginEdit.apply();  // 데이터를 저장
             linearLayoutBefore.setVisibility(View.VISIBLE);
             linearLayoutAfter.setVisibility(View.GONE);
+
+            isLoginFlag = false;    // 로그인 여부
         });
 
         // 내 정보 수정 버튼 클릭 리스너
@@ -125,7 +127,6 @@ public class MyPageFragment extends Fragment {
 
         // 내 정보 찜 목록 버튼 클릭 리스너
         myPageBookmarkBtn.setOnClickListener(v -> {
-            System.out.println("isLoginFlag : " + isLoginFlag);
             if(isLoginFlag){
                 Intent intent = new Intent(getActivity(), MyPageBookmarkActivity.class);
 

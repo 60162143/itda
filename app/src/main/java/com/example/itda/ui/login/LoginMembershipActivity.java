@@ -390,6 +390,7 @@ public class LoginMembershipActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginMembershipActivity.this, LoginMembershipOptionActivity.class);
                         intent.putExtra("userId", userId);  // 회원가입된 유저 고유 아이디
+                        intent.putExtra("loginFlag", "normal");  // 일반 회원가입 flag
 
                         activityResultLauncher.launch(intent);
 

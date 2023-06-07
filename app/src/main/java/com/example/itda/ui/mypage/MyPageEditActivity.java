@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -173,11 +174,29 @@ public class MyPageEditActivity extends AppCompatActivity{
                 .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(userProfile);      // 이미지를 보여줄 View를 지정
 
-        userEmailBtn.setText(User.getString("userEmail", "")); // 유저 이메일
+        // Data SET
+        // ---------- 일반 로그인과 카카오 로그인 분리 ----------
+
+        // 유저 이메일
+        if(User.getInt("userLoginFlag", 0) == 0){
+            userEmailBtn.setText(User.getString("userEmail", ""));
+            userPasswordBtn.setText("********"); // 유저 비밀번호
+        }else if(User.getInt("userLoginFlag", 0) == 1){
+            userEmailBtn.setText("-"); // 유저 이메일
+            userPasswordBtn.setText("-"); // 유저 비밀번호
+            userPasswordBtn.setEnabled(false);  // 유저 비밀번호 버튼 비활성화
+        }
+
         userNameBtn.setText(User.getString("userName", "")); // 유저 명
-        userNumberBtn.setText(User.getString("userNumber", "-")); // 유저 번호
-        userPasswordBtn.setText("********"); // 유저 비밀번호
         userBirthdayBtn.setText(User.getString("userBirthday", "-")); // 유저 생일
+        // 유저 번호
+        if(User.getString("userNumber", "-").equals("")){
+            userNumberBtn.setText("-");
+        }else{
+            userNumberBtn.setText(User.getString("userNumber", "-"));
+        }
+
+
 
         // 유저 프로필 이미지 변경 버튼 클릭 리스너
         userProfile.setOnClickListener(view -> checkPermissions());
@@ -252,7 +271,7 @@ public class MyPageEditActivity extends AppCompatActivity{
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다...\n [설정] > [권한] 에서 사용으로 활성화해주세요.")
                 .setPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE
-                        //android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
+                        , android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
                 )
                 .check();
     }

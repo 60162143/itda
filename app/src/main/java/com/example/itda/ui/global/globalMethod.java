@@ -108,6 +108,7 @@ public class globalMethod extends Application {
     }
 
 
+
     // 로그인 데이터 조회 Rest API
     public String getLoginPath() {
         return "/login/getLoginUser.php";
@@ -116,6 +117,11 @@ public class globalMethod extends Application {
     // 이메일로 유저 고유 아이디 조회 Rest API
     public String getLoginUserIdPath() {
         return "/login/getLoginUserId.php";
+    }
+
+    // 유저 카카오 회원가입 Rest API
+    public String insertKakaoLoginUserPath() {
+        return "/login/insertKakaoLoginUser.php";
     }
 
     // 유저 회원가입 Rest API
@@ -127,6 +133,7 @@ public class globalMethod extends Application {
     public String updateLoginUserOptionPath() {
         return "/login/updateLoginUserOption.php";
     }
+
 
 
     // 마이페이지 유저 이름 변경 Rest API

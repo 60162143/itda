@@ -63,7 +63,13 @@ public class MyPageEditNumberActivity extends Activity {
         // 뒤로 가기 버튼 클릭 시 Activity 종료
         backIc.setOnClickListener(view -> finish());
 
-        userNumber.setText(User.getString("userNumber", "")); // 유저 번호
+        // 유저 번호
+        if(!User.getString("userNumber", "").isEmpty() && User.getString("userNumber", "").equals("-")){
+            userNumber.setText("");
+        }else{
+            userNumber.setText(User.getString("userNumber", ""));
+        }
+
 
         userNumber.addTextChangedListener(new TextWatcher() {
             @Override

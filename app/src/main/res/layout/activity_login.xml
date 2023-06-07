@@ -146,9 +146,9 @@
 
                 <ImageButton
                     android:id="@+id/login_kakao_logo_btn"
-                    android:src="@drawable/kakao_talk_32dp"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:src="@drawable/kakao_talk"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:scaleType="centerCrop"
                     android:background="@android:color/transparent"/>
 

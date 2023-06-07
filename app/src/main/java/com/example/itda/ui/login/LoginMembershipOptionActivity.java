@@ -94,6 +94,8 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
     private final Handler handler = new Handler();
 
     private int userId = 0;
+    private String userEmail = "";
+    private String loginFlag = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,8 +114,55 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
         UPDATE_LOGIN_USER_OPTION = ((globalMethod) getApplication()).updateLoginUserOptionPath();    // 유저 회원가입 추가 정보 update Rest API
 
         userId = getIntent().getExtras().getInt("userId");    // 회원가입된 유저 고유 아이디
+        loginFlag = getIntent().getExtras().getString("loginFlag"); // 회원가입 방법 ( 일반 회원가입 : normal, 카카오 회원가입 : kakao )
 
         initView(); // 뷰 생성
+
+        // --------------- Data SET ---------------------
+
+        // 연, 월, 일 최대, 최소값 설정
+        userBirthdayYear.setMinValue(1940);
+        userBirthdayYear.setMaxValue(2020);
+        userBirthdayYear.setValue(2000);
+
+        userBirthdayMonth.setMinValue(1);
+        userBirthdayMonth.setMaxValue(12);
+        userBirthdayMonth.setValue(1);
+
+        userBirthdayDay.setMinValue(1);
+        userBirthdayDay.setMaxValue(31);
+        userBirthdayDay.setValue(1);
+
+        // 유저 프로필 이미지 ( 기본 이미지로 초기화 )
+        Glide.with(this)                 // View, Fragment 혹은 Activity로부터 Context를 GET
+                .load(Uri.parse(HOST + NO_PROFILE_PATH))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
+                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .into(userProfile);      // 이미지를 보여줄 View를 지정
+
+        // 회원가입이 카카오로 되었을 경우 정보 SET
+        if(loginFlag.equals("kakao")){
+            userEmail = getIntent().getExtras().getString("email"); // 유저 이메일
+
+            userName.setText(getIntent().getExtras().getString("name"));    // 유저 명
+            // 생일 월, 일
+            if(!getIntent().getExtras().getString("birthday").isEmpty()){
+                userBirthdayMonth.setValue(Integer.parseInt(getIntent().getExtras().getString("birthday").split("-")[1]));
+                userBirthdayDay.setValue(Integer.parseInt(getIntent().getExtras().getString("birthday").split("-")[2]));
+            }
+
+            // 유저 프로필
+            if(!getIntent().getExtras().getString("userProfileURL").isEmpty()){
+                // 유저 프로필 이미지 기본 이미지로 변경
+                Glide.with(getApplicationContext())                 // View, Fragment 혹은 Activity로부터 Context를 GET
+                        .load(getIntent().getExtras().getString("userProfileURL"))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                        .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
+                        .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                        .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                        .into(userProfile);      // 이미지를 보여줄 View를 지정
+            }
+        }
 
         // 뒤로 가기 버튼 클릭 시 Activity 종료
         backIc.setOnClickListener(view -> {
@@ -136,7 +185,9 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     optionInputCancelDialog.dismiss();
-                    updateUserOption("홍길동", "01000000000", "1900-01-01");
+                    updateUserOption(userName.getText().toString()
+                            , ""
+                            , "1900-01-01");
                 }
             });
 
@@ -193,14 +244,6 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             }
         });
 
-        // 유저 프로필 이미지 ( 기본 이미지로 초기화 )
-        Glide.with(this)                 // View, Fragment 혹은 Activity로부터 Context를 GET
-                .load(Uri.parse(HOST + NO_PROFILE_PATH))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
-                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
-                .into(userProfile);      // 이미지를 보여줄 View를 지정
-
         // 유저 휴대폰 번호 입력 EditText 엔터키 입력 리스너
         userNumber.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             switch(actionId){
@@ -212,20 +255,6 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             }
             return true;
         });
-
-        // 연, 월, 일 최대, 최소값 설정
-        userBirthdayYear.setMinValue(1940);
-        userBirthdayYear.setMaxValue(2020);
-        userBirthdayYear.setValue(2000);
-
-        userBirthdayMonth.setMinValue(1);
-        userBirthdayMonth.setMaxValue(12);
-        userBirthdayMonth.setValue(1);
-
-        userBirthdayDay.setMinValue(1);
-        userBirthdayDay.setMaxValue(31);
-        userBirthdayDay.setValue(1);
-
 
         // 연도 변경 리스너 ( 말일 계산 )
         userBirthdayYear.setOnValueChangedListener((numberPicker, oldValue, newValue) -> {
@@ -286,7 +315,9 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     optionInputCancelDialog.dismiss();
-                    updateUserOption("홍길동", "01000000000", "1900-01-01");
+                    updateUserOption(userName.getText().toString()
+                            , ""
+                            , "1900-01-01");
                 }
             });
 
@@ -337,7 +368,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다...\n [설정] > [권한] 에서 사용으로 활성화해주세요.")
                 .setPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE
-                        //android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
+                        , android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
                 )
                 .check();
     }
@@ -596,13 +627,23 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 String success = jsonObject.getString("success");
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
-                    StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
+                    StyleableToast.makeText(getApplicationContext(), "회원가입 완료!", R.style.blueToast).show();
 
-                    // ResultCode와 데이터 값 전달을 위한 intent객체 생성
-                    Intent intent = new Intent(LoginMembershipOptionActivity.this, LoginMembershipActivity.class);
+                    if(loginFlag.equals("normal")){ // 일반 회원가입
+                        // ResultCode와 데이터 값 전달을 위한 intent객체 생성
+                        Intent intent = new Intent(LoginMembershipOptionActivity.this, LoginMembershipActivity.class);
 
-                    setResult(1000, intent);    // 결과 코드와 intent 값 전달
-                    finish();
+                        setResult(1000, intent);    // 결과 코드와 intent 값 전달
+                        finish();
+                    }else{  // 카카오 회원가입
+                        // ResultCode와 데이터 값 전달을 위한 intent객체 생성
+                        Intent intent = new Intent(LoginMembershipOptionActivity.this, LoginActivity.class);
+
+                        intent.putExtra("email", userEmail);
+                        setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                        finish();
+                    }
+
                 }else{
                     StyleableToast.makeText(getApplicationContext(), "변경 실패...", R.style.redToast).show();
                 }
@@ -623,38 +664,6 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
         updateUserOptionRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(updateUserOptionRequest);      // RequestQueue에 요청 추가
-    }
-
-    public String phoneNumberHyphenAdd(String num, String mask) {
-
-        String formatNum = "";
-
-        num = num.replaceAll("-","");
-
-        if (num.length() == 11) {
-            if (mask.equals("Y")) {
-                formatNum = num.replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-****-$3");
-            }else{
-                formatNum = num.replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
-            }
-        }else if(num.length()==8){
-            formatNum = num.replaceAll("(\\d{4})(\\d{4})", "$1-$2");
-        }else{
-            if(num.indexOf("02")==0){
-                if(mask.equals("Y")){
-                    formatNum = num.replaceAll("(\\d{2})(\\d{3,4})(\\d{4})", "$1-****-$3");
-                }else{
-                    formatNum = num.replaceAll("(\\d{2})(\\d{3,4})(\\d{4})", "$1-$2-$3");
-                }
-            }else{
-                if(mask.equals("Y")){
-                    formatNum = num.replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-****-$3");
-                }else{
-                    formatNum = num.replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
-                }
-            }
-        }
-        return formatNum;
     }
 }
 
