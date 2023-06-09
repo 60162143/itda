@@ -101,6 +101,12 @@ public class globalMethod extends Application {
         return "/info/insertInfoReviewComment.php";
     }
 
+    // 쿠폰 목록 조회 Rest API
+    public String getInfoPaymentCouponPath() {
+        return "/info/getInfoPaymentCoupon.php";
+    }
+
+
 
     // 협업 데이터 조회 Rest API
     public String getCollaboPath() {

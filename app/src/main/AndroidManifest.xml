@@ -83,6 +83,16 @@
             android:windowSoftInputMode="adjustNothing">
         </activity>
 
+        <!--가게 상세 정보 내 메뉴 주문 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoOrderActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+        <!--가게 상세 정보 내 결제 액티비티-->
+        <activity android:name="com.example.itda.ui.info.InfoPaymentActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
         <!--내 정보 수정 액티비티-->
         <activity android:name="com.example.itda.ui.mypage.MyPageEditActivity"
             android:theme="@style/Theme.MyApplication">

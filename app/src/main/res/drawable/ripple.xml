@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 리사이클러뷰 클릭 시 물결 모양으로 색 변함 -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/green03">
+
+    <item
+        android:id="@+id/mask"
+        android:drawable="@color/white"/>
+
+</ripple>

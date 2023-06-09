@@ -9,14 +9,16 @@ public class infoMenuData implements Parcelable {
     private String menuName;    // 메뉴 이름
     private int menuPrice;      // 메뉴 가격
     private int menuOrder;      // 메뉴 정렬 순서
+    private int menuCount;      // 선택 메뉴 개수
 
     // Constructor
-    public infoMenuData(int menuId, int storeId, String menuName, int menuPrice, int menuOrder) {
+    public infoMenuData(int menuId, int storeId, String menuName, int menuPrice, int menuOrder, int menuCount) {
         this.menuId = menuId;
         this.storeId = storeId;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
         this.menuOrder = menuOrder;
+        this.menuCount = menuCount;
     }
 
     // Parcelable interface Constructor
@@ -26,6 +28,7 @@ public class infoMenuData implements Parcelable {
         menuName = in.readString();
         menuPrice = in.readInt();
         menuOrder = in.readInt();
+        menuCount = in.readInt();
     }
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
@@ -59,6 +62,7 @@ public class infoMenuData implements Parcelable {
         dest.writeString(menuName);
         dest.writeInt(menuPrice);
         dest.writeInt(menuOrder);
+        dest.writeInt(menuCount);
     }
     //=======================================================================
 
@@ -101,5 +105,13 @@ public class infoMenuData implements Parcelable {
 
     public void setMenuOrder(int menuOrder) {
         this.menuOrder = menuOrder;
+    }
+
+    public int getMenuCount() {
+        return menuCount;
+    }
+
+    public void setMenuCount(int menuCount) {
+        this.menuCount = menuCount;
     }
 }

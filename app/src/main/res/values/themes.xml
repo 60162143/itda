@@ -15,6 +15,19 @@
         <item name="searchIcon">@drawable/ic_search</item>
     </style>
 
+    <!--Spinner 적용-->
+    <style name="SpinnerDivideStyle">
+        <!--아이템을 나누는 선 색상-->
+        <item name="android:divider">@color/gray03</item>
+        <!--선 높이-->
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="Theme.AppCompat">
+        <!--spinnerDivideStyle을 먼저 만들어 줘야한다.-->
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+    </style>
+
     <!--NumberPicker 적용-->
     <style name="NumberPickerText" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/gray03</item>

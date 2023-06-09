@@ -78,6 +78,10 @@ dependencies {
     // Kakao Login
     implementation 'com.kakao.sdk:v2-user:2.10.0'
 
+    // 부트페이 결제 Library
+    implementation 'io.github.bootpay:android:4.2.9' //최신 버전 추천
+    implementation 'io.github.bootpay:android-bio:4.2.4' //생체인증 결제 사용시 추가
+
     // ---------- Files ----------------
 
     // Kakao Map API Library

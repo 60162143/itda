@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!--상단 화면 입니다.-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="@drawable/border_bottom">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_payment_back_ic"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginVertical="10dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/info_payment_main_store_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/info_payment_back_ic"
+            android:layout_marginStart="20dp"
+            android:textSize="12sp"
+            android:text="가게 이름"
+            android:background="@drawable/round_color"
+            android:paddingHorizontal="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/info_payment_scroll_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="주문목록 확인"
+                    android:textColor="@color/gray05"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:textSize="16sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/info_payment_select_menu_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:overScrollMode="never"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:background="@drawable/border_top_gray">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="결제 확인"
+                    android:textColor="@color/gray05"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="20dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="결제 금액"
+                        android:textColor="@color/gray04"
+                        android:layout_marginStart="30dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"/>
+
+                    <TextView
+                        android:id="@+id/info_payment_total_price"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="11,000원"
+                        android:textColor="@color/gray04"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="10dp"
+                        android:layout_weight="3"
+                        android:gravity="center|end"
+                        android:paddingEnd="20dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:layout_marginVertical="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="할인 쿠폰"
+                        android:textColor="@color/gray04"
+                        android:layout_marginStart="30dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"/>
+
+                    <Spinner
+                        android:id="@+id/info_payment_coupon_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/selector_coupon_spinner"
+                        android:paddingVertical="5dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:theme="@style/SpinnerTheme"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="최종 결제 금액"
+                        android:textColor="@color/gray04"
+                        android:layout_marginStart="30dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="10dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="2"/>
+
+                    <TextView
+                        android:id="@+id/info_payment_final_total_price"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="9,900원"
+                        android:textColor="@color/green04"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="10dp"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical|end"
+                        android:paddingEnd="20dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!--    결제 버튼 입니다-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공, 전자금융거래 이용약관, 만 14세 이상 이용자 내용 및 결제에 동의합니다."
+            android:textColor="@color/gray02"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="40dp"
+            android:textAlignment="center"/>
+
+        <Button
+            android:id="@+id/info_payment_btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="결제하기"
+            android:textSize="14sp"
+            android:background="@color/green03"/>
+
+    </LinearLayout>
+    <!--    결제 버튼 끝입니다-->
+
+</LinearLayout>

@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -48,9 +46,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
 import com.example.itda.ui.mypage.MyPageBookmarkActivity;
-import com.example.itda.ui.mypage.MyPageEditActivity;
-import com.example.itda.ui.mypage.MyPageEditNameActivity;
-import com.example.itda.ui.mypage.MyPageReviewActivity;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -60,7 +55,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +68,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private final ArrayList<infoMenuData> Menu = new ArrayList<>();       // 메뉴 데이터
     private ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
     private ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
-
 
     private int storeId;   // 가게 고유 아이디
     private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
@@ -438,6 +431,44 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
 
         // ---------------- 결제 Section ---------------------
+        infoPaymentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isLoginFlag){
+                    StyleableToast.makeText(getApplicationContext(), "로그인 후 이용하실 수 있습니다.", R.style.redToast).show();
+                }else if(Menu.size() == 0){
+                    StyleableToast.makeText(getApplicationContext(), "등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
+                }else{
+                    ArrayList<infoMenuData> priceExistMenu = new ArrayList<>();       // 가격이 있는 메뉴 데이터
+
+                    // 가격이 있는 메뉴만 SET
+                    if(Menu.size() > 0){
+                        for(int i = 0; i < Menu.size(); i++){
+                            if(Menu.get(i).getMenuPrice() != 0){
+                                priceExistMenu.add(Menu.get(i));
+                            }
+                        }
+                    }
+
+                    // 가격이 등록된 메뉴가 하나도 없으면 결제 할 수 없음
+                    if(priceExistMenu.size() == 0){
+                        StyleableToast.makeText(getApplicationContext(), "가격이 등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
+                    }else{
+                        Intent intent = new Intent(InfoActivity.this, InfoOrderActivity.class);
+
+                        intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
+                        intent.putExtra("userId", User.getInt("userId", 0)); // 유저 고유 아이디
+                        intent.putExtra("storeName", Store.getStoreName()); // 가게 명
+
+                        // 데이터 송신을 위한 Parcelable interface 사용
+                        // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
+                        intent.putParcelableArrayListExtra("Menu", priceExistMenu);   // 메뉴 데이터
+
+                        activityResultLauncher.launch(intent);
+                    }
+                }
+            }
+        });
 
 
         // ---------------- 화면전환 Section ---------------------
@@ -911,7 +942,8 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                                 , object.getInt("storeId")      // 가게 고유 아이디
                                 , object.getString("menuName")  // 메뉴 명
                                 , object.getInt("menuPrice")    // 메뉴 가격
-                                , object.getInt("menuOrder"));  // 메뉴 정렬 순서
+                                , object.getInt("menuOrder")    // 메뉴 정렬 순서
+                                , 1);  // 선택된 메뉴 개수
 
                         Menu.add(infoMenuData); // 메뉴 정보 저장
                     }
