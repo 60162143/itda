@@ -302,7 +302,7 @@ public class MyPageBookmarkActivity extends AppCompatActivity implements onMyPag
                                 , object.getString("storeHashTag")                          // 가게 해시태그
                                 , object.getInt("bookmarkStoreId"));                        // 찜한 가게 목록 고유 아이디
 
-                        bookmarkStoreData.add(bookmarkStore);    // 가게 데이터 추가
+                        bookmarkStoreData.add(bookmarkStore);    // 찜한 가게 데이터 추가
                     }
 
                     bookmarkStoreAdapter = new MyPageBookmarkStoreRvAdapter(this, this, bookmarkStoreData);  // 리사이클러뷰 어뎁터 객체 생성

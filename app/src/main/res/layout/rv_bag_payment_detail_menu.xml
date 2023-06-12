@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="15dp"
+    android:weightSum="6">
+
+    <TextView
+        android:id="@+id/bag_payment_detail_menu_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="아메리카노"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/gray05"
+        android:layout_marginStart="30dp"
+        android:layout_weight="4"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/bag_payment_detail_menu_price"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="3,000원"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/gray04"
+        android:layout_weight="2"
+        android:gravity="center_vertical|end"
+        android:paddingEnd="30dp"/>
+
+</LinearLayout>

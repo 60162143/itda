@@ -46,6 +46,15 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
+
+
+        <!--가방 내 주문/결제 내역 상세 액티비티-->
+        <activity android:name="com.example.itda.ui.bag.BagPaymentDetailActivity"
+            android:theme="@style/Theme.MyApplication">
+        </activity>
+
+
+
         <!--가게 상세 정보 액티비티-->
         <activity android:name="com.example.itda.ui.info.InfoActivity"
             android:theme="@style/Theme.MyApplication">
@@ -92,6 +101,8 @@
         <activity android:name="com.example.itda.ui.info.InfoPaymentActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
+
+
 
         <!--내 정보 수정 액티비티-->
         <activity android:name="com.example.itda.ui.mypage.MyPageEditActivity"
@@ -143,6 +154,8 @@
             android:theme="@style/Theme.MyApplication">
         </activity>
 
+
+
         <!--Kakao 로그인 화면으로 이동하기 위한 kakao.sdk에 존재하는 AuthCodeHandler를 추가-->
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -178,6 +191,8 @@
         <activity android:name="com.example.itda.ui.login.LoginMembershipOptionActivity"
             android:theme="@style/Theme.MyApplication">
         </activity>
+
+
 
     </application>
 

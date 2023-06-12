@@ -114,6 +114,16 @@ public class globalMethod extends Application {
     }
 
 
+    // 유저 사용 가능 쿠폰 목록 조회 Rest API
+    public String getBagCouponPath() {
+        return "/bag/getBagCoupon.php";
+    }
+
+    // 유저 결제 목록 조회 Rest API
+    public String getBagPaymentPath() {
+        return "/bag/getBagPayment.php";
+    }
+
 
     // 로그인 데이터 조회 Rest API
     public String getLoginPath() {

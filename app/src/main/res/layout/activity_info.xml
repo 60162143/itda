@@ -263,7 +263,7 @@
                         android:id="@+id/info_working_time_down_arrow_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_down_arrow"
+                        android:src="@drawable/ic_arrow_down"
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         android:layout_gravity="bottom"
@@ -553,7 +553,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-<!--    결제 버튼 입니다-->
+    <!--    결제 버튼 입니다-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -563,9 +563,9 @@
             android:id="@+id/info_payment_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="결제하기"
+            android:text="메뉴 담기"
             android:textSize="14sp"
-            android:background="#00FFCE"/>
+            android:background="@color/green03"/>
 
     </LinearLayout>
     <!--    결제 버튼 끝입니다-->

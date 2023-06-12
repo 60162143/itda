@@ -30,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.itda.MainActivity;
+import com.example.itda.ui.bag.BagPaymentDetailActivity;
 import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.home.HomeSearchActivity;
 import com.example.itda.ui.home.mainBookmarkCollaboData;
@@ -188,7 +189,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
-        storeId = getIntent().getExtras().getInt("storeId");    // 메인 가게 리사이클러뷰의 현재 가게 position
+        storeId = getIntent().getExtras().getInt("storeId");    // 가게 고유 아이디
         BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
         intentPageName = getIntent().getExtras().getString("pageName");    // intent된 페이지 명
 
@@ -257,6 +258,20 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 finish();   // 버튼 클릭 시 Activity 종료
             }else if(intentPageName.equals("CollaboFragment")){  // 페이지 명 : CollaboFragment
                 Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("BagFragment")){  // 페이지 명 : BagFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("BagPaymentDetailActivity")){  // 페이지 명 : BagPaymentDetailActivity
+                Intent intent = new Intent(InfoActivity.this, BagPaymentDetailActivity.class);
 
                 intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
 
@@ -614,6 +629,20 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 finish();   // 버튼 클릭 시 Activity 종료
             }else if(intentPageName.equals("CollaboFragment")){  // 페이지 명 : CollaboFragment
                 Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("BagFragment")){  // 페이지 명 : BagFragment
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+
+                setResult(2000, intent);    // 결과 코드와 intent 값 전달
+                finish();   // 버튼 클릭 시 Activity 종료
+            }else if(intentPageName.equals("BagPaymentDetailActivity")){  // 페이지 명 : BagPaymentDetailActivity
+                Intent intent = new Intent(InfoActivity.this, BagPaymentDetailActivity.class);
 
                 intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
 
