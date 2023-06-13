@@ -1,6 +1,5 @@
 package com.example.itda.ui.info;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,8 +34,8 @@ public class InfoOrderActivity extends AppCompatActivity implements onInfoOrderM
 
     private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
 
-    private ArrayList<infoMenuData> Menu = new ArrayList<>();   // 전체 메뉴 데이터
-    private ArrayList<infoMenuData> selectMenu = new ArrayList<>();   // 선택한 메뉴 데이터
+    private ArrayList<InfoMenuData> Menu = new ArrayList<>();   // 전체 메뉴 데이터
+    private ArrayList<InfoMenuData> selectMenu = new ArrayList<>();   // 선택한 메뉴 데이터
 
     private int storeId;    // 가게 고유 아이디
     private int userId;     // 유저 고유 아이디
@@ -102,7 +101,8 @@ public class InfoOrderActivity extends AppCompatActivity implements onInfoOrderM
         // activityResultLauncher 초기화
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if(result.getResultCode() == 1000) { // resultCode가 1000으로 넘어왔다면 결제 완료
-                //System.out.println("결제 완료!!");
+                System.out.println("결제 완료!!!!!!!!!!");
+                finish();
             }
         });
     }
@@ -192,7 +192,7 @@ public class InfoOrderActivity extends AppCompatActivity implements onInfoOrderM
     }
 
     // 주문 총 금액 Return
-    public int getTotalMenuPrice(ArrayList<infoMenuData> menus){
+    public int getTotalMenuPrice(ArrayList<InfoMenuData> menus){
         int totalPrice = 0;
 
         if(menus != null && menus.size() > 0){

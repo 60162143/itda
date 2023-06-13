@@ -3,49 +3,52 @@ package com.example.itda.ui.info;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class infoPaymentData implements Parcelable {
+public class InfoPaymentData implements Parcelable {
     private int paymentId;         // 결제 고유 아이디
     private int storeId;        // 가게 고유 아이디
     private int userId;    // 유저 고유 아이디
     private int paymentPrice;         // 결제 총 금액
-    private String usedYN;      // 결제 상품 사용 여부
-    private String regDate;      // 결제 일
-    private String expDate;      // 결제 상품 사용 만료일
+    private String paymentDate;      // 결제 일
+    private String expireDate;      // 결제 상품 사용 만료일
+    private String storeName;      // 결제 가게 명
+    private String storeImage;      // 결제 가게 이미지
 
     // Constructor
-    public infoPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String usedYN, String regDate, String expDate) {
+    public InfoPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentDate, String expireDate, String storeName, String storeImage) {
         this.paymentId = paymentId;
         this.storeId = storeId;
         this.userId = userId;
         this.paymentPrice = paymentPrice;
-        this.usedYN = usedYN;
-        this.regDate = regDate;
-        this.expDate = expDate;
+        this.paymentDate = paymentDate;
+        this.expireDate = expireDate;
+        this.storeName = storeName;
+        this.storeImage = storeImage;
     }
 
     // Parcelable interface Constructor
-    protected infoPaymentData(Parcel in) {
+    protected InfoPaymentData(Parcel in) {
         paymentId = in.readInt();
         storeId = in.readInt();
         userId = in.readInt();
         paymentPrice = in.readInt();
-        usedYN = in.readString();
-        regDate = in.readString();
-        expDate = in.readString();
+        paymentDate = in.readString();
+        expireDate = in.readString();
+        storeName = in.readString();
+        storeImage = in.readString();
     }
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<infoPaymentData> CREATOR = new Creator<infoPaymentData>() {
+    public static final Creator<InfoPaymentData> CREATOR = new Creator<InfoPaymentData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public infoPaymentData createFromParcel(Parcel in) {
-            return new infoPaymentData(in);
+        public InfoPaymentData createFromParcel(Parcel in) {
+            return new InfoPaymentData(in);
         }
 
         @Override
-        public infoPaymentData[] newArray(int size) {
-            return new infoPaymentData[size];
+        public InfoPaymentData[] newArray(int size) {
+            return new InfoPaymentData[size];
         }
     };
 
@@ -64,9 +67,10 @@ public class infoPaymentData implements Parcelable {
         dest.writeInt(storeId);
         dest.writeInt(userId);
         dest.writeInt(paymentPrice);
-        dest.writeString(usedYN);
-        dest.writeString(regDate);
-        dest.writeString(expDate);
+        dest.writeString(paymentDate);
+        dest.writeString(expireDate);
+        dest.writeString(storeName);
+        dest.writeString(storeImage);
     }
     //=======================================================================
 
@@ -103,27 +107,35 @@ public class infoPaymentData implements Parcelable {
         this.paymentPrice = paymentPrice;
     }
 
-    public String getUsedYN() {
-        return usedYN;
+    public String getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setUsedYN(String usedYN) {
-        this.usedYN = usedYN;
+    public void setPaymentDate(String paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
-    public String getRegDate() {
-        return regDate;
+    public String getExpireDate() {
+        return expireDate;
     }
 
-    public void setRegDate(String regDate) {
-        this.regDate = regDate;
+    public void setExpireDate(String expireDate) {
+        this.expireDate = expireDate;
     }
 
-    public String getExpDate() {
-        return expDate;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setExpDate(String expDate) {
-        this.expDate = expDate;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getStoreImage() {
+        return storeImage;
+    }
+
+    public void setStoreImage(String storeImage) {
+        storeImage = storeImage;
     }
 }

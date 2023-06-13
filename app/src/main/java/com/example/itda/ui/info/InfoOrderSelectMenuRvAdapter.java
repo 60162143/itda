@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class InfoOrderSelectMenuRvAdapter extends RecyclerView.Adapter<InfoOrderSelectMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private ArrayList<infoMenuData> Menus;    // 메뉴 데이터
+    private ArrayList<InfoMenuData> Menus;    // 메뉴 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -28,7 +28,7 @@ public class InfoOrderSelectMenuRvAdapter extends RecyclerView.Adapter<InfoOrder
     // Constructor
     public InfoOrderSelectMenuRvAdapter(Context context
             , onInfoOrderSelectMenuRvClickListener clickListener
-            , ArrayList<infoMenuData> menus){
+            , ArrayList<InfoMenuData> menus){
         this.mContext = context;
         rvClickListener = clickListener;
         this.Menus = menus;
@@ -50,7 +50,7 @@ public class InfoOrderSelectMenuRvAdapter extends RecyclerView.Adapter<InfoOrder
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull InfoOrderSelectMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        infoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
+        InfoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
 
         holder.infoSelectMenuName.setText(menu.getMenuName());   // 선택한 메뉴 명
 
@@ -62,7 +62,7 @@ public class InfoOrderSelectMenuRvAdapter extends RecyclerView.Adapter<InfoOrder
     }
 
     // 메뉴 데이터 SET
-    public void setMenu(ArrayList<infoMenuData> menus){
+    public void setMenu(ArrayList<InfoMenuData> menus){
         this.Menus = menus;
     }
 

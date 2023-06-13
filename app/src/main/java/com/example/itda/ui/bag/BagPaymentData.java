@@ -8,17 +8,27 @@ public class BagPaymentData implements Parcelable {
     private int storeId;        // 가게 고유 아이디
     private int userId;    // 유저 고유 아이디
     private int paymentPrice;      // 결제 금액
-    private String paymentDate;      // 결제일
+    private String paymentUsedStatus;      // 결제 상품 사용 가능 상태
+    private int paymentUsedCouponId;      // 결제 시 이용한 쿠폰 고유 아이디 ( 쿠폰 사용 안했을 경우 0 )
+    private int paymentUsedCouponDisRate;      // 결제 시 이용한 쿠폰 할인율 ( 쿠폰 사용 안했을 경우 0 )
+    private String paymentPayDate;      // 결제일
+    private String paymentExpDate;      // 만료 일자
     private String storeName;      // 가게 명
     private String storeImagePath;      // 가게 썸네일 이미지
 
     // Constructor
-    public BagPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentDate, String storeName, String storeImagePath) {
+
+
+    public BagPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentUsedStatus, int paymentUsedCouponId, int paymentUsedCouponDisRate, String paymentPayDate, String paymentExpDate, String storeName, String storeImagePath) {
         this.paymentId = paymentId;
         this.storeId = storeId;
         this.userId = userId;
         this.paymentPrice = paymentPrice;
-        this.paymentDate = paymentDate;
+        this.paymentUsedStatus = paymentUsedStatus;
+        this.paymentUsedCouponId = paymentUsedCouponId;
+        this.paymentUsedCouponDisRate = paymentUsedCouponDisRate;
+        this.paymentPayDate = paymentPayDate;
+        this.paymentExpDate = paymentExpDate;
         this.storeName = storeName;
         this.storeImagePath = storeImagePath;
     }
@@ -29,7 +39,11 @@ public class BagPaymentData implements Parcelable {
         storeId = in.readInt();
         userId = in.readInt();
         paymentPrice = in.readInt();
-        paymentDate = in.readString();
+        paymentUsedStatus = in.readString();
+        paymentUsedCouponId = in.readInt();
+        paymentUsedCouponDisRate = in.readInt();
+        paymentPayDate = in.readString();
+        paymentExpDate = in.readString();
         storeName = in.readString();
         storeImagePath = in.readString();
     }
@@ -64,7 +78,11 @@ public class BagPaymentData implements Parcelable {
         dest.writeInt(storeId);
         dest.writeInt(userId);
         dest.writeInt(paymentPrice);
-        dest.writeString(paymentDate);
+        dest.writeString(paymentUsedStatus);
+        dest.writeInt(paymentUsedCouponId);
+        dest.writeInt(paymentUsedCouponDisRate);
+        dest.writeString(paymentPayDate);
+        dest.writeString(paymentExpDate);
         dest.writeString(storeName);
         dest.writeString(storeImagePath);
     }
@@ -103,12 +121,44 @@ public class BagPaymentData implements Parcelable {
         this.paymentPrice = paymentPrice;
     }
 
-    public String getPaymentDate() {
-        return paymentDate;
+    public String getPaymentUsedStatus() {
+        return paymentUsedStatus;
     }
 
-    public void setPaymentDate(String paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setPaymentUsedStatus(String paymentUsedStatus) {
+        this.paymentUsedStatus = paymentUsedStatus;
+    }
+
+    public int getPaymentUsedCouponId() {
+        return paymentUsedCouponId;
+    }
+
+    public void setPaymentUsedCouponId(int paymentUsedCouponId) {
+        this.paymentUsedCouponId = paymentUsedCouponId;
+    }
+
+    public int getPaymentUsedCouponDisRate() {
+        return paymentUsedCouponDisRate;
+    }
+
+    public void setPaymentUsedCouponDisRate(int paymentUsedCouponDisRate) {
+        this.paymentUsedCouponDisRate = paymentUsedCouponDisRate;
+    }
+
+    public String getPaymentPayDate() {
+        return paymentPayDate;
+    }
+
+    public void setPaymentPayDate(String paymentPayDate) {
+        this.paymentPayDate = paymentPayDate;
+    }
+
+    public String getPaymentExpDate() {
+        return paymentExpDate;
+    }
+
+    public void setPaymentExpDate(String paymentExpDate) {
+        this.paymentExpDate = paymentExpDate;
     }
 
     public String getStoreName() {

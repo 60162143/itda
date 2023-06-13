@@ -66,7 +66,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
     private mainStoreData Store;    // 가게 데이터
     private final ArrayList<infoCollaboData> Collabo = new ArrayList<>(); // 협업 가게 데이터
-    private final ArrayList<infoMenuData> Menu = new ArrayList<>();       // 메뉴 데이터
+    private final ArrayList<InfoMenuData> Menu = new ArrayList<>();       // 메뉴 데이터
     private ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
     private ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
 
@@ -454,7 +454,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 }else if(Menu.size() == 0){
                     StyleableToast.makeText(getApplicationContext(), "등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
                 }else{
-                    ArrayList<infoMenuData> priceExistMenu = new ArrayList<>();       // 가격이 있는 메뉴 데이터
+                    ArrayList<InfoMenuData> priceExistMenu = new ArrayList<>();       // 가격이 있는 메뉴 데이터
 
                     // 가격이 있는 메뉴만 SET
                     if(Menu.size() > 0){
@@ -966,7 +966,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                         JSONObject object = menuArr.getJSONObject(i);   // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
                         // 메뉴 데이터 생성 및 저장
-                        infoMenuData infoMenuData = new infoMenuData(
+                        InfoMenuData infoMenuData = new InfoMenuData(
                                 object.getInt("menuId")         // 메뉴 고유 아이디
                                 , object.getInt("storeId")      // 가게 고유 아이디
                                 , object.getString("menuName")  // 메뉴 명

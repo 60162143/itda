@@ -5,40 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="@drawable/border_bottom">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bag_payment_detail_back_ic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/bag_payment_detail_back_ic"
-            android:layout_marginStart="20dp"
-            android:textSize="15sp"
-            android:text="주문/결제 내역 상세"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textStyle="bold"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -48,13 +14,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="30dp">
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="결제 완료"
+                android:textColor="@color/gray05"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:paddingVertical="20dp"
+                android:layout_marginTop="40dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
                 android:background="@drawable/border_vertical">
 
                 <!--카드뷰-->
@@ -84,7 +59,7 @@
 
                             <!--가게 썸네일-->
                             <ImageButton
-                                android:id="@+id/bag_payment_detail_store_image"
+                                android:id="@+id/info_payment_complete_store_image"
                                 android:layout_width="150dp"
                                 android:layout_height="150dp"
                                 android:layout_gravity="center"
@@ -102,10 +77,10 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:orientation="vertical"
-                            android:weightSum="5">
+                            android:weightSum="4">
 
                             <TextView
-                                android:id="@+id/bag_payment_detail_store_name"
+                                android:id="@+id/info_payment_complete_store_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="착한커피"
@@ -116,10 +91,10 @@
                                 android:gravity="top"/>
 
                             <TextView
-                                android:id="@+id/bag_payment_detail_pay_id"
+                                android:id="@+id/info_payment_complete_price"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="주문 번호 : 1"
+                                android:text="결제 금액 : 33,000원"
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -127,53 +102,26 @@
                                 android:gravity="top"/>
 
                             <TextView
-                                android:id="@+id/bag_payment_detail_pay_date"
+                                android:id="@+id/info_payment_complete_pay_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:text="결제 일자 : 2023.06.10"
+                                android:text="결제 날짜 : 2023.06.10"
                                 android:layout_weight="1"
                                 android:gravity="top"/>
+
                             <TextView
-                                android:id="@+id/bag_payment_detail_exp_date"
+                                android:id="@+id/info_payment_complete_exp_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:text="만료 일자 : 2023.06.24"
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:text="만료 일자 : 2023.06.10"
-                                android:gravity="top"
-                                android:layout_weight="1"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="top"
-                                    android:text="티켓 : "
-                                    android:textColor="@color/gray03"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:id="@+id/bag_payment_detail_used_status"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="top"
-                                    android:text="사용 가능"
-                                    android:textColor="@color/green05"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold"/>
-
-                            </LinearLayout>
-
-
+                                android:layout_weight="1"
+                                android:gravity="top"/>
 
                         </LinearLayout>
 
@@ -194,9 +142,10 @@
                 android:layout_marginVertical="10dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/bag_payment_detail_menu_rv"
+                android:id="@+id/info_payment_complete_menu_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -233,7 +182,7 @@
                         android:textSize="14sp"/>
 
                     <TextView
-                        android:id="@+id/bag_payment_detail_order_price"
+                        android:id="@+id/info_payment_complete_order_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="33,000원"
@@ -247,7 +196,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/bag_payment_detail_coupon_layout"
+                    android:id="@+id/info_payment_complete_coupon_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -266,7 +215,7 @@
                         android:textSize="14sp"/>
 
                     <TextView
-                        android:id="@+id/bag_payment_detail_coupon_price"
+                        android:id="@+id/info_payment_complete_coupon_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="-2,000원"
@@ -301,7 +250,7 @@
                     android:textSize="18sp"/>
 
                 <TextView
-                    android:id="@+id/bag_payment_detail_total_price"
+                    android:id="@+id/info_payment_complete_total_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="33,000원"
@@ -317,5 +266,21 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/info_payment_complete_btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="확인"
+            android:textSize="14sp"
+            android:background="@color/green03"/>
+
+    </LinearLayout>
 
 </LinearLayout>

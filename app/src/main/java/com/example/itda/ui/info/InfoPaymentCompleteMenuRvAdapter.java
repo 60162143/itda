@@ -1,4 +1,4 @@
-package com.example.itda.ui.bag;
+package com.example.itda.ui.info;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,12 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
+import com.example.itda.ui.bag.BagPaymentMenuData;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class BagPaymentDetailMenuRvAdapter extends RecyclerView.Adapter<BagPaymentDetailMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private ArrayList<BagPaymentMenuData> Menus;    // 메뉴 데이터
+public class InfoPaymentCompleteMenuRvAdapter extends RecyclerView.Adapter<InfoPaymentCompleteMenuRvAdapter.CustomInfoMenuViewHolder> {
+    private ArrayList<InfoMenuData> Menus;    // 메뉴 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -23,8 +24,8 @@ public class BagPaymentDetailMenuRvAdapter extends RecyclerView.Adapter<BagPayme
     private final Context mContext;
 
     // Constructor
-    public BagPaymentDetailMenuRvAdapter(Context context
-            , ArrayList<BagPaymentMenuData> menus){
+    public InfoPaymentCompleteMenuRvAdapter(Context context
+            , ArrayList<InfoMenuData> menus){
         this.mContext = context;
         this.Menus = menus;
     }
@@ -33,19 +34,19 @@ public class BagPaymentDetailMenuRvAdapter extends RecyclerView.Adapter<BagPayme
     // 각 아이템을 위한 XML 레이아웃을 활용한 뷰 객체를 생성하고 이를 뷰 홀더 객체에 담아 리턴
     @NonNull
     @Override
-    public BagPaymentDetailMenuRvAdapter.CustomInfoMenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public InfoPaymentCompleteMenuRvAdapter.CustomInfoMenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // layoutInflater로 xml객체화. viewHolder 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_bag_payment_detail_menu, parent, false);
 
-        return new BagPaymentDetailMenuRvAdapter.CustomInfoMenuViewHolder(view);
+        return new InfoPaymentCompleteMenuRvAdapter.CustomInfoMenuViewHolder(view);
     }
 
     // ViewHolder를 어떠한 데이터와 연결할 때 호출
     // 뷰 홀더 객체들의 레이아웃을 채움
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
-    public void onBindViewHolder(@NonNull BagPaymentDetailMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        BagPaymentMenuData menu = Menus.get(position);    // 현재 position의 메뉴 정보
+    public void onBindViewHolder(@NonNull InfoPaymentCompleteMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
+        InfoMenuData menu = Menus.get(position);    // 현재 position의 메뉴 정보
 
         holder.bagPaymentDetailMenuName.setText(menu.getMenuName() + " " + menu.getMenuCount() + "개");   // 선택한 메뉴 명 + 주문 수량
 

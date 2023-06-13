@@ -213,7 +213,7 @@
             android:textSize="10sp"
             android:textStyle="bold"
             android:paddingVertical="10dp"
-            android:paddingHorizontal="40dp"
+            android:paddingHorizontal="30dp"
             android:textAlignment="center"/>
 
         <Button

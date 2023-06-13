@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -37,6 +38,7 @@ import com.example.itda.ui.home.HomeSearchActivity;
 import com.example.itda.ui.home.mainBookmarkStoreData;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
+import com.example.itda.ui.info.InfoMenuData;
 import com.example.itda.ui.info.InfoReviewPhotoRvAdapter;
 import com.example.itda.ui.info.infoReviewData;
 import com.example.itda.ui.mypage.MyPageBookmarkActivity;
@@ -61,8 +63,14 @@ public class BagPaymentDetailActivity extends AppCompatActivity {
     private ImageButton backIc; // 상단 뒤로가기 버튼
     private ImageButton storeImage; // 결제한 가게 이미지
     private TextView storeName;  // 결제한 가게 명
-    private TextView paymentPrice;  // 결제한 금액
-    private TextView paymentDate;  // 결제한 일자
+    private TextView paymentId;  // 결제 번호
+    private TextView paymentDate;  // 결제 일자
+    private TextView expireDate;  // 결제 상품 만료 일자
+    private TextView paymentUsedStatus;  // 결제 상품 사용 가능 상태
+    private TextView orderPrice;  // 주문 금액
+    private TextView couponPrice;  // 쿠폰 할인 금액
+    private TextView totalPrice;  // 총 결제 금액
+    private LinearLayout couponPriceLayout;  // 쿠폰 할인 금액 전체 레이아웃
     public RecyclerView paymentMenuRv;  // 결제한 메뉴 리사이클러뷰
 
     public BagPaymentDetailMenuRvAdapter paymentMenuAdapter; // 결제한 메뉴 리사이클러뷰 어뎁터
@@ -101,11 +109,42 @@ public class BagPaymentDetailActivity extends AppCompatActivity {
 
         storeName.setText(Payment.getStoreName()); // 가게 이름
 
-        // 결제한 금액
-        DecimalFormat myFormatter = new DecimalFormat("###,###");
-        paymentPrice.setText("결제 금액 : " + myFormatter.format(Payment.getPaymentPrice()) + "원");
+        paymentId.setText("주문 번호 : " + Payment.getPaymentId()); // 주문 번호
+        paymentDate.setText("결제 일자 : " + Payment.getPaymentPayDate()); // 결제 일자
+        expireDate.setText("만료 일자 : " + Payment.getPaymentExpDate()); // 결제 상품 만료 일자
+        paymentUsedStatus.setText(Payment.getPaymentUsedStatus()); // 결제 상품 사용 가능 상태
 
-        paymentDate.setText("결제 날짜 : " + Payment.getPaymentDate()); // 결제 일자
+        switch (Payment.getPaymentUsedStatus()){
+            case "사용 가능" :
+                paymentUsedStatus.setTextColor(getApplicationContext().getResources().getColor(R.color.green05, getApplicationContext().getTheme()));
+                break;
+            case "사용 완료" :
+                paymentUsedStatus.setTextColor(getApplicationContext().getResources().getColor(R.color.orange05, getApplicationContext().getTheme()));
+                break;
+            case "기간 만료" :
+                paymentUsedStatus.setTextColor(getApplicationContext().getResources().getColor(R.color.red04, getApplicationContext().getTheme()));
+                break;
+            default :
+                paymentUsedStatus.setTextColor(getApplicationContext().getResources().getColor(R.color.gray03, getApplicationContext().getTheme()));
+                break;
+        }
+
+
+        DecimalFormat myFormatter = new DecimalFormat("###,###");   // 문자열 형식 변경
+        // 주문 금액
+        orderPrice.setText(myFormatter.format(getTotalMenuPrice(PaymentMenu, 0)) + "원");
+
+        // 쿠폰을 선택한 경우
+        if(Payment.getPaymentUsedCouponDisRate() != 0){
+            couponPriceLayout.setVisibility(View.VISIBLE);
+            // 쿠폰 할인 금액
+            couponPrice.setText(myFormatter.format(getTotalMenuPrice(PaymentMenu, Payment.getPaymentUsedCouponDisRate()) - getTotalMenuPrice(PaymentMenu, 0)) + "원");
+        }
+
+        // 최종 결제 금액
+        totalPrice.setText(myFormatter.format(getTotalMenuPrice(PaymentMenu, Payment.getPaymentUsedCouponDisRate())) + "원");
+
+
 
         // 결제한 메뉴 리사이클러뷰 어뎁터 객체 생성
         paymentMenuAdapter = new BagPaymentDetailMenuRvAdapter(this, PaymentMenu);
@@ -148,8 +187,14 @@ public class BagPaymentDetailActivity extends AppCompatActivity {
         backIc = findViewById(R.id.bag_payment_detail_back_ic); // 상단 뒤로가기 버튼
         storeImage = findViewById(R.id.bag_payment_detail_store_image);  // 결제한 가게 이미지
         storeName = findViewById(R.id.bag_payment_detail_store_name);  // 결제한 가게 명
-        paymentPrice = findViewById(R.id.bag_payment_detail_price);  // 결제한 금액
-        paymentDate = findViewById(R.id.bag_payment_detail_date);  // 결제한 일자
+        paymentId = findViewById(R.id.bag_payment_detail_pay_id);  // 결제 번호
+        paymentDate = findViewById(R.id.bag_payment_detail_pay_date);  // 결제한 일자
+        expireDate = findViewById(R.id.bag_payment_detail_exp_date);  // 결제 상품 만료 일자
+        paymentUsedStatus = findViewById(R.id.bag_payment_detail_used_status);  // 결제 상품 사용 가능 상태
+        orderPrice = findViewById(R.id.bag_payment_detail_order_price);  // 주문 금액
+        couponPrice = findViewById(R.id.bag_payment_detail_coupon_price);  // 쿠폰 할인 금액
+        totalPrice = findViewById(R.id.bag_payment_detail_total_price);  // 총 결제 금액
+        couponPriceLayout = findViewById(R.id.bag_payment_detail_coupon_layout);  // 쿠폰 할인 금액 전체 레이아웃
         paymentMenuRv = findViewById(R.id.bag_payment_detail_menu_rv);  // 결제한 메뉴 리사이클러뷰
     }
 
@@ -167,6 +212,27 @@ public class BagPaymentDetailActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    // 결제 총 금액 Return
+    public int getTotalMenuPrice(ArrayList<BagPaymentMenuData> menus, int discountRate){
+        double totalPrice = 0;
+
+        // 각 메뉴에 쿠폰 할인율 적용
+        if(menus != null && menus.size() > 0){
+            for(int i = 0; i < menus.size(); i++){
+                totalPrice += getMenuPriceWithCoupon(menus.get(i), discountRate) * menus.get(i).getMenuCount();
+            }
+        }
+
+        return (int) totalPrice;
+    }
+
+    // 쿠폰이 적용된 결제한 메뉴 금액 Return
+    public int getMenuPriceWithCoupon(BagPaymentMenuData menu, int discountRate){
+
+        // 쿠폰 적용
+        return (int) (Math.round((menu.getMenuPrice() * ( 1.0 - discountRate / 100.0))));
     }
 }
 

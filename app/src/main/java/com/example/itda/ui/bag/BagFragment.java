@@ -2,22 +2,17 @@ package com.example.itda.ui.bag;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +20,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,19 +30,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.itda.R;
-import com.example.itda.ui.collaboration.CollaboRvAdapter;
-import com.example.itda.ui.collaboration.collaboData;
 import com.example.itda.ui.global.globalMethod;
-import com.example.itda.ui.home.MainStoreRvAdapter;
-import com.example.itda.ui.home.mainBookmarkCollaboData;
 import com.example.itda.ui.home.mainBookmarkStoreData;
 import com.example.itda.ui.home.mainStoreData;
 import com.example.itda.ui.info.InfoActivity;
-import com.example.itda.ui.info.InfoPaymentCouponSpinnerAdapter;
-import com.example.itda.ui.info.infoPaymentCouponData;
-import com.example.itda.ui.info.infoPaymentData;
-import com.example.itda.ui.info.infoPaymentMenuData;
-import com.example.itda.ui.mypage.MyPageBookmarkActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -420,6 +402,9 @@ public class BagFragment extends Fragment {
                             getStore(clickStoreId);     // 클릭한 가게 데이터 GET
                         }
                     });
+                }else{
+                    couponRv.setVisibility(View.GONE);
+                    noDataTitle.setVisibility(View.VISIBLE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -454,7 +439,11 @@ public class BagFragment extends Fragment {
                                 , object.getInt("storeId")  // 가게 고유 아이디
                                 , object.getInt("userId")       // 유저 고유 아이디
                                 , object.getInt("paymentPrice") // 결제 금액
-                                , object.getString("paymentDate")   // 결제 일자
+                                , object.getString("paymentUsedStatus") // 결제 상품 사용 가능 상태
+                                , object.getInt("paymentUsedCouponId") // 결제 시 이용한 쿠폰 고유 아이디 ( 쿠폰 사용 안했을 경우 0 )
+                                , object.getInt("paymentUsedCouponDisRate") // 결제 시 이용한 쿠폰 할인율 ( 쿠폰 사용 안했을 경우 0 )
+                                , object.getString("paymentPayDate")   // 결제 일자
+                                , object.getString("paymentExpDate")   // 만료 일자
                                 , object.getString("storeName") // 결제 가게 명
                                 , HOST + object.getString("storeImage"));   // 결제 가게 이미지
 

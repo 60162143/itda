@@ -34,7 +34,7 @@ public class InfoMenuActivity extends Activity {
 
         // ArrayList를 받아올때 사용
         // putParcelableArrayListExtra로 넘긴 데이터를 받아올때 사용
-        ArrayList<infoMenuData> Menu = getIntent().getParcelableArrayListExtra("Menu"); // 메뉴 데이터
+        ArrayList<InfoMenuData> Menu = getIntent().getParcelableArrayListExtra("Menu"); // 메뉴 데이터
 
         // LayoutManager 객체 생성
         infoMenuDetailRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

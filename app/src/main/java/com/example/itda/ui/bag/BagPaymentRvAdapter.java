@@ -67,6 +67,27 @@ public class BagPaymentRvAdapter extends RecyclerView.Adapter<BagPaymentRvAdapte
         BagPaymentData payment = Payments.get(position);     // 현재 position의 가게 정보
         ArrayList<BagPaymentMenuData> paymentMenus = PaymentMenus.get(position);
 
+        holder.paymentDate.setText("결제 일자 : " + payment.getPaymentPayDate()); // 결제 일자
+        holder.expireDate.setText("만료 일자 : " + payment.getPaymentExpDate()); // 결제 상품 만료 일자
+
+        holder.paymentUsedStatus.setText("( " + payment.getPaymentUsedStatus() + " )"); // 결제 상품 사용 가능 상태
+
+        switch (payment.getPaymentUsedStatus()){
+            case "사용 가능" :
+                holder.paymentUsedStatus.setTextColor(mContext.getResources().getColor(R.color.green05, mContext.getTheme()));
+                break;
+            case "사용 완료" :
+                holder.paymentUsedStatus.setTextColor(mContext.getResources().getColor(R.color.orange05, mContext.getTheme()));
+                break;
+            case "기간 만료" :
+                holder.paymentUsedStatus.setTextColor(mContext.getResources().getColor(R.color.red04, mContext.getTheme()));
+                break;
+            default :
+                holder.paymentUsedStatus.setTextColor(mContext.getResources().getColor(R.color.gray03, mContext.getTheme()));
+                break;
+        }
+
+
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
@@ -82,13 +103,11 @@ public class BagPaymentRvAdapter extends RecyclerView.Adapter<BagPaymentRvAdapte
         DecimalFormat myFormatter = new DecimalFormat("###,###");
         holder.paymentPrice.setText("결제 금액 : " + myFormatter.format(payment.getPaymentPrice()) + "원");
 
-        holder.paymentDate.setText("결제 날짜 : " + payment.getPaymentDate()); // 결제 일자
-
         // 결제한 메뉴
         if(paymentMenus.size() == 1){   // 결제 메뉴가 1개일 경우
-            holder.paymentMenu.setText(paymentMenus.get(0).getMenuName()); // 결제 일자
+            holder.paymentMenu.setText(paymentMenus.get(0).getMenuName() + " "+ paymentMenus.get(0).getMenuCount() + "개"); // 결제 일자
         }else{  // 결제 메뉴가 여러개일 경우 외 몇개
-            holder.paymentMenu.setText(paymentMenus.get(0).getMenuName() + " "+ paymentMenus.get(0).getMenuCount() + " 개 외" + ( paymentMenus.size() - 1 ));
+            holder.paymentMenu.setText(paymentMenus.get(0).getMenuName() + " "+ paymentMenus.get(0).getMenuCount() + "개 외" + ( paymentMenus.size() - 1 ));
         }
     }
 
@@ -112,6 +131,8 @@ public class BagPaymentRvAdapter extends RecyclerView.Adapter<BagPaymentRvAdapte
         TextView paymentMenu;     // 결제한 메뉴
         TextView paymentPrice;        // 결제 금액
         TextView paymentDate;        // 결제 일자
+        TextView expireDate;        // 결제 상품 만료 일자
+        TextView paymentUsedStatus;        // 결제 상품 사용 가능 상태
 
         public CustomMainCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,7 +140,9 @@ public class BagPaymentRvAdapter extends RecyclerView.Adapter<BagPaymentRvAdapte
             storeName = itemView.findViewById(R.id.bag_payment_store_name);
             paymentMenu = itemView.findViewById(R.id.bag_payment_menu);
             paymentPrice = itemView.findViewById(R.id.bag_payment_price);
-            paymentDate = itemView.findViewById(R.id.bag_payment_date);
+            paymentDate = itemView.findViewById(R.id.bag_payment_pay_date);
+            expireDate = itemView.findViewById(R.id.bag_payment_exp_date);
+            paymentUsedStatus = itemView.findViewById(R.id.bag_payment_used_status);
 
             // 리사이클러뷰 전체 클릭 이벤트 인터페이스 구현
             itemView.setOnClickListener(view -> {
