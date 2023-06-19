@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class mainBookmarkCollaboData implements Parcelable {
-    private int bmkCollaboId;     // 찜한 협업 목록 고유 아이디
-    private int collaboId;  // 협업 고유 아이디
+    private int bmkCollaboId;   // 찜한 협업 목록 고유 아이디
+    private int collaboId;      // 협업 고유 아이디
 
     // Constructor
     public mainBookmarkCollaboData(int bmkCollaboId, int collaboId) {

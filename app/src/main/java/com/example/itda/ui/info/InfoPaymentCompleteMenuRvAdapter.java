@@ -10,13 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itda.R;
-import com.example.itda.ui.bag.BagPaymentMenuData;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class InfoPaymentCompleteMenuRvAdapter extends RecyclerView.Adapter<InfoPaymentCompleteMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private ArrayList<InfoMenuData> Menus;    // 메뉴 데이터
+    private final ArrayList<infoMenuData> Menus;    // 메뉴 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -25,7 +24,7 @@ public class InfoPaymentCompleteMenuRvAdapter extends RecyclerView.Adapter<InfoP
 
     // Constructor
     public InfoPaymentCompleteMenuRvAdapter(Context context
-            , ArrayList<InfoMenuData> menus){
+            , ArrayList<infoMenuData> menus){
         this.mContext = context;
         this.Menus = menus;
     }
@@ -46,12 +45,16 @@ public class InfoPaymentCompleteMenuRvAdapter extends RecyclerView.Adapter<InfoP
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull InfoPaymentCompleteMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        InfoMenuData menu = Menus.get(position);    // 현재 position의 메뉴 정보
+        infoMenuData menu = Menus.get(position);    // 현재 position의 메뉴 정보
 
-        holder.bagPaymentDetailMenuName.setText(menu.getMenuName() + " " + menu.getMenuCount() + "개");   // 선택한 메뉴 명 + 주문 수량
+        // 선택한 메뉴 명 + 주문 수량 SET
+        String bagPaymentDetailMenuNameTxt = menu.getMenuName() + " " + menu.getMenuCount() + "개";
+        holder.bagPaymentDetailMenuName.setText(bagPaymentDetailMenuNameTxt);
 
-        DecimalFormat myFormatter = new DecimalFormat("###,###");
-        holder.bagPaymentDetailMenuPrice.setText(myFormatter.format((menu.getMenuPrice() * menu.getMenuCount())) + "원");   // 선택한 메뉴 가격
+        DecimalFormat myFormatter = new DecimalFormat("###,###");   // 문자열 형식 변경 Formatter ( 숫자 + 콤마 )
+        // 선택한 메뉴 가격 SET
+        String bagPaymentDetailMenuPriceTxt = myFormatter.format(((long) menu.getMenuPrice() * menu.getMenuCount())) + "원";
+        holder.bagPaymentDetailMenuPrice.setText(bagPaymentDetailMenuPriceTxt);
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -64,8 +67,8 @@ public class InfoPaymentCompleteMenuRvAdapter extends RecyclerView.Adapter<InfoP
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoMenuViewHolder extends RecyclerView.ViewHolder {
-        TextView bagPaymentDetailMenuName;       // 선택한 메뉴 명
-        TextView bagPaymentDetailMenuPrice;          // 선택한 메뉴 가격
+        TextView bagPaymentDetailMenuName;  // 선택한 메뉴 명
+        TextView bagPaymentDetailMenuPrice; // 선택한 메뉴 가격
 
         public CustomInfoMenuViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -1,9 +1,9 @@
 package com.example.itda.ui.map;
 
-public class MapStoreData {
-    private int mapStoreId;             // 가게 고유 아이디
+public class mapStoreData {
+    private int mapStoreId; // 가게 고유 아이디
     private String mapStoreName;        // 가게 명
-    private String mapStoreImagePath;  // 가게 썸네일 경로
+    private String mapStoreImagePath;   // 가게 썸네일 경로
     private float mapStoreScore;        // 가게 별점
     private double mapStoreLatitude;    // 가게 위도
     private double mapStoreLongitude;   // 가게 경도
@@ -12,7 +12,7 @@ public class MapStoreData {
     private String mapStoreHashTag;     // 가게 해시태그
 
     // Constructor
-    public MapStoreData(int mapStoreId
+    public mapStoreData(int mapStoreId
             , String mapStoreName
             , String mapStoreImagePath
             , float mapStoreScore

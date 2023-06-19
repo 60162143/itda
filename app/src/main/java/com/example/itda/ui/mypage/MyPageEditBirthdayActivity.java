@@ -4,20 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -35,16 +30,26 @@ import java.util.Map;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MyPageEditBirthdayActivity extends AppCompatActivity {
+
+    // Layout
     private ImageButton backIc; // 상단 뒤로가기 버튼
     private NumberPicker userYear;  // 유저 생일 년 입력
-    private NumberPicker userMonth;  // 유저 생일 월 입력
-    private NumberPicker userDay;  // 유저 생일 일 입력
+    private NumberPicker userMonth; // 유저 생일 월 입력
+    private NumberPicker userDay;   // 유저 생일 일 입력
     private Button userBirthdayBtn; // 유저 생일 변경 버튼
 
+
+    // Volley Library RequestQueue
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
-    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
-    private String UPDATE_BIRTHDAY_PATH;      // 유저 생일 변경 Rest API
-    private String HOST;            // Host 정보
+
+
+    // Login Data
+    private SharedPreferences User; // 로그인 데이터 ( 전역 변수 )
+
+
+    // Rest API
+    private String UPDATE_BIRTHDAY_PATH;    // 유저 생일 변경 Rest API
+    private String HOST;    // Host 정보
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,10 +60,12 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
-        HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
-        UPDATE_BIRTHDAY_PATH = ((globalMethod) getApplication()).getUpdateUserBirthdayPath();    // 유저 생일 변경 Rest API
 
-        initView(); // 뷰 생성
+        HOST = ((globalMethod) getApplication()).getHost(); // Host 정보
+        UPDATE_BIRTHDAY_PATH = ((globalMethod) getApplication()).getUpdateUserBirthdayPath();   // 유저 생일 변경 Rest API
+
+        // Init View
+        initView();
 
         // 유저 전역 변수 GET
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
@@ -118,6 +125,9 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
 
             // 날짜가 변경되었을 경우 변경
             if(!birthDay.equals(User.getString("userBirthday", ""))){
+                // POST 방식 파라미터 설정
+                // Param => userId : 변경할 유저 고유 아이디
+                //          birthday : 변경할 유저 생일
                 Map<String, String> param = new HashMap<>();
                 param.put("userId", String.valueOf(User.getInt("userId", 0)));   // 변경할 유저 고유 아이디
                 param.put("birthday", userYear.getValue() + "-" + userMonth.getValue() + "-" + userDay.getValue());   // 변경할 유저 생일
@@ -126,7 +136,7 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
                 StringRequest updateBirthdayRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_BIRTHDAY_PATH, response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                        String success = jsonObject.getString("success");
+                        String success = jsonObject.getString("success");   // Success Flag
 
                         if(!TextUtils.isEmpty(success) && success.equals("1")) {
                             StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
@@ -163,7 +173,7 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
                     Log.d("updateBirthdayError", "onErrorResponse : " + error);
                 }) {
                     @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
+                    protected Map<String, String> getParams(){
                         // php로 설정값을 보낼 수 있음 ( POST )
                         return param;
                     }
@@ -180,10 +190,10 @@ public class MyPageEditBirthdayActivity extends AppCompatActivity {
 
     // 뷰 생성
     private void initView(){
-        backIc = findViewById(R.id.mypage_edit_birthday_back_ic); // 상단 뒤로가기 버튼
-        userYear = findViewById(R.id.mypage_edit_year);  // 유저 생일 년 입력
-        userMonth = findViewById(R.id.mypage_edit_month);  // 유저 생일 월 입력
-        userDay = findViewById(R.id.mypage_edit_day);  // 유저 생일 일 입력
+        backIc = findViewById(R.id.mypage_edit_birthday_back_ic);   // 상단 뒤로가기 버튼
+        userYear = findViewById(R.id.mypage_edit_year);     // 유저 생일 년 입력
+        userMonth = findViewById(R.id.mypage_edit_month);   // 유저 생일 월 입력
+        userDay = findViewById(R.id.mypage_edit_day);       // 유저 생일 일 입력
         userBirthdayBtn = findViewById(R.id.mypage_edit_birthday_btn);  // 유저 생일 변경 버튼
     }
 }

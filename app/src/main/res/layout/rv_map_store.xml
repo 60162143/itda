@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--카드뷰-->
     <androidx.cardview.widget.CardView
         android:id="@+id/map_cardView"
         android:layout_width="match_parent"
@@ -19,7 +19,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <!--카드뷰-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/item_map_store_image"
                 android:layout_width="wrap_content"
@@ -31,24 +30,23 @@
                 app:cardCornerRadius="20dp"
                 android:adjustViewBounds="true">
 
-                <!--가게 썸네일-->
                 <ImageView
                     android:id="@+id/map_store_image"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/round"
-                    android:contentDescription="TODO"
+                    android:background="@drawable/round_white_30dp"
+                    android:contentDescription="@string/rvMapStore01"
                     android:padding="0dp"
-                    android:src="@drawable/ic_test_image"
-                    app:cardCornerRadius="20dp" />
+                    android:src="@drawable/ic_test_image_black_200dp"
+                    app:cardCornerRadius="20dp"/>
 
                 <Button
                     android:id="@+id/map_store_bookmark"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:background="@drawable/selector_bookmark_white"
+                    android:background="@drawable/selector_bookmark_white_24dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_gravity="end|top"/>
@@ -60,70 +58,65 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:orientation="vertical"
-                android:weightSum="10">
+                android:weightSum="10"
+                android:paddingVertical="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:layout_weight="2">
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:baselineAligned="false"
+                    android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="7">
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights">
 
                         <TextView
                             android:id="@+id/map_store_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:text="가게 이름"
-                            android:textSize="18sp"
+                            android:text="@string/rvMapStore02"
+                            android:textSize="15sp"
+                            android:textColor="@color/gray05"
+                            android:textStyle="bold"
                             android:maxLines="1"
-                            android:ellipsize="end">
-
-                        </TextView>
-
-                        <TextView
-                            android:id="@+id/map_store_distance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="1.4km">
-
-                        </TextView>
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="3">
-
-                        <ImageView
-                            android:id="@+id/map_star_ic"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_star"
-                            android:foregroundGravity="center"/>
+                            android:ellipsize="end"
+                            android:layout_weight="8"
+                            android:gravity="center_vertical"/>
 
                         <TextView
                             android:id="@+id/map_star_score"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
-                            android:text="4.8"
-                            android:gravity="center">
-
-                        </TextView>
+                            android:text="@string/rvMapStore03"
+                            android:textSize="12sp"
+                            android:textColor="@color/gray04"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_weight="2"
+                            android:drawableStart="@drawable/ic_star_green_14dp"
+                            tools:ignore="UseCompatTextViewDrawableXml"
+                            android:layout_marginEnd="10dp"/>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/map_store_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="@string/rvMapStore04"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="@color/gray04"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"/>
 
                 </LinearLayout>
 
@@ -131,21 +124,25 @@
                     android:id="@+id/map_store_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="테스트 입니다. 테스트 입니다."
+                    android:text="@string/rvMapStore05"
+                    android:textColor="@color/gray04"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
                     android:maxLines="3"
                     android:ellipsize="end"
-                    android:layout_weight="7">
-
-                </TextView>
+                    android:layout_weight="7"
+                    android:paddingTop="5dp"
+                    android:layout_marginStart="5dp"/>
 
                 <TextView
                     android:id="@+id/map_store_hashTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="#테스트1 #테스트2"
-                    android:layout_weight="1">
-
-                </TextView>
+                    android:text="@string/rvMapStore06"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/green04"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

@@ -12,8 +12,7 @@
         app:cardCornerRadius="30dp"
         app:contentPadding="0dp"
         android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        >
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/info_photo_image"
@@ -21,9 +20,10 @@
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center"
-            android:src="@drawable/ic_test_image"
+            android:src="@drawable/ic_test_image_black_200dp"
             android:padding="0dp"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/infoPhoto01"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -31,7 +31,7 @@
         android:id="@+id/info_photo_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="더보기"
+        android:text="@string/infoPhoto02"
         android:textColor="#ffffff"
         android:layout_gravity="center_horizontal|center_vertical"
         android:visibility="gone"/>

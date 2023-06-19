@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/border_bottom">
 
-    <!--카드뷰-->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,11 +37,12 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/gray"
+                        android:src="@drawable/temp_image"
                         android:padding="0dp"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/rvInfoReview01"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -49,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingStart="10dp"
+                    android:layout_marginStart="10dp"
                     android:weightSum="2">
 
                     <LinearLayout
@@ -61,99 +62,67 @@
                         <TextView
                             android:id="@+id/info_review_user_name"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="유저명"
+                            android:layout_height="match_parent"
+                            android:text="@string/rvInfoReview02"
                             android:textColor="@color/black"
                             android:textStyle="bold"
+                            android:textSize="14sp"
                             android:layout_marginEnd="10dp"
-                            android:layout_gravity="center_vertical"/>
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"/>
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/info_review_heart_count"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="10dp">
+                            android:layout_height="match_parent"
+                            android:text="@string/rvInfoReview03"
+                            android:textColor="@color/gray04"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:drawableStart="@drawable/ic_heart_after_red_14dp"
+                            android:drawablePadding="6dp"
+                            tools:ignore="UseCompatTextViewDrawableXml"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center_vertical"/>
 
-                            <ImageButton
-                                android:id="@+id/info_review_heart_ic"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_heart_after"
-                                android:layout_marginEnd="5dp"
-                                android:layout_gravity="center_vertical|center_horizontal"/>
-
-                            <TextView
-                                android:id="@+id/info_review_heart_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="24"
-                                android:textColor="@color/black"
-                                android:layout_gravity="center_vertical|center_horizontal"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/info_review_comment_count"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="end|center"
-                            android:layout_marginEnd="10dp">
+                            android:layout_height="match_parent"
+                            android:text="@string/rvInfoReview03"
+                            android:textColor="@color/gray04"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:drawableStart="@drawable/ic_comment_after_blue_14dp"
+                            android:drawablePadding="6dp"
+                            tools:ignore="UseCompatTextViewDrawableXml"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center_vertical"/>
 
-                            <ImageView
-                                android:id="@+id/info_review_comment_ic"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_comment_after"
-                                android:layout_marginEnd="5dp"
-                                android:layout_gravity="center_vertical|center_horizontal"/>
-
-                            <TextView
-                                android:id="@+id/info_review_comment_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="3"
-                                android:textColor="@color/black"
-                                android:layout_gravity="center_vertical|center_horizontal"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/info_review_score"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="end|center">
-
-                            <ImageView
-                                android:id="@+id/info_review_score_ic"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_star"
-                                android:layout_marginEnd="5dp"
-                                android:layout_gravity="center_vertical|center_horizontal"/>
-
-                            <TextView
-                                android:id="@+id/info_review_score"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="4.8"
-                                android:layout_marginEnd="5dp"
-                                android:textColor="@color/black"
-                                android:layout_gravity="center_vertical|center_horizontal"/>
-
-                        </LinearLayout>
+                            android:layout_height="match_parent"
+                            android:text="@string/rvInfoReview03"
+                            android:textColor="@color/gray04"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:drawableStart="@drawable/ic_star_green_14dp"
+                            android:drawablePadding="6dp"
+                            tools:ignore="UseCompatTextViewDrawableXml"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center_vertical"/>
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            tools:ignore="NestedWeights"/>
 
                         <ImageButton
                             android:id="@+id/info_review_delete_ic"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_delete"
-                            android:layout_gravity="end|center_vertical"/>
+                            android:src="@drawable/ic_delete_gray_24dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:contentDescription="@string/rvInfoReview04"/>
 
                     </LinearLayout>
 
@@ -161,8 +130,9 @@
                         android:id="@+id/info_review_regdate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="2023년 4월 13일"
+                        android:text="@string/rvInfoReview05"
                         android:textSize="11sp"
+                        android:textColor="@color/gray03"
                         android:layout_marginTop="3dp"
                         android:layout_weight="1"/>
 
@@ -172,11 +142,12 @@
 
             <TextView
                 android:id="@+id/info_review_detail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="기대보다 향이 좋았던 공방\n 향수 만들기 원데이클래스는 미리 예약을 해야 하기에 디퓨저만 샀어요."
+                android:text="@string/rvInfoReview06"
                 android:textSize="12sp"
-                android:textColor="@color/black"
+                android:textColor="@color/gray04"
+                android:lineSpacingExtra="3dp"
                 android:maxLines="4"
                 android:ellipsize="end"
                 android:layout_marginBottom="10dp"/>
@@ -184,7 +155,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/info_review_photo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"/>
 
             <LinearLayout
                 android:id="@+id/info_review_btn_layout"
@@ -200,23 +172,12 @@
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:background="#00ff0000"
-                    android:drawableStart="@drawable/selector_heart"
-                    android:text="좋아요"
+                    android:drawableStart="@drawable/selector_heart_16dp"
+                    android:text="@string/rvInfoReview07"
                     android:textSize="11sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/gray03"
                     android:gravity="end|center_vertical"
                     android:layout_marginEnd="10dp"/>
-
-<!--                <Button-->
-<!--                    android:id="@+id/info_review_comment_btn"-->
-<!--                    android:layout_width="50dp"-->
-<!--                    android:layout_height="20dp"-->
-<!--                    android:background="#00ff0000"-->
-<!--                    android:drawableStart="@drawable/ic_comment_before_gray"-->
-<!--                    android:text="댓글"-->
-<!--                    android:textColor="#999999"-->
-<!--                    android:textSize="11sp"-->
-<!--                    android:gravity="end|center_vertical"/>-->
 
             </LinearLayout>
 

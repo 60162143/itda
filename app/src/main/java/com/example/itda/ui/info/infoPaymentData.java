@@ -3,18 +3,18 @@ package com.example.itda.ui.info;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class InfoPaymentData implements Parcelable {
-    private int paymentId;         // 결제 고유 아이디
-    private int storeId;        // 가게 고유 아이디
-    private int userId;    // 유저 고유 아이디
-    private int paymentPrice;         // 결제 총 금액
-    private String paymentDate;      // 결제 일
-    private String expireDate;      // 결제 상품 사용 만료일
-    private String storeName;      // 결제 가게 명
-    private String storeImage;      // 결제 가게 이미지
+public class infoPaymentData implements Parcelable {
+    private int paymentId;  // 결제 고유 아이디
+    private int storeId;    // 가게 고유 아이디
+    private int userId;     // 유저 고유 아이디
+    private int paymentPrice;    // 결제 총 금액
+    private String paymentDate; // 결제 일
+    private String expireDate;  // 결제 상품 사용 만료일
+    private String storeName;   // 결제 가게 명
+    private final String storeImage;  // 결제 가게 이미지
 
     // Constructor
-    public InfoPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentDate, String expireDate, String storeName, String storeImage) {
+    public infoPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentDate, String expireDate, String storeName, String storeImage) {
         this.paymentId = paymentId;
         this.storeId = storeId;
         this.userId = userId;
@@ -26,7 +26,7 @@ public class InfoPaymentData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected InfoPaymentData(Parcel in) {
+    protected infoPaymentData(Parcel in) {
         paymentId = in.readInt();
         storeId = in.readInt();
         userId = in.readInt();
@@ -39,16 +39,16 @@ public class InfoPaymentData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<InfoPaymentData> CREATOR = new Creator<InfoPaymentData>() {
+    public static final Creator<infoPaymentData> CREATOR = new Creator<infoPaymentData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public InfoPaymentData createFromParcel(Parcel in) {
-            return new InfoPaymentData(in);
+        public infoPaymentData createFromParcel(Parcel in) {
+            return new infoPaymentData(in);
         }
 
         @Override
-        public InfoPaymentData[] newArray(int size) {
-            return new InfoPaymentData[size];
+        public infoPaymentData[] newArray(int size) {
+            return new infoPaymentData[size];
         }
     };
 

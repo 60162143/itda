@@ -64,14 +64,14 @@ public class InfoPhotoRvAdapter extends RecyclerView.Adapter<InfoPhotoRvAdapter.
             holder.photoMoreTxt.setVisibility(View.VISIBLE);    // 더보기 텍스트 보이기
         }
 
-        // 사진 이미지
+        // 사진 이미지 SET
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(photo.getPhotoPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);           // 이미지를 보여줄 View를 지정
     }
 

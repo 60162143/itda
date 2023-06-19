@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class collaboData implements Parcelable {
-    private int collaboId;              // 협업 고유 아이디
-    private int prvStoreId;             // 앞 가게 고유 아이디
-    private int postStoreId;            // 뒷 가게 고유 아이디
+    private int collaboId;      // 협업 고유 아이디
+    private int prvStoreId;     // 앞 가게 고유 아이디
+    private int postStoreId;    // 뒷 가게 고유 아이디
     private int prvDiscountCondition;   // 앞 가게 할인 조건
     private int postDiscountRate;       // 뒷 가게 할인 율
     private String prvStoreName;        // 앞 가게 명

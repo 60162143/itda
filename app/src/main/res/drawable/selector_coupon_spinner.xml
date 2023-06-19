@@ -11,7 +11,7 @@
             </item>
 
             <item
-                android:drawable="@drawable/ic_triangle_down"
+                android:drawable="@drawable/ic_triangle_down_black_24dp"
                 android:gravity="end"/>
         </layer-list>
     </item>

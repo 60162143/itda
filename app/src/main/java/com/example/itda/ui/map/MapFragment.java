@@ -12,7 +12,6 @@ import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -36,7 +35,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -71,37 +69,49 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class MapFragment extends Fragment
         implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
 
+    // Layout
     private View root;  // Fragment root view
     private ViewGroup mapViewContainer; // mapView를 포함시킬 View Container
     private MapView mapView;    // 카카오 지도 View
+    private RecyclerView mapStoreRv;    // 가게 정보 리사이클러뷰
 
+
+    // Manager
     private LocationManager lm; // 위치관리자 객체
     private LinearLayoutManager llm;    // 수평, 수직으로 ViewHolder 표현하기 위한 Layout 관리 클래스
+
+
+    // Intent activityResultLauncher
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
     private Intent intent;  // 상세 화면 전환을 위한 변수
 
-    private RecyclerView mapStoreRv;    // 가게 정보 리사이클러뷰
+
+    // Adapter
     private MapRvAdapter mapStoreAdapter;   // 가게 정보 리사이클러뷰 어뎁터
 
-    private ArrayList<MapStoreData> map_store = new ArrayList<>();      // 지도 내 상점 정보
-    private ArrayList<mainBookmarkStoreData> BookmarkStore = new ArrayList<>();  // 유저 찜한 가게 목록
 
-    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
-    private boolean loginFlag = false;  // 로그인 여부
+    // Volley Library RequestQueue
+    private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
 
-    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
 
-    private static RequestQueue requestQueue;    // Volley Library 사용을 위한 RequestQueue
-
+    // Rest API
     private String MAPSTORE_PATH;   // 지도 내 가게 데이터 조회 Rest API
-    private String MAINSTORE_PATH; // 가게 세부 데이터 조회 Rest API
-    private String BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 ( 간단 정보 ) 조회 Rest API
-    private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
-    private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
-    private String HOST;        // Host 정보
+    private String MAINSTORE_PATH;  // 가게 세부 데이터 조회 Rest API
+    private String BOOKMARK_STORE_PATH; // 유저 찜한 가게 목록 ( 간단 정보 ) 조회 Rest API
+    private String DELETE_BOOKMARK_STORE_PATH;  // 유저 찜한 가게 목록 삭제 Rest API
+    private String INSERT_BOOKMARK_STORE_PATH;  // 유저 찜한 가게 목록 추가 Rest API
+    private String HOST;    // Host 정보
 
-    private boolean isBookmarkClick = false;     // 찜 버튼을 눌렀는지 확인하는 Flag
 
-    private boolean isTrackingMode = false;     // 현재 트래킹 모드인지 확인하는 Flag
+    // Data
+    private ArrayList<mapStoreData> map_store = new ArrayList<>();  // 지도 내 상점 정보
+    private ArrayList<mainBookmarkStoreData> BookmarkStore = new ArrayList<>(); // 유저 찜한 가게 목록
+
+    // Lgin Data
+    private SharedPreferences User; // 로그인 데이터 ( 전역 변수 )
+
+    // Global Data
+    private boolean isTrackingMode = false; // 현재 트래킹 모드인지 확인하는 Flag
     private int lastTag = -1;   // 상세화면 전환시 해당 태그 번호 저장 ( 현재 위치를 마지막 위치로 기억하기 위해 )
 
     // =========== 리사이클러뷰 addOnItemTouchListener 내 전역 변수 ================
@@ -115,7 +125,8 @@ public class MapFragment extends Fragment
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            initView(); // 뷰 생성
+            // Init View
+            initView();
         }
 
         @Override
@@ -133,8 +144,6 @@ public class MapFragment extends Fragment
                 .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다...\n [설정] > [권한] 에서 사용으로 활성화해주세요.")
                 .setPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION,
                         android.Manifest.permission.ACCESS_COARSE_LOCATION
-                        //android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        //android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
                 )
                 .check();
     }
@@ -142,12 +151,12 @@ public class MapFragment extends Fragment
     // 뷰 생성
     private void initView() {
         // ---------------- Rest API 전역변수 SET---------------------------
-        MAPSTORE_PATH = ((globalMethod) requireActivity().getApplication()).getMapStorePath();    // 지도 내 가게 데이터 조회 Rest API
-        MAINSTORE_PATH = ((globalMethod) requireActivity().getApplication()).getMainStorePath();  // 가게 정보 데이터 조회 Rest API
-        BOOKMARK_STORE_PATH = ((globalMethod) requireActivity().getApplication()).getMainBookmarkStorePath();      // 유저 찜한 가게 목록 ( 간단 정보 ) 조회 Rest API
-        DELETE_BOOKMARK_STORE_PATH = ((globalMethod) requireActivity().getApplication()).deleteBookmarkStorePath();      // 유저 찜한 가게 목록 삭제 Rest API
-        INSERT_BOOKMARK_STORE_PATH = ((globalMethod) requireActivity().getApplication()).insertBookmarkStorePath();      // 유저 찜한 가게 목록 추가 Rest API
-        HOST = ((globalMethod) requireActivity().getApplication()).getHost(); // Host 정보
+        MAPSTORE_PATH = ((globalMethod) requireActivity().getApplication()).getMapStorePath();      // 지도 내 가게 데이터 조회 Rest API
+        MAINSTORE_PATH = ((globalMethod) requireActivity().getApplication()).getMainStorePath();    // 가게 정보 데이터 조회 Rest API
+        BOOKMARK_STORE_PATH = ((globalMethod) requireActivity().getApplication()).getMainBookmarkStorePath();       // 유저 찜한 가게 목록 ( 간단 정보 ) 조회 Rest API
+        DELETE_BOOKMARK_STORE_PATH = ((globalMethod) requireActivity().getApplication()).deleteBookmarkStorePath(); // 유저 찜한 가게 목록 삭제 Rest API
+        INSERT_BOOKMARK_STORE_PATH = ((globalMethod) requireActivity().getApplication()).insertBookmarkStorePath(); // 유저 찜한 가게 목록 추가 Rest API
+        HOST = ((globalMethod) requireActivity().getApplication()).getHost();   // Host 정보
 
         ImageButton mapGPSBtn = root.findViewById((R.id.gps_button));       // GPS 버튼
         EditText mapSchText = root.findViewById((R.id.search_map_store));   // 검색어 입력창
@@ -165,7 +174,6 @@ public class MapFragment extends Fragment
 
         // 로그인이 되어 있으면 찜한 가게 목록 GET
         if(((globalMethod) requireActivity().getApplication()).loginChecked()){
-            loginFlag = true;
             getBookmarkStore(); // 가게 데이터 GET
         }
 
@@ -333,6 +341,8 @@ public class MapFragment extends Fragment
             if((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
                 mapSchText.setSelection(mapSchText.length());   // 커서위치 설정
 
+                // POST 방식 파라미터 설정
+                // Param => schText : 검색어
                 Map<String, String> param = new HashMap<>();
                 param.put("schText", mapSchText.getText().toString());  // 파라미터 설정
 
@@ -398,6 +408,10 @@ public class MapFragment extends Fragment
         double cur_lon = loc_Current.getLongitude();    // 현재 위치의 경도
 
         // GET 방식 파라미터 설정
+        // Param => latitude : 내 위치 위도
+        //          longitude : 내 위치 경도
+        //          schText : 검색어
+
         String mapStorePath = MAPSTORE_PATH;
         mapStorePath += String.format("?latitude=%s", cur_lat);     // 위도 파라미터 설정
         mapStorePath += String.format("&&longitude=%s", cur_lon);   // 경도 파라미터 설정
@@ -420,18 +434,18 @@ public class MapFragment extends Fragment
 
                         // 현재 위치에서 가게 까지의 거리 계산을 위한 좌표
                         Location point = new Location(object.getString("storeName"));   // 가게 위치 Location 객체 생성
-                        point.setLatitude(object.getDouble("storeLatitude"));       // 가게 위도
-                        point.setLongitude(object.getDouble("storeLongitude"));     // 가게 경도
+                        point.setLatitude(object.getDouble("storeLatitude"));   // 가게 위도
+                        point.setLongitude(object.getDouble("storeLongitude")); // 가게 경도
 
-                        MapStoreData mapStore = new MapStoreData(object.getInt("storeId")   // 가게 고유 아이디
-                                , object.getString("storeName")                             // 가게 이름
-                                , HOST + object.getString("storeThumbnailPath")             // 가게 썸네일 이미지 경로
-                                , Float.parseFloat(object.getString("storeScore"))          // 가게 별점
-                                , object.getDouble("storeLatitude")                         // 가게 위도
-                                , object.getDouble("storeLongitude")                        // 가게 경도
-                                , loc_Current.distanceTo(point) / 1000                            // 현재 위치에서 떨어진 거리, 단위 : km
-                                , object.getString("storeInfo")                             // 가게 간단 정보
-                                , object.getString("storeHashTag"));                        // 가게 해시태그
+                        mapStoreData mapStore = new mapStoreData(object.getInt("storeId")   // 가게 고유 아이디
+                                , object.getString("storeName") // 가게 이름
+                                , HOST + object.getString("storeThumbnailPath")     // 가게 썸네일 이미지 경로
+                                , Float.parseFloat(object.getString("storeScore"))  // 가게 별점
+                                , object.getDouble("storeLatitude")     // 가게 위도
+                                , object.getDouble("storeLongitude")    // 가게 경도
+                                , loc_Current.distanceTo(point) / 1000  // 현재 위치에서 떨어진 거리, 단위 : km
+                                , object.getString("storeInfo")   // 가게 간단 정보
+                                , object.getString("storeHashTag"));    // 가게 해시태그
 
                         map_store.add(mapStore);    // 가게 데이터 추가
 
@@ -448,8 +462,8 @@ public class MapFragment extends Fragment
                         mapView.addPOIItem(marker); // 지도화면에 POI Item 아이콘(마커)를 추가
                     }
 
-                    double last_lat = map_store.get(lastTagIndex).getMapStoreLatitude();  // 마지막으로 검색된 가게의 위도
-                    double last_lon = map_store.get(lastTagIndex).getMapStoreLongitude(); // 마지막으로 검색된 가게의 경도
+                    double last_lat = map_store.get(lastTagIndex).getMapStoreLatitude();    // 마지막으로 검색된 가게의 위도
+                    double last_lon = map_store.get(lastTagIndex).getMapStoreLongitude();   // 마지막으로 검색된 가게의 경도
 
                     // 위경도 좌표 시스템(WGS84)의 좌표값으로 MapPoint 객체를 생성
                     MapPoint lastMapPoint = MapPoint.mapPointWithGeoCoord(last_lat, last_lon);
@@ -463,7 +477,7 @@ public class MapFragment extends Fragment
                     Toast.makeText(getContext(), "검색 결과가 없습니다.",Toast.LENGTH_SHORT).show();
                 }
 
-                mapStoreAdapter = new MapRvAdapter(getActivity(), map_store, mapView, BookmarkStore);  // 리사이클러뷰 어뎁터 객체 생성
+                mapStoreAdapter = new MapRvAdapter(getActivity(), map_store, BookmarkStore);  // 리사이클러뷰 어뎁터 객체 생성
                 mapStoreRv.setAdapter(mapStoreAdapter); // 리사이클러뷰 어뎁터 객체 지정
 
                 mapStoreRv.scrollToPosition(lastTagIndex); // 마지막으로 검색된 position으로 이동
@@ -485,24 +499,25 @@ public class MapFragment extends Fragment
     // 유저 찜한 가게 정보 Return
     private void getBookmarkStore(){
         // GET 방식 파라미터 설정
+        // Param => userId : 로그인 유저 고유 아이디
         String bookmarkStorePath = BOOKMARK_STORE_PATH;
-        bookmarkStorePath += String.format("?userId=%s", User.getInt("userId", 0));     // 유저 고유 아이디
+        bookmarkStorePath += String.format("?userId=%s", User.getInt("userId", 0)); // 유저 고유 아이디
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
         StringRequest bookmarkStoreRequest = new StringRequest(Request.Method.GET, HOST + bookmarkStorePath, response -> {
             try {
-                JSONObject jsonObject = new JSONObject(response);                 // Response를 JsonObject 객체로 생성
-                JSONArray bookmarkStoreArr = jsonObject.getJSONArray("bookmarkStore");  // 객체에 store라는 Key를 가진 JSONArray 생성
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                JSONArray bookmarkStoreArr = jsonObject.getJSONArray("bookmarkStore");  // 객체에 bookmarkStore라는 Key를 가진 JSONArray 생성
 
                 if(bookmarkStoreArr.length() > 0) {
                     for (int i = 0; i < bookmarkStoreArr.length(); i++) {
-                        JSONObject object = bookmarkStoreArr.getJSONObject(i);          // 배열 원소 하나하나 꺼내서 JSONObject 생성
+                        JSONObject object = bookmarkStoreArr.getJSONObject(i);  // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
                         mainBookmarkStoreData bookmarkStore = new mainBookmarkStoreData(
-                                object.getInt("bookmarkStoreId")                        // 가게 고유 아이디
-                                , object.getInt("storeId")); // 현위치에서 가게까지의 거리
+                                object.getInt("bookmarkStoreId")    // 찜한 가게 테이블 고유 아이디
+                                , object.getInt("storeId"));        // 찜한 가게 고유 아이디
 
-                        BookmarkStore.add(bookmarkStore);  // 가게 정보 저장
+                        BookmarkStore.add(bookmarkStore);   // 가게 정보 저장
                     }
                 }
             } catch (JSONException e) {
@@ -521,20 +536,20 @@ public class MapFragment extends Fragment
     private void deleteBookmarkStore(int index){
         Map<String, String> param = new HashMap<>();
 
-        param.put("bmkStId", String.valueOf(BookmarkStore.get(index).getBmkStoreId()));   // 삭제할 찜한 가게 목록 고유 아이디
+        param.put("bmkStId", String.valueOf(BookmarkStore.get(index).getBmkStoreId())); // 삭제할 찜한 가게 목록 고유 아이디
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest deleteBookmarkRequest = new StringRequest(Request.Method.POST, HOST + DELETE_BOOKMARK_STORE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(requireActivity(), "삭제 성공!", R.style.blueToast).show();
 
-                    BookmarkStore.remove(index);   // 데이터 삭제
+                    BookmarkStore.remove(index);    // 데이터 삭제
 
+                    // 리사이클러뷰 데이터 SET
                     mapStoreAdapter.setbookmarkStores(BookmarkStore);
-
                 }else{
                     StyleableToast.makeText(requireActivity(), "삭제 실패...", R.style.redToast).show();
                 }
@@ -547,7 +562,7 @@ public class MapFragment extends Fragment
             Log.d("deleteBookmarkStoreError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -559,25 +574,29 @@ public class MapFragment extends Fragment
 
     // 유저 찜한 가게 추가
     private void insertBookmarkStore(int userId, int storeId){
+        // POST 방식 파라미터 설정
+        // Param => userId : 유저 고유 아이디
+        //          storeId : 가게 고유 아이디
         Map<String, String> param = new HashMap<>();
-
         param.put("userId", String.valueOf(userId));   // 유저 고유 아이디
         param.put("storeId", String.valueOf(storeId));   // 찜할 가게 고유 아이디
+
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest insertBookmarkRequest = new StringRequest(Request.Method.POST, HOST + INSERT_BOOKMARK_STORE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(requireActivity(), "추가 성공!", R.style.blueToast).show();
 
                     // 데이터 추가
                     BookmarkStore.add(new mainBookmarkStoreData(
-                            Integer.parseInt(jsonObject.getString("bmkStId"))
-                            , storeId
+                            Integer.parseInt(jsonObject.getString("bmkStId"))   // 찜한 가게 테이블 고유 아이디
+                            , storeId   // 찜한 가게 고유 아이디
                     ));
 
+                    // 리사이클러뷰 데이터 SET
                     mapStoreAdapter.setbookmarkStores(BookmarkStore);
                 }else{
                     StyleableToast.makeText(requireActivity(), "추가 실패...", R.style.redToast).show();
@@ -591,7 +610,7 @@ public class MapFragment extends Fragment
             Log.d("insertBookmarkStoreError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -605,35 +624,35 @@ public class MapFragment extends Fragment
         // 가게 리사이클러뷰 클릭 리스너
         mapStoreAdapter.setonMapStoreRvClickListener((v, position, flag) -> {
             switch (flag) {
-                case "total":     // 리사이클러뷰 클릭 시
+                case "total":   // 리사이클러뷰 클릭 시
                     // GET 방식 파라미터 설정, 파라미터 : 선택한 가게 고유 아이디
                     String selectStoreURL = String.format(HOST + MAINSTORE_PATH + "?storeId=%s", map_store.get(position).getMapStoreId());
 
                     // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
                     StringRequest selectStoreRequest = new StringRequest(Request.Method.GET, selectStoreURL, response -> {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);                     // Response를 JsonObject 객체로 생성
-                            JSONArray mainStoreArr = jsonObject.getJSONArray("store");      // 객체에 store라는 Key를 가진 JSONArray 생성
+                            JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                            JSONArray mainStoreArr = jsonObject.getJSONArray("store");  // 객체에 store라는 Key를 가진 JSONArray 생성
 
-                            JSONObject object = mainStoreArr.getJSONObject(0);              // 첫번째 원소의 값으로 JSONObject 생성
+                            JSONObject object = mainStoreArr.getJSONObject(0);  // 첫번째 원소의 값으로 JSONObject 생성
 
                             mainStoreData selectStore = new mainStoreData(
-                                    object.getInt("storeId")                          // 가게 고유 아이디
-                                    , object.getString("storeName")                     // 가게 이름
-                                    , object.getString("storeAddress")                  // 가게 주소
-                                    , object.getString("storeDetail")                   // 가게 간단 제공 서비스
-                                    , object.getString("storeFacility")                 // 가게 제공 시설 여부
-                                    , object.getDouble("storeLatitude")                 // 가게 위도
-                                    , object.getDouble("storeLongitude")                // 가게 경도
-                                    , object.getString("storeNumber")                   // 가게 번호
-                                    , object.getString("storeInfo")                     // 가게 간단 정보
-                                    , object.getInt("storeCategoryId")                  // 가게가 속한 카테고리 고유 아이디
-                                    , HOST + object.getString("storeThumbnailPath")     // 가게 썸네일 이미지 경로
-                                    , object.getDouble("storeScore")                    // 가게 별점
-                                    , object.getString("storeWorkingTime")              // 가게 운영 시간
-                                    , object.getString("storeHashTag")                  // 가게 해시태그
-                                    , object.getInt("storeReviewCount")                 // 가게 리뷰 개수
-                                    , 0);                                          // 현위치에서 가게까지의 거리
+                                    object.getInt("storeId")        // 가게 고유 아이디
+                                    , object.getString("storeName") // 가게 이름
+                                    , object.getString("storeAddress")      // 가게 주소
+                                    , object.getString("storeDetail")       // 가게 간단 제공 서비스
+                                    , object.getString("storeFacility")     // 가게 제공 시설 여부
+                                    , object.getDouble("storeLatitude")     // 가게 위도
+                                    , object.getDouble("storeLongitude")    // 가게 경도
+                                    , object.getString("storeNumber")   // 가게 번호
+                                    , object.getString("storeInfo")     // 가게 간단 정보
+                                    , object.getInt("storeCategoryId")  // 가게가 속한 카테고리 고유 아이디
+                                    , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
+                                    , object.getDouble("storeScore")        // 가게 별점
+                                    , object.getString("storeWorkingTime")  // 가게 운영 시간
+                                    , object.getString("storeHashTag")      // 가게 해시태그
+                                    , object.getInt("storeReviewCount")     // 가게 리뷰 개수
+                                    , 0);   // 현위치에서 가게까지의 거리
 
                             lastTag = position; // 상세화면으로 이동할 리사이클러뷰의 태그 번호 ( 인덱스 번호 ) 저장
 
@@ -641,12 +660,11 @@ public class MapFragment extends Fragment
 
                             // 데이터 송신을 위한 Parcelable interface 사용
                             // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
-                            intent.putExtra("Store", (Parcelable) selectStore);
-                            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                            intent.putExtra("pageName", "MapFragment");
+                            intent.putExtra("Store", selectStore);  // 가게 데이터
+                            intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                            intent.putExtra("pageName", "MapFragment"); // 화면전환 페이지 명
 
                             activityResultLauncher.launch(intent);  // 새 Activity 인스턴스 시작
-
                         } catch (JSONException error) {
                             error.printStackTrace();
                         }
@@ -656,13 +674,10 @@ public class MapFragment extends Fragment
                     });
 
                     selectStoreRequest.setShouldCache(false);   // 이전 결과가 있어도 새로 요청하여 출력
-
                     requestQueue.add(selectStoreRequest);       // RequestQueue에 요청 추가
 
                     break;
                 case "bookmarkDelete":     // 찜 버튼 클릭 시
-                    isBookmarkClick = true;
-
                     int index = 0;  // 찜한 가게 목록 데이터의 index
 
                     // 찜한 목록중 선택한 데이터의 가게 고유 아이디 구하기
@@ -673,7 +688,7 @@ public class MapFragment extends Fragment
                         }
                     }
 
-                    deleteBookmarkStore(index); // 찜한 가게 제거
+                    deleteBookmarkStore(index); // 찜한 가게 삭제
 
                     break;
                 case "bookmarkInsert":
@@ -691,7 +706,7 @@ public class MapFragment extends Fragment
 
         // activityResultLauncher 초기화
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == 3000){   // resultCode가 3000로 넘어왔다면 InfoActivity에서 넘어온것
+            if(result.getResultCode() == 3000){ // resultCode가 3000로 넘어왔다면 InfoActivity에서 넘어온것
                 assert result.getData() != null;
                 BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");    // 찜한 목록 데이터 GET
 
@@ -699,14 +714,12 @@ public class MapFragment extends Fragment
                 mapStoreAdapter.setbookmarkStores(BookmarkStore);
 
                 int storeId = result.getData().getIntExtra("storeId", 0);   // 가게 고유 아이디
-                int index = 0;  // 가게 데이터 index ( 리사이클러뷰 position )
 
+                // 현재 가게의 별점 데이터 갱신
                 for(int i = 0; i < map_store.size(); i++){
                     if(map_store.get(i).getMapStoreId() == storeId){
-                        index = i;  // index 겸 position
-
-                        mapStoreAdapter.setStoreScore(index, result.getData().getDoubleExtra("score", 0)); // 별점 SET
-                        mapStoreAdapter.notifyItemChanged(index);  // 리사이클러뷰 데이터 변경
+                        mapStoreAdapter.setStoreScore(i, result.getData().getDoubleExtra("score", 0)); // 별점 SET
+                        mapStoreAdapter.notifyItemChanged(i);  // 리사이클러뷰 데이터 변경
 
                         break;
                     }
@@ -734,7 +747,7 @@ public class MapFragment extends Fragment
 
         mapView = new MapView(root.getContext());   // mapView 객체 생성
 
-        mapViewContainer = (ViewGroup) root.findViewById(R.id.map_view);    // ViewGroup Container
+        mapViewContainer = root.findViewById(R.id.map_view);    // ViewGroup Container
         mapViewContainer.addView(mapView);  // mapView attach
 
         mapView.setMapViewEventListener(this);  // 지도 이동/확대/축소, 지도 화면 터치 (Single Tap / Double Tap / Long Press) 이벤트를 통보받을 수 있음

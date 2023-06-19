@@ -25,16 +25,16 @@ public class InfoMenuActivity extends Activity {
 
         initView(); // 뷰 생성
 
+        // ArrayList를 받아올때 사용
+        // putParcelableArrayListExtra로 넘긴 데이터를 받아올때 사용
+        ArrayList<infoMenuData> Menu = getIntent().getParcelableArrayListExtra("Menu"); // 메뉴 데이터
+
         // 뒤로 가기 버튼 클릭 시 Activity 종료
         infoMenuBackIc.setOnClickListener(view -> finish());
 
-        // 가게 명
+        // 가게 명 SET
         String storeName = getIntent().getExtras().getString("storeName");
         infoMenuStoreName.setText(storeName);
-
-        // ArrayList를 받아올때 사용
-        // putParcelableArrayListExtra로 넘긴 데이터를 받아올때 사용
-        ArrayList<InfoMenuData> Menu = getIntent().getParcelableArrayListExtra("Menu"); // 메뉴 데이터
 
         // LayoutManager 객체 생성
         infoMenuDetailRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

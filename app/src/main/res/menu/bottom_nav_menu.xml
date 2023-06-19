@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/navigation_collabo"
-        android:icon="@drawable/ic_collabo"
+        android:icon="@drawable/ic_collabo_black_24dp"
         android:title="@string/title_collabo" />
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/ic_map"
+        android:icon="@drawable/ic_map_black_24dp"
         android:title="@string/title_map" />
 
     <item
@@ -19,12 +19,12 @@
 
     <item
         android:id="@+id/navigation_bag"
-        android:icon="@drawable/ic_bag"
+        android:icon="@drawable/ic_bag_black_24dp"
         android:title="@string/title_bag" />
 
     <item
         android:id="@+id/navigation_mypage"
-        android:icon="@drawable/ic_user"
+        android:icon="@drawable/ic_user_black_24dp"
         android:title="@string/title_mypage" />
 
 </menu>

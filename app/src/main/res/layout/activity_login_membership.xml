@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +20,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/loginMembership01" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             app:layout_constraintLeft_toRightOf="@+id/login_membership_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
-            android:text="회원가입"
+            android:text="@string/loginMembership02"
             android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"/>
@@ -53,11 +53,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
-            android:text="회원가입 시 사용하실 이메일을 입력해주세요."
+            android:text="@string/loginMembership03"
             android:textColor="#5E5E5E"
             android:textSize="11sp"
             android:textStyle="bold"
-            android:paddingStart="5dp"/>
+            android:layout_marginStart="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,24 +73,26 @@
                 android:textSize="11sp"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:background="@drawable/round_gray_little"
+                android:background="@drawable/round_gray_10dp"
                 android:paddingVertical="15dp"
-                android:paddingStart="20dp"
+                android:paddingHorizontal="20dp"
                 android:textColor="@color/black"
                 android:layout_marginVertical="10dp"
                 android:textStyle="bold"
-                android:hint="이메일을 입력해주세요."
+                android:hint="@string/loginMembership04"
                 android:maxLength="40"
                 android:layout_weight="3"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:autofillHints="no" />
 
             <Button
                 android:id="@+id/login_membership_auth_mail_dup_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/round_color_little"
+                android:background="@drawable/round_green_10dp"
                 android:textSize="11sp"
-                android:text="중복확인"
+                android:text="@string/loginMembership05"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:layout_weight="7"/>
@@ -99,9 +101,10 @@
                 android:id="@+id/login_membership_auth_mail_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/round_color_little"
+                android:background="@drawable/round_green_10dp"
                 android:textSize="11sp"
-                android:text="중복확인"
+                android:text="@string/loginMembership06"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:layout_weight="7"
@@ -131,24 +134,25 @@
                     android:textSize="11sp"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:background="@drawable/round_gray_little"
+                    android:background="@drawable/round_gray_10dp"
                     android:paddingVertical="15dp"
-                    android:paddingStart="20dp"
+                    android:paddingHorizontal="20dp"
                     android:textColor="@color/black"
                     android:layout_marginVertical="10dp"
                     android:textStyle="bold"
-                    android:hint="인증번호를 입력해주세요."
-                    android:maxLength="10"/>
+                    android:hint="@string/loginMembership07"
+                    android:maxLength="10"
+                    android:autofillHints="no"/>
 
                 <com.example.itda.library.timer.TimerView
                     android:id="@+id/login_membership_auth_number_timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="03:00"
+                    android:text="@string/loginMembership08"
                     android:textColor="@color/red05"
                     android:layout_gravity="end|center"
-                    android:paddingEnd="10dp"/>
+                    android:layout_marginEnd="10dp"/>
 
             </FrameLayout>
 
@@ -156,9 +160,10 @@
                 android:id="@+id/login_membership_auth_number_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/round_gray_little"
+                android:background="@drawable/round_gray_10dp"
                 android:textSize="11sp"
-                android:text="인증번호 입력"
+                android:text="@string/loginMembership09"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:enabled="false"
@@ -182,25 +187,26 @@
                 android:textSize="12sp"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:background="@drawable/round_gray"
+                android:background="@drawable/round_gray_30dp"
                 android:paddingVertical="15dp"
-                android:paddingStart="20dp"
+                android:paddingHorizontal="20dp"
                 android:textColor="@color/black"
                 android:layout_marginVertical="10dp"
                 android:textStyle="bold"
-                android:hint="새로운 비밀번호를 입력해주세요."
-                android:maxLength="20"/>
+                android:hint="@string/loginMembership10"
+                android:maxLength="20"
+                android:autofillHints="no"/>
 
             <TextView
                 android:id="@+id/login_membership_new_password_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="5dp"
-                android:text="영문, 숫자, 특수문자를 조합하여 8 ~ 20자리로 설정해주세요."
+                android:text="@string/loginMembership11"
                 android:textColor="#5E5E5E"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:paddingStart="5dp"/>
+                android:layout_marginStart="5dp"/>
 
             <EditText
                 android:id="@+id/login_membership_new_password_once"
@@ -209,25 +215,26 @@
                 android:textSize="12sp"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:background="@drawable/round_gray"
+                android:background="@drawable/round_gray_30dp"
                 android:paddingVertical="15dp"
-                android:paddingStart="20dp"
+                android:paddingHorizontal="20dp"
                 android:textColor="@color/black"
                 android:layout_marginVertical="10dp"
                 android:textStyle="bold"
-                android:hint="비밀번호를 다시 한 번 입력해주세요."
-                android:maxLength="20"/>
+                android:hint="@string/loginMembership12"
+                android:maxLength="20"
+                android:autofillHints="no"/>
 
             <TextView
                 android:id="@+id/login_membership_new_password_once_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="5dp"
-                android:text="비밀번호가 일치하지 않습니다."
+                android:text="@string/loginMembership13"
                 android:textColor="@color/red05"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:paddingStart="5dp"/>
+                android:layout_marginStart="5dp"/>
 
         </LinearLayout>
 
@@ -235,8 +242,9 @@
             android:id="@+id/login_membership_btn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/round_gray"
-            android:text="회원가입"
+            android:background="@drawable/round_gray_30dp"
+            android:text="@string/loginMembership14"
+            android:textColor="@color/white"
             android:gravity="center"
             android:textStyle="bold"
             android:enabled="false"

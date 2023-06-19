@@ -3,13 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingVertical="5dp">
+    android:paddingVertical="10dp">
 
     <TextView
         android:id="@+id/info_menu_center_dot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="·"
+        android:text="@string/rvInfoMenu01"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/gray04"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,7 +22,10 @@
         android:id="@+id/info_menu_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="아메리카노"
+        android:text="@string/rvInfoMenu02"
+        android:textSize="12sp"
+        android:textColor="@color/gray04"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/info_menu_center_dot"
@@ -29,10 +35,13 @@
         android:id="@+id/info_menu_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3.0"
+        android:text="@string/rvInfoMenu03"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/gray04"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="20dp"/>
+        android:layout_marginEnd="30dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class mainBookmarkStoreData implements Parcelable {
-    private int bmkStoreId;     // 찜한 가게 목록 고유 아이디
-    private int storeId;  // 가게 고유 아이디
+    private int bmkStoreId; // 찜한 가게 테이블 고유 아이디
+    private int storeId;    // 가게 고유 아이디
 
     // Constructor
     public mainBookmarkStoreData(int bmkStoreId, int storeId) {

@@ -1,9 +1,7 @@
 package com.example.itda.ui.login;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,14 +10,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -41,13 +35,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.itda.BuildConfig;
-import com.example.itda.MainActivity;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
-import com.example.itda.ui.mypage.MyPageEditBirthdayActivity;
-import com.example.itda.ui.mypage.MyPageEditNameActivity;
-import com.example.itda.ui.mypage.MyPageEditNumberActivity;
-import com.example.itda.ui.mypage.MyPageEditPasswordActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -65,34 +54,41 @@ import it.sauronsoftware.ftp4j.FTPClient;
 import it.sauronsoftware.ftp4j.FTPDataTransferListener;
 
 public class LoginMembershipOptionActivity extends AppCompatActivity{
+
+    // Layout
     private ImageButton backIc; // 상단 뒤로가기 버튼
     private ImageButton userProfile;    // 유저 프로필 이미지
-
-    private EditText userName;    // 유저 명 입력
-    private EditText userNumber;  // 유저 번호 입력
-
+    private EditText userName;      // 유저 명 입력
+    private EditText userNumber;    // 유저 번호 입력
     private NumberPicker userBirthdayYear;  // 유저 생일 년 입력
-    private NumberPicker userBirthdayMonth;  // 유저 생일 월 입력
-    private NumberPicker userBirthdayDay;  // 유저 생일 일 입력
+    private NumberPicker userBirthdayMonth; // 유저 생일 월 입력
+    private NumberPicker userBirthdayDay;   // 유저 생일 일 입력
+    private Button membershipOptionBtn;     // 회원가입 정보 입력 완료 버튼
+    private Dialog userProfileDialog;       // 유저 프로필 변경 팝업 다이얼로그
+    private Dialog optionInputCancelDialog; // 회원가입 추가정보 입력 취소 팝업 다이얼로그
 
-    private Button membershipOptionBtn;    // 회원가입 정보 입력 완료 버튼
 
-    private Dialog userProfileDialog;   // 유저 프로필 변경 팝업 다이얼로그
-    private Dialog optionInputCancelDialog;   // 회원가입 추가정보 입력 취소 팝업 다이얼로그
-
+    // Intent activityResultLauncher
     private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
 
+
+    // Volley Library RequestQueue
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
 
+
+    // Rest API
     private String UPDATE_PROFILE_PATH; // 유저 프로필 변경 Rest API
     private String DELETE_PROFILE_PATH; // 유저 프로필 기본 이미지 변경 Rest API
-    private String NO_PROFILE_PATH; // 기본 프로필 이미지 경로
-    private String UPDATE_LOGIN_USER_OPTION; // 유저 회원가입 추가 정보 Update Rest API
-
+    private String NO_PROFILE_PATH;     // 기본 프로필 이미지 경로
+    private String UPDATE_LOGIN_USER_OPTION;    // 유저 회원가입 추가 정보 Update Rest API
     private String HOST;    // Host 정보
 
+
+    // Thread Handler
     private final Handler handler = new Handler();
 
+
+    // Global Data
     private int userId = 0;
     private String userEmail = "";
     private String loginFlag = "";
@@ -107,16 +103,17 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             requestQueue = Volley.newRequestQueue(this);
         }
 
-        HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
-        UPDATE_PROFILE_PATH = ((globalMethod) getApplication()).getUpdateUserProfilePath();    // 유저 프로필 변경 Rest API
-        DELETE_PROFILE_PATH = ((globalMethod) getApplication()).getDeleteUserProfilePath();    // 유저 프로필 기본 이미지 변경 Rest API
-        NO_PROFILE_PATH = ((globalMethod) getApplication()).getNoProfilePath();    // 기본 프로필 이미지 경로
-        UPDATE_LOGIN_USER_OPTION = ((globalMethod) getApplication()).updateLoginUserOptionPath();    // 유저 회원가입 추가 정보 update Rest API
+        HOST = ((globalMethod) getApplication()).getHost(); // Host 정보
+        UPDATE_PROFILE_PATH = ((globalMethod) getApplication()).getUpdateUserProfilePath(); // 유저 프로필 변경 Rest API
+        DELETE_PROFILE_PATH = ((globalMethod) getApplication()).getDeleteUserProfilePath(); // 유저 프로필 기본 이미지 변경 Rest API
+        NO_PROFILE_PATH = ((globalMethod) getApplication()).getNoProfilePath(); // 기본 프로필 이미지 경로
+        UPDATE_LOGIN_USER_OPTION = ((globalMethod) getApplication()).updateLoginUserOptionPath();   // 유저 회원가입 추가 정보 update Rest API
 
-        userId = getIntent().getExtras().getInt("userId");    // 회원가입된 유저 고유 아이디
+        userId = getIntent().getExtras().getInt("userId");  // 회원가입된 유저 고유 아이디
         loginFlag = getIntent().getExtras().getString("loginFlag"); // 회원가입 방법 ( 일반 회원가입 : normal, 카카오 회원가입 : kakao )
 
-        initView(); // 뷰 생성
+        // Init View
+        initView();
 
         // --------------- Data SET ---------------------
 
@@ -137,8 +134,8 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
         Glide.with(this)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(HOST + NO_PROFILE_PATH))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(userProfile);      // 이미지를 보여줄 View를 지정
 
         // 회원가입이 카카오로 되었을 경우 정보 SET
@@ -146,6 +143,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             userEmail = getIntent().getExtras().getString("email"); // 유저 이메일
 
             userName.setText(getIntent().getExtras().getString("name"));    // 유저 명
+
             // 생일 월, 일
             if(!getIntent().getExtras().getString("birthday").isEmpty()){
                 userBirthdayMonth.setValue(Integer.parseInt(getIntent().getExtras().getString("birthday").split("-")[1]));
@@ -158,8 +156,8 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 Glide.with(getApplicationContext())                 // View, Fragment 혹은 Activity로부터 Context를 GET
                         .load(getIntent().getExtras().getString("userProfileURL"))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                         .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                        .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                        .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                        .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                        .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                         .into(userProfile);      // 이미지를 보여줄 View를 지정
             }
         }
@@ -171,39 +169,34 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             optionInputCancelDialog.getWindow().setAttributes(params);
 
-            optionInputCancelDialog.show();
+            optionInputCancelDialog.show(); // 종료 여부 다이얼로그 띄우기
 
             // 뷰 정의
-            TextView dialogTitle = optionInputCancelDialog.findViewById(R.id.dl_title);  // 다이얼로그 안내 텍스트
-            Button inputCancelConfirmBtn = optionInputCancelDialog.findViewById(R.id.dl_confirm_btn);  // 확인 버튼
-            Button inputCancelCloseBtn = optionInputCancelDialog.findViewById(R.id.dl_close_btn);  // 닫기 버튼
+            TextView dialogTitle = optionInputCancelDialog.findViewById(R.id.dl_title); // 다이얼로그 안내 텍스트
+            Button inputCancelConfirmBtn = optionInputCancelDialog.findViewById(R.id.dl_confirm_btn);   // 확인 버튼
+            Button inputCancelCloseBtn = optionInputCancelDialog.findViewById(R.id.dl_close_btn);   // 닫기 버튼
 
             dialogTitle.setText("추가정보를 입력하지 않고 종료하겠습니까?");
 
             // 확인 버튼 클릭 리스너
-            inputCancelConfirmBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    optionInputCancelDialog.dismiss();
-                    updateUserOption(userName.getText().toString()
-                            , ""
-                            , "1900-01-01");
-                }
+            inputCancelConfirmBtn.setOnClickListener(view1 -> {
+                optionInputCancelDialog.dismiss();  // 다이얼로그 종료
+
+                // 임시 데이터로 저장
+                updateUserOption(userName.getText().toString()  // 유저 명
+                        , ""    // 유저 전화번호
+                        , "1900-01-01");    // 유저 생일
             });
 
             // 닫기 버튼
-            inputCancelCloseBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    optionInputCancelDialog.dismiss();
-                }
-            });
+            inputCancelCloseBtn.setOnClickListener(view12 -> optionInputCancelDialog.dismiss());
         });
 
         // activityResultLauncher 초기화
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == RESULT_OK){  // 갤러리에서 프로필 변경
+            if(result.getResultCode() == RESULT_OK){    // 갤러리에서 프로필 변경
                 Intent intent = result.getData();
+                assert intent != null;
                 Uri uri = intent.getData(); // 선택한 갤러리 URI 정보
 
                 // 커서란?
@@ -226,7 +219,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 // 파일명 + 확장자
                 String[] fileNameEts = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME)).split("\\.");
 
-                String fileName = fileNameEts[0]; // 파일 명
+                String fileName = fileNameEts[0];   // 파일 명
                 String fileEts = fileNameEts.length > 1 ? fileNameEts[1] : "";  // 파일 확장자
 
                 File file = new File(filePath);
@@ -246,12 +239,10 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
         // 유저 휴대폰 번호 입력 EditText 엔터키 입력 리스너
         userNumber.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            switch(actionId){
-                case EditorInfo.IME_ACTION_DONE:
-                    // 키보드 내리기
-                    InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                    manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    break;
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // 키보드 내리기
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
             return true;
         });
@@ -276,18 +267,15 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
         userProfile.setOnClickListener(view -> checkPermissions());
 
         // 회원가입 추가 정보 입력 완료 버튼 클릭 리스너
-        membershipOptionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(TextUtils.isEmpty(userName.getText().toString())){
-                    StyleableToast.makeText(getApplicationContext(), "이름을 입력해 주세요.", R.style.redToast).show();
-                }else if(TextUtils.isEmpty(userNumber.getText().toString())){
-                    StyleableToast.makeText(getApplicationContext(), "휴대폰 번호를 입력해 주세요.", R.style.redToast).show();
-                }else{
-                    updateUserOption(userName.getText().toString()  // 유저 명
-                            , userNumber.getText().toString()   // 유저 휴대폰 번호
-                            , userBirthdayYear.getValue() + "-" + userBirthdayMonth.getValue() + "-" + userBirthdayDay.getValue()); // 유저 생일
-                }
+        membershipOptionBtn.setOnClickListener(view -> {
+            if(TextUtils.isEmpty(userName.getText().toString())){   // 이름 입력이 빈칸인 경우
+                StyleableToast.makeText(getApplicationContext(), "이름을 입력해 주세요.", R.style.redToast).show();
+            }else if(TextUtils.isEmpty(userNumber.getText().toString())){   // 휴대폰 번호 입력이 빈칸인 경우
+                StyleableToast.makeText(getApplicationContext(), "휴대폰 번호를 입력해 주세요.", R.style.redToast).show();
+            }else{
+                updateUserOption(userName.getText().toString()  // 유저 명
+                        , userNumber.getText().toString()       // 유저 휴대폰 번호
+                        , userBirthdayYear.getValue() + "-" + userBirthdayMonth.getValue() + "-" + userBirthdayDay.getValue()); // 유저 생일
             }
         });
     }
@@ -301,33 +289,27 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             optionInputCancelDialog.getWindow().setAttributes(params);
 
-            optionInputCancelDialog.show();
+            optionInputCancelDialog.show(); // 종료 여부 다이얼로그 띄우기
 
             // 뷰 정의
-            TextView dialogTitle = optionInputCancelDialog.findViewById(R.id.dl_title);  // 다이얼로그 안내 텍스트
-            Button inputCancelConfirmBtn = optionInputCancelDialog.findViewById(R.id.dl_confirm_btn);  // 확인 버튼
-            Button inputCancelCloseBtn = optionInputCancelDialog.findViewById(R.id.dl_close_btn);  // 닫기 버튼
+            TextView dialogTitle = optionInputCancelDialog.findViewById(R.id.dl_title); // 다이얼로그 안내 텍스트
+            Button inputCancelConfirmBtn = optionInputCancelDialog.findViewById(R.id.dl_confirm_btn);   // 확인 버튼
+            Button inputCancelCloseBtn = optionInputCancelDialog.findViewById(R.id.dl_close_btn);   // 닫기 버튼
 
             dialogTitle.setText("추가정보를 입력하지 않고 종료하겠습니까?");
 
             // 확인 버튼 클릭 리스너
-            inputCancelConfirmBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    optionInputCancelDialog.dismiss();
-                    updateUserOption(userName.getText().toString()
-                            , ""
-                            , "1900-01-01");
-                }
+            inputCancelConfirmBtn.setOnClickListener(view -> {
+                optionInputCancelDialog.dismiss();  // 다이얼로그 종료
+
+                // 임시 데이터로 저장
+                updateUserOption(userName.getText().toString()  // 유저 명
+                        , ""    // 유저 전화번호
+                        , "1900-01-01");    // 유저 생일
             });
 
             // 닫기 버튼
-            inputCancelCloseBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    optionInputCancelDialog.dismiss();
-                }
-            });
+            inputCancelCloseBtn.setOnClickListener(view -> optionInputCancelDialog.dismiss());
 
             return true;
         }
@@ -336,28 +318,28 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
     // 뷰 생성
     private void initView(){
-        backIc = findViewById(R.id.login_membership_option_back_ic); // 상단 뒤로가기 버튼
+        backIc = findViewById(R.id.login_membership_option_back_ic);    // 상단 뒤로가기 버튼
         userProfile = findViewById(R.id.login_membership_option_user_profile);  // 유저 프로필 이미지
-        userName = findViewById(R.id.login_membership_option_user_name);  // 유저 명 입력
-        userNumber = findViewById(R.id.login_membership_option_user_number);  // 유저 번호 입력
-        userBirthdayYear = findViewById(R.id.login_membership_option_birthday_year);  // 유저 생일 년 입력
+        userName = findViewById(R.id.login_membership_option_user_name);        // 유저 명 입력
+        userNumber = findViewById(R.id.login_membership_option_user_number);    // 유저 번호 입력
+        userBirthdayYear = findViewById(R.id.login_membership_option_birthday_year);    // 유저 생일 년 입력
         userBirthdayMonth = findViewById(R.id.login_membership_option_birthday_month);  // 유저 생일 월 입력
         userBirthdayDay = findViewById(R.id.login_membership_option_birthday_day);  // 유저 생일 일 입력
-        membershipOptionBtn = findViewById(R.id.login_membership_option_btn);  // 회원가입 정보 입력 완료 버튼
+        membershipOptionBtn = findViewById(R.id.login_membership_option_btn);       // 회원가입 정보 입력 완료 버튼
 
-        userNumber.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        userNumber.setImeOptions(EditorInfo.IME_ACTION_DONE);   // 유저 번호 입력 키보드 엔터키 변경
 
         // 프로필 변경 Dialog 팝업
-        userProfileDialog = new Dialog(LoginMembershipOptionActivity.this);  // Dialog 초기화
+        userProfileDialog = new Dialog(LoginMembershipOptionActivity.this); // Dialog 초기화
         userProfileDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);    // 타이틀 제거
         userProfileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  // 배경 색 제거
-        userProfileDialog.getWindow().setGravity(Gravity.BOTTOM);   // Dialog 하단 위치
-        userProfileDialog.setContentView(R.layout.dl_mypage_profile); // xml 레이아웃 파일과 연결
+        userProfileDialog.getWindow().setGravity(Gravity.BOTTOM);       // Dialog 하단 위치
+        userProfileDialog.setContentView(R.layout.dl_mypage_profile);   // xml 레이아웃 파일과 연결
 
         // 회원가입 추가정보 입력 취소 팝업
-        optionInputCancelDialog = new Dialog(LoginMembershipOptionActivity.this);  // Dialog 초기화
-        optionInputCancelDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);    // 타이틀 제거
-        optionInputCancelDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  // 배경 색 제거
+        optionInputCancelDialog = new Dialog(LoginMembershipOptionActivity.this);   // Dialog 초기화
+        optionInputCancelDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);  // 타이틀 제거
+        optionInputCancelDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));    // 배경 색 제거
         optionInputCancelDialog.setContentView(R.layout.dl_delete); // xml 레이아웃 파일과 연결
     }
 
@@ -384,12 +366,12 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             userProfileDialog.getWindow().setAttributes(params);
 
-            userProfileDialog.show();
+            userProfileDialog.show();   // 프로필 변경 옵션 다이얼로그 띄우기
 
             // 뷰 정의
-            Button profileGalleryBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_gallery_btn);  // 갤러리 변경 버튼
-            Button profileBasicBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_basic_btn);  // 기본 이미지 변경 버튼
-            Button profileCloseBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_close_btn);  // 닫기 버튼
+            Button profileGalleryBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_gallery_btn);   // 갤러리 변경 버튼
+            Button profileBasicBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_basic_btn);   // 기본 이미지 변경 버튼
+            Button profileCloseBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_close_btn);   // 닫기 버튼
 
             // 갤러리 변경 버튼 클릭 리스너
             profileGalleryBtn.setOnClickListener(view -> {
@@ -406,11 +388,11 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                 deleteProfile();    // 프로필 삭제
 
                 // 유저 프로필 이미지 기본 이미지로 변경
-                Glide.with(getApplicationContext())                 // View, Fragment 혹은 Activity로부터 Context를 GET
-                        .load(Uri.parse(HOST + NO_PROFILE_PATH))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                Glide.with(getApplicationContext()) // View, Fragment 혹은 Activity로부터 Context를 GET
+                        .load(Uri.parse(HOST + NO_PROFILE_PATH))    // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                         .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                        .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                        .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                        .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                        .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                         .into(userProfile);      // 이미지를 보여줄 View를 지정
 
                 userProfileDialog.dismiss();    // Dialog 닫기
@@ -428,7 +410,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
     //안드로이드 최근 버전에서는 네크워크 통신시에 반드시 스레드를 요구한다.
     class NThread extends Thread{
-        File filePath;  // 파일 내용
+        File filePath;      // 파일 내용
         String fileName;    // 파일 명
         String fileEts;     // 파일 확장자
         Double fileSize;    // 파일 크기
@@ -467,21 +449,10 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
             client.upload(file, new MyTransferListener());  // 업로드 시작
 
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    updateProfile(name, ets, size);
-                    //StyleableToast.makeText(getApplicationContext(), "변경 완료", R.style.blueToast).show();
-                }
-            });
+            handler.post(() -> updateProfile(name, ets, size));
 
         } catch (Exception e) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    StyleableToast.makeText(getApplicationContext(), "변경 실패", R.style.blueToast).show();
-                }
-            });
+            handler.post(() -> StyleableToast.makeText(getApplicationContext(), "변경 실패", R.style.blueToast).show());
 
             e.printStackTrace();
             try {
@@ -539,8 +510,13 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
     // 프로필 이미지 갤러리에서 변경
     public void updateProfile(String name, String ets, double size){
+        // POST 방식 파라미터 설정
+        // Param => userId : 변경할 유저 고유 아이디
+        //          fileName : 파일 명
+        //          fileEts : 파일 확장자
+        //          fileSize : 파일 크기
         Map<String, String> param = new HashMap<>();
-        param.put("userId", String.valueOf(userId));   // 변경할 유저 고유 아이디
+        param.put("userId", String.valueOf(userId));    // 변경할 유저 고유 아이디
         param.put("fileName", name);    // 파일 명
         param.put("fileEts", ets);      // 파일 확장자
         param.put("fileSize", String.valueOf(size));    // 파일 크기
@@ -549,7 +525,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
         StringRequest updateProfileRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_PROFILE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
@@ -566,7 +542,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             Log.d("updateUserProfileError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -578,6 +554,8 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
     // 프로필 이미지 기본 이미지로 변경
     public void deleteProfile(){
+        // POST 방식 파라미터 설정
+        // Param => userId : 변경할 유저 고유 아이디
         Map<String, String> param = new HashMap<>();
         param.put("userId", String.valueOf(userId));   // 변경할 유저 고유 아이디
 
@@ -585,7 +563,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
         StringRequest deleteProfileRequest = new StringRequest(Request.Method.POST, HOST + DELETE_PROFILE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
@@ -602,7 +580,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             Log.d("deleteUserProfileError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -614,17 +592,22 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
 
     // 회원가입 추가 정보 입력 Update
     public void updateUserOption(String userName, String userNumber, String userBirthday){
+        // POST 방식 파라미터 설정
+        // Param => userId : 변경할 유저 고유 아이디
+        //          userName : 유저 명
+        //          userNumber : 유저 휴대폰 번호
+        //          userBirthday : 유저 생일
         Map<String, String> param = new HashMap<>();
-        param.put("userId", String.valueOf(userId));   // 변경할 유저 고유 아이디
-        param.put("userName", userName);    // 유저 이름
-        param.put("userNumber", userNumber);      // 유저 휴대폰 번호
-        param.put("userBirthday", userBirthday);   // 유저 생일
+        param.put("userId", String.valueOf(userId));    // 변경할 유저 고유 아이디
+        param.put("userName", userName);        // 유저 명
+        param.put("userNumber", userNumber);    // 유저 휴대폰 번호
+        param.put("userBirthday", userBirthday);    // 유저 생일
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest updateUserOptionRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_LOGIN_USER_OPTION, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(getApplicationContext(), "회원가입 완료!", R.style.blueToast).show();
@@ -639,7 +622,8 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
                         // ResultCode와 데이터 값 전달을 위한 intent객체 생성
                         Intent intent = new Intent(LoginMembershipOptionActivity.this, LoginActivity.class);
 
-                        intent.putExtra("email", userEmail);
+                        intent.putExtra("email", userEmail);    // 유저 이메일 ( 카카오 로그인 아이디 )
+
                         setResult(2000, intent);    // 결과 코드와 intent 값 전달
                         finish();
                     }
@@ -656,7 +640,7 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
             Log.d("updateUserOptionError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -666,4 +650,3 @@ public class LoginMembershipOptionActivity extends AppCompatActivity{
         requestQueue.add(updateUserOptionRequest);      // RequestQueue에 요청 추가
     }
 }
-

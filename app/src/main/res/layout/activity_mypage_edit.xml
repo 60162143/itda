@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +21,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/mypageEdit01" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
             app:layout_constraintLeft_toRightOf="@+id/mypage_edit_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
-            android:text="내 정보 수정"
+            android:text="@string/mypageEdit02"
             android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"/>
@@ -43,12 +44,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="50dp">
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/mypageEdit15"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="20dp"/>
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -66,11 +80,12 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/gray"
+                        android:src="@drawable/temp_image"
                         android:padding="0dp"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/mypageEdit03" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -82,12 +97,13 @@
                 android:layout_height="30dp"
                 android:scaleType="centerCrop"
                 android:padding="0dp"
-                android:src="@drawable/ic_add"
+                android:src="@drawable/ic_add_green_16dp"
                 android:adjustViewBounds="true"
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/mypageEdit04" />
 
         </FrameLayout>
 
@@ -96,223 +112,172 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_marginTop="20dp">
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border_vertical_gray">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mypage_edit_user_email_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:lineSpacingExtra="5dp"
+            android:text="@string/mypageEdit05"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/mypage_edit_user_email_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="이메일"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/mypage_edit_user_email_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:text="이메일"
-                    android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:textAllCaps="false"
-                    android:clickable="false"
-                    android:enabled="false"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/mypage_edit_user_email_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:text="@string/mypageEdit06"
+            android:gravity="start|center"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:clickable="false"
+            android:enabled="false"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border_bottom">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mypage_edit_user_name_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:lineSpacingExtra="5dp"
+            android:text="@string/mypageEdit07"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/mypage_edit_user_name_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="이름"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/mypage_edit_user_name_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:text="이름"
-                    android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:drawableEnd="@drawable/ic_arrow_front"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/mypage_edit_user_name_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:text="@string/mypageEdit08"
+            android:gravity="start|center"
+            android:textStyle="bold"
+            android:drawableEnd="@drawable/ic_arrow_front_gray_16dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border_bottom">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mypage_edit_user_number_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:lineSpacingExtra="5dp"
+            android:text="@string/mypageEdit09"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/mypage_edit_user_number_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="휴대폰 번호"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/mypage_edit_user_number_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:text="01012345678"
-                    android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:drawableEnd="@drawable/ic_arrow_front"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/mypage_edit_user_number_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:text="@string/mypageEdit10"
+            android:gravity="start|center"
+            android:textStyle="bold"
+            android:drawableEnd="@drawable/ic_arrow_front_gray_16dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border_bottom">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mypage_edit_user_password_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:lineSpacingExtra="5dp"
+            android:text="@string/mypageEdit11"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/mypage_edit_user_password_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="비밀번호"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/mypage_edit_user_password_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:text="비밀번호"
-                    android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:drawableEnd="@drawable/ic_arrow_front"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/mypage_edit_user_password_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:text="@string/mypageEdit12"
+            android:gravity="start|center"
+            android:textStyle="bold"
+            android:drawableEnd="@drawable/ic_arrow_front_gray_16dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border_bottom">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mypage_edit_user_birthday_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:lineSpacingExtra="5dp"
+            android:text="@string/mypageEdit13"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/mypage_edit_user_birthday_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="생일"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/mypage_edit_user_birthday_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:text="2월 26일"
-                    android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:drawableEnd="@drawable/ic_arrow_front"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/mypage_edit_user_birthday_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:text="@string/mypageEdit14"
+            android:gravity="start|center"
+            android:textStyle="bold"
+            android:drawableEnd="@drawable/ic_arrow_front_gray_16dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 

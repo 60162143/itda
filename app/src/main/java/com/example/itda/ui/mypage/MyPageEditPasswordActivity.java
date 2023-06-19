@@ -3,11 +3,8 @@ package com.example.itda.ui.mypage;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,7 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -34,7 +30,6 @@ import com.example.itda.ui.global.globalMethod;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -45,23 +40,34 @@ import java.util.regex.Pattern;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MyPageEditPasswordActivity extends AppCompatActivity {
-    private ImageButton backIc; // 상단 뒤로가기 버튼
 
-    private EditText oldPassword;  // 이전 비밀번호 입력
-    private EditText newPassword;  // 새로운 비밀번호 입력
-
-    private TextView oldPasswordTxt;  // 이전 비밀번호 입력 안내 텍스트
-    private TextView newPasswordTxt;  // 새로운 비밀번호 입력 안내 텍스트
-    private TextView lostPasswordBtn;  // 비밀번호 재설정 버튼
-
+    // Layout
+    private ImageButton backIc;     // 상단 뒤로가기 버튼
+    private EditText oldPassword;   // 이전 비밀번호 입력
+    private EditText newPassword;   // 새로운 비밀번호 입력
+    private TextView oldPasswordTxt;    // 이전 비밀번호 입력 안내 텍스트
+    private TextView newPasswordTxt;    // 새로운 비밀번호 입력 안내 텍스트
+    private TextView lostPasswordBtn;   // 비밀번호 재설정 버튼
     private Button PasswordBtn; // 비밀번호 변경 버튼
 
-    private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
-    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
-    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
-    private String UPDATE_PASSWORD_PATH;      // 비밀번호 변경 Rest API
-    private String HOST;            // Host 정보
 
+    // Volley Library RequestQueue
+    private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
+
+
+    // Intent activityResultLauncher
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
+
+
+    // Rest API
+    private String UPDATE_PASSWORD_PATH;    // 비밀번호 변경 Rest API
+    private String HOST;    // Host 정보
+
+
+    // Login Data
+    private SharedPreferences User; // 로그인 데이터 ( 전역 변수 )
+
+    // Global Data
     private boolean oldPasswordFlag = false;    // 현재 비밀번호를 정확히 입력했는지 여부
     private boolean newPasswordFlag = false;    // 변경할 비밀번호를 정확히 입력했는지 여부
 
@@ -75,10 +81,11 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
             requestQueue = Volley.newRequestQueue(this);
         }
 
-        HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
-        UPDATE_PASSWORD_PATH = ((globalMethod) getApplication()).getUpdateUserPasswordPath();    // 비밀번호 변경 Rest API
+        HOST = ((globalMethod) getApplication()).getHost(); // Host 정보
+        UPDATE_PASSWORD_PATH = ((globalMethod) getApplication()).getUpdateUserPasswordPath();   // 비밀번호 변경 Rest API
 
-        initView(); // 뷰 생성
+        // Init View
+        initView();
 
         // 유저 전역 변수 GET
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
@@ -107,14 +114,14 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
 
                         // 변경할 비밀번호가 제대로 입력되었을 경우 변경 버튼 활성화
                         if(newPasswordFlag){
-                            PasswordBtn.setBackgroundResource(R.drawable.round_color);
+                            PasswordBtn.setBackgroundResource(R.drawable.round_green_30dp);
                             PasswordBtn.setEnabled(true);
                         }else{
-                            PasswordBtn.setBackgroundResource(R.drawable.round_gray);
+                            PasswordBtn.setBackgroundResource(R.drawable.round_gray_30dp);
                             PasswordBtn.setEnabled(false);
                         }
                     }else{
-                        PasswordBtn.setBackgroundResource(R.drawable.round_gray);
+                        PasswordBtn.setBackgroundResource(R.drawable.round_gray_30dp);
                         PasswordBtn.setEnabled(false);
                         oldPasswordFlag = false;    // 현재 비밀번호를 정확히 입력했는지 여부
                     }
@@ -147,15 +154,14 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
                         newPasswordFlag = true;
 
                         if(oldPasswordFlag){
-                            PasswordBtn.setBackgroundResource(R.drawable.round_color);
+                            PasswordBtn.setBackgroundResource(R.drawable.round_green_30dp);
                             PasswordBtn.setEnabled(true);
                         }else{
-                            PasswordBtn.setBackgroundResource(R.drawable.round_gray);
+                            PasswordBtn.setBackgroundResource(R.drawable.round_gray_30dp);
                             PasswordBtn.setEnabled(false);
                         }
-
                     }else{
-                        PasswordBtn.setBackgroundResource(R.drawable.round_gray);
+                        PasswordBtn.setBackgroundResource(R.drawable.round_gray_30dp);
                         PasswordBtn.setEnabled(false);
                         newPasswordFlag = false;
                     }
@@ -173,15 +179,18 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
 
         // 비밀번호 변경 버튼 리스너
         PasswordBtn.setOnClickListener(view -> {
+            // POST 방식 파라미터 설정
+            // Param => userId : 변경할 유저 고유 아이디
+            //          password : 변경할 패스워드
             Map<String, String> param = new HashMap<>();
-            param.put("userId", String.valueOf(User.getInt("userId", 0)));   // 변경할 유저 고유 아이디
-            param.put("password", getHash(newPassword.getText().toString()));   // 변경할 패스워드
+            param.put("userId", String.valueOf(User.getInt("userId", 0)));  // 변경할 유저 고유 아이디
+            param.put("password", getHash(newPassword.getText().toString()));    // 변경할 패스워드
 
             // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
             StringRequest updatePasswordRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_PASSWORD_PATH, response -> {
                 try {
                     JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                    String success = jsonObject.getString("success");
+                    String success = jsonObject.getString("success");   // Success Flag
 
                     if(!TextUtils.isEmpty(success) && success.equals("1")) {
                         StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
@@ -204,12 +213,10 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
                         Intent intent = new Intent(MyPageEditPasswordActivity.this, MyPageEditActivity.class);
 
                         setResult(4000, intent);    // 결과 코드와 intent 값 전달
-
                         finish();
                     }else{
                         StyleableToast.makeText(getApplicationContext(), "변경 실패...", R.style.redToast).show();
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -218,7 +225,7 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
                 Log.d("updatePasswordError", "onErrorResponse : " + error);
             }) {
                 @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
+                protected Map<String, String> getParams(){
                     // php로 설정값을 보낼 수 있음 ( POST )
                     return param;
                 }
@@ -229,13 +236,10 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
         });
 
         // 비밀번호 재설정 버튼 클릭 리스너
-        lostPasswordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyPageEditPasswordActivity.this, MyPageEditLostPasswordActivity.class);
+        lostPasswordBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(MyPageEditPasswordActivity.this, MyPageEditLostPasswordActivity.class);
 
-                activityResultLauncher.launch(intent);
-            }
+            activityResultLauncher.launch(intent);
         });
 
         // activityResultLauncher 초기화
@@ -248,40 +252,43 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
 
                 finish();
             }else if(result.getResultCode() == 2000){ // resultCode가 2000으로 넘어왔다면 뒤로가기 버튼으로 넘어옴
-
+                Log.d("msg", "MyPageEditLostPasswordActivity close!");
             }
         });
     }
 
     // 뷰 생성
     private void initView(){
-        backIc = findViewById(R.id.mypage_edit_password_back_ic); // 상단 뒤로가기 버튼
+        backIc = findViewById(R.id.mypage_edit_password_back_ic);   // 상단 뒤로가기 버튼
         oldPassword = findViewById(R.id.mypage_edit_old_password);  // 이전 비밀번호 입력
         newPassword = findViewById(R.id.mypage_edit_new_password);  // 새로운 비밀번호 입력
-        oldPasswordTxt = findViewById(R.id.mypage_edit_old_password_txt);  // 이전 비밀번호 입력 텍스트
-        newPasswordTxt = findViewById(R.id.mypage_edit_new_password_txt);  // 새로운 비밀번호 입력 텍스트
-        lostPasswordBtn = findViewById(R.id.mypage_edit_password_lost_btn);  // 비밀번호 재설정 버튼
+        oldPasswordTxt = findViewById(R.id.mypage_edit_old_password_txt);   // 이전 비밀번호 입력 텍스트
+        newPasswordTxt = findViewById(R.id.mypage_edit_new_password_txt);   // 새로운 비밀번호 입력 텍스트
+        lostPasswordBtn = findViewById(R.id.mypage_edit_password_lost_btn); // 비밀번호 재설정 버튼
         PasswordBtn = findViewById(R.id.mypage_edit_password_btn);  // 비밀번호 변경 버튼
     }
 
     // *** 문자열 해시 암호화 코드 ***
     private static String getHash(String str) {
-        String hashStr = "";
+        String hashStr; // 해시 암호화된 문자열
         try{
             //암호화
             MessageDigest sh = MessageDigest.getInstance("SHA-256"); // SHA-256 해시함수를 사용
             sh.update(str.getBytes()); // str의 문자열을 해싱하여 sh에 저장
-            byte byteData[] = sh.digest(); // sh 객체의 다이제스트를 얻는다.
+            byte[] data = sh.digest(); // sh 객체의 다이제스트를 얻는다.
 
             //얻은 결과를 string으로 변환
-            StringBuffer sb = new StringBuffer();
-            for(int i = 0 ; i < byteData.length ; i++) {
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            StringBuilder sb = new StringBuilder();
+
+            for (byte byteData : data) {
+                sb.append(Integer.toString((byteData & 0xff) + 0x100, 16).substring(1));
             }
+
             hashStr = sb.toString();
         }catch(NoSuchAlgorithmException e) {
             e.printStackTrace(); hashStr = null;
         }
+
         return hashStr;
     }
     // *** 스틱코드 등록 코드 ***
@@ -291,8 +298,7 @@ public class MyPageEditPasswordActivity extends AppCompatActivity {
         final String pattern1 = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$"; // 영문, 숫자, 특수문자
 
         Matcher match;
-
-        boolean chk = false;
+        boolean chk = false;    // 정규실 만족 여부
 
         // 특수문자, 영문, 숫자 조합 (8 ~ 20자리)
         match = Pattern.compile(pattern1).matcher(newPwd);

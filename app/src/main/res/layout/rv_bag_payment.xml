@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/border_vertical"
-    android:orientation="vertical">
+    android:background="@drawable/border_vertical_gray"
+    android:orientation="vertical"
+    android:paddingBottom="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,28 +16,27 @@
         <TextView
             android:id="@+id/bag_payment_pay_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/gray03"
-            android:textSize="13sp"
+            android:layout_height="match_parent"
+            android:textColor="@color/gray04"
+            android:textSize="12sp"
             android:textStyle="bold"
-            android:text="2023.06.10"
-            android:paddingStart="10dp"
+            android:text="@string/rvBagPayment01"
+            android:layout_marginStart="10dp"
             android:gravity="center"/>
 
         <TextView
             android:id="@+id/bag_payment_used_status"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="@color/green05"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold"
-            android:text="( 사용 가능 )"
-            android:paddingStart="5dp"
+            android:text="@string/rvBagPayment02"
+            android:layout_marginStart="10dp"
             android:gravity="center"/>
 
     </LinearLayout>
 
-    <!--카드뷰-->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -49,7 +49,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <!--카드뷰-->
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,18 +59,17 @@
                 app:cardCornerRadius="20dp"
                 android:adjustViewBounds="true">
 
-                <!--가게 썸네일-->
                 <ImageButton
                     android:id="@+id/bag_payment_store_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/round"
-                    android:contentDescription="TODO"
+                    android:background="@drawable/round_white_30dp"
+                    android:contentDescription="@string/rvBagPayment03"
                     android:padding="0dp"
-                    android:src="@drawable/ic_test_image"
-                    app:cardCornerRadius="20dp" />
+                    android:src="@drawable/ic_test_image_black_200dp"
+                    app:cardCornerRadius="20dp"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -86,10 +84,10 @@
                     android:id="@+id/bag_payment_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="착한커피"
+                    android:text="@string/rvBagPayment04"
                     android:textColor="@color/gray05"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:layout_weight="1"
@@ -99,9 +97,9 @@
                     android:id="@+id/bag_payment_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="아메리카노 2개 외1"
-                    android:textColor="@color/gray03"
-                    android:textSize="12sp"
+                    android:text="@string/rvBagPayment05"
+                    android:textColor="@color/gray04"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     android:maxLines="3"
                     android:ellipsize="end"
@@ -112,25 +110,25 @@
                     android:id="@+id/bag_payment_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="결제 금액 : 9,900원"
-                    android:textColor="@color/gray03"
+                    android:text="@string/rvBagPayment06"
+                    android:textColor="@color/gray04"
                     android:textSize="11sp"
                     android:textStyle="bold"
                     android:maxLines="3"
                     android:ellipsize="end"
                     android:layout_weight="1"
-                    android:gravity="top"/>
+                    android:gravity="bottom"/>
 
                 <TextView
                     android:id="@+id/bag_payment_exp_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray03"
+                    android:textColor="@color/gray04"
                     android:textSize="11sp"
                     android:textStyle="bold"
-                    android:text="만료 일자 : 2023.06.10"
+                    android:text="@string/rvBagPayment07"
                     android:layout_weight="1"
-                    android:gravity="top"/>
+                    android:gravity="bottom"/>
 
             </LinearLayout>
 

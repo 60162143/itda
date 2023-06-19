@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -17,22 +16,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallerKt;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -42,10 +35,6 @@ import com.example.itda.BuildConfig;
 import com.example.itda.MainActivity;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
-import com.example.itda.ui.home.MainStoreRvAdapter;
-import com.example.itda.ui.home.mainStoreData;
-import com.example.itda.ui.info.InfoActivity;
-import com.example.itda.ui.login.LoginActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -62,28 +51,39 @@ import it.sauronsoftware.ftp4j.FTPClient;
 import it.sauronsoftware.ftp4j.FTPDataTransferListener;
 
 public class MyPageEditActivity extends AppCompatActivity{
+
+    // Layout
     private ImageButton backIc; // 상단 뒤로가기 버튼
     private ImageButton userProfile;    // 유저 프로필 이미지
     private Button userEmailBtn;    // 유저 이메일 버튼 ( 클릭 X )
-    private Button userNameBtn;    // 유저 명 변경 버튼
-    private Button userNumberBtn;  // 유저 번호 변경 버튼
-    private Button userPasswordBtn;    // 유저 비밀번호 변경 버튼
-    private Button userBirthdayBtn;    // 유저 생일 변경 버튼
-
+    private Button userNameBtn;     // 유저 명 변경 버튼
+    private Button userNumberBtn;   // 유저 번호 변경 버튼
+    private Button userPasswordBtn; // 유저 비밀번호 변경 버튼
+    private Button userBirthdayBtn; // 유저 생일 변경 버튼
     private Dialog userProfileDialog;   // 유저 프로필 변경 팝업 다이얼로그
 
-    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
-    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
 
+    // // Intent activityResultLauncher
+    private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
+
+
+    // Volley Library RequestQueue
     private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
 
+
+    // Rest API
     private String UPDATE_PROFILE_PATH; // 유저 프로필 변경 Rest API
     private String DELETE_PROFILE_PATH; // 유저 프로필 기본 이미지 변경 Rest API
-    private String NO_PROFILE_PATH; // 기본 프로필 이미지 경로
-
+    private String NO_PROFILE_PATH;     // 기본 프로필 이미지 경로
     private String HOST;    // Host 정보
 
+
+    // Thread Handler
     private final Handler handler = new Handler();
+
+
+    // Login Data
+    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,12 +95,13 @@ public class MyPageEditActivity extends AppCompatActivity{
             requestQueue = Volley.newRequestQueue(this);
         }
 
-        HOST = ((globalMethod) getApplication()).getHost();   // Host 정보
-        UPDATE_PROFILE_PATH = ((globalMethod) getApplication()).getUpdateUserProfilePath();    // 유저 프로필 변경 Rest API
-        DELETE_PROFILE_PATH = ((globalMethod) getApplication()).getDeleteUserProfilePath();    // 유저 프로필 기본 이미지 변경 Rest API
-        NO_PROFILE_PATH = ((globalMethod) getApplication()).getNoProfilePath();    // 기본 프로필 이미지 경로
+        HOST = ((globalMethod) getApplication()).getHost(); // Host 정보
+        UPDATE_PROFILE_PATH = ((globalMethod) getApplication()).getUpdateUserProfilePath(); // 유저 프로필 변경 Rest API
+        DELETE_PROFILE_PATH = ((globalMethod) getApplication()).getDeleteUserProfilePath(); // 유저 프로필 기본 이미지 변경 Rest API
+        NO_PROFILE_PATH = ((globalMethod) getApplication()).getNoProfilePath(); // 기본 프로필 이미지 경로
 
-        initView(); // 뷰 생성
+        // Init View
+        initView();
 
         // 유저 전역 변수 GET
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
@@ -123,9 +124,10 @@ public class MyPageEditActivity extends AppCompatActivity{
             }else if(result.getResultCode() == 3000){ // resultCode가 3000으로 넘어왔다면 생일 변경
                 userBirthdayBtn.setText(User.getString("userBirthday", "-")); // 유저 생일
             }else if(result.getResultCode() == 4000){ // resultCode가 4000으로 넘어왔다면 비밀번호 변경
-
+                Log.d("msg", "Password Change Success!");
             }else if(result.getResultCode() == RESULT_OK){  // 갤러리에서 프로필 변경
                 Intent intent = result.getData();
+                assert intent != null;
                 Uri uri = intent.getData(); // 선택한 갤러리 URI 정보
 
                 // 커서란?
@@ -148,7 +150,7 @@ public class MyPageEditActivity extends AppCompatActivity{
                 // 파일명 + 확장자
                 String[] fileNameEts = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME)).split("\\.");
 
-                String fileName = fileNameEts[0]; // 파일 명
+                String fileName = fileNameEts[0];   // 파일 명
                 String fileEts = fileNameEts.length > 1 ? fileNameEts[1] : "";  // 파일 확장자
 
                 File file = new File(filePath);
@@ -167,11 +169,11 @@ public class MyPageEditActivity extends AppCompatActivity{
         });
 
         // 유저 프로필 이미지
-        Glide.with(this)                 // View, Fragment 혹은 Activity로부터 Context를 GET
+        Glide.with(this)    // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(User.getString("userProfileImage", "")))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(userProfile);      // 이미지를 보여줄 View를 지정
 
         // Data SET
@@ -179,23 +181,33 @@ public class MyPageEditActivity extends AppCompatActivity{
 
         // 유저 이메일
         if(User.getInt("userLoginFlag", 0) == 0){
+            // 유저 이메일 SET
             userEmailBtn.setText(User.getString("userEmail", ""));
-            userPasswordBtn.setText("********"); // 유저 비밀번호
+
+            // 유저 비밀번호 SET
+            userPasswordBtn.setText("********");
+
         }else if(User.getInt("userLoginFlag", 0) == 1){
-            userEmailBtn.setText("-"); // 유저 이메일
-            userPasswordBtn.setText("-"); // 유저 비밀번호
+            // 유저 이메일 SET
+            userEmailBtn.setText("-");
+
+            // 유저 비밀번호 SET
+            userPasswordBtn.setText("-");
             userPasswordBtn.setEnabled(false);  // 유저 비밀번호 버튼 비활성화
         }
 
-        userNameBtn.setText(User.getString("userName", "")); // 유저 명
-        userBirthdayBtn.setText(User.getString("userBirthday", "-")); // 유저 생일
-        // 유저 번호
+        // 유저 명 SET
+        userNameBtn.setText(User.getString("userName", ""));
+
+        // 유저 생일 SET
+        userBirthdayBtn.setText(User.getString("userBirthday", "-"));
+
+        // 유저 휴대폰 번호 SET
         if(User.getString("userNumber", "-").equals("")){
             userNumberBtn.setText("-");
         }else{
             userNumberBtn.setText(User.getString("userNumber", "-"));
         }
-
 
 
         // 유저 프로필 이미지 변경 버튼 클릭 리스너
@@ -248,20 +260,20 @@ public class MyPageEditActivity extends AppCompatActivity{
 
     // 뷰 생성
     private void initView(){
-        backIc = findViewById(R.id.mypage_edit_back_ic); // 상단 뒤로가기 버튼
-        userProfile = findViewById(R.id.mypage_edit_user_profile);  // 유저 프로필 이미지
-        userEmailBtn = findViewById(R.id.mypage_edit_user_email_btn);  // 유저 이메일 ( 클릭 X )
-        userNameBtn = findViewById(R.id.mypage_edit_user_name_btn);  // 유저 명 변경 버튼
-        userNumberBtn = findViewById(R.id.mypage_edit_user_number_btn);  // 유저 번호 변경 버튼
-        userPasswordBtn = findViewById(R.id.mypage_edit_user_password_btn);  // 유저 비밀번호 변경 버튼
-        userBirthdayBtn = findViewById(R.id.mypage_edit_user_birthday_btn);  // 유저 생일 변경 버튼
+        backIc = findViewById(R.id.mypage_edit_back_ic);    // 상단 뒤로가기 버튼
+        userProfile = findViewById(R.id.mypage_edit_user_profile);      // 유저 프로필 이미지
+        userEmailBtn = findViewById(R.id.mypage_edit_user_email_btn);   // 유저 이메일 ( 클릭 X )
+        userNameBtn = findViewById(R.id.mypage_edit_user_name_btn);     // 유저 명 변경 버튼
+        userNumberBtn = findViewById(R.id.mypage_edit_user_number_btn); // 유저 번호 변경 버튼
+        userPasswordBtn = findViewById(R.id.mypage_edit_user_password_btn); // 유저 비밀번호 변경 버튼
+        userBirthdayBtn = findViewById(R.id.mypage_edit_user_birthday_btn); // 유저 생일 변경 버튼
 
         // 프로필 변경 Dialog 팝업
-        userProfileDialog = new Dialog(MyPageEditActivity.this);  // Dialog 초기화
-        userProfileDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);    // 타이틀 제거
+        userProfileDialog = new Dialog(MyPageEditActivity.this);    // Dialog 초기화
+        userProfileDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);   // 타이틀 제거
         userProfileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  // 배경 색 제거
         userProfileDialog.getWindow().setGravity(Gravity.BOTTOM);   // Dialog 하단 위치
-        userProfileDialog.setContentView(R.layout.dl_mypage_profile); // xml 레이아웃 파일과 연결
+        userProfileDialog.setContentView(R.layout.dl_mypage_profile);   // xml 레이아웃 파일과 연결
     }
 
     // 갤러리 접근 권한 확인
@@ -287,7 +299,7 @@ public class MyPageEditActivity extends AppCompatActivity{
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             userProfileDialog.getWindow().setAttributes(params);
 
-            userProfileDialog.show();
+            userProfileDialog.show();   // 프로필 이미지 변병 방법 다이얼로그 띄우기
 
             // 뷰 정의
             Button profileGalleryBtn = userProfileDialog.findViewById(R.id.mypage_edit_user_profile_gallery_btn);  // 갤러리 변경 버튼
@@ -309,11 +321,11 @@ public class MyPageEditActivity extends AppCompatActivity{
                 deleteProfile();    // 프로필 삭제
 
                 // 유저 프로필 이미지 기본 이미지로 변경
-                Glide.with(getApplicationContext())                 // View, Fragment 혹은 Activity로부터 Context를 GET
+                Glide.with(getApplicationContext()) // View, Fragment 혹은 Activity로부터 Context를 GET
                         .load(Uri.parse(HOST + NO_PROFILE_PATH))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                         .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                        .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                        .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                        .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                        .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                         .into(userProfile);      // 이미지를 보여줄 View를 지정
 
                 userProfileDialog.dismiss();    // Dialog 닫기
@@ -331,7 +343,7 @@ public class MyPageEditActivity extends AppCompatActivity{
 
     //안드로이드 최근 버전에서는 네크워크 통신시에 반드시 스레드를 요구한다.
     class NThread extends Thread{
-        File filePath;  // 파일 내용
+        File filePath;      // 파일 내용
         String fileName;    // 파일 명
         String fileEts;     // 파일 확장자
         Double fileSize;    // 파일 크기
@@ -370,21 +382,10 @@ public class MyPageEditActivity extends AppCompatActivity{
 
             client.upload(file, new MyTransferListener());  // 업로드 시작
 
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    updateProfile(name, ets, size);
-                    //StyleableToast.makeText(getApplicationContext(), "변경 완료", R.style.blueToast).show();
-                }
-            });
+            handler.post(() -> updateProfile(name, ets, size));
 
         } catch (Exception e) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    StyleableToast.makeText(getApplicationContext(), "변경 실패", R.style.blueToast).show();
-                }
-            });
+            handler.post(() -> StyleableToast.makeText(getApplicationContext(), "변경 실패", R.style.blueToast).show());
 
             e.printStackTrace();
             try {
@@ -442,6 +443,11 @@ public class MyPageEditActivity extends AppCompatActivity{
 
     // 프로필 이미지 갤러리에서 변경
     public void updateProfile(String name, String ets, double size){
+        // POST 방식 파라미터 설정
+        // Param => userId : 변경할 유저 고유 아이디
+        //          fileName : 파일 명
+        //          fileEts : 파일 확장자
+        //          fileSize : 파일 크기
         Map<String, String> param = new HashMap<>();
         param.put("userId", String.valueOf(User.getInt("userId", 0)));   // 변경할 유저 고유 아이디
         param.put("fileName", name);    // 파일 명
@@ -452,7 +458,7 @@ public class MyPageEditActivity extends AppCompatActivity{
         StringRequest updateProfileRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_PROFILE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
@@ -494,6 +500,8 @@ public class MyPageEditActivity extends AppCompatActivity{
 
     // 프로필 이미지 기본 이미지로 변경
     public void deleteProfile(){
+        // POST 방식 파라미터 설정
+        // Param => userId : 변경할 유저 고유 아이디
         Map<String, String> param = new HashMap<>();
         param.put("userId", String.valueOf(User.getInt("userId", 0)));   // 변경할 유저 고유 아이디
 
@@ -501,7 +509,7 @@ public class MyPageEditActivity extends AppCompatActivity{
         StringRequest deleteProfileRequest = new StringRequest(Request.Method.POST, HOST + DELETE_PROFILE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(getApplicationContext(), "변경 성공!", R.style.blueToast).show();
@@ -542,4 +550,3 @@ public class MyPageEditActivity extends AppCompatActivity{
         requestQueue.add(deleteProfileRequest);      // RequestQueue에 요청 추가
     }
 }
-

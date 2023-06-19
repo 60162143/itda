@@ -4,5 +4,5 @@ import android.view.View;
 
 public interface onInfoReviewInsertPhotoRvClickListener {
     // 사진 리사이클러뷰 클릭 이벤트 구현
-    void onInfoReviewInsertPhotoRvClick(View v, int position, String flag);
+    void onInfoReviewInsertPhotoRvClick(View v, int position, String flag); // 리뷰 작성 사진 리사이클러뷰 클릭
 }

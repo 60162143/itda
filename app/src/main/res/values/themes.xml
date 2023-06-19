@@ -12,7 +12,7 @@
     </style>
 
     <style name="SearchViewStyle" parent="Theme.MyApplication">
-        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="searchIcon">@drawable/ic_search_black_24dp</item>
     </style>
 
     <!--Spinner 적용-->

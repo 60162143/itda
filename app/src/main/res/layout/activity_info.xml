@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:ignore="RtlSymmetry">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,21 +22,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/info01"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
             android:id="@+id/info_main_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/info_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="12sp"
-            android:text="가게 이름"
-            android:background="@drawable/round_color"
-            android:paddingHorizontal="10dp"/>
+            android:textStyle="bold"
+            android:text="@string/info02"
+            android:textColor="@color/white"
+            android:background="@drawable/round_green_30dp"
+            android:paddingHorizontal="20dp"
+            android:gravity="center"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -45,9 +50,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/info_bookmark_ic"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_call"
+            android:src="@drawable/ic_call_black_24dp"
             android:background="@android:color/transparent"
-            />
+            android:contentDescription="@string/info03"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -57,27 +62,24 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/selector_bookmark_black"
-            android:background="#00000000"/>
+            android:src="@drawable/selector_bookmark_black_24dp"
+            android:background="#00000000"
+            android:contentDescription="@string/info04"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--상단 화면 끝 입니다.-->
-
-    <!--스크롤 시작 입니다.-->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/info_scroll_view">
+        android:id="@+id/info_scroll_view"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--info 간단한 소개 화면-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -87,7 +89,7 @@
                 android:layout_marginBottom="10dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="10"
@@ -98,16 +100,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_weight="1"
                         android:weightSum="10">
 
                         <TextView
                             android:id="@+id/info_store_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="착한커피"
+                            android:text="@string/info02"
                             android:textStyle="bold"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:layout_weight="9"
                             android:layout_gravity="center"
                             android:textColor="@color/gray05"/>
@@ -117,31 +118,19 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"/>
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/info_star_score"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|end"
-                            android:layout_gravity="center"
+                            android:layout_height="match_parent"
+                            android:text="@string/info05"
+                            android:textStyle="bold"
+                            android:textColor="@color/gray03"
+                            android:textSize="13sp"
+                            android:gravity="center"
                             android:layout_marginEnd="10dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/info_star_ic"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_star"
-                                android:layout_marginEnd="5dp"/>
-
-                            <TextView
-                                android:id="@+id/info_star_score"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="4.8"
-                                android:textStyle="bold"
-                                android:textColor="@color/gray04"
-                                android:gravity="center"/>
-
-                        </LinearLayout>
+                            android:drawablePadding="5dp"
+                            android:drawableStart="@drawable/ic_star_green_16dp"
+                            tools:ignore="UseCompatTextViewDrawableXml"/>
 
                     </LinearLayout>
 
@@ -149,19 +138,23 @@
                         android:id="@+id/info_information"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="가게 소개"
-                        android:layout_marginVertical="10dp"
+                        android:text="@string/info06"
+                        android:layout_marginVertical="5dp"
+                        android:padding="5dp"
                         android:layout_weight="8"
-                        android:maxLines="4"
-                        android:ellipsize="end"/>
+                        android:textSize="12sp"
+                        android:textColor="@color/gray04"
+                        android:maxLines="5"
+                        android:ellipsize="end"
+                        tools:ignore="NestedWeights"/>
 
                     <TextView
                         android:id="@+id/info_hashtag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="#해시태그"
-                        android:textColor="@color/green04"/>
+                        android:text="@string/info07"
+                        android:textColor="@color/green05"/>
 
                 </LinearLayout>
 
@@ -172,8 +165,7 @@
                     app:cardUseCompatPadding="true"
                     app:cardElevation="0dp"
                     android:layout_gravity="center"
-                    app:cardCornerRadius="20dp"
-                    >
+                    app:cardCornerRadius="20dp">
 
                     <ImageView
                         android:id="@+id/info_store_image"
@@ -181,15 +173,13 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:padding="0dp"
-                        android:contentDescription="StoreImage"
-                        android:src="@drawable/ic_test_image"/>
+                        android:contentDescription="@string/info08"
+                        android:src="@drawable/ic_test_image_black_200dp"/>
 
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
-            <!--info 간단한 소개 화면 끝-->
 
-<!--            협업한 가게 나오는 화면 입니다-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -201,9 +191,10 @@
                     android:id="@+id/info_collabo_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Collaboration"
+                    android:text="@string/info09"
                     android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textColor="@color/gray05"
                     android:layout_marginStart="20dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -216,128 +207,105 @@
                     android:overScrollMode="never"/>
 
             </LinearLayout>
-            <!-- 협업한 가게 나오는 화면 끝입니다-->
 
             <LinearLayout
+                android:id="@+id/info_service_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/border_bottom"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/info_service_layout">
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/info_service_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service"
+                    android:text="@string/info10"
                     android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textColor="@color/gray05"
                     android:layout_marginStart="20dp"/>
 
-                <!-- 운영 시간 나오는 화면 입니다-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingVertical="10dp"
-                    android:layout_marginStart="20dp"
                     android:id="@+id/info_working_time_layout">
-
-                    <ImageView
-                        android:id="@+id/info_working_time_ic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_working_time"
-                        />
 
                     <TextView
                         android:id="@+id/info_working_time"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10:00~22:00, 월 휴무"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_height="match_parent"
+                        android:text="@string/info11"
+                        android:textColor="@color/gray04"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_working_time_black_24dp"
+                        android:drawablePadding="30dp"
+                        tools:ignore="UseCompatTextViewDrawableXml"
+                        android:paddingVertical="10dp"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="5dp"/>
 
                     <ImageButton
                         android:id="@+id/info_working_time_down_arrow_ic"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_arrow_down"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_triangle_down_black_24dp"
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
-                        android:layout_gravity="bottom"
-                        />
+                        android:contentDescription="@string/info12" />
 
                     <ImageButton
                         android:id="@+id/info_working_time_up_arrow_ic"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_arrow_up"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_triangle_up_black_24dp"
                         android:layout_marginStart="10dp"
-                        android:visibility="gone"
                         android:background="@android:color/transparent"
-                        android:layout_gravity="bottom"
-                        />
+                        android:contentDescription="@string/info13"
+                        android:scaleType="fitEnd"
+                        android:visibility="gone"
+                        android:paddingBottom="8dp"/>
+
                 </LinearLayout>
 
-<!--            가게 간단 제공 서비스 화면 입니다-->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/info_detail"
+                    android:layout_marginStart="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:text="@string/info14"
+                    android:textColor="@color/gray04"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_detail_black_24dp"
+                    android:drawablePadding="30dp"
+                    tools:ignore="UseCompatTextViewDrawableXml"
                     android:paddingVertical="10dp"
+                    android:gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/info_facility"
                     android:layout_marginStart="20dp"
-                    android:id="@+id/info_detail_layout">
-
-                    <ImageView
-                        android:id="@+id/info_detail_ic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_detail"
-                        />
-
-                    <TextView
-                        android:id="@+id/info_detail"
-                        android:layout_marginStart="30dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="예약 가능, 포장 가능"
-                        android:layout_gravity="center_vertical" />
-
-                </LinearLayout>
-
-                <!--            가게 제공 시설 여부 화면 입니다-->
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:text="@string/info15"
+                    android:textColor="@color/gray04"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_facility_black_24dp"
+                    android:drawablePadding="30dp"
+                    tools:ignore="UseCompatTextViewDrawableXml"
                     android:paddingVertical="10dp"
-                    android:layout_marginStart="20dp"
-                    android:id="@+id/info_facility_layout">
-
-                    <ImageView
-                        android:id="@+id/info_facility_ic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_facility"
-                        />
-
-                    <TextView
-                        android:id="@+id/info_facility"
-                        android:layout_marginStart="30dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Wifi 제공, 애완동물 출입 금지"
-                        android:layout_gravity="center_vertical" />
-
-                </LinearLayout>
+                    android:gravity="center_vertical"/>
 
             </LinearLayout>
 
-            <!--            운영시간, 주차 가능 여부 나오는 화면 끝입니다-->
-
-<!--            메뉴 화면 입니다-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -350,55 +318,55 @@
                     android:id="@+id/info_menu_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Menu"
+                    android:text="@string/info16"
                     android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textColor="@color/gray05"
                     android:layout_marginStart="20dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
 
                     <ImageView
                         android:id="@+id/info_menu_ic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_menu"
+                        android:src="@drawable/ic_menu_black_24dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="20dp"/>
+                        android:layout_marginStart="20dp"
+                        android:contentDescription="@string/info17"/>
 
                     <Button
                         android:id="@+id/info_menu_plus_btn"
                         android:layout_width="60dp"
                         android:layout_height="25dp"
-                        android:text="더보기 >"
+                        android:text="@string/info18"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        android:textColor="@color/gray05"
+                        android:textColor="@color/gray04"
                         android:background="#00ff0000"
                         android:layout_marginVertical="5dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--                    아이템은 rv_info_menu-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/info_menu_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
-<!--            메뉴 화면 끝입니다.-->
 
-<!--            지도 화면 입니다-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -410,33 +378,27 @@
                     android:id="@+id/info_map_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location"
+                    android:text="@string/info19"
                     android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textColor="@color/gray05"
                     android:layout_marginStart="20dp"/>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/info_address"
+                    android:layout_marginStart="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="20dp"
-                    android:paddingVertical="10dp">
-
-                    <ImageView
-                        android:id="@+id/info_address_ic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_map"/>
-
-                    <TextView
-                        android:id="@+id/info_address"
-                        android:layout_marginStart="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="경기도 수원시 팔달구"
-                        android:layout_gravity="center_vertical"/>
-
-                </LinearLayout>
+                    android:text="@string/info20"
+                    android:textColor="@color/gray04"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_map_black_24dp"
+                    android:drawablePadding="30dp"
+                    tools:ignore="UseCompatTextViewDrawableXml"
+                    android:paddingVertical="10dp"
+                    android:gravity="center_vertical"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -448,7 +410,6 @@
                     app:strokeWidth="1dp"
                     android:layout_marginBottom="20dp">
 
-                    <!-- 지도 화면 -->
                     <LinearLayout
                         android:id="@+id/info_map_view"
                         android:layout_width="match_parent"
@@ -458,10 +419,7 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
-<!--            지도 화면 끝입니다.-->
 
-
-<!--            가게 사진 화면 입니다.-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -474,21 +432,19 @@
                     android:id="@+id/info_photo_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Picture"
+                    android:text="@string/info21"
                     android:textStyle="bold"
                     android:textSize="15sp"
-                    android:layout_marginStart="20dp"/>
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/gray05"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/info_photo_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
-<!--            가게 사진 화면 끝입니다-->
 
-<!--            리뷰 화면 입니다-->
             <LinearLayout
                 android:id="@+id/info_review_layout"
                 android:layout_width="match_parent"
@@ -504,9 +460,10 @@
                         android:id="@+id/info_review_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Review"
+                        android:text="@string/info22"
                         android:textStyle="bold"
                         android:textSize="15sp"
+                        android:textColor="@color/gray05"
                         android:layout_marginStart="20dp"/>
 
                     <View
@@ -518,12 +475,12 @@
                         android:id="@+id/info_review_plus_btn"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
-                        android:text="리뷰쓰기 >"
+                        android:text="@string/info23"
                         android:layout_marginEnd="20dp"
                         android:textSize="13sp"
                         android:background="#00ff0000"
                         android:textStyle="bold"
-                        android:textColor="@color/gray05"/>
+                        android:textColor="@color/gray04"/>
 
                 </LinearLayout>
 
@@ -537,7 +494,7 @@
                     android:id="@+id/info_review_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="작성된 리뷰가 없습니다. 리뷰를 등록해 주세요!"
+                    android:text="@string/info24"
                     android:textStyle="bold"
                     android:textSize="13sp"
                     android:layout_marginStart="20dp"
@@ -547,13 +504,11 @@
                     android:visibility="gone"/>
 
             </LinearLayout>
-<!--            리뷰 화면 끝입니다-->
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <!--    결제 버튼 입니다-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -563,11 +518,10 @@
             android:id="@+id/info_payment_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="메뉴 담기"
+            android:text="@string/info25"
             android:textSize="14sp"
             android:background="@color/green03"/>
 
     </LinearLayout>
-    <!--    결제 버튼 끝입니다-->
 
 </LinearLayout>

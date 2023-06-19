@@ -5,14 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import io.github.muddz.styleabletoast.StyleableToast;
@@ -96,12 +95,17 @@ public class MainActivity extends FragmentActivity {
 
         // NavHost에서 App Navigation을 관리하는 객체
         // NavController는 사용자가 앱 내에서 이동할 때 NavHost에서 대상 콘텐츠의 전환을 조종하는 역활
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment);
+
+        assert navHostFragment != null;
+        NavController navController = navHostFragment.getNavController();
 
         // 네비게이션 Toolbar 지정
         NavigationUI.setupWithNavController(navView, navController);
 
-        fab_main = (FloatingActionButton) findViewById(R.id.main_fab);  // 홈버튼
+        fab_main = findViewById(R.id.main_fab);  // 홈버튼
 
         // 홈버튼 클릭 이벤트 리스너
         fab_main.setOnClickListener(v -> navController.navigate(R.id.navigation_home));

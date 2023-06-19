@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.itda.ui.map.MapFragment"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10">
 
-        <!--검색 아이콘-->
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -23,10 +20,10 @@
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_search"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_search_black_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/fragmentMap01"/>
 
-        <!--검색어 입력 창-->
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -37,48 +34,46 @@
             android:textSize="15sp"
             android:inputType="text"
             android:imeOptions="actionSearch"
-            android:hint="검색어를 입력해 주세요."
+            android:hint="@string/fragmentMap02"
             android:background="@null"
-            android:layout_weight="8"/>
+            android:layout_weight="8"
+            android:autofillHints="no"/>
 
-        <!--새로고침 버튼-->
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/refresh_button"
-            android:src="@drawable/ic_refresh"
+            android:src="@drawable/ic_refresh_blue_24dp"
             android:layout_marginEnd="10dp"
             android:layout_marginVertical="10dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/fragmentMap03"/>
 
     </LinearLayout>
-    <!--상단 화면 끝 입니다.-->
 
     <RelativeLayout
         android:id="@+id/map_view_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--지도 화면-->
         <LinearLayout
             android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"/>
 
-        <!--GPS 버튼-->
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/gps_button"
-            android:src="@drawable/ic_gps"
+            android:src="@drawable/ic_gps_green_36dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_alignParentEnd="true"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/fragmentMap04"/>
 
-        <!--스크롤뷰-->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,13 +84,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <!--가게 정보 리사이클러뷰-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/map_store_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_marginBottom="30dp"/>
 
             </LinearLayout>
 

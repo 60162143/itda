@@ -21,7 +21,6 @@ import com.example.itda.ui.info.InfoReviewPhotoRvAdapter;
 import com.example.itda.ui.info.infoPhotoData;
 import com.example.itda.ui.info.infoReviewData;
 import com.example.itda.ui.info.onInfoReviewPhotoRvClickListener;
-import com.example.itda.ui.info.onInfoReviewRvClickListener;
 
 import java.util.ArrayList;
 
@@ -31,10 +30,11 @@ import java.util.ArrayList;
 public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAdapter.CustomInfoReviewViewHolder>
         implements onInfoReviewPhotoRvClickListener {
 
-    private final ArrayList<infoReviewData> Reviews;  // 리뷰 데이터
-    private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
+    private final ArrayList<infoReviewData> Reviews;    // 리뷰 데이터
+    private final ArrayList<infoPhotoData> Photos;      // 사진 데이터
     private final String storeName; // 가게 명
 
+    // 리뷰 리사이클러뷰 클릭 리스너
     private static onMyPageReviewRvClickListener rvClickListener = null;
 
     // Activity Content
@@ -74,24 +74,35 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
     public void onBindViewHolder(@NonNull CustomInfoReviewViewHolder holder, int position) {
         infoReviewData review = Reviews.get(position);  // 현재 position의 리뷰 정보
 
-        // 유저 프로필 이미지
+        // 유저 프로필 이미지 SET
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView) // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(review.getUserProfilePath()))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)   // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)     // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)     // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.userProfile);  // 이미지를 보여줄 View를 지정
 
-        holder.userName.setText(review.getUserName());  // 유저 명
-        holder.reviewRegDate.setText(review.getReviewRegDate());    // 리뷰 등록일
-        holder.reviewHeartCnt.setText(String.valueOf(review.getReviewHeartCount()));    // 리뷰 좋아요 수
-        holder.reviewScore.setText(String.valueOf(review.getReviewScore()));    // 리뷰 별점
-        holder.reviewDetail.setText(review.getReviewDetail());  // 리뷰 내용
-        holder.reviewCommentCnt.setText(String.valueOf(review.getReviewCommentCount()));    // 리뷰 댓글 수
+        // 유저 명 SET
+        holder.userName.setText(review.getUserName());
 
-        ArrayList<infoPhotoData> reviewPhoto = new ArrayList<>();   // 리뷰 사진 데이터
+        // 리뷰 등록일 SET
+        holder.reviewRegDate.setText(review.getReviewRegDate());
+
+        // 리뷰 좋아요 수 SET
+        holder.reviewHeartCnt.setText(String.valueOf(review.getReviewHeartCount()));
+
+        // 리뷰 별점 SET
+        holder.reviewScore.setText(String.valueOf(review.getReviewScore()));
+
+        // 리뷰 내용 SET
+        holder.reviewDetail.setText(review.getReviewDetail());
+
+        // 리뷰 댓글 수 SET
+        holder.reviewCommentCnt.setText(String.valueOf(review.getReviewCommentCount()));
+
+        ArrayList<infoPhotoData> reviewPhoto = new ArrayList<>();   // 리뷰 사진 데이터 초기화
 
         // 리뷰에 속한 사진 데이터만 저장
         for(int i = 0; i < Photos.size(); i++){
@@ -128,7 +139,7 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
         // 리뷰 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         Intent intent = new Intent(mContext, InfoPhotoActivity.class);
 
-        intent.putParcelableArrayListExtra("Photo", reviewPhoto);    // 사진 데이터
+        intent.putParcelableArrayListExtra("Photo", reviewPhoto);   // 사진 데이터
         intent.putExtra("Position", position);      // 현재 position
         intent.putExtra("storeName", storeName);    // 가게 명
 
@@ -139,14 +150,13 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoReviewViewHolder extends RecyclerView.ViewHolder {
-        ImageButton userProfile;        // 유저 프로필 이미지
-        ImageButton reviewHeartIc;      // 리뷰 좋아요 아이콘
+        ImageButton userProfile;    // 유저 프로필 이미지
         ImageButton reviewDeleteBtn;    // 리뷰 삭제 버튼
         TextView userName;  // 유저 명
-        TextView reviewRegDate;     // 리뷰 작성 일자
+        TextView reviewRegDate; // 리뷰 작성 일자
         TextView reviewHeartCnt;    // 리뷰 좋아요 수
-        TextView reviewScore;       // 리뷰 별점
-        TextView reviewDetail;      // 리뷰 내용
+        TextView reviewScore;   // 리뷰 별점
+        TextView reviewDetail;  // 리뷰 내용
         TextView reviewCommentCnt;  // 리뷰 댓글 수
         RecyclerView reviewPhotoRv; // 리뷰 사진
         LinearLayout reviewBtnLayout;   // 리뷰 하단 버튼 모음 레이아웃
@@ -155,7 +165,6 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
             super(itemView);
 
             userProfile = itemView.findViewById(R.id.info_review_user_image);
-            reviewHeartIc = itemView.findViewById(R.id.info_review_heart_ic);
             reviewDeleteBtn = itemView.findViewById(R.id.info_review_delete_ic);
             userName = itemView.findViewById(R.id.info_review_user_name);
             reviewRegDate = itemView.findViewById(R.id.info_review_regdate);
@@ -179,15 +188,12 @@ public class MyPageReviewRvAdapter extends RecyclerView.Adapter<MyPageReviewRvAd
             });
 
             // 삭제 버튼 클릭 이벤트 인터페이스 구현
-            reviewDeleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos = getAbsoluteAdapterPosition(); // 현재 position
+            reviewDeleteBtn.setOnClickListener(view -> {
+                int pos = getAbsoluteAdapterPosition(); // 현재 position
 
-                    // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
-                    if(pos != RecyclerView.NO_POSITION){
-                        rvClickListener.onMyPageReviewRvClick(view, getAbsoluteAdapterPosition(), "delete");
-                    }
+                // 리스너 객체를 가진 Activity에 오버라이딩 된 클릭 함수 호출
+                if(pos != RecyclerView.NO_POSITION){
+                    rvClickListener.onMyPageReviewRvClick(view, getAbsoluteAdapterPosition(), "delete");
                 }
             });
         }

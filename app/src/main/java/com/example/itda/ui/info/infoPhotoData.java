@@ -7,10 +7,10 @@ public class infoPhotoData implements Parcelable {
     private int photoId;    // 리뷰 사진 고유 아이디
     private int userId;     // 리뷰 작성자 고유 아이디
     private int reviewId;   // 리뷰 고유 아이디
-    private String userName;    // 리뷰 작성자 명
-    private String photoPath;   // 사진 경로
+    private String userName;        // 리뷰 작성자 명
+    private String photoPath;       // 사진 경로
     private String reviewDetail;    // 리뷰 내용
-    private int reviewScore;    // 리뷰 점수
+    private int reviewScore;        // 리뷰 점수
 
     // Constructor
     public infoPhotoData(int photoId

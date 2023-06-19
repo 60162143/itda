@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="15dp"
@@ -9,7 +10,7 @@
         android:id="@+id/info_order_select_menu_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="아메리카노"
+        android:text="@string/rvInfoOrderSelectMenu01"
         android:textSize="12sp"
         android:textStyle="bold"
         android:textColor="@color/gray05"
@@ -22,13 +23,13 @@
         android:id="@+id/info_order_select_menu_price"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="3,000원"
+        android:text="@string/rvInfoOrderSelectMenu02"
         android:textSize="12sp"
         android:textStyle="bold"
         android:textColor="@color/gray04"
         android:layout_weight="2"
         android:gravity="center_vertical|end"
-        android:paddingEnd="10dp"/>
+        android:layout_marginEnd="10dp"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -40,32 +41,35 @@
             android:id="@+id/info_order_select_menu_minus"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_minus_square"
-            android:background="#ffffff"/>
+            android:src="@drawable/ic_minus_square_gray_24dp"
+            android:background="#ffffff"
+            android:contentDescription="@string/rvInfoOrderSelectMenu03"/>
 
         <TextView
             android:id="@+id/info_order_select_menu_count"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="1"
+            android:text="@string/rvInfoOrderSelectMenu04"
             android:textSize="12sp"
             android:textColor="@color/gray04"
+            android:gravity="center"
             android:layout_weight="2"
-            android:gravity="center"/>
+            tools:ignore="NestedWeights"/>
 
         <ImageButton
             android:id="@+id/info_order_select_menu_plus"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_plus_square"
-            android:background="#ffffff"/>
+            android:src="@drawable/ic_plus_square_gray_20dp"
+            android:background="#ffffff"
+            android:contentDescription="@string/rvInfoOrderSelectMenu05"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical|right"
+        android:gravity="center_vertical|end"
         android:layout_weight="2">
 
         <ImageButton
@@ -74,7 +78,8 @@
             android:layout_height="16dp"
             android:layout_marginEnd="20dp"
             android:background="#ffffff"
-            android:src="@drawable/ic_delete_12dp" />
+            android:src="@drawable/ic_delete_gray_16dp"
+            android:contentDescription="@string/rvInfoOrderSelectMenu06"/>
 
     </LinearLayout>
 

@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!--카드뷰-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/map_cardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
@@ -19,7 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <!--카드뷰-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/item_bookmark_store_image"
                 android:layout_width="wrap_content"
@@ -35,28 +33,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <!--가게 썸네일-->
                     <ImageView
                         android:id="@+id/bookmark_store_image"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/round"
-                        android:contentDescription="TODO"
+                        android:background="@drawable/round_white_30dp"
+                        android:contentDescription="@string/rvMypageBookmarkStore01"
                         android:padding="0dp"
-                        android:src="@drawable/ic_test_image"
-                        app:cardCornerRadius="20dp" />
+                        android:src="@drawable/ic_test_image_black_200dp"
+                        app:cardCornerRadius="20dp"/>
 
                     <ImageButton
                         android:id="@+id/mypage_bookmark_store_del_btn"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_bookmark_after"
+                        android:src="@drawable/ic_bookmark_after_red_24dp"
                         android:background="@android:color/transparent"
                         android:layout_gravity="end"
                         android:layout_marginEnd="5dp"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp"
+                        android:contentDescription="@string/rvMypageBookmarkStore02" />
 
                 </FrameLayout>
 
@@ -72,67 +70,61 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:baselineAligned="false"
+                    android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_weight="1"
+                        tools:ignore="NestedWeights">
 
                         <TextView
                             android:id="@+id/bookmark_store_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="가게 이름"
+                            android:text="@string/rvMypageBookmarkStore03"
+                            android:textSize="15sp"
                             android:textColor="@color/gray05"
-                            android:textSize="18sp"
-                            android:textStyle="bold">
-
-                        </TextView>
-
-                        <TextView
-                            android:id="@+id/bookmark_store_distance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingVertical="2dp"
-                            android:text="1.4km">
-
-                        </TextView>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="3">
-
-                        <ImageView
-                            android:id="@+id/bookmark_star_ic"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="10dp"
-                            android:foregroundGravity="center"
-                            android:src="@drawable/ic_star" />
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_weight="8"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="10dp"/>
 
                         <TextView
                             android:id="@+id/bookmark_star_score"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
+                            android:text="@string/rvMypageBookmarkStore04"
+                            android:textSize="13sp"
+                            android:textColor="@color/gray04"
+                            android:textStyle="bold"
                             android:gravity="center"
-                            android:text="4.8">
-
-                        </TextView>
+                            android:layout_weight="2"
+                            android:drawableStart="@drawable/ic_star_green_16dp"
+                            tools:ignore="UseCompatTextViewDrawableXml"
+                            android:layout_marginEnd="10dp"
+                            android:drawablePadding="5dp"/>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/bookmark_store_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="@string/rvMypageBookmarkStore05"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="@color/gray04"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"/>
 
                 </LinearLayout>
 
@@ -140,24 +132,25 @@
                     android:id="@+id/bookmark_store_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:ellipsize="end"
+                    android:text="@string/rvMypageBookmarkStore06"
+                    android:textColor="@color/gray04"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
                     android:maxLines="3"
-                    android:text="테스트 입니다. 테스트 입니다."
-                    android:textSize="13sp">
-
-                </TextView>
+                    android:ellipsize="end"
+                    android:layout_weight="7"
+                    android:paddingTop="5dp"
+                    android:layout_marginStart="5dp"/>
 
                 <TextView
                     android:id="@+id/bookmark_store_hashTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="#테스트1 #테스트2"
-                    android:textColor="#70E6BF"
-                    android:textStyle="bold">
-
-                </TextView>
+                    android:text="@string/rvMypageBookmarkStore07"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/green04"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

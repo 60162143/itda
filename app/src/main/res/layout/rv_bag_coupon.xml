@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/border_vertical">
+    android:background="@drawable/border_vertical_gray">
 
-    <!--카드뷰-->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,9 +16,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
 
-            <!--카드뷰-->
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,18 +29,17 @@
                 app:cardCornerRadius="20dp"
                 android:adjustViewBounds="true">
 
-                <!--가게 썸네일-->
                 <ImageButton
                     android:id="@+id/bag_coupon_store_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/round"
-                    android:contentDescription="TODO"
+                    android:background="@drawable/round_white_30dp"
+                    android:contentDescription="@string/rvBagCoupon01"
                     android:padding="0dp"
-                    android:src="@drawable/ic_test_image"
-                    app:cardCornerRadius="20dp" />
+                    android:src="@drawable/ic_test_image_black_200dp"
+                    app:cardCornerRadius="20dp"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -56,10 +54,10 @@
                     android:id="@+id/bag_coupon_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="착한커피"
+                    android:text="@string/rvBagCoupon02"
                     android:textColor="@color/gray05"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:layout_weight="1"
@@ -69,25 +67,25 @@
                     android:id="@+id/bag_coupon_discount_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10% 할인"
-                    android:textColor="@color/gray03"
-                    android:textSize="13sp"
+                    android:text="@string/rvBagCoupon03"
+                    android:textColor="@color/gray04"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:maxLines="3"
                     android:ellipsize="end"
                     android:layout_weight="1"
-                    android:gravity="top"/>
+                    android:gravity="center_vertical"/>
 
                 <TextView
                     android:id="@+id/bag_coupon_expire_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray03"
-                    android:textSize="12sp"
+                    android:textColor="@color/gray04"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:text="사용기한 : 2023.06.10까지"
+                    android:text="@string/rvBagCoupon04"
                     android:layout_weight="1"
-                    android:gravity="top"/>
+                    android:gravity="bottom"/>
 
             </LinearLayout>
 

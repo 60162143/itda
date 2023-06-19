@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private final ArrayList<InfoMenuData> Menus;    // 메뉴 데이터
+    private final ArrayList<infoMenuData> Menus;    // 메뉴 데이터
     private final boolean menuPlusBtn;  // 메뉴 더보기 버튼을 클릭했는지 여부
 
     // Activity Content
@@ -24,7 +24,7 @@ public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.Cu
     private final Context mContext;
 
     // Constructor
-    public InfoMenuRvAdapter(Context context, ArrayList<InfoMenuData> menus, boolean menuPlusBtn){
+    public InfoMenuRvAdapter(Context context, ArrayList<infoMenuData> menus, boolean menuPlusBtn){
         this.Menus = menus;
         this.mContext = context;
         this.menuPlusBtn = menuPlusBtn;
@@ -46,17 +46,21 @@ public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.Cu
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull InfoMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        InfoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
+        infoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
 
-        holder.infoMenuName.setText(menu.getMenuName());   // 메뉴 명
+        // 메뉴 명 SET
+        holder.infoMenuName.setText(menu.getMenuName());
 
-        if(menu.getMenuPrice() != 0){
+        // 메뉴 가격 SET
+        String infoMenuPriceTxt;
+        if(menu.getMenuPrice() != 0){   // 메뉴 가격이 있을 경우
             // 숫자 형식 SET ( 콤마 추가 )
-            DecimalFormat myFormatter = new DecimalFormat("###,###");
-            holder.infoMenuPrice.setText(myFormatter.format(menu.getMenuPrice()) + "원");    // 메뉴 가격
+            DecimalFormat numberFormatter = new DecimalFormat("###,###");   // 문자열 형식 변경 Formatter ( 숫자 + 콤마 )
+            infoMenuPriceTxt = numberFormatter.format(menu.getMenuPrice()) + "원";
         }else{  // 메뉴 가격이 없을 경우
-            holder.infoMenuPrice.setText("가격 미등록");
+            infoMenuPriceTxt = "가격 미등록";
         }
+        holder.infoMenuPrice.setText(infoMenuPriceTxt);
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
@@ -71,14 +75,14 @@ public class InfoMenuRvAdapter extends RecyclerView.Adapter<InfoMenuRvAdapter.Cu
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoMenuViewHolder extends RecyclerView.ViewHolder {
-        TextView infoMenuName;       // 메뉴 명
-        TextView infoMenuPrice;          // 메뉴
+        TextView infoMenuName;  // 메뉴 명
+        TextView infoMenuPrice; // 메뉴 가격
 
         public CustomInfoMenuViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            infoMenuName = (TextView) itemView.findViewById(R.id.info_menu_name);
-            infoMenuPrice = (TextView) itemView.findViewById(R.id.info_menu_price);
+            infoMenuName = itemView.findViewById(R.id.info_menu_name);
+            infoMenuPrice = itemView.findViewById(R.id.info_menu_price);
         }
     }
 }

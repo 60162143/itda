@@ -16,19 +16,20 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class InfoPaymentSelectMenuRvAdapter extends RecyclerView.Adapter<InfoPaymentSelectMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private ArrayList<InfoMenuData> Menus;    // 메뉴 데이터
+    private ArrayList<infoMenuData> Menus;    // 메뉴 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
     // 시스템이 관리하고 있는 액티비티, 어플리케이션의 정보를 얻기 위해 사용
     private final Context mContext;
 
+    // 결제 메뉴 클릭 리스너
     private static onInfoPaymentSelectMenuRvClickListener rvClickListener = null;
 
     // Constructor
     public InfoPaymentSelectMenuRvAdapter(Context context
             , onInfoPaymentSelectMenuRvClickListener clickListener
-            , ArrayList<InfoMenuData> menus){
+            , ArrayList<infoMenuData> menus){
         this.mContext = context;
         rvClickListener = clickListener;
         this.Menus = menus;
@@ -50,18 +51,23 @@ public class InfoPaymentSelectMenuRvAdapter extends RecyclerView.Adapter<InfoPay
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull InfoPaymentSelectMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        InfoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
+        infoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
 
-        holder.infoSelectMenuName.setText(menu.getMenuName());   // 선택한 메뉴 명
+        // 선택한 메뉴 명 SET
+        holder.infoSelectMenuName.setText(menu.getMenuName());
 
-        DecimalFormat myFormatter = new DecimalFormat("###,###");
-        holder.infoSelectMenuPrice.setText(myFormatter.format((menu.getMenuPrice() * menu.getMenuCount())) + "원");   // 선택한 메뉴 가격
+        DecimalFormat myFormatter = new DecimalFormat("###,###");   // 문자열 형식 변경 Formatter ( 숫자 + 콤마 )
 
-        holder.infoSelectMenuCount.setText(String.valueOf(menu.getMenuCount()));   // 선택한 메뉴 개수
+        // 선택한 메뉴 가격 SET
+        String infoSelectMenuPriceTxt = myFormatter.format(((long) menu.getMenuPrice() * menu.getMenuCount())) + "원";
+        holder.infoSelectMenuPrice.setText(infoSelectMenuPriceTxt);
+
+        // 선택한 메뉴 개수 SET
+        holder.infoSelectMenuCount.setText(String.valueOf(menu.getMenuCount()));
     }
 
     // 메뉴 데이터 SET
-    public void setMenu(ArrayList<InfoMenuData> menus){
+    public void setMenu(ArrayList<infoMenuData> menus){
         this.Menus = menus;
     }
 
@@ -77,11 +83,11 @@ public class InfoPaymentSelectMenuRvAdapter extends RecyclerView.Adapter<InfoPay
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomInfoMenuViewHolder extends RecyclerView.ViewHolder {
-        TextView infoSelectMenuName;       // 선택한 메뉴 명
-        TextView infoSelectMenuPrice;          // 선택한 메뉴 가격
-        TextView infoSelectMenuCount;          // 선택한 메뉴 개수
-        ImageButton infoSelectMenuMinus;          // 선택한 메뉴 -1 버튼
-        ImageButton infoSelectMenuPlus;          // 선택한 메뉴 +1 버튼
+        TextView infoSelectMenuName;        // 선택한 메뉴 명
+        TextView infoSelectMenuPrice;       // 선택한 메뉴 가격
+        TextView infoSelectMenuCount;       // 선택한 메뉴 개수
+        ImageButton infoSelectMenuMinus;    // 선택한 메뉴 -1 버튼
+        ImageButton infoSelectMenuPlus;     // 선택한 메뉴 +1 버튼
 
         public CustomInfoMenuViewHolder(@NonNull View itemView) {
             super(itemView);

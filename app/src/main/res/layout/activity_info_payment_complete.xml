@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,20 +20,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="결제 완료"
+                android:text="@string/infoPaymentComplete01"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:textSize="30sp"
                 android:gravity="center"
                 android:paddingVertical="20dp"
-                android:layout_marginTop="40dp"/>
+                android:layout_marginVertical="40dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_vertical">
+                android:background="@drawable/border_vertical_gray">
 
-                <!--카드뷰-->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -46,7 +46,6 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <!--카드뷰-->
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -57,17 +56,16 @@
                             app:cardCornerRadius="20dp"
                             android:adjustViewBounds="true">
 
-                            <!--가게 썸네일-->
                             <ImageButton
                                 android:id="@+id/info_payment_complete_store_image"
                                 android:layout_width="150dp"
                                 android:layout_height="150dp"
                                 android:layout_gravity="center"
                                 android:adjustViewBounds="true"
-                                android:background="@drawable/round"
-                                android:contentDescription="TODO"
+                                android:background="@drawable/round_white_30dp"
+                                android:contentDescription="@string/infoPaymentComplete02"
                                 android:padding="0dp"
-                                android:src="@drawable/ic_test_image"
+                                android:src="@drawable/ic_test_image_black_200dp"
                                 app:cardCornerRadius="20dp" />
 
                         </androidx.cardview.widget.CardView>
@@ -83,7 +81,7 @@
                                 android:id="@+id/info_payment_complete_store_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="착한커피"
+                                android:text="@string/infoPaymentComplete03"
                                 android:textColor="@color/gray05"
                                 android:textStyle="bold"
                                 android:textSize="18sp"
@@ -94,7 +92,7 @@
                                 android:id="@+id/info_payment_complete_price"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="결제 금액 : 33,000원"
+                                android:text="@string/infoPaymentComplete04"
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -108,7 +106,7 @@
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:text="결제 날짜 : 2023.06.10"
+                                android:text="@string/infoPaymentComplete05"
                                 android:layout_weight="1"
                                 android:gravity="top"/>
 
@@ -116,7 +114,7 @@
                                 android:id="@+id/info_payment_complete_exp_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="만료 일자 : 2023.06.24"
+                                android:text="@string/infoPaymentComplete06"
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -134,7 +132,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="결제 메뉴 목록"
+                android:text="@string/infoPaymentComplete07"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
@@ -150,14 +148,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="결제 금액"
+                android:text="@string/infoPaymentComplete08"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/border_top_gray"
                 android:paddingTop="20dp"
-                android:paddingStart="20dp"/>
+                android:paddingStart="20dp"
+                tools:ignore="RtlSymmetry"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,7 +173,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="주문 금액"
+                        android:text="@string/infoPaymentComplete09"
                         android:layout_weight="7"
                         android:textColor="@color/gray04"
                         android:textStyle="bold"
@@ -185,7 +184,7 @@
                         android:id="@+id/info_payment_complete_order_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="33,000원"
+                        android:text="@string/infoPaymentComplete10"
                         android:layout_weight="3"
                         android:textColor="@color/gray03"
                         android:textStyle="bold"
@@ -207,7 +206,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="쿠폰 할인 금액"
+                        android:text="@string/infoPaymentComplete11"
                         android:layout_weight="7"
                         android:textColor="@color/gray04"
                         android:textStyle="bold"
@@ -218,7 +217,7 @@
                         android:id="@+id/info_payment_complete_coupon_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="-2,000원"
+                        android:text="@string/infoPaymentComplete12"
                         android:layout_weight="3"
                         android:textColor="@color/gray03"
                         android:textStyle="bold"
@@ -242,7 +241,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="총 결제 금액"
+                    android:text="@string/infoPaymentComplete13"
                     android:layout_weight="7"
                     android:textColor="@color/gray04"
                     android:textStyle="bold"
@@ -253,7 +252,7 @@
                     android:id="@+id/info_payment_complete_total_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="33,000원"
+                    android:text="@string/infoPaymentComplete10"
                     android:layout_weight="3"
                     android:textColor="@color/green04"
                     android:textStyle="bold"
@@ -277,7 +276,7 @@
             android:id="@+id/info_payment_complete_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="확인"
+            android:text="@string/infoPaymentComplete14"
             android:textSize="14sp"
             android:background="@color/green03"/>
 

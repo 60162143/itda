@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class InfoOrderMenuRvAdapter extends RecyclerView.Adapter<InfoOrderMenuRvAdapter.CustomInfoMenuViewHolder> {
-    private final ArrayList<InfoMenuData> Menus;    // 메뉴 데이터
+    private final ArrayList<infoMenuData> Menus;    // 메뉴 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -27,7 +27,7 @@ public class InfoOrderMenuRvAdapter extends RecyclerView.Adapter<InfoOrderMenuRv
     // Constructor
     public InfoOrderMenuRvAdapter(Context context
             , onInfoOrderMenuRvClickListener clickListener
-            , ArrayList<InfoMenuData> menus){
+            , ArrayList<infoMenuData> menus){
         this.mContext = context;
         rvClickListener = clickListener;
         this.Menus = menus;
@@ -49,17 +49,20 @@ public class InfoOrderMenuRvAdapter extends RecyclerView.Adapter<InfoOrderMenuRv
     // position 이라는 파라미터를 활용하여 데이터의 순서에 맞게 아이템 레이아웃을 바인딩 가능
     @Override
     public void onBindViewHolder(@NonNull InfoOrderMenuRvAdapter.CustomInfoMenuViewHolder holder, int position) {
-        InfoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
+        infoMenuData menu = Menus.get(position);    // 현재 position의 가게 정보
 
         holder.infoMenuName.setText(menu.getMenuName());   // 메뉴 명
 
+        // 메뉴 가격 SET
+        String infoMenuPriceTxt;
         if(menu.getMenuPrice() != 0){
-            // 메뉴 가격
-            DecimalFormat myFormatter = new DecimalFormat("###,###");
-            holder.infoMenuPrice.setText(myFormatter.format(menu.getMenuPrice()) + "원");    // 메뉴 가격
+            DecimalFormat myFormatter = new DecimalFormat("###,###");   // 문자열 형식 변경 Formatter ( 숫자 + 콤마 )
+
+            infoMenuPriceTxt = myFormatter.format(menu.getMenuPrice()) + "원";
         }else{  // 메뉴 가격이 없을 경우
-            holder.infoMenuPrice.setText("가격 미등록");
+            infoMenuPriceTxt = "가격 미등록";
         }
+        holder.infoMenuPrice.setText(infoMenuPriceTxt);
     }
 
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환

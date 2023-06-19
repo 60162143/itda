@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -39,34 +38,38 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MyPageReviewDetailActivity extends Activity implements onInfoReviewPhotoRvClickListener {
-    private ImageButton infoReviewBackIc;       // 상단 뒤로가기 버튼
+
+    // Layout
+    private ImageButton infoReviewBackIc;   // 상단 뒤로가기 버튼
     private ImageButton infoReviewUserProfile;  // 유저 프로필 사진
-
-    private Button infoReviewStoreName;     // 상단 가게 이름
-
-    private TextView infoReviewUserName;        // 유저 명
-    private TextView infoReviewHeartCount;      // 리뷰 좋아요 수
+    private Button infoReviewStoreName; // 상단 가게 이름
+    private TextView infoReviewUserName;    // 유저 명
+    private TextView infoReviewHeartCount;  // 리뷰 좋아요 수
     private TextView infoReviewCommentCount;    // 리뷰 댓글 수
     private TextView infoReviewScore;   // 리뷰 별점
     private TextView infoReviewRegDate; // 리뷰 작성 일자
     private TextView infoReviewContent; // 리뷰 내용
-
-    private LinearLayout infoReviewHeartLayout; // 좋아요 전체 레이아웃
-    private FrameLayout infoReviewCommentLayout;   // 댓글 작성 전체 레이아웃
-
-    private RecyclerView infoReviewPhotoRv;     // 리뷰 사진 리사이클러뷰
+    private RecyclerView infoReviewPhotoRv; // 리뷰 사진 리사이클러뷰
     private RecyclerView infoReviewCommentRv;   // 리뷰 댓글 리사이클러뷰
 
-    private EditText infoReviewComment; // 리뷰 댓글 내용
 
-    private String storeName;   // 가게 이름
-    private int reviewId;       // 리뷰 고유 아이디
+    // Volley Library RequestQueue
+    private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
+
+
+    // Rest API
+    private String REVIEW_COMMENT_PATH; // 리뷰 댓글 정보 데이터 조회 Rest API
+    private String HOST;    // Host 정보
+
+
+    // Data
     private ArrayList<infoPhotoData> Photos; // 리뷰 사진 데이터
     private final ArrayList<infoReviewCommentData> ReviewComments = new ArrayList<>(); // 리뷰 댓글 데이터
 
-    private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
-    private String REVIEW_COMMENT_PATH; // 리뷰 댓글 정보 데이터 조회 Rest API
-    private String HOST;    // Host 정보
+    // Global Data
+    private String storeName;   // 가게 이름
+    private int reviewId;       // 리뷰 고유 아이디
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,8 +103,8 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
         Glide.with(this)                 // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(review.getUserProfilePath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(infoReviewUserProfile);           // 이미지를 보여줄 View를 지정
 
         infoReviewUserName.setText(review.getUserName());   // 유저 명
@@ -127,21 +130,21 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
     }
 
     private void initView(){
-        infoReviewBackIc = findViewById(R.id.info_review_detail_back_ic);               // 상단 뒤로가기 버튼
+        infoReviewBackIc = findViewById(R.id.info_review_detail_back_ic);   // 상단 뒤로가기 버튼
         infoReviewUserProfile = findViewById(R.id.info_review_detail_user_profile);     // 유저 프로필 사진
         infoReviewStoreName = findViewById(R.id.info_review_detail_main_store_name);    // 상단 가게 이름
-        infoReviewUserName = findViewById(R.id.info_review_detail_user_name);           // 유저 명
-        infoReviewHeartCount = findViewById(R.id.info_review_detail_heart_count);       // 리뷰 좋아요 수
+        infoReviewUserName = findViewById(R.id.info_review_detail_user_name);       // 유저 명
+        infoReviewHeartCount = findViewById(R.id.info_review_detail_heart_count);   // 리뷰 좋아요 수
         infoReviewCommentCount = findViewById(R.id.info_review_detail_comment_count);   // 리뷰 댓글 수
-        infoReviewScore = findViewById(R.id.info_review_detail_score);                  // 리뷰 별점
-        infoReviewRegDate = findViewById(R.id.info_review_detail_regdate);              // 리뷰 작성 일자
-        infoReviewContent = findViewById(R.id.info_review_detail_content);              // 리뷰 내용
-        infoReviewPhotoRv = findViewById(R.id.info_review_detail_photo);                // 리뷰 사진 리사이클러뷰
-        infoReviewCommentRv = findViewById(R.id.info_review_detail_comment_rv);         // 리뷰 댓글 리사이클러뷰
-        infoReviewComment = findViewById(R.id.info_review_detail_comment);              // 리뷰 댓글
-        infoReviewHeartLayout = findViewById(R.id.info_review_heart_layout);         // 리뷰 댓글 리사이클러뷰
-        infoReviewCommentLayout = findViewById(R.id.info_review_comment_layout);        // 리뷰 댓글 전체 레이아웃
+        infoReviewScore = findViewById(R.id.info_review_detail_score);      // 리뷰 별점
+        infoReviewRegDate = findViewById(R.id.info_review_detail_regdate);  // 리뷰 작성 일자
+        infoReviewContent = findViewById(R.id.info_review_detail_content);  // 리뷰 내용
+        infoReviewPhotoRv = findViewById(R.id.info_review_detail_photo);        // 리뷰 사진 리사이클러뷰
+        infoReviewCommentRv = findViewById(R.id.info_review_detail_comment_rv); // 리뷰 댓글 리사이클러뷰
+        LinearLayout infoReviewHeartLayout = findViewById(R.id.info_review_heart_layout);       // 좋아요 전체 레이아웃
+        FrameLayout infoReviewCommentLayout = findViewById(R.id.info_review_comment_layout);    // 댓글 작성 전체 레이아웃
 
+        // 레이아웃 숨기기
         infoReviewHeartLayout.setVisibility(View.GONE);
         infoReviewCommentLayout.setVisibility(View.GONE);
     }
@@ -149,6 +152,7 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
     // 리뷰 댓글 데이터 GET
     private void getInfoReviewComment(){
         // GET 방식 파라미터 설정
+        // Param => reviewId : 리뷰 고유 아이디
         String reviewCommentPath = REVIEW_COMMENT_PATH + String.format("?reviewId=%s", reviewId);
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
@@ -163,16 +167,16 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
 
                         // 리뷰 댓글 데이터 생성 및 저장
                         infoReviewCommentData infoReviewCommentData = new infoReviewCommentData(
-                                object.getInt("reviewCommentId")                            // 리뷰 댓글 고유 아이디
-                                , object.getInt("reviewId")                                 // 리뷰 고유 아이디
-                                , object.getInt("userId")                                   // 유저 고유 아이디
-                                , object.getInt("storeId")                                  // 가게 고유 아이디
-                                ,  object.getString("reviewCommentDetail")                  // 리뷰 내용
-                                , object.getString("reviewRegDate")                         // 리뷰 작성 일자
-                                , object.getString("userName")                              // 유저 명
-                                , HOST + object.getString("userProfilePath")); // 유저 프로필 사진
+                                object.getInt("reviewCommentId")    // 리뷰 댓글 고유 아이디
+                                , object.getInt("reviewId") // 리뷰 고유 아이디
+                                , object.getInt("userId")   // 유저 고유 아이디
+                                , object.getInt("storeId")  // 가게 고유 아이디
+                                ,  object.getString("reviewCommentDetail")  // 리뷰 내용
+                                , object.getString("reviewRegDate") // 리뷰 작성 일자
+                                , object.getString("userName")      // 유저 명
+                                , HOST + object.getString("userProfilePath"));  // 유저 프로필 사진
 
-                        ReviewComments.add(infoReviewCommentData); // 리뷰 정보 저장
+                        ReviewComments.add(infoReviewCommentData);  // 리뷰 정보 저장
                     }
 
                     // LayoutManager 객체 생성
@@ -181,7 +185,6 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
                     // 리사이클러뷰 어뎁터 객체 생성
                     InfoReviewCommentRvAdapter infoReviewCommentRvAdapter= new InfoReviewCommentRvAdapter(this, ReviewComments);
                     infoReviewCommentRv.setAdapter(infoReviewCommentRvAdapter); // 리사이클러뷰 어뎁터 객체 지정
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -208,4 +211,3 @@ public class MyPageReviewDetailActivity extends Activity implements onInfoReview
         startActivity(intent);  // 새 Activity 인스턴스 시작
     }
 }
-

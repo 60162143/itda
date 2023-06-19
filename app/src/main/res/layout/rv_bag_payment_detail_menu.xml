@@ -9,10 +9,10 @@
         android:id="@+id/bag_payment_detail_menu_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="아메리카노"
-        android:textSize="14sp"
+        android:text="@string/rvBagPaymentDetailMenu01"
+        android:textSize="13sp"
         android:textStyle="bold"
-        android:textColor="@color/gray05"
+        android:textColor="@color/gray04"
         android:layout_marginStart="30dp"
         android:layout_weight="4"
         android:gravity="center_vertical" />
@@ -21,12 +21,12 @@
         android:id="@+id/bag_payment_detail_menu_price"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="3,000원"
-        android:textSize="14sp"
+        android:text="@string/rvBagPaymentDetailMenu02"
+        android:textSize="13sp"
         android:textStyle="bold"
-        android:textColor="@color/gray04"
+        android:textColor="@color/gray03"
         android:layout_weight="2"
         android:gravity="center_vertical|end"
-        android:paddingEnd="30dp"/>
+        android:layout_marginEnd="30dp"/>
 
 </LinearLayout>

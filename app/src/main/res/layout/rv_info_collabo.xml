@@ -21,9 +21,10 @@
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center"
-            android:src="@drawable/ic_test_image"
+            android:src="@drawable/temp_image"
             android:padding="0dp"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/rvInfoCollabo01"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -31,22 +32,22 @@
         android:id="@+id/info_collabo_discount_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="아메리카노 두잔 무료"
+        android:text="@string/rvInfoCollabo02"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:layout_gravity="left|top"
+        android:layout_gravity="start|top"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="30dp" />
+        android:layout_marginStart="30dp"/>
 
     <TextView
         android:id="@+id/info_collabo_store_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="착한커피"
-        android:layout_gravity="left|bottom"
+        android:text="@string/rvInfoCollabo03"
+        android:layout_gravity="start|bottom"
         android:layout_marginBottom="15dp"
         android:layout_marginStart="30dp"
         android:textColor="#ffffff"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 </FrameLayout>

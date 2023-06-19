@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,16 +13,17 @@
         android:background="@drawable/border_bottom">
 
         <ImageButton
+            android:id="@+id/mypage_edit_birthday_back_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/mypage_edit_birthday_back_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/mypageEditBirthday01" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
             app:layout_constraintLeft_toRightOf="@+id/mypage_edit_birthday_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
-            android:text="생일 변경"
+            android:text="@string/mypageEditBirthday02"
             android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"/>
@@ -52,29 +53,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
-            android:text="변경하실 생일 정보를 입력해주세요."
+            android:text="@string/mypageEditBirthday03"
             android:textColor="#5E5E5E"
             android:textSize="11sp"
             android:textStyle="bold"
-            android:paddingStart="5dp"/>
+            android:layout_marginStart="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="9"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@drawable/round_gray_10dp"
+            android:layout_marginVertical="10dp">
 
             <NumberPicker
                 android:id="@+id/mypage_edit_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/NumberPickerText" />
+                android:theme="@style/NumberPickerText"
+                android:selectionDividerHeight="0dp"
+                tools:ignore="UnusedAttribute"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="년"
+                android:text="@string/mypageEditBirthday04"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:textSize="18sp"
@@ -84,12 +89,14 @@
                 android:id="@+id/mypage_edit_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/NumberPickerText"/>
+                android:theme="@style/NumberPickerText"
+                android:selectionDividerHeight="0dp"
+                tools:ignore="UnusedAttribute"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="월"
+                android:text="@string/mypageEditBirthday05"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:textSize="18sp"
@@ -99,12 +106,14 @@
                 android:id="@+id/mypage_edit_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/NumberPickerText"/>
+                android:theme="@style/NumberPickerText"
+                android:selectionDividerHeight="0dp"
+                tools:ignore="UnusedAttribute"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="일"
+                android:text="@string/mypageEditBirthday06"
                 android:layout_gravity="center"
                 android:textSize="18sp"
                 android:textColor="@color/gray03"/>
@@ -115,10 +124,11 @@
             android:id="@+id/mypage_edit_birthday_btn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/round_color"
-            android:text="변경"
+            android:background="@drawable/round_green_30dp"
+            android:text="@string/mypageEditBirthday07"
             android:gravity="center"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

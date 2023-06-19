@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 // ViewHolder 패턴은, 각 뷰의 객체를 ViewHolder에 보관함으로써 뷰의 내용을 업데이트 하기 위한
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class InfoReviewCommentRvAdapter extends RecyclerView.Adapter<InfoReviewCommentRvAdapter.CustomInfoReviewCommentViewHolder>{
 
-    private ArrayList<infoReviewCommentData> ReviewComments;  // 리뷰 댓글 데이터
+    private final ArrayList<infoReviewCommentData> ReviewComments;  // 리뷰 댓글 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -53,18 +52,23 @@ public class InfoReviewCommentRvAdapter extends RecyclerView.Adapter<InfoReviewC
     public void onBindViewHolder(@NonNull CustomInfoReviewCommentViewHolder holder, int position) {
         infoReviewCommentData reviewComment = ReviewComments.get(position); // 현재 position의 리뷰 댓글 정보
 
-        // 유저 프로필 이미지
+        // 유저 프로필 이미지 SET
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView) // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(reviewComment.getUserProfilePath()))    // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)   // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)     // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)     // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.userProfile);  // 이미지를 보여줄 View를 지정
 
+        // 유저 명 SET
         holder.userName.setText(reviewComment.getUserName());
+
+        // 리뷰 댓글 작성 일자 SET
         holder.reviewCommentRegDate.setText(reviewComment.getReviewCommentRegDate());
+
+        // 리뷰 댓글 내용 SET
         holder.reviewCommentContent.setText(reviewComment.getReviewCommentContent());
     }
 

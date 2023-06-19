@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -64,24 +63,26 @@ import io.github.muddz.styleabletoast.StyleableToast;
 
 public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvClickListener, onInfoPhotoRvClickListener, onInfoReviewRvClickListener {
 
+    // DATA
     private mainStoreData Store;    // 가게 데이터
-    private final ArrayList<infoCollaboData> Collabo = new ArrayList<>(); // 협업 가게 데이터
-    private final ArrayList<InfoMenuData> Menu = new ArrayList<>();       // 메뉴 데이터
-    private ArrayList<infoPhotoData> Photo = new ArrayList<>();     // 사진 데이터
-    private ArrayList<infoReviewData> Review = new ArrayList<>();   // 리뷰 데이터
+    private final ArrayList<infoCollaboData> Collabo = new ArrayList<>();   // 협업 가게 데이터
+    private final ArrayList<infoMenuData> Menu = new ArrayList<>();     // 메뉴 데이터
+    private final ArrayList<infoPhotoData> Photo = new ArrayList<>();   // 사진 데이터
+    private ArrayList<infoReviewData> Review = new ArrayList<>();       // 리뷰 데이터
+    private ArrayList<mainBookmarkStoreData> BookmarkStore = new ArrayList<>(); // 유저 찜한 가게 목록 데이터
+    private final ArrayList<mainBookmarkCollaboData> BookmarkCollabo = new ArrayList<>();   // 유저 찜한 협업 목록 데이터
 
-    private int storeId;   // 가게 고유 아이디
-    private SharedPreferences User;    // 로그인 데이터 ( 전역 변수 )
+
+    // Login Data
+    private SharedPreferences User; // 로그인 데이터 ( 전역 변수 )
+    private boolean isLoginFlag = false;    // 로그인 여부
+
 
     // ---------------- 최상단 Section ---------------------------
     private TextView infoMainStoreName; // 최상단 가게 이름
     private ImageButton infoBackIc;     // 최상단 뒤로가기 버튼
     private ImageButton infoCallIc;     // 최상단 전화 버튼
     private ImageButton infoBookmarkIc; // 최상단 찜 버튼
-
-    private ArrayList<mainBookmarkStoreData> BookmarkStore = new ArrayList<>();  // 유저 찜한 가게 목록
-    private ArrayList<mainBookmarkCollaboData> BookmarkCollabo = new ArrayList<>();  // 유저 찜한 협업 목록
-    private int bookmarkStoreIndex = -1; // 현재 가게의 찜한 목록 데이터의 인덱스
 
 
     // ---------------- 가게 정보 Section ---------------------
@@ -91,31 +92,34 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     private TextView infoHashtag;       // 가게 해시태그
     private ImageView infoStoreImage;   // 가게 썸네일 이미지
 
+    private int storeId;    // 가게 고유 아이디
+    private int bookmarkStoreIndex = -1;    // 현재 가게의 찜한 목록 데이터의 인덱스
 
     // ---------------- 협업 Section ---------------------
-    private RecyclerView infoCollaboRv;                 // 협업 가게 리사이클러뷰
+    private RecyclerView infoCollaboRv; // 협업 가게 리사이클러뷰
     private InfoCollaboRvAdapter infoCollaboAdapter;    // 협업 가게 리사이클러뷰 어뎁터
-    private Dialog infoCollaboDialog;                   // 협업 팝업 다이얼로그
-    private LinearLayout infoCollaboLayout;             // 헙업 전체 레이아웃
-    private int bookmarkCollaboIndex = -1; // 현재 찜한 협업 목록중 클릭한 협업 데이터의 인덱스
+    private Dialog infoCollaboDialog;       // 협업 팝업 다이얼로그
+    private LinearLayout infoCollaboLayout; // 헙업 전체 레이아웃
+
+    private int bookmarkCollaboIndex = -1;  // 현재 찜한 협업 목록중 클릭한 협업 데이터의 인덱스
+
 
     // ---------------- 운영 정보 Section ---------------------
-    private TextView infoWorkingTime;           // 가게 운영 시간
-    private TextView infoDetail;                // 가게 간단 제공 서비스
-    private TextView infoFacility;              // 가게 제공 시설 여부
+    private TextView infoWorkingTime;   // 가게 운영 시간
+    private TextView infoDetail;        // 가게 간단 제공 서비스
+    private TextView infoFacility;      // 가게 제공 시설 여부
     private ImageButton infoWorkingTimeDownIc;  // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
     private ImageButton infoWorkingTimeUpIc;    // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
-    private String[] workingTimeArr;            // 운영 시간 텍스트를 구분자 "&&"으로 Split한 배열
+    private String[] workingTimeArr;    // 운영 시간 텍스트를 구분자 "&&"으로 Split한 배열
     private LinearLayout infoWorkingTimeLayout; // 가게 운영시간 전체 레이아웃
-    private LinearLayout infoDetailLayout;      // 가게 간단 제공 서비스 레이아웃
-    private LinearLayout infoFacilityLayout;    // 가게 제공 시설 여부 레이아웃
     private LinearLayout infoServiceLayout;     // 운영 정보 전체 레이아웃
 
-    boolean serviceExistFalg = false;   // 운영정보가 하나라도 존재하는지 여부를 나타내는 Flag
+    private boolean serviceExistFlag = false;   // 운영정보가 하나라도 존재하는지 여부를 나타내는 Flag
+
 
     // ---------------- 메뉴 Section ---------------------
-    private Button infoMenuPlusBtn;             // 메뉴 더보기 버튼
-    private RecyclerView infoMenuRv;            // 메뉴 리사이클러뷰(최대 3개까지만 보여짐), 나머지는 더보기 버튼을 누른 후
+    private Button infoMenuPlusBtn;     // 메뉴 더보기 버튼
+    private RecyclerView infoMenuRv;    // 메뉴 리사이클러뷰(최대 3개까지만 보여짐), 나머지는 더보기 버튼을 누른 후
     private InfoMenuRvAdapter infoMenuAdapter;  // 메뉴 리사이클러뷰 어댑터
     private LinearLayout infoMenuLayout;        // 메뉴 전체 레이아웃
 
@@ -123,62 +127,69 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     // ---------------- 지도 Section ---------------------
     private TextView infoAddress;       // 가게 주소
     private ViewGroup mapViewContainer; // mapView를 포함시킬 View Container
-    private MapView mapView;            // 카카오 지도 View
+    private MapView mapView;    // 카카오 지도 View
 
     private float startXPosition = 0;   // 터치 이벤트의 시작점의 X(가로)위치
     private float startYPosition = 0;   // 터치 이벤트의 시작점의 Y(가로)위치
 
 
     // ---------------- 사진 Section ---------------------
-    private RecyclerView infoPhotoRv;               // 사진 리사이클러뷰
-    private LinearLayout infoPhotoLayout;           // 사진 전체 레이아웃
+    private RecyclerView infoPhotoRv;       // 사진 리사이클러뷰
+    private LinearLayout infoPhotoLayout;   // 사진 전체 레이아웃
     private InfoPhotoRvAdapter infoPhotoAdapter;    // 사진 리사이클러뷰 어댑터
 
 
     // ---------------- 리뷰 Section ---------------------
-    private LinearLayout infoReviewLayout;             // 리뷰 전체 레이아웃
-    private Button infoReviewPlusBtn; // 리뷰 작성 버튼
+    private Button infoReviewPlusBtn;   // 리뷰 작성 버튼
     private RecyclerView infoReviewRv;  // 리뷰 리사이클러뷰
     private InfoReviewRvAdapter infoReviewAdapter;  // 리뷰 리사이클러뷰 어댑터
-    private TextView infoReviewNoDataTxt;     // 리뷰 데이터 없음 표시 텍스트
+    private TextView infoReviewNoDataTxt;   // 리뷰 데이터 없음 표시 텍스트
 
 
     // ---------------- 결제 Section ---------------------
-    private Button infoPaymentBtn; // 결제하기 버튼
+    private Button infoPaymentBtn;  // 결제 버튼
 
 
     // ---------------- Nested ScrollView ---------------------
-    private NestedScrollView infoScrollView; // 스크롤 뷰
+    private NestedScrollView infoScrollView;    // 스크롤 뷰
+
 
     // ---------------- Dialog ---------------------
-    private Dialog reviewDeleteDialog;   // 작성한 리뷰 목록 삭제 다이얼로그
+    private Dialog reviewDeleteDialog;  // 작성한 리뷰 목록 삭제 다이얼로그
 
 
+    // Intent activityResultLauncher
     private ActivityResultLauncher<Intent> activityResultLauncher;  // Intent형 activityResultLauncher 객체 생성
-    private static RequestQueue requestQueue;        // Volley Library 사용을 위한 RequestQueue
-    private String STORE_PATH;  // 가게 데이터 조회 Rest API
+    private String intentPageName;  // intent된 페이지 명
+
+
+    // Volley Library RequestQueue
+    private static RequestQueue requestQueue;   // Volley Library 사용을 위한 RequestQueue
+
+
+    // Rest API
+    private String STORE_PATH;      // 가게 데이터 조회 Rest API
     private String COLLABO_PATH;    // 협업 가게 정보 데이터 조회 Rest API
     private String MENU_PATH;       // 메뉴 정보 데이터 조회 Rest API
     private String PHOTO_PATH;      // 사진 정보 데이터 조회 Rest API
     private String REVIEW_PATH;     // 리뷰 정보 데이터 조회 Rest API
-    private String DELETE_REVIEW_PATH;     // 작성 리뷰 삭제 Rest API
-    private String UPDATE_REVIEW_HEART_PATH;      // 리뷰 좋아요 갱신 Rest API
-    private String DELETE_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 삭제 Rest API
-    private String INSERT_BOOKMARK_STORE_PATH;      // 유저 찜한 가게 목록 추가 Rest API
-    private String BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
-    private String DELETE_BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 삭제 Rest API
-    private String INSERT_BOOKMARK_COLLABO_PATH;      // 유저 찜한 협업 목록 추가 Rest API
-    private String HOST;            // Host 정보
+    private String DELETE_REVIEW_PATH;  // 작성 리뷰 삭제 Rest API
+    private String UPDATE_REVIEW_HEART_PATH;    // 리뷰 좋아요 갱신 Rest API
+    private String DELETE_BOOKMARK_STORE_PATH;  // 유저 찜한 가게 목록 삭제 Rest API
+    private String INSERT_BOOKMARK_STORE_PATH;  // 유저 찜한 가게 목록 추가 Rest API
+    private String BOOKMARK_COLLABO_PATH;       // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
+    private String DELETE_BOOKMARK_COLLABO_PATH;    // 유저 찜한 협업 목록 삭제 Rest API
+    private String INSERT_BOOKMARK_COLLABO_PATH;    // 유저 찜한 협업 목록 추가 Rest API
+    private String HOST;    // Host 정보
 
-    private boolean isLoginFlag = false;    // 로그인 여부
-    private String intentPageName;  // intent된 페이지 명
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        initView(); // 뷰 생성
+        // Init View
+        initView();
 
         // RequestQueue 객체 생성 ( 초기에만 생성 )
         if(requestQueue == null){
@@ -188,95 +199,119 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         // 유저 전역 변수 GET
         User = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
-        Store = getIntent().getParcelableExtra("Store");    // 가게 데이터 GET
+        Store = getIntent().getParcelableExtra("Store");        // 가게 데이터 GET
         storeId = getIntent().getExtras().getInt("storeId");    // 가게 고유 아이디
-        BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");    // 유저 찜한 가게 데이터 GET
-        intentPageName = getIntent().getExtras().getString("pageName");    // intent된 페이지 명
+        BookmarkStore = getIntent().getParcelableArrayListExtra("bookmarkStore");   // 유저 찜한 가게 데이터 GET
+        intentPageName = getIntent().getExtras().getString("pageName"); // intent된 페이지 명
 
         isLoginFlag = ((globalMethod) getApplication()).loginChecked(); // 로그인 유무
 
         // ---------------- Rest API 전역변수 SET---------------------------
-        STORE_PATH = ((globalMethod) getApplication()).getMainStorePath();    // 가게 데이터 조회 Rest API
-        COLLABO_PATH = ((globalMethod) getApplication()).getInfoCollaboPath();    // 협업 가게 정보 데이터 조회 Rest API
-        MENU_PATH = ((globalMethod) getApplication()).getInfoMenuPath();          // 메뉴 정보 데이터 조회 Rest API
-        PHOTO_PATH = ((globalMethod) getApplication()).getInfoPhotoPath();        // 사진 정보 데이터 조회 Rest API
-        REVIEW_PATH = ((globalMethod) getApplication()).getInfoReviewPath();      // 리뷰 정보 데이터 조회 Rest API
-        DELETE_REVIEW_PATH = ((globalMethod) getApplication()).deleteReviewPath();      // 작성 리뷰 삭제 Rest API
-        UPDATE_REVIEW_HEART_PATH = ((globalMethod) getApplication()).updateInfoReviewHeartPath();      // 리뷰 좋아요 갱신 Rest API
-        DELETE_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).deleteBookmarkStorePath();      // 유저 찜한 가게 목록 삭제 Rest API
-        INSERT_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).insertBookmarkStorePath();      // 유저 찜한 가게 목록 추가 Rest API
-        BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).getMainBookmarkCollaboPath();      // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
-        DELETE_BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).deleteBookmarkCollaboPath();      // 유저 찜한 협업 목록 삭제 Rest API
-        INSERT_BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).insertBookmarkCollaboPath();      // 유저 찜한 협업 목록 추가 Rest API
-        HOST = ((globalMethod) getApplication()).getHost();                       // Host 정보
+        STORE_PATH = ((globalMethod) getApplication()).getMainStorePath();      // 가게 데이터 조회 Rest API
+        COLLABO_PATH = ((globalMethod) getApplication()).getInfoCollaboPath();  // 협업 가게 정보 데이터 조회 Rest API
+        MENU_PATH = ((globalMethod) getApplication()).getInfoMenuPath();        // 메뉴 정보 데이터 조회 Rest API
+        PHOTO_PATH = ((globalMethod) getApplication()).getInfoPhotoPath();      // 사진 정보 데이터 조회 Rest API
+        REVIEW_PATH = ((globalMethod) getApplication()).getInfoReviewPath();    // 리뷰 정보 데이터 조회 Rest API
+        DELETE_REVIEW_PATH = ((globalMethod) getApplication()).deleteReviewPath();  // 작성 리뷰 삭제 Rest API
+        UPDATE_REVIEW_HEART_PATH = ((globalMethod) getApplication()).updateInfoReviewHeartPath();   // 리뷰 좋아요 갱신 Rest API
+        DELETE_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).deleteBookmarkStorePath();   // 유저 찜한 가게 목록 삭제 Rest API
+        INSERT_BOOKMARK_STORE_PATH = ((globalMethod) getApplication()).insertBookmarkStorePath();   // 유저 찜한 가게 목록 추가 Rest API
+        BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).getMainBookmarkCollaboPath();     // 유저 찜한 협업 목록 ( 간단 정보 ) 조회 Rest API
+        DELETE_BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).deleteBookmarkCollaboPath();   // 유저 찜한 협업 목록 삭제 Rest API
+        INSERT_BOOKMARK_COLLABO_PATH = ((globalMethod) getApplication()).insertBookmarkCollaboPath();   // 유저 찜한 협업 목록 추가 Rest API
+        HOST = ((globalMethod) getApplication()).getHost(); // Host 정보
 
         // ---------------- 최상단 Section ---------------------------
-        infoMainStoreName.setText(Store.getStoreName());    // 최상단 가게 이름
+        // 최상단 가게 이름 SET
+        infoMainStoreName.setText(Store.getStoreName());
 
         // 최상단 뒤로가기 버튼 클릭 리스너
         infoBackIc.setOnClickListener(v -> {
-            if(intentPageName.equals("HomeFragment")){  // 페이지 명 : HomeFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+            switch (intentPageName) {
+                case "HomeFragment": {  // 페이지 명 : HomeFragment
+                    Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                intent.putExtra("storeId", storeId);
-                intent.putExtra("reviewCount", Store.getStoreReviewCount());
-                intent.putExtra("score", Store.getStoreScore());
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                    intent.putExtra("storeId", storeId);    // 가게 고유 아이디
+                    intent.putExtra("reviewCount", Store.getStoreReviewCount());    // 리뷰 작성 수
+                    intent.putExtra("score", Store.getStoreScore());    // 리뷰 별점
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("HomeSearchActivity")){  // 페이지 명 : HomeSearchActivity
-                Intent intent = new Intent(InfoActivity.this, HomeSearchActivity.class);
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("MapFragment")){  // 페이지 명 : MapFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+                    break;
+                }
+                case "HomeSearchActivity": {    // 페이지 명 : HomeSearchActivity
+                    Intent intent = new Intent(InfoActivity.this, HomeSearchActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                intent.putExtra("storeId", storeId);
-                intent.putExtra("score", Store.getStoreScore());
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
 
-                setResult(3000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("infoActivity")){  // 페이지 명 : infoActivity
-                Intent intent = new Intent(InfoActivity.this, InfoActivity.class);
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(3000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("MyPageBookmarkActivity")){  // 페이지 명 : MyPageBookmarkActivity
-                Intent intent = new Intent(InfoActivity.this, MyPageBookmarkActivity.class);
+                    break;
+                }
+                case "MapFragment": {   // 페이지 명 : MapFragment
+                    Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                intent.putExtra("storeId", Store.getStoreId());
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                    intent.putExtra("storeId", storeId);    // 가게 고유 아이디
+                    intent.putExtra("score", Store.getStoreScore());    // 가게 별점
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("CollaboFragment")){  // 페이지 명 : CollaboFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+                    setResult(3000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("BagFragment")){  // 페이지 명 : BagFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+                    break;
+                }
+                case "infoActivity": {  // 페이지 명 : infoActivity
+                    Intent intent = new Intent(InfoActivity.this, InfoActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("BagPaymentDetailActivity")){  // 페이지 명 : BagPaymentDetailActivity
-                Intent intent = new Intent(InfoActivity.this, BagPaymentDetailActivity.class);
+                    setResult(3000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
+                    break;
+                }
+                case "MyPageBookmarkActivity": {    // 페이지 명 : MyPageBookmarkActivity
+                    Intent intent = new Intent(InfoActivity.this, MyPageBookmarkActivity.class);
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                    intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
+
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
+
+                    finish();   // 버튼 클릭 시 Activity 종료
+
+                    break;
+                }
+                case "CollaboFragment": // 페이지 명 : CollaboFragment ( BagFragment와 동일 )
+                case "BagFragment": {   // 페이지 명 : BagFragment
+                    Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
+
+                    finish();   // 버튼 클릭 시 Activity 종료
+
+                    break;
+                }
+                case "BagPaymentDetailActivity": {  // 페이지 명 : BagPaymentDetailActivity
+                    Intent intent = new Intent(InfoActivity.this, BagPaymentDetailActivity.class);
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
+
+                    finish();   // 버튼 클릭 시 Activity 종료
+
+                    break;
+                }
             }
         });
 
@@ -304,50 +339,55 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         }
 
         // 찜 버튼 클릭 리스너
-        infoBookmarkIc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isLoginFlag){  // 로그인이 되어있으면
-                    if(infoBookmarkIc.isSelected()){    // 찜 버튼이 눌러져 있으면
-                        infoBookmarkIc.setSelected(false);
-                        deleteBookmarkStore(bookmarkStoreIndex);    // 찜 목록에서 제거
-                    }else{
-                        infoBookmarkIc.setSelected(true);
-                        insertBookmarkStore(User.getInt("userId", 0), Store.getStoreId());  // 찜 목록에 추가
-                    }
+        infoBookmarkIc.setOnClickListener(view -> {
+            if(isLoginFlag){    // 로그인이 되어있으면
+                if(infoBookmarkIc.isSelected()){    // 찜 버튼이 눌러져 있으면
+                    infoBookmarkIc.setSelected(false);
+                    deleteBookmarkStore(bookmarkStoreIndex);    // 찜 목록에서 제거
                 }else{
-                    StyleableToast.makeText(getApplicationContext(), "로그인 해야 이용하실 수 있습니다.", R.style.redToast).show();
+                    infoBookmarkIc.setSelected(true);
+                    insertBookmarkStore(User.getInt("userId", 0), Store.getStoreId());  // 찜 목록에 추가
                 }
+            }else{
+                StyleableToast.makeText(getApplicationContext(), "로그인 해야 이용하실 수 있습니다.", R.style.redToast).show();
             }
         });
 
-        // ---------------- 가게 정보 Section ---------------------
-        infoStoreName.setText(Store.getStoreName());        // 가게 이름
-        infoInformation.setText(Store.getStoreInfo());      // 가게 간단 정보
-        infoHashtag.setText(Store.getStoreHashTag());       // 가게 해시태그
 
-        // 가게 간단 소개
+        // ---------------- 가게 정보 Section ---------------------
+        // 가게 이름 SET
+        infoStoreName.setText(Store.getStoreName());
+
+        // 가게 간단 정보 SET
+        infoInformation.setText(Store.getStoreInfo());
+
+        // 가게 해시태그 SET
+        infoHashtag.setText(Store.getStoreHashTag());
+
+        // 가게 간단 소개 SET
         if(!TextUtils.isEmpty(Store.getStoreInfo())){
             infoInformation.setText(Store.getStoreInfo());
         }
 
-        // 가게 썸네일 이미지
+        // 가게 썸네일 이미지 SET
         Glide.with(this)    // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(Store.getStoreThumbnailPath())) // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(infoStoreImage);  // 이미지를 보여줄 View를 지정
 
-        // ---------------- 협업 Section ---------------------
-        getInfoCollabo();   // 협업 가게 데이터 GET
 
-        getBookmarkCollabo();  // 유저 찜한 협업 목록 데이터 GET
+        // ---------------- 협업 Section ---------------------
+        getInfoCollabo();       // 협업 가게 데이터 GET
+
+        getBookmarkCollabo();   // 유저 찜한 협업 목록 데이터 GET
+
 
         // ---------------- 운영 정보 Section ---------------------
-        // 가게 운영 시간
+        // 가게 운영 시간 SET
         if(!TextUtils.isEmpty(Store.getStoreWorkingTime())){
-            serviceExistFalg = true;    // 운영정보 존재 플래그
+            serviceExistFlag = true;    // 운영정보 존재 플래그
 
             workingTimeArr = Store.getStoreWorkingTime().split("\\n");  // '\n' 구분자로 Split
 
@@ -370,36 +410,37 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
         // 가게 운영시간 위 화살표 ( 내용 줄이기 ) 버튼 클릭 리스너
         infoWorkingTimeUpIc.setOnClickListener(view -> {
-            workingTimeArr = Store.getStoreWorkingTime().split("\\n");    // 구분자가 "\n"으로 되어있는 내용 split
-            infoWorkingTime.setText(workingTimeArr[0]);         // 첫번째 배열에 들어있는 내용만 출력
-            infoWorkingTimeUpIc.setVisibility(View.GONE);       // 위 방향 화살표 버튼 아예 숨기기 ( 공간 조차 없어짐 )
+            workingTimeArr = Store.getStoreWorkingTime().split("\\n");  // 구분자가 "\n"으로 되어있는 내용 split
+            infoWorkingTime.setText(workingTimeArr[0]);     // 첫번째 배열에 들어있는 내용만 출력
+            infoWorkingTimeUpIc.setVisibility(View.GONE);   // 위 방향 화살표 버튼 아예 숨기기 ( 공간 조차 없어짐 )
             infoWorkingTimeDownIc.setVisibility(View.VISIBLE);  // 아래 방향 화살표 버튼 보이기
         });
 
-        // 간단 제공 서비스
+        // 간단 제공 서비스 SET
         if(!TextUtils.isEmpty(Store.getStoreDetail())){
-            serviceExistFalg = true;    // 운영정보 존재 플래그
+            serviceExistFlag = true;    // 운영정보 존재 플래그
 
             infoDetail.setText(Store.getStoreDetail());
         }else{  // 간단 제공 서비스 데이터가 없을 경우 간단 제공 서비스 레이아웃 전체 숨김
-            infoDetailLayout.setVisibility(View.GONE);
+            infoDetail.setVisibility(View.GONE);
         }
 
-        // 제공 시설 여부
+        // 제공 시설 여부 SET
         if(!TextUtils.isEmpty(Store.getStoreFacility())){
-            serviceExistFalg = true;    // 운영정보 존재 플래그
+            serviceExistFlag = true;    // 운영정보 존재 플래그
 
             infoFacility.setText(Store.getStoreFacility());
         }else{  // 제공 시설 여부 데이터가 없을 경우 제공 시설 여부 레이아웃 전체 숨김
-            infoFacilityLayout.setVisibility(View.GONE);
+            infoFacility.setVisibility(View.GONE);
         }
 
         // 운영정보가 하나라도 존재할 경우 Padding 부여
-        if(serviceExistFalg){
+        if(serviceExistFlag){
             infoServiceLayout.setPadding(0 , 10, 0, 20);
         }else{  // 운영정보 데이터가 없을 운영정보 레이아웃 전체 숨김
             infoServiceLayout.setVisibility(View.GONE);
         }
+
 
         // ---------------- 메뉴 Section ---------------------
         getInfoMenu();  // 메뉴 데이터 GET
@@ -417,70 +458,65 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         });
 
         // ---------------- 지도 Section ---------------------
-        infoAddress.setText(Store.getStoreAddress());   // 주소
+        // 주소 SET
+        infoAddress.setText(Store.getStoreAddress());
 
 
         // ---------------- 사진 Section ---------------------
-        getInfoPhoto();     // 사진 데이터 GET
+        getInfoPhoto(); // 사진 데이터 GET
 
 
         // ---------------- 리뷰 Section ---------------------
         getInfoReview();    // 리뷰 데이터 GET
 
         // 리뷰 작성 버튼 클릭 리스너
-        infoReviewPlusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isLoginFlag){
-                    Intent intent = new Intent(InfoActivity.this, InfoReviewInsertActivity.class);
+        infoReviewPlusBtn.setOnClickListener(view -> {
+            if(isLoginFlag){
+                Intent intent = new Intent(InfoActivity.this, InfoReviewInsertActivity.class);
 
-                    intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
-                    intent.putExtra("userId", User.getInt("userId", 0)); // 유저 고유 아이디
+                intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
+                intent.putExtra("userId", User.getInt("userId", 0));    // 유저 고유 아이디
 
-                    activityResultLauncher.launch(intent);
-                }else{
-                    StyleableToast.makeText(getApplicationContext(), "로그인 후 이용하실 수 있습니다.", R.style.redToast).show();
-                }
+                activityResultLauncher.launch(intent);
+            }else{
+                StyleableToast.makeText(getApplicationContext(), "로그인 후 이용하실 수 있습니다.", R.style.redToast).show();
             }
         });
 
 
         // ---------------- 결제 Section ---------------------
-        infoPaymentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isLoginFlag){
-                    StyleableToast.makeText(getApplicationContext(), "로그인 후 이용하실 수 있습니다.", R.style.redToast).show();
-                }else if(Menu.size() == 0){
-                    StyleableToast.makeText(getApplicationContext(), "등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
-                }else{
-                    ArrayList<InfoMenuData> priceExistMenu = new ArrayList<>();       // 가격이 있는 메뉴 데이터
+        infoPaymentBtn.setOnClickListener(view -> {
+            if(!isLoginFlag){   // 로그인이 되어 있지 않은 경우 결제 X
+                StyleableToast.makeText(getApplicationContext(), "로그인 후 이용하실 수 있습니다.", R.style.redToast).show();
+            }else if(Menu.size() == 0){ // 등록된 메누가 존재하지 않을 경우 결제 X
+                StyleableToast.makeText(getApplicationContext(), "등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
+            }else{
+                ArrayList<infoMenuData> priceExistMenu = new ArrayList<>(); // 가격이 존재하는 메뉴 데이터
 
-                    // 가격이 있는 메뉴만 SET
-                    if(Menu.size() > 0){
-                        for(int i = 0; i < Menu.size(); i++){
-                            if(Menu.get(i).getMenuPrice() != 0){
-                                priceExistMenu.add(Menu.get(i));
-                            }
+                // 가격이 존재하는 메뉴만 SET
+                if(Menu.size() > 0){
+                    for(int i = 0; i < Menu.size(); i++){
+                        if(Menu.get(i).getMenuPrice() != 0){
+                            priceExistMenu.add(Menu.get(i));
                         }
                     }
+                }
 
-                    // 가격이 등록된 메뉴가 하나도 없으면 결제 할 수 없음
-                    if(priceExistMenu.size() == 0){
-                        StyleableToast.makeText(getApplicationContext(), "가격이 등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
-                    }else{
-                        Intent intent = new Intent(InfoActivity.this, InfoOrderActivity.class);
+                // 가격이 등록된 메뉴가 하나도 없으면 결제 할 수 없음
+                if(priceExistMenu.size() == 0){
+                    StyleableToast.makeText(getApplicationContext(), "가격이 등록된 메뉴가 존재하지 않아 결제를 진행할 수 없습니다.", R.style.redToast).show();
+                }else{
+                    Intent intent = new Intent(InfoActivity.this, InfoOrderActivity.class);
 
-                        intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
-                        intent.putExtra("userId", User.getInt("userId", 0)); // 유저 고유 아이디
-                        intent.putExtra("storeName", Store.getStoreName()); // 가게 명
+                    intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
+                    intent.putExtra("userId", User.getInt("userId", 0));    // 유저 고유 아이디
+                    intent.putExtra("storeName", Store.getStoreName()); // 가게 명
 
-                        // 데이터 송신을 위한 Parcelable interface 사용
-                        // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
-                        intent.putParcelableArrayListExtra("Menu", priceExistMenu);   // 메뉴 데이터
+                    // 데이터 송신을 위한 Parcelable interface 사용
+                    // Java에서 제공해주는 Serializable보다 안드로에드에서 훨씬 빠른 속도를 보임
+                    intent.putParcelableArrayListExtra("Menu", priceExistMenu); // 메뉴 데이터
 
-                        activityResultLauncher.launch(intent);
-                    }
+                    activityResultLauncher.launch(intent);
                 }
             }
         });
@@ -489,18 +525,20 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         // ---------------- 화면전환 Section ---------------------
         // activityResultLauncher 초기화
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == 1000) { // resultCode가 1000으로 넘어왔다면 리뷰 작성 완료
+            if(result.getResultCode() == 1000) {    // resultCode가 1000으로 넘어왔다면 리뷰 작성 완료
 
-                getInfoPhoto();     // 사진 데이터 GET
-                //infoPhotoAdapter.notifyDataSetChanged();
+                getInfoPhoto(); // 사진 데이터 GET
 
                 Review = new ArrayList<>(); // 리뷰 데이터 초기화
                 getInfoReview();    // 리뷰 데이터 GET
 
-                infoStarScore.setText(String.valueOf(Store.getStoreScore()));   // 가게 별점
+                // 가게 별점 SET
+                infoStarScore.setText(String.valueOf(Store.getStoreScore()));
+
             }else if(result.getResultCode() == 2000) { // resultCode가 2000으로 넘어왔다면 리뷰 상세 화면에서 넘어옴
 
-                int position = result.getData().getIntExtra("position", 0); // 리뷰 리사이클러뷰 position
+                assert result.getData() != null;
+                int position = result.getData().getIntExtra("position", 0);  // 리뷰 리사이클러뷰 position
                 infoReviewData review = result.getData().getParcelableExtra("review");  // 변경된 리뷰 데이터
 
                 Review.set(position, review);   // 리뷰 데이터 변경
@@ -508,7 +546,8 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 // 리사이클러뷰 갱신
                 infoReviewAdapter.setReviews(Review);
                 infoReviewAdapter.notifyItemChanged(position);
-            }else if(result.getResultCode() == 3000) { // resultCode가 2000으로 넘어왔다면 infoActivity에서 넘어옴
+            }else if(result.getResultCode() == 3000) {  // resultCode가 2000으로 넘어왔다면 infoActivity에서 넘어옴
+                assert result.getData() != null;
                 BookmarkStore = result.getData().getParcelableArrayListExtra("bookmarkStore");  // 찜한 목록 데이터
             }
         });
@@ -525,10 +564,10 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     protected void onResume() {
         super.onResume();
 
-        mapView = new MapView(this);   // mapView 객체 생성
+        mapView = new MapView(this);    // mapView 객체 생성
 
-        mapViewContainer = (ViewGroup) findViewById(R.id.info_map_view);    // ViewGroup Container
-        mapViewContainer.addView(mapView);                                  // mapView attach
+        mapViewContainer = findViewById(R.id.info_map_view);    // ViewGroup Container
+        mapViewContainer.addView(mapView);  // mapView attach
 
         double latitude = Store.getStoreLatitude();     // 첫 번째로 검색된 가게의 위도
         double longitude = Store.getStoreLongitude();   // 첫 번째로 검색된 가게의 경도
@@ -586,68 +625,91 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(intentPageName.equals("HomeFragment")){  // 페이지 명 : HomeFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+            switch (intentPageName) {
+                case "HomeFragment": {  // 페이지 명 : HomeFragment
+                    Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                intent.putExtra("storeId", storeId);
-                intent.putExtra("reviewCount", Store.getStoreReviewCount());
-                intent.putExtra("score", Store.getStoreScore());
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                    intent.putExtra("storeId", storeId);    // 가게 고유 아이디
+                    intent.putExtra("reviewCount", Store.getStoreReviewCount());    // 리뷰 작성 수
+                    intent.putExtra("score", Store.getStoreScore());    // 리뷰 별점
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("HomeSearchActivity")){  // 페이지 명 : HomeSearchActivity
-                Intent intent = new Intent(InfoActivity.this, HomeSearchActivity.class);
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("MapFragment")){  // 페이지 명 : MapFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+                    break;
+                }
+                case "HomeSearchActivity": {    // 페이지 명 : HomeSearchActivity
+                    Intent intent = new Intent(InfoActivity.this, HomeSearchActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                intent.putExtra("storeId", storeId);
-                intent.putExtra("score", Store.getStoreScore());
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
 
-                setResult(3000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("infoActivity")){  // 페이지 명 : infoActivity
-                Intent intent = new Intent(InfoActivity.this, InfoActivity.class);
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(3000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("MyPageBookmarkActivity")){  // 페이지 명 : MyPageBookmarkActivity
-                Intent intent = new Intent(InfoActivity.this, MyPageBookmarkActivity.class);
+                    break;
+                }
+                case "MapFragment": {   // 페이지 명 : MapFragment
+                    Intent intent = new Intent(InfoActivity.this, MainActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
-                intent.putExtra("storeId", Store.getStoreId());
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                    intent.putExtra("storeId", storeId);    // 가게 고유 아이디
+                    intent.putExtra("score", Store.getStoreScore());    // 가게 별점
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("CollaboFragment")){  // 페이지 명 : CollaboFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+                    setResult(3000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("BagFragment")){  // 페이지 명 : BagFragment
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+                    break;
+                }
+                case "infoActivity": {  // 페이지 명 : infoActivity
+                    Intent intent = new Intent(InfoActivity.this, InfoActivity.class);
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
-            }else if(intentPageName.equals("BagPaymentDetailActivity")){  // 페이지 명 : BagPaymentDetailActivity
-                Intent intent = new Intent(InfoActivity.this, BagPaymentDetailActivity.class);
+                    setResult(3000, intent);    // 결과 코드와 intent 값 전달
 
-                intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore);
+                    finish();   // 버튼 클릭 시 Activity 종료
 
-                setResult(2000, intent);    // 결과 코드와 intent 값 전달
-                finish();   // 버튼 클릭 시 Activity 종료
+                    break;
+                }
+                case "MyPageBookmarkActivity": {    // 페이지 명 : MyPageBookmarkActivity
+                    Intent intent = new Intent(InfoActivity.this, MyPageBookmarkActivity.class);
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+                    intent.putExtra("storeId", Store.getStoreId()); // 가게 고유 아이디
+
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
+
+                    finish();   // 버튼 클릭 시 Activity 종료
+
+                    break;
+                }
+                case "CollaboFragment": // 페이지 명 : CollaboFragment ( BagFragment와 동일 )
+                case "BagFragment": {   // 페이지 명 : BagFragment
+                    Intent intent = new Intent(InfoActivity.this, MainActivity.class);
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
+
+                    finish();   // 버튼 클릭 시 Activity 종료
+
+                    break;
+                }
+                case "BagPaymentDetailActivity": {  // 페이지 명 : BagPaymentDetailActivity
+                    Intent intent = new Intent(InfoActivity.this, BagPaymentDetailActivity.class);
+
+                    intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 유저 찜한 가게 목록
+
+                    setResult(2000, intent);    // 결과 코드와 intent 값 전달
+
+                    finish();   // 버튼 클릭 시 Activity 종료
+
+                    break;
+                }
             }
 
             return true;
@@ -688,8 +750,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         infoWorkingTimeDownIc = findViewById(R.id.info_working_time_down_arrow_ic); // 가게 운영 시간 아래 방향 버튼 ( 내용 늘리기 )
         infoWorkingTimeUpIc = findViewById(R.id.info_working_time_up_arrow_ic);     // 가게 운영 시간 위 방향 버튼 ( 내용 줄이기 )
         infoWorkingTimeLayout = findViewById(R.id.info_working_time_layout);        // 가게 운영 시간 전체 레이아웃
-        infoDetailLayout = findViewById(R.id.info_detail_layout);       // 가게 간단 제공 서비스 전체 레이아웃
-        infoFacilityLayout = findViewById(R.id.info_facility_layout);   // 가게 제공 시설 여부 전체 레이아웃
         infoServiceLayout = findViewById(R.id.info_service_layout);     // 운영 정보 전체 레이아웃
 
 
@@ -709,7 +769,6 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
 
         // ---------------- 리뷰 Section ---------------------
-        infoReviewLayout = findViewById(R.id.info_review_layout); // 리뷰 전체 레이아웃
         infoReviewPlusBtn = findViewById(R.id.info_review_plus_btn);    // 리뷰 작성 버튼
         infoReviewRv = findViewById(R.id.info_review_rv);   // 리뷰 리사이클러뷰
         infoReviewNoDataTxt = findViewById(R.id.info_review_nodata);   // 리뷰 데이터 없음 표시 텍스트
@@ -731,10 +790,10 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
     // ---------------- 협업 Section Start ---------------------
 
-
     // 협업 가게 데이터 GET
     private void getInfoCollabo(){
         // GET 방식 파라미터 설정
+        // Param => storeId : 가게 고유 아이디
         String collaboPath = COLLABO_PATH + String.format("?storeId=%s", Store.getStoreId());
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
@@ -743,31 +802,29 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
                 JSONArray collaboArr = jsonObject.getJSONArray("collabo");  // 객체에 collabo라는 Key를 가진 JSONArray 생성
 
-
-
                 if(collaboArr.length() > 0) {
                     for (int i = 0; i < collaboArr.length(); i++) {
                         JSONObject object = collaboArr.getJSONObject(i);    // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
                         // 협업 데이터 생성 및 저장
                         infoCollaboData infoCollaboData = new infoCollaboData(
-                                object.getInt("storeId")                            // 가게 고유 아이디
-                                , object.getString("storeName")                     // 가게 이름
-                                , object.getString("storeAddress")                  // 가게 주소
-                                , object.getString("storeDetail")                   // 가게 간단 제공 서비스
-                                , object.getString("storeFacility")                 // 가게 제공 시설 여부
-                                , object.getDouble("storeLatitude")                 // 가게 위도
-                                , object.getDouble("storeLongitude")                // 가게 경도
-                                , object.getString("storeNumber")                   // 가게 번호
-                                , object.getString("storeInfo")                     // 가게 간단 정보
-                                , object.getInt("storeCategoryId")                  // 가게가 속한 카테고리 고유 아이디
-                                , HOST + object.getString("storeThumbnailPath")     // 가게 썸네일 이미지 경로
-                                , object.getDouble("storeScore")                    // 가게 별점
-                                , object.getString("storeWorkingTime")              // 가게 운영 시간
-                                , object.getInt("collaboId")                        // 협업 고유 아이디
-                                , object.getInt("collaboStoreId")                   // 협업 뒷 가게 고유 아이디
-                                , object.getInt("collaboDiscountCondition")         // 앞 가게 할인 조건 ( 최소 금액 )
-                                , object.getInt("collaboDiscountRate"));            // 뒷 가게 할인율 ( 정수 )
+                                object.getInt("storeId")        // 가게 고유 아이디
+                                , object.getString("storeName") // 가게 이름
+                                , object.getString("storeAddress")      // 가게 주소
+                                , object.getString("storeDetail")       // 가게 간단 제공 서비스
+                                , object.getString("storeFacility")     // 가게 제공 시설 여부
+                                , object.getDouble("storeLatitude")     // 가게 위도
+                                , object.getDouble("storeLongitude")    // 가게 경도
+                                , object.getString("storeNumber")       // 가게 번호
+                                , object.getString("storeInfo")     // 가게 간단 정보
+                                , object.getInt("storeCategoryId")  // 가게가 속한 카테고리 고유 아이디
+                                , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
+                                , object.getDouble("storeScore")        // 가게 별점
+                                , object.getString("storeWorkingTime")  // 가게 운영 시간
+                                , object.getInt("collaboId")        // 협업 고유 아이디
+                                , object.getInt("collaboStoreId")   // 협업 뒷 가게 고유 아이디
+                                , object.getInt("collaboDiscountCondition") // 앞 가게 할인 조건 ( 최소 금액 )
+                                , object.getInt("collaboDiscountRate"));    // 뒷 가게 할인율 ( 정수 )
 
                         Collabo.add(infoCollaboData); // 협업 정보 저장
                     }
@@ -797,7 +854,9 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     // 협업 리사이클러뷰 클릭 이벤트 인터페이스 구현
     @Override
     public void onInfoCollaboRvClick(View v, int position) {
-        infoCollaboDialog.show();
+        infoCollaboData collabo = Collabo.get(position);    // 현재 Position의 협업 데이터
+
+        infoCollaboDialog.show();   // 협업 다이얼로그 보이기
 
         // 뷰 정의
         TextView preStoreName = infoCollaboDialog.findViewById(R.id.info_collabo_previous_store_name);  // 앞가게 명
@@ -809,13 +868,8 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         TextView distance = infoCollaboDialog.findViewById(R.id.info_collabo_distance);     // 두 가게 사이 거리
         TextView discount_info = infoCollaboDialog.findViewById(R.id.info_collabo_coupon);  // 할인 정보
 
-        ImageButton bookmarkBtn = infoCollaboDialog.findViewById(R.id.info_collabo_bookmark_btn);    // 협업 데이터 찜 버튼
+        ImageButton bookmarkBtn = infoCollaboDialog.findViewById(R.id.info_collabo_bookmark_btn);   // 협업 데이터 찜 버튼
 
-        // 값 세팅
-        infoCollaboData collabo = Collabo.get(position);    // 현재 Position의 협업 데이터
-
-        preStoreName.setText(Store.getStoreName());     // 앞가게 명
-        postStoreName.setText(collabo.getStoreName());  // 뒷가게 명
 
         // 찜이 되어 있을경우 레이아웃 변경
         // 로그인이 되어 있는지 확인
@@ -833,81 +887,88 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             bookmarkBtn.setVisibility(View.GONE);
         }
 
+        // 앞가게 명 SET
+        preStoreName.setText(Store.getStoreName());
+
+        // 뒷가게 명 SET
+        postStoreName.setText(collabo.getStoreName());
+
+        // 앞가게 이미지 SET
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
-
-        // 앞가게 이미지
         Glide.with(this)    // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(Store.getStoreThumbnailPath())) // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(preStoreImage);   // 이미지를 보여줄 View를 지정
 
-        // 뒷가게 이미지
+        // 뒷가게 이미지 SET
         Glide.with(this)     // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(collabo.getStoreThumbnailPath()))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(postStoreImage);  // 이미지를 보여줄 View를 지정
 
-        // 가게 간 거리 계산을 위한 좌표
+        // 가게 간 거리 계산을 위한 좌표 ( 앞가게 )
         Location prePoint = new Location(Store.getStoreName());     // 앞 가게 위치 Location 객체 생성
         prePoint.setLatitude(Store.getStoreLatitude());     // 위도
         prePoint.setLongitude(Store.getStoreLongitude());   // 경도
 
-        // 가게 간 거리 계산을 위한 좌표
+        // 가게 간 거리 계산을 위한 좌표 ( 뒷가게 )
         Location postPoint = new Location(collabo.getStoreName());  // 뒷 가게 위치 Location 객체 생성
         postPoint.setLatitude(collabo.getStoreLatitude());      // 위도
         postPoint.setLongitude(collabo.getStoreLongitude());    // 경도
 
-        // 가게 간 거리
-        String distanceStr = prePoint.distanceTo(postPoint) / 1000 + " km";
+        // 가게 간 거리 SET
+        double dist = (double) prePoint.distanceTo(postPoint) / 1000;
+        String distanceStr = dist >= 0.01 ? Math.round(dist * 100) / 100.0 + " km" : "10m 이내";
         distance.setText(distanceStr);
 
-        // 할인 정보
+        // 할인 정보 SET
         String dis_info = Store.getStoreName() + "에서 "
                 + collabo.getCollaboDiscountCondition() +"원 이상 결제 시 "
                 + collabo.getStoreName() + "에서 "
                 + collabo.getCollaboDiscountRate() + "% 할인";
-
         discount_info.setText(dis_info);
 
         // 뒷가게 이미지 클릭 리스너
         postStoreImage.setOnClickListener(view -> {
+            // GET 방식 파라미터 설정
+            // Param => storeId : 가게 고유 아이디
             String mainStorePath = STORE_PATH + String.format("?storeId=%s", collabo.getStoreId());
 
             // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
             StringRequest postStoreRequest = new StringRequest(Request.Method.GET, HOST + mainStorePath, response -> {
                 try {
-                    JSONObject jsonObject = new JSONObject(response);                 // Response를 JsonObject 객체로 생성
+                    JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
                     JSONArray mainStoreArr = jsonObject.getJSONArray("store");  // 객체에 store라는 Key를 가진 JSONArray 생성
 
                     JSONObject object = mainStoreArr.getJSONObject(0);
 
                     mainStoreData mainStore = new mainStoreData(
-                            object.getInt("storeId")                        // 가게 고유 아이디
-                            , object.getString("storeName")                 // 가게 이름
-                            , object.getString("storeAddress")              // 가게 주소
-                            , object.getString("storeDetail")               // 가게 간단 제공 서비스
-                            , object.getString("storeFacility")             // 가게 제공 시설 여부
-                            , object.getDouble("storeLatitude")             // 가게 위도
-                            , object.getDouble("storeLongitude")            // 가게 경도
-                            , object.getString("storeNumber")               // 가게 번호
-                            , object.getString("storeInfo")                 // 가게 간단 정보
-                            , object.getInt("storeCategoryId")              // 가게가 속한 카테고리 고유 아이디
+                            object.getInt("storeId")        // 가게 고유 아이디
+                            , object.getString("storeName") // 가게 이름
+                            , object.getString("storeAddress")      // 가게 주소
+                            , object.getString("storeDetail")       // 가게 간단 제공 서비스
+                            , object.getString("storeFacility")     // 가게 제공 시설 여부
+                            , object.getDouble("storeLatitude")     // 가게 위도
+                            , object.getDouble("storeLongitude")    // 가게 경도
+                            , object.getString("storeNumber")   // 가게 번호
+                            , object.getString("storeInfo")     // 가게 간단 정보
+                            , object.getInt("storeCategoryId")  // 가게가 속한 카테고리 고유 아이디
                             , HOST + object.getString("storeThumbnailPath") // 가게 썸네일 이미지 경로
-                            , object.getDouble("storeScore")                // 가게 별점
-                            , object.getString("storeWorkingTime")          // 가게 운영 시간
-                            , object.getString("storeHashTag")              // 가게 해시태그
-                            , object.getInt("storeReviewCount")             // 가게 리뷰 개수
-                            , 0);                                      // 현위치에서 가게까지의 거리
+                            , object.getDouble("storeScore")        // 가게 별점
+                            , object.getString("storeWorkingTime")  // 가게 운영 시간
+                            , object.getString("storeHashTag")      // 가게 해시태그
+                            , object.getInt("storeReviewCount")     // 가게 리뷰 개수
+                            , 0);   // 현위치에서 가게까지의 거리
 
                     Intent intent = new Intent(InfoActivity.this, InfoActivity.class); // 가게 상세화면 Activity로 이동하기 위한 Intent 객체 선언
 
                     intent.putExtra("Store", mainStore);    // 가게 데이터
-                    intent.putExtra("pageName", "infoActivity");    // 가게 데이터
+                    intent.putExtra("pageName", "infoActivity");    // 화면전환 페이지 명
 
                     intent.putParcelableArrayListExtra("bookmarkStore", BookmarkStore); // 찜한 가게 목록 데이터 ( Intent 종료시 반환하기 위한 데이터 )
 
@@ -925,34 +986,28 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         });
 
         // 찜 버튼 클릭 리스너
-        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isLoginFlag){  // 로그인이 되어있으면
-                    if(bookmarkBtn.isSelected()){    // 찜 버튼이 눌러져 있으면
-                        bookmarkBtn.setSelected(false);
-                        deleteBookmarkCollabo(bookmarkCollaboIndex);    // 찜 목록에서 제거
-                    }else{
-                        bookmarkBtn.setSelected(true);
-                        insertBookmarkCollabo(User.getInt("userId", 0), collabo.getCollaboId());  // 찜 목록에 추가
-                    }
+        bookmarkBtn.setOnClickListener(view -> {
+            if(isLoginFlag){  // 로그인이 되어있으면
+                if(bookmarkBtn.isSelected()){   // 찜 버튼이 눌러져 있으면
+                    bookmarkBtn.setSelected(false);
+                    deleteBookmarkCollabo(bookmarkCollaboIndex);    // 찜 목록에서 제거
                 }else{
-                    StyleableToast.makeText(getApplicationContext(), "로그인 해야 이용하실 수 있습니다.", R.style.redToast).show();
+                    bookmarkBtn.setSelected(true);
+                    insertBookmarkCollabo(User.getInt("userId", 0), collabo.getCollaboId());    // 찜 목록에 추가
                 }
+            }else{
+                StyleableToast.makeText(getApplicationContext(), "로그인 해야 이용하실 수 있습니다.", R.style.redToast).show();
             }
         });
     }
-
     // ---------------- 협업 Section End ---------------------
 
 
-
     // ---------------- 메뉴 Section Start ---------------------
-
-
     // 메뉴 데이터 GET
     private void getInfoMenu(){
         // GET 방식 파라미터 설정
+        // Param => storeId : 가게 고유 아이디
         String menuPath = MENU_PATH + String.format("?storeId=%s", Store.getStoreId());
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
@@ -966,15 +1021,15 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                         JSONObject object = menuArr.getJSONObject(i);   // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
                         // 메뉴 데이터 생성 및 저장
-                        InfoMenuData infoMenuData = new InfoMenuData(
-                                object.getInt("menuId")         // 메뉴 고유 아이디
-                                , object.getInt("storeId")      // 가게 고유 아이디
+                        infoMenuData infoMenuData = new infoMenuData(
+                                object.getInt("menuId")     // 메뉴 고유 아이디
+                                , object.getInt("storeId")  // 가게 고유 아이디
                                 , object.getString("menuName")  // 메뉴 명
                                 , object.getInt("menuPrice")    // 메뉴 가격
                                 , object.getInt("menuOrder")    // 메뉴 정렬 순서
                                 , 1);  // 선택된 메뉴 개수
 
-                        Menu.add(infoMenuData); // 메뉴 정보 저장
+                        Menu.add(infoMenuData); // 메뉴 데이터 저장
                     }
                     // LayoutManager 객체 생성
                     infoMenuRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -997,17 +1052,14 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         MenuRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(MenuRequest);      // RequestQueue에 요청 추가
     }
-
-
     // ---------------- 메뉴 Section End ---------------------
 
 
     // ---------------- 사진 Section Start ---------------------
-
-
     // 사진 데이터 GET
     private void getInfoPhoto(){
         // GET 방식 파라미터 설정
+        // Param => storeId : 가게 고유 아이디
         String photoPath = PHOTO_PATH + String.format("?storeId=%s", Store.getStoreId());
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
@@ -1022,13 +1074,14 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
                         // 사진 데이터 생성 및 저장
                         infoPhotoData infoPhotoData = new infoPhotoData(
-                                object.getInt("photoId")                    // 사진 고유 아이디
-                                , object.getInt("userId")                   // 유저 고유 아이디
-                                , object.getInt("reviewId")                 // 리뷰 고유 아이디
-                                , object.getString("userName")              // 유저 명
+                                object.getInt("photoId")        // 사진 고유 아이디
+                                , object.getInt("userId")       // 유저 고유 아이디
+                                , object.getInt("reviewId")     // 리뷰 고유 아이디
+                                , object.getString("userName")  // 유저 명
                                 , HOST + object.getString("photoImagePath") // 사진 이미지 경로
-                                , object.getString("reviewDetail")          // 리뷰 내용
-                                , object.getInt("reviewScore"));            // 리뷰 별점
+                                , object.getString("reviewDetail")  // 리뷰 내용
+                                , object.getInt("reviewScore"));    // 리뷰 별점
+
                         Photo.add(infoPhotoData); // 사진 정보 저장
                     }
                     // LayoutManager 객체 생성
@@ -1049,8 +1102,8 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             Log.d("getInfoPhotoError", "onErrorResponse : " + error);
         });
 
-        PhotoRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-        requestQueue.add(PhotoRequest);      // RequestQueue에 요청 추가
+        PhotoRequest.setShouldCache(false); // 이전 결과가 있어도 새로 요청하여 출력
+        requestQueue.add(PhotoRequest);     // RequestQueue에 요청 추가
     }
 
     // 사진 리사이클러뷰 클릭 이벤트 인터페이스 구현
@@ -1061,33 +1114,32 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         // position이 4보다 클 경우 사진 전체 화면으로 이동
         Intent intent = new Intent(InfoActivity.this, position < 4 ? InfoPhotoActivity.class : InfoPhotoTotalActivity.class);
 
-        intent.putParcelableArrayListExtra("Photo", Photo);     // 사진 데이터
-        intent.putExtra("Position", position);                  // 현재 Position
-        intent.putExtra("storeName", Store.getStoreName());     // 가게 명
+        intent.putParcelableArrayListExtra("Photo", Photo); // 사진 데이터
+        intent.putExtra("Position", position);  // 현재 리사이클러뷰 Position
+        intent.putExtra("storeName", Store.getStoreName()); // 가게 명
 
         startActivity(intent);  // 새 Activity 인스턴스 시작
     }
-
-
     // ---------------- 사진 Section End ---------------------
 
 
     // ---------------- 리뷰 Section Start ---------------------
-
     // 리뷰 데이터 GET
     private void getInfoReview(){
         // GET 방식 파라미터 설정
+        // Param => storeId : 가게 고유 아이디
+        //          userId : 로그인 유저 고유 아이디
         String reviewPath = REVIEW_PATH + String.format("?storeId=%s", Store.getStoreId());
 
         if(isLoginFlag){
-            reviewPath += String.format("&&loginUserId=%s", User.getInt("userId", 0));   // 로그인 유저 고유 아이디
+            reviewPath += String.format("&&loginUserId=%s", User.getInt("userId", 0));  // 로그인 유저 고유 아이디
        }
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
         StringRequest ReviewRequest = new StringRequest(Request.Method.GET, HOST + reviewPath, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                JSONArray reviewArr = jsonObject.getJSONArray("review"); // 객체에 review라는 Key를 가진 JSONArray 생성
+                JSONArray reviewArr = jsonObject.getJSONArray("review");    // 객체에 review라는 Key를 가진 JSONArray 생성
 
                 double starScoreTotal = 0;  // 리뷰 총 별점
 
@@ -1097,29 +1149,30 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
                         // 리뷰 데이터 생성 및 저장
                         infoReviewData infoReviewData = new infoReviewData(
-                                object.getInt("reviewId")                       // 리뷰 고유 아이디
-                                , object.getInt("userId")                       // 유저 고유 아이디
-                                , object.getString("userName")                  // 유저 명
-                                , object.getInt("storeId")                      // 가게 고유 아이디
+                                object.getInt("reviewId")       // 리뷰 고유 아이디
+                                , object.getInt("userId")       // 유저 고유 아이디
+                                , object.getString("userName")  // 유저 명
+                                , object.getInt("storeId")      // 가게 고유 아이디
                                 , HOST + object.getString("userProfilePath")    // 유저 프로필 경로
-                                , object.getString("reviewDetail")              // 리뷰 내용
-                                , object.getInt("reviewScore")                  // 리뷰 별점
-                                , object.getInt("reviewHeartCount")             // 리뷰 좋아요 수
-                                , object.getString("reviewRegDate")             // 리뷰 작성 일자
-                                , object.getInt("reviewCommentCount")           // 리뷰 댓글 수
-                                , object.getInt("reviewHeartIsClick"));         // 로그인 했을 경우 좋아요 눌렀는지 확인 Flag ( 누른 경우 : 1, 안눌렀거나 비로그인 시 : 0 )
+                                , object.getString("reviewDetail")  // 리뷰 내용
+                                , object.getInt("reviewScore")      // 리뷰 별점
+                                , object.getInt("reviewHeartCount") // 리뷰 좋아요 수
+                                , object.getString("reviewRegDate") // 리뷰 작성 일자
+                                , object.getInt("reviewCommentCount")   // 리뷰 댓글 수
+                                , object.getInt("reviewHeartIsClick")); // 로그인 했을 경우 좋아요 눌렀는지 확인 Flag ( 누른 경우 : 1, 안눌렀거나 비로그인 시 : 0 )
 
-                        Review.add(0, infoReviewData); // 리뷰 정보 저장
+                        Review.add(0, infoReviewData);  // 리뷰 정보 저장
 
                         starScoreTotal += object.getInt("reviewScore"); // 리뷰 총 별점
                     }
+
                     // LayoutManager 객체 생성
                     infoReviewRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
                     infoReviewAdapter = new InfoReviewRvAdapter(this, Review, Photo, Store.getStoreName(), this, isLoginFlag, User.getInt("userId", 0));  // 리사이클러뷰 어뎁터 객체 생성
                     infoReviewRv.setAdapter(infoReviewAdapter); // 리사이클러뷰 어뎁터 객체 지정
 
-                    // 리뷰 별점 Set
+                    // 리뷰 별점 SET
                     Store.setStoreReviewCount(Review.size());   // 리뷰 수
                     Store.setStoreScore(Math.round(starScoreTotal / Review.size() * 10.0) / 10.0);  // 리뷰 별점
                     infoStarScore.setText(String.valueOf(Store.getStoreScore()));
@@ -1144,122 +1197,132 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     // 리뷰 리사이클러뷰 클릭 이벤트 인터페이스 구현
     @Override
     public void onInfoReviewRvClick(View v, int position, String flag) {
-        if(flag.equals("total")){
-            infoReviewData review = Review.get(position);       // 리뷰 데이터
-            ArrayList<infoPhotoData> photo = new ArrayList<>(); // 리뷰 사진 데이터
+        switch (flag) {
+            case "total":
+                infoReviewData review = Review.get(position);   // 리뷰 데이터
 
-            // 현재 리뷰에 속한 사진 데이터만 저장
-            for(int i = 0; i < Photo.size(); i++){
-                if(review.getReviewId() == Photo.get(i).getReviewId()){
-                    photo.add(Photo.get(i));
+                ArrayList<infoPhotoData> photo = new ArrayList<>(); // 리뷰 사진 데이터
+
+                // 현재 리뷰에 속한 사진 데이터만 저장
+                for (int i = 0; i < Photo.size(); i++) {
+                    if (review.getReviewId() == Photo.get(i).getReviewId()) {
+                        photo.add(Photo.get(i));
+                    }
                 }
-            }
 
-            // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
-            Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
+                // 사진 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
+                Intent intent = new Intent(InfoActivity.this, InfoReviewActivity.class);
 
-            intent.putParcelableArrayListExtra("Photo", photo); // 사진 데이터
-            intent.putExtra("reviewId", review.getReviewId());  // 리뷰 고유 아이디
-            intent.putExtra("storeName", Store.getStoreName()); // 가게 명
-            intent.putExtra("review", review);                  // 리뷰 데이터
-            intent.putExtra("position", position);              // 현재 리사이클러뷰 position
-            intent.putExtra("isLoginFlag", isLoginFlag);        // 현재 로그인 여부
+                intent.putParcelableArrayListExtra("Photo", photo); // 사진 데이터
+                intent.putExtra("reviewId", review.getReviewId());  // 리뷰 고유 아이디
+                intent.putExtra("storeName", Store.getStoreName()); // 가게 명
+                intent.putExtra("review", review);      // 리뷰 데이터
+                intent.putExtra("position", position);  // 현재 리사이클러뷰 position
+                intent.putExtra("isLoginFlag", isLoginFlag);    // 현재 로그인 여부
 
-            activityResultLauncher.launch(intent);  // 새 Activity 인스턴스 시작
-        }else if(flag.equals("delete")){
-            reviewDeleteDialog.show();
+                activityResultLauncher.launch(intent);  // 새 Activity 인스턴스 시작
 
-            // 뷰 정의
-            TextView dlTitle = reviewDeleteDialog.findViewById(R.id.dl_title);  // 다이얼로그 타이틀
-            Button dlConfirmBtn = reviewDeleteDialog.findViewById(R.id.dl_confirm_btn);  // 다이얼로그 확인 버튼
-            Button dlCloseBtn = reviewDeleteDialog.findViewById(R.id.dl_close_btn);  // 다이얼로그 닫기 버튼
+                break;
+            case "delete":
+                reviewDeleteDialog.show();
 
-            // 데이터 SET
-            dlTitle.setText("작성한 리뷰를 삭제하시겠습니까?");
-            dlConfirmBtn.setText("삭제");
+                // 뷰 정의
+                TextView dlTitle = reviewDeleteDialog.findViewById(R.id.dl_title);  // 다이얼로그 타이틀
+                Button dlConfirmBtn = reviewDeleteDialog.findViewById(R.id.dl_confirm_btn); // 다이얼로그 확인 버튼
+                Button dlCloseBtn = reviewDeleteDialog.findViewById(R.id.dl_close_btn);     // 다이얼로그 닫기 버튼
 
-            // 삭제 버튼 클릭 리스너
-            dlConfirmBtn.setOnClickListener(view -> {
-                Map<String, String> param = new HashMap<>();
-                param.put("reviewId", String.valueOf(Review.get(position).getReviewId()));   // 삭제할 리뷰 고유 아이디
+                // 데이터 SET
+                dlTitle.setText("작성한 리뷰를 삭제하시겠습니까?");
+                dlConfirmBtn.setText("삭제");
 
-                // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
-                StringRequest deleteReviewRequest = new StringRequest(Request.Method.POST, HOST + DELETE_REVIEW_PATH, response -> {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                        String success = jsonObject.getString("success");
+                // 삭제 버튼 클릭 리스너
+                dlConfirmBtn.setOnClickListener(view -> {
+                    // POST 방식 파라미터 설정
+                    // Param => reviewId : 삭제할 리뷰 고유 아이디
+                    Map<String, String> param = new HashMap<>();
+                    param.put("reviewId", String.valueOf(Review.get(position).getReviewId()));   // 삭제할 리뷰 고유 아이디
 
-                        if(!TextUtils.isEmpty(success) && success.equals("1")) {
-                            StyleableToast.makeText(getApplicationContext(), "삭제 성공!", R.style.blueToast).show();
+                    // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
+                    StringRequest deleteReviewRequest = new StringRequest(Request.Method.POST, HOST + DELETE_REVIEW_PATH, response -> {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                            String success = jsonObject.getString("success");   // Success Flag
 
-                            reviewDeleteDialog.dismiss();  // 다이얼로그 닫기
+                            if (!TextUtils.isEmpty(success) && success.equals("1")) {
+                                StyleableToast.makeText(getApplicationContext(), "삭제 성공!", R.style.blueToast).show();
 
-                            Review.remove(position);   // 데이터 삭제
-                            infoReviewAdapter.notifyItemRemoved(position); // 리사이클러뷰 데이터 삭제
+                                reviewDeleteDialog.dismiss();   // 다이얼로그 닫기
 
-                            // 데이터가 없을 경우 없다는 텍스트 표시
-                            if(Review.size() == 0){
-                                infoReviewRv.setVisibility(View.GONE);
-                                infoReviewNoDataTxt.setVisibility(View.VISIBLE);   // 리뷰 없음 표시 텍스트 보이기
-                            }else{
-                                infoReviewRv.setVisibility(View.VISIBLE);
-                                infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
+                                Review.remove(position);    // 데이터 삭제
+                                infoReviewAdapter.notifyItemRemoved(position);  // 리사이클러뷰 데이터 삭제
+
+                                // 데이터가 없을 경우 없다는 텍스트 표시
+                                if (Review.size() == 0) {
+                                    infoReviewRv.setVisibility(View.GONE);
+                                    infoReviewNoDataTxt.setVisibility(View.VISIBLE);    // 리뷰 없음 표시 텍스트 보이기
+                                } else {
+                                    infoReviewRv.setVisibility(View.VISIBLE);
+                                    infoReviewNoDataTxt.setVisibility(View.GONE);   // 리뷰 없음 표시 텍스트 숨기기
+                                }
+                            } else {
+                                StyleableToast.makeText(getApplicationContext(), "삭제 실패...", R.style.redToast).show();
                             }
-                        }else{
-                            StyleableToast.makeText(getApplicationContext(), "삭제 실패...", R.style.redToast).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                    }, error -> {
+                        // 통신 에러시 로그 출력
+                        Log.d("deleteReviewError", "onErrorResponse : " + error);
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams(){
+                            // php로 설정값을 보낼 수 있음 ( POST )
+                            return param;
+                        }
+                    };
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }, error -> {
-                    // 통신 에러시 로그 출력
-                    Log.d("deleteReviewError", "onErrorResponse : " + error);
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        // php로 설정값을 보낼 수 있음 ( POST )
-                        return param;
-                    }
-                };
+                    deleteReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
+                    requestQueue.add(deleteReviewRequest);      // RequestQueue에 요청 추가
+                });
 
-                deleteReviewRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
-                requestQueue.add(deleteReviewRequest);      // RequestQueue에 요청 추가
-            });
+                // 닫기 버튼 클릭 리스너
+                dlCloseBtn.setOnClickListener(view1 -> reviewDeleteDialog.dismiss());
 
-            // 닫기 버튼 클릭 리스너
-            dlCloseBtn.setOnClickListener(view1 -> reviewDeleteDialog.dismiss());
-
-        }else if(flag.equals("heartInsert")){   // 리뷰 좋아요 추가
-            if(isLoginFlag){    // 로그인 시 이용 가능
-                infoReviewData review = Review.get(position);       // 리뷰 데이터
-                updateReviewHeart(review.getReviewId(), 1, position);
-            }else{
-                StyleableToast.makeText(this, "로그인 후 이용해주세요!", R.style.orangeToast).show();
-            }
-        }else if(flag.equals("heartDelete")){   // 리뷰 좋아요 삭제
-            if(isLoginFlag){    // 로그인 시 이용 가능
-                infoReviewData review = Review.get(position);       // 리뷰 데이터
-                updateReviewHeart(review.getReviewId(), -1, position);
-            }else{
-                StyleableToast.makeText(this, "로그인 후 이용해주세요!", R.style.orangeToast).show();
-            }
+                break;
+            case "heartInsert": // 리뷰 좋아요 추가
+                if (isLoginFlag) {  // 로그인 시 이용 가능
+                    updateReviewHeart(Review.get(position).getReviewId(), 1, position);
+                } else {
+                    StyleableToast.makeText(this, "로그인 후 이용해주세요!", R.style.orangeToast).show();
+                }
+                break;
+            case "heartDelete": // 리뷰 좋아요 삭제
+                if (isLoginFlag) {  // 로그인 시 이용 가능
+                    updateReviewHeart(Review.get(position).getReviewId(), -1, position);
+                } else {
+                    StyleableToast.makeText(this, "로그인 후 이용해주세요!", R.style.orangeToast).show();
+                }
+                break;
         }
     }
 
     // 리뷰 좋아요 수정
     private void updateReviewHeart(int reviewId, int flag, int position){
+        // POST 방식 파라미터 설정
+        // Param => bmkCobId : 삭제할 찜한 협업 목록 고유 아이디
+        //          reviewId : 로그인 유저 고유 아이디
+        //          flag : 추가 : +1, 삭제 : -1
         Map<String, String> param = new HashMap<>();
-
-        param.put("reviewId", String.valueOf(reviewId));   // 수정할 리뷰 고유 아이디
-        param.put("userId", String.valueOf(User.getInt("userId", 0)));   // 수정할 유저 고유 아이디
-        param.put("flag", String.valueOf(flag));   // 증가 +1, 감소 -1
+        param.put("reviewId", String.valueOf(reviewId));    // 수정할 리뷰 고유 아이디
+        param.put("userId", String.valueOf(User.getInt("userId", 0)));  // 수정할 유저 고유 아이디
+        param.put("flag", String.valueOf(flag));    // 증가 +1, 감소 -1
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest updateReviewHeartRequest = new StringRequest(Request.Method.POST, HOST + UPDATE_REVIEW_HEART_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   //Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     if(flag == 1){  // 좋아요 추가
@@ -1274,6 +1337,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
                         StyleableToast.makeText(this, "좋아요 삭제 성공!", R.style.blueToast).show();
                     }
 
+                    // 리사이클러뷰 데이터 SET
                     infoReviewAdapter.setReviews(Review);
                     infoReviewAdapter.notifyItemChanged(position);
                 }else{
@@ -1288,7 +1352,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             Log.d("updateReviewHeartError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -1297,16 +1361,14 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         updateReviewHeartRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(updateReviewHeartRequest);      // RequestQueue에 요청 추가
     }
-
-
     // ---------------- 리뷰 Section End ---------------------
 
 
     // ---------------- 찜 Section Start ---------------------
-
-
     // 유저 찜한 가게 삭제
     private void deleteBookmarkStore(int index){
+        // POST 방식 파라미터 설정
+        // Param => bmkStId : 삭제할 찜한 가게 목록 고유 아이디
         Map<String, String> param = new HashMap<>();
 
         param.put("bmkStId", String.valueOf(BookmarkStore.get(index).getBmkStoreId()));   // 삭제할 찜한 가게 목록 고유 아이디
@@ -1314,14 +1376,13 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         StringRequest deleteBookmarkRequest = new StringRequest(Request.Method.POST, HOST + DELETE_BOOKMARK_STORE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(this, "삭제 성공!", R.style.blueToast).show();
 
-                    BookmarkStore.remove(index);   // 데이터 삭제
-
-                    bookmarkStoreIndex = -1;  // 현재 가게의 찜한 목록 데이터의 인덱스 초기화
+                    BookmarkStore.remove(index);    // 데이터 삭제
+                    bookmarkStoreIndex = -1;    // 현재 가게의 찜한 목록 데이터의 인덱스 초기화
 
                 }else{
                     StyleableToast.makeText(this, "삭제 실패...", R.style.redToast).show();
@@ -1335,7 +1396,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             Log.d("deleteBookmarkStoreError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -1347,23 +1408,26 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
     // 유저 찜한 가게 추가
     private void insertBookmarkStore(int userId, int storeId){
+        // POST 방식 파라미터 설정
+        // Param => userId : 추가할 유저 고유 아이디
+        //          storeId : 추가할 찜한 가게 목록 고유 아이디
         Map<String, String> param = new HashMap<>();
+        param.put("userId", String.valueOf(userId));    // 유저 고유 아이디
+        param.put("storeId", String.valueOf(storeId));  // 찜할 가게 고유 아이디
 
-        param.put("userId", String.valueOf(userId));   // 유저 고유 아이디
-        param.put("storeId", String.valueOf(storeId));   // 찜할 가게 고유 아이디
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest insertBookmarkRequest = new StringRequest(Request.Method.POST, HOST + INSERT_BOOKMARK_STORE_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(this, "추가 성공!", R.style.blueToast).show();
 
                     // 데이터 추가
                     BookmarkStore.add(new mainBookmarkStoreData(
-                            Integer.parseInt(jsonObject.getString("bmkStId"))
-                            , storeId
+                            Integer.parseInt(jsonObject.getString("bmkStId"))   // 찜한 가게 테이블 고유 아이디
+                            , storeId   // 찜한 가게 고유 아이디
                     ));
 
                     bookmarkStoreIndex = BookmarkStore.size() - 1;  // 현재 가게의 찜한 목록 데이터의 인덱스 SET
@@ -1379,7 +1443,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             Log.d("insertBookmarkStoreError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -1392,24 +1456,26 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
     // 유저 찜한 협업 정보 Return
     private void getBookmarkCollabo(){
         // GET 방식 파라미터 설정
+        // Param => userId : 로그인 유저 고유 아이디
+        // GET 방식 파라미터 설정
         String bookmarkCollaboPath = BOOKMARK_COLLABO_PATH;
-        bookmarkCollaboPath += String.format("?userId=%s", User.getInt("userId", 0));     // 유저 고유 아이디
+        bookmarkCollaboPath += String.format("?userId=%s", User.getInt("userId", 0));   // 유저 고유 아이디
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( GET 방식 )
         StringRequest bookmarkCollaboRequest = new StringRequest(Request.Method.GET, HOST + bookmarkCollaboPath, response -> {
             try {
-                JSONObject jsonObject = new JSONObject(response);                 // Response를 JsonObject 객체로 생성
-                JSONArray bookmarkCollaboArr = jsonObject.getJSONArray("bookmarkCollabo");  // 객체에 store라는 Key를 가진 JSONArray 생성
+                JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
+                JSONArray bookmarkCollaboArr = jsonObject.getJSONArray("bookmarkCollabo");  // 객체에 bookmarkCollabo라는 Key를 가진 JSONArray 생성
 
                 if(bookmarkCollaboArr.length() > 0) {
                     for (int i = 0; i < bookmarkCollaboArr.length(); i++) {
-                        JSONObject object = bookmarkCollaboArr.getJSONObject(i);          // 배열 원소 하나하나 꺼내서 JSONObject 생성
+                        JSONObject object = bookmarkCollaboArr.getJSONObject(i);    // 배열 원소 하나하나 꺼내서 JSONObject 생성
 
                         mainBookmarkCollaboData bookmarkCollabo = new mainBookmarkCollaboData(
-                                object.getInt("bookmarkCollaboId")                        // 찜한 협업 목록 고유 아이디
-                                , object.getInt("collaboId")); // 협업 고유 아이디
+                                object.getInt("bookmarkCollaboId")  // 찜한 협업 목록 고유 아이디
+                                , object.getInt("collaboId"));      // 협업 고유 아이디
 
-                        BookmarkCollabo.add(bookmarkCollabo);  // 협업 정보 저장
+                        BookmarkCollabo.add(bookmarkCollabo);   // 협업 데이터 저장
                     }
                 }
             } catch (JSONException e) {
@@ -1426,21 +1492,21 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
     // 유저 찜한 협업 목록 삭제
     private void deleteBookmarkCollabo(int index){
+        // POST 방식 파라미터 설정
+        // Param => bmkCobId : 삭제할 찜한 협업 목록 고유 아이디
         Map<String, String> param = new HashMap<>();
-
         param.put("bmkCobId", String.valueOf(BookmarkCollabo.get(index).getBmkCollaboId()));   // 삭제할 찜한 협업 목록 고유 아이디
 
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest deleteBookmarkCollaboRequest = new StringRequest(Request.Method.POST, HOST + DELETE_BOOKMARK_COLLABO_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   // Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(this, "삭제 성공!", R.style.blueToast).show();
 
-                    BookmarkCollabo.remove(index);   // 데이터 삭제
-
+                    BookmarkCollabo.remove(index);  // 데이터 삭제
                 }else{
                     StyleableToast.makeText(this, "삭제 실패...", R.style.redToast).show();
                 }
@@ -1453,7 +1519,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             Log.d("deleteBookmarkCollaboError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -1465,23 +1531,26 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
 
     // 유저 찜한 협업 목록 추가
     private void insertBookmarkCollabo(int userId, int collaboId){
+        // POST 방식 파라미터 설정
+        // Param => userId : 추가할 유저 고유 아이디
+        //          collaboId : 추가할 찜한 협업 목록 고유 아이디
         Map<String, String> param = new HashMap<>();
+        param.put("userId", String.valueOf(userId));    // 유저 고유 아이디
+        param.put("collaboId", String.valueOf(collaboId));  // 추가할 찜한 협업 목록 고유 아이디
 
-        param.put("userId", String.valueOf(userId));   // 유저 고유 아이디
-        param.put("collaboId", String.valueOf(collaboId));   // 찜할 협업 목록 고유 아이디
         // StringRequest 객체 생성을 통해 RequestQueue로 Volley Http 통신 ( POST 방식 )
         StringRequest insertBookmarkCollaboRequest = new StringRequest(Request.Method.POST, HOST + INSERT_BOOKMARK_COLLABO_PATH, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);   // Response를 JsonObject 객체로 생성
-                String success = jsonObject.getString("success");
+                String success = jsonObject.getString("success");   //Success Flag
 
                 if(!TextUtils.isEmpty(success) && success.equals("1")) {
                     StyleableToast.makeText(this, "추가 성공!", R.style.blueToast).show();
 
                     // 데이터 추가
                     BookmarkCollabo.add(new mainBookmarkCollaboData(
-                            Integer.parseInt(jsonObject.getString("bmkCobId"))
-                            , collaboId
+                            Integer.parseInt(jsonObject.getString("bmkCobId"))  // 찜한 협업 목록 테이블 고유 아이디
+                            , collaboId // 협업 고유 아이디
                     ));
 
                 }else{
@@ -1496,7 +1565,7 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
             Log.d("insertBookmarkCollaboError", "onErrorResponse : " + error);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 // php로 설정값을 보낼 수 있음 ( POST )
                 return param;
             }
@@ -1505,7 +1574,5 @@ public class InfoActivity extends AppCompatActivity implements onInfoCollaboRvCl
         insertBookmarkCollaboRequest.setShouldCache(false);  // 이전 결과가 있어도 새로 요청하여 출력
         requestQueue.add(insertBookmarkCollaboRequest);      // RequestQueue에 요청 추가
     }
-
     // ---------------- 찜 Section End ---------------------
 }
-

@@ -16,16 +16,16 @@ import com.bumptech.glide.Glide;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
 import com.example.itda.ui.home.mainBookmarkCollaboData;
-import com.example.itda.ui.home.mainBookmarkStoreData;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 // ViewHolder 패턴은, 각 뷰의 객체를 ViewHolder에 보관함으로써 뷰의 내용을 업데이트 하기 위한
 // findViewById() 메소드 호출을 줄여 효과적으로 퍼포먼스 개선을 할 수 있는 패턴이다.
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.CustomCollaboViewHolder>{
-    private final ArrayList<collaboData> Collaboes;   // 협업 데이터
-    private ArrayList<mainBookmarkCollaboData> BookmarkCollabos;    // 찜한 협업 목록 데이터
+    private final ArrayList<collaboData> Collaboes; // 협업 데이터
+    private final ArrayList<mainBookmarkCollaboData> BookmarkCollabos;  // 찜한 협업 목록 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -43,7 +43,6 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
         this.Collaboes = collabos;
         this.BookmarkCollabos = bookmarkCollabos;
     }
-
 
     // ViewHolder를 새로 만들어야 할 때 호출
     // 각 아이템을 위한 XML 레이아웃을 활용한 뷰 객체를 생성하고 이를 뷰 홀더 객체에 담아 리턴
@@ -63,38 +62,45 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
     public void onBindViewHolder(@NonNull CollaboRvAdapter.CustomCollaboViewHolder holder, int position) {
         collaboData collabo = Collaboes.get(position);  // 현재 Position 협업 데이터
 
-        // 앞가게
-        holder.prv_store_name.setText(collabo.getPrvStoreName());   // 앞 가게 명
+        // 앞 가게 명 SET
+        holder.prv_store_name.setText(collabo.getPrvStoreName());
 
-        // 앞 가게 썸네일 이미지
+        // 앞 가게 썸네일 이미지 SET
         Glide.with(holder.itemView)
                 .load(Uri.parse(collabo.getPrvStoreImagePath()))    // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.prv_store_image);      // 이미지를 보여줄 View를 지정
 
-        // 앞 가게 할인 조건
-        String discountCondition = collabo.getPrvDiscountCondition() + "원 이상 결제";
+        DecimalFormat numberFormatter = new DecimalFormat("###,###");   // 문자열 형식 변경 Formatter ( 숫자 + 콤마 )
+
+        // 앞 가게 할인 조건 SET
+        String discountCondition = numberFormatter.format(collabo.getPrvDiscountCondition()) + "원 이상 결제";
         holder.prv_store_discount_condition.setText(discountCondition);
 
-        // 뒷가게
+        // 뒷가게 명 SET
         holder.post_store_name.setText(collabo.getPostStoreName()); // 뒷 가게 명
 
-        // 뒷 가게 썸네일 이미지
+        // 뒷 가게 썸네일 이미지 SET
         Glide.with(holder.itemView)
-                .load(Uri.parse(collabo.getPostStoreImagePath()))
+                .load(Uri.parse(collabo.getPostStoreImagePath()))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)
-                .fallback(R.drawable.ic_fallback)
-                .into(holder.post_store_image);
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .into(holder.post_store_image);     // 이미지를 보여줄 View를 지정
 
-        // 뒷 가게 할인율
+        // 뒷 가게 할인율 SET
         String discountRate = collabo.getPostDiscountRate() + "% 할인";
         holder.post_store_discount_rate.setText(discountRate);
 
-        // 가게 간 거리
-        String distanceStr = collabo.getCollaboDistance() + " km";
+        // 가게 간 거리 SET
+        String distanceStr;
+        if(Double.parseDouble(collabo.getCollaboDistance()) >= 00.1){
+            distanceStr = collabo.getCollaboDistance() + " km";
+        }else{
+            distanceStr = "10m 이내";
+        }
         holder.distance.setText(distanceStr);
 
         // 로그인이 되어있을 경우 찜 버튼 보이기
@@ -121,11 +127,6 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
         CollaboRvAdapter.rvClickListener = rvClickListener;
     }
 
-//    // 찜한 가게 목록 설정
-//    public void setbookmarkCollabos(ArrayList<mainBookmarkStoreData> bookmarkStores) {
-//        BookmarkStores = bookmarkStores;
-//    }
-
     // RecyclerView Adapter에서 관리하는 아이템의 개수를 반환
     @Override
     public int getItemCount() {
@@ -136,15 +137,14 @@ public class CollaboRvAdapter extends RecyclerView.Adapter<CollaboRvAdapter.Cust
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomCollaboViewHolder extends RecyclerView.ViewHolder {
-        ImageButton prv_store_image;            // 앞 가게 썸네일 이미지
-        ImageButton post_store_image;           // 뒷 가게 썸네일 이미지
-        TextView prv_store_name;                // 앞 가게 명
-        TextView post_store_name;               // 뒷 가게 명
+        ImageButton prv_store_image;    // 앞 가게 썸네일 이미지
+        ImageButton post_store_image;   // 뒷 가게 썸네일 이미지
+        TextView prv_store_name;        // 앞 가게 명
+        TextView post_store_name;       // 뒷 가게 명
         TextView prv_store_discount_condition;  // 앞 가게 할인 조건
         TextView post_store_discount_rate;      // 뒷 가게 할인 율
-        TextView distance;                      // 가게 간 거리
-
-        Button bookmarkBtn;                     // 협업 목록 찜 버튼
+        TextView distance;  // 가게 간 거리
+        Button bookmarkBtn; // 협업 목록 찜 버튼
 
         public CustomCollaboViewHolder(@NonNull View itemView) {
             super(itemView);

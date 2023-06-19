@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,16 +13,17 @@
         android:background="@drawable/border_bottom">
 
         <ImageButton
+            android:id="@+id/login_membership_option_back_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/login_membership_option_back_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/loginMembershipOption01" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
             app:layout_constraintLeft_toRightOf="@+id/login_membership_option_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
-            android:text="회원가입 정보 입력"
+            android:text="@string/loginMembershipOption02"
             android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"/>
@@ -48,7 +49,7 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -66,11 +67,12 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/gray"
+                        android:src="@drawable/temp_image"
                         android:padding="0dp"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/loginMembershipOption03" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -82,64 +84,59 @@
                 android:layout_height="30dp"
                 android:scaleType="centerCrop"
                 android:padding="0dp"
-                android:src="@drawable/ic_add"
+                android:src="@drawable/ic_add_green_16dp"
                 android:adjustViewBounds="true"
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/loginMembershipOption04" />
 
         </FrameLayout>
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="5dp">
+
+        <TextView
+            android:id="@+id/login_membership_option_user_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/loginMembershipOption05"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/login_membership_option_user_name_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="이름"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/login_membership_option_user_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:textSize="11sp"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:background="@drawable/round_gray_little"
-                    android:paddingVertical="15dp"
-                    android:paddingStart="20dp"
-                    android:textColor="@color/black"
-                    android:layout_marginVertical="10dp"
-                    android:textStyle="bold"
-                    android:hint="이름을 입력해 주세요."
-                    android:maxLength="10"
-                    android:layout_weight="3"
-                    android:layout_marginEnd="10dp"/>
-
-            </LinearLayout>
+            <EditText
+                android:id="@+id/login_membership_option_user_name"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:textSize="11sp"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:background="@drawable/round_gray_10dp"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/black"
+                android:layout_marginVertical="10dp"
+                android:textStyle="bold"
+                android:hint="@string/loginMembershipOption06"
+                android:maxLength="10"
+                android:layout_weight="3"
+                android:layout_marginEnd="10dp"
+                android:autofillHints="no"/>
 
         </LinearLayout>
 
@@ -148,51 +145,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="5dp">
+
+        <TextView
+            android:id="@+id/login_membership_option_user_number_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/loginMembershipOption07"
+            android:textColor="#5E5E5E"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:paddingVertical="5dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/login_membership_option_user_number_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5dp"
-                android:text="휴대폰 번호 ( '-'를 제외한 번호를 입력해주세요. )"
-                android:textColor="#5E5E5E"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/login_membership_option_user_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:textSize="11sp"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:background="@drawable/round_gray_little"
-                    android:paddingVertical="15dp"
-                    android:paddingStart="20dp"
-                    android:textColor="@color/black"
-                    android:layout_marginVertical="10dp"
-                    android:textStyle="bold"
-                    android:hint="휴대폰 번호를 입력해 주세요."
-                    android:maxLength="14"
-                    android:layout_weight="3"
-                    android:layout_marginEnd="10dp"
-                    android:digits="0123456789"/>
-
-            </LinearLayout>
+            <EditText
+                android:id="@+id/login_membership_option_user_number"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:textSize="11sp"
+                android:inputType="number"
+                android:maxLines="1"
+                android:background="@drawable/round_gray_10dp"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/black"
+                android:layout_marginVertical="10dp"
+                android:textStyle="bold"
+                android:hint="@string/loginMembershipOption08"
+                android:maxLength="14"
+                android:layout_weight="3"
+                android:layout_marginEnd="10dp"
+                android:digits="0123456789"
+                android:autofillHints="no"/>
 
         </LinearLayout>
 
@@ -211,18 +201,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
-            android:text="생일"
+            android:text="@string/loginMembershipOption09"
             android:textColor="#5E5E5E"
             android:textSize="11sp"
             android:textStyle="bold"
-            android:paddingStart="5dp"/>
+            android:layout_marginStart="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="9"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@drawable/round_gray_10dp">
 
             <NumberPicker
                 android:id="@+id/login_membership_option_birthday_year"
@@ -230,15 +221,17 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/NumberPickerText"
                 android:selectionDividerHeight="0dp"
-                android:descendantFocusability="blocksDescendants"/>
+                android:descendantFocusability="blocksDescendants"
+                tools:ignore="UnusedAttribute"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="년"
+                android:text="@string/loginMembershipOption10"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="@color/gray03"/>
 
             <NumberPicker
@@ -246,15 +239,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/NumberPickerText"
-                android:selectionDividerHeight="0dp"/>
+                android:selectionDividerHeight="0dp"
+                tools:ignore="UnusedAttribute"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="월"
+                android:text="@string/loginMembershipOption11"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="@color/gray03"/>
 
             <NumberPicker
@@ -262,14 +257,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/NumberPickerText"
-                android:selectionDividerHeight="0dp"/>
+                android:selectionDividerHeight="0dp"
+                tools:ignore="UnusedAttribute"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="일"
+                android:text="@string/loginMembershipOption12"
                 android:layout_gravity="center"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="@color/gray03"/>
 
         </LinearLayout>
@@ -285,8 +282,9 @@
         android:id="@+id/login_membership_option_btn"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@drawable/round_color_little"
-        android:text="입력완료"
+        android:background="@drawable/round_green_10dp"
+        android:text="@string/loginMembershipOption13"
+        android:textColor="@color/white"
         android:gravity="center"
         android:textStyle="bold"
         android:layout_marginTop="20dp"/>

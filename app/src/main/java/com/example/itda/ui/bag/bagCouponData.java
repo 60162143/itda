@@ -3,17 +3,17 @@ package com.example.itda.ui.bag;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BagCouponData implements Parcelable {
-    private int couponId;         // 쿠폰 고유 아이디
-    private int storeId;        // 가게 고유 아이디
-    private int userId;    // 유저 고유 아이디
-    private int discountRate;      // 쿠폰 할인율
-    private String expDate;      // 쿠폰 만료일
-    private String storeName;      // 가게 명
-    private String storeImagePath;      // 가게 썸네일 이미지
+public class bagCouponData implements Parcelable {
+    private int couponId;   // 쿠폰 고유 아이디
+    private int storeId;    // 가게 고유 아이디
+    private int userId;     // 유저 고유 아이디
+    private int discountRate;   // 쿠폰 할인율
+    private String expDate;     // 쿠폰 만료일
+    private String storeName;   // 가게 명
+    private String storeImagePath;  // 가게 썸네일 이미지
 
     // Constructor
-    public BagCouponData(int couponId, int storeId, int userId, int discountRate, String expDate, String storeName, String storeImagePath) {
+    public bagCouponData(int couponId, int storeId, int userId, int discountRate, String expDate, String storeName, String storeImagePath) {
         this.couponId = couponId;
         this.storeId = storeId;
         this.userId = userId;
@@ -24,7 +24,7 @@ public class BagCouponData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected BagCouponData(Parcel in) {
+    protected bagCouponData(Parcel in) {
         couponId = in.readInt();
         storeId = in.readInt();
         userId = in.readInt();
@@ -36,16 +36,16 @@ public class BagCouponData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<BagCouponData> CREATOR = new Creator<BagCouponData>() {
+    public static final Creator<bagCouponData> CREATOR = new Creator<bagCouponData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public BagCouponData createFromParcel(Parcel in) {
-            return new BagCouponData(in);
+        public bagCouponData createFromParcel(Parcel in) {
+            return new bagCouponData(in);
         }
 
         @Override
-        public BagCouponData[] newArray(int size) {
-            return new BagCouponData[size];
+        public bagCouponData[] newArray(int size) {
+            return new bagCouponData[size];
         }
     };
 
@@ -71,7 +71,6 @@ public class BagCouponData implements Parcelable {
     //=======================================================================
 
     // Getter, Setter
-
     public int getCouponId() {
         return couponId;
     }

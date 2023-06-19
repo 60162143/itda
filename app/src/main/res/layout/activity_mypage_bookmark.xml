@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,8 +21,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/mypageBookmark01" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -43,11 +43,11 @@
                 app:layout_constraintRight_toLeftOf="@+id/mypage_bookmark_collabo_btn"
                 android:layout_marginStart="20dp"
                 android:textSize="11sp"
-                android:text="찜한 가게"
+                android:text="@string/mypageBookmark02"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:background="@drawable/round_select_color_little"
+                android:background="@drawable/round_select_green_10dp"
                 android:paddingHorizontal="10dp"
                 android:enabled="false"/>
 
@@ -61,11 +61,11 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginStart="20dp"
                 android:textSize="11sp"
-                android:text="찜한 협업 리스트"
+                android:text="@string/mypageBookmark03"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:background="@drawable/round_unselect_color_little"
+                android:background="@drawable/round_unselect_green_10dp"
                 android:paddingHorizontal="10dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -87,7 +87,7 @@
         android:id="@+id/mypage_bookmark_no_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="목록이 없습니다."
+        android:text="@string/mypageBookmark04"
         android:gravity="center"
         android:visibility="gone"/>
 

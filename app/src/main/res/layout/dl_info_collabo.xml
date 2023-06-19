@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="@drawable/round_dl">
+    android:background="@drawable/round_dl_white_15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,14 +36,15 @@
                     android:id="@+id/info_collabo_previous_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginBottom="5dp"
-                    android:paddingStart="10dp"
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="앞가게 명"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:text="@string/dlInfoCollabo01"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray05"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -57,11 +59,12 @@
                         android:id="@+id/info_collabo_previous_store_image"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:background="@drawable/round"
+                        android:background="@drawable/round_white_30dp"
                         android:layout_gravity="center"
                         android:padding="0dp"
-                        android:src="@drawable/ic_test_image"
-                        android:adjustViewBounds="true"/>
+                        android:src="@drawable/ic_test_image_black_200dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/dlInfoCollabo02"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -81,7 +84,8 @@
                 android:id="@+id/arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow" />
+                android:src="@drawable/ic_arrow_green_24dp"
+                android:contentDescription="@string/dlInfoCollabo03"/>
 
         </LinearLayout>
 
@@ -101,21 +105,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/info_collabo_post_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginBottom="5dp"
-                    android:text="뒷가게 명"
-                    android:paddingStart="10dp"
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/dlInfoCollabo04"
+                    android:layout_marginStart="10dp"
                     android:textStyle="bold"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:maxLines="1"
-                    android:ellipsize="end"/>
+                    android:ellipsize="end"
+                    android:textColor="@color/gray05"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -124,8 +128,7 @@
                     app:cardElevation="0dp"
                     app:cardCornerRadius="20dp"
                     android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    >
+                    android:adjustViewBounds="true">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -135,22 +138,23 @@
                             android:id="@+id/info_collabo_post_store_image"
                             android:layout_width="120dp"
                             android:layout_height="120dp"
-                            android:background="@drawable/round"
+                            android:background="@drawable/round_white_30dp"
                             android:layout_gravity="center"
                             android:padding="0dp"
-                            android:src="@drawable/ic_test_image"
+                            android:src="@drawable/ic_test_image_black_200dp"
                             android:adjustViewBounds="true"
-                            />
+                            android:contentDescription="@string/dlInfoCollabo05"/>
 
                         <ImageButton
                             android:id="@+id/info_collabo_bookmark_btn"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/selector_bookmark_white"
+                            android:src="@drawable/selector_bookmark_white_24dp"
                             android:background="#00000000"
                             android:layout_gravity="end"
                             android:layout_marginEnd="5dp"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginTop="5dp"
+                            android:contentDescription="@string/dlInfoCollabo06"/>
 
                     </FrameLayout>
 
@@ -165,58 +169,41 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/info_collabo_distance"
+            android:layout_marginStart="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp"
-            android:layout_marginStart="20dp">
+            android:text="@string/dlInfoCollabo07"
+            android:textColor="@color/gray04"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_map_black_20dp"
+            android:drawablePadding="30dp"
+            tools:ignore="UseCompatTextViewDrawableXml"
+            android:paddingVertical="8dp"
+            android:gravity="center_vertical"/>
 
-            <ImageView
-                android:id="@+id/info_collabo_distance_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_map"
-                />
-
-            <TextView
-                android:id="@+id/info_collabo_distance"
-                android:layout_marginStart="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.8Km 거리"
-                android:layout_gravity="center_vertical"
-                android:textSize="12sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/info_collabo_coupon"
+            android:layout_marginStart="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp"
-            android:layout_marginStart="20dp">
-
-            <ImageView
-                android:id="@+id/info_collabo_coupon_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_coupon" />
-
-            <TextView
-                android:id="@+id/info_collabo_coupon"
-                android:layout_marginStart="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="앞가게에서 만원 이상 결제 시 뒷가게 할인"
-                android:layout_gravity="center_vertical"
-                android:textSize="12sp"
-                android:lineSpacingExtra="2dp"
-                android:lineSpacingMultiplier="1.5"/>
-
-        </LinearLayout>
+            android:text="@string/dlInfoCollabo08"
+            android:textColor="@color/gray04"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_coupon_black_24dp"
+            android:drawablePadding="30dp"
+            tools:ignore="UseCompatTextViewDrawableXml"
+            android:paddingVertical="8dp"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="5dp"/>
 
     </LinearLayout>
 

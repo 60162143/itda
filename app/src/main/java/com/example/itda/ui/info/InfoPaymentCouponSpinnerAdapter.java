@@ -1,6 +1,5 @@
 package com.example.itda.ui.info;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.itda.R;
 
 import java.util.ArrayList;
 
 public class InfoPaymentCouponSpinnerAdapter extends BaseAdapter {
-    private final ArrayList<infoPaymentCouponData> Coupons;    // 쿠폰 데이터
+    private final ArrayList<infoPaymentCouponData> Coupons; // 쿠폰 데이터
 
     // Activity Content
     // 어플리케이션의 현재 상태를 갖고 있음
@@ -54,13 +50,16 @@ public class InfoPaymentCouponSpinnerAdapter extends BaseAdapter {
             rootView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.sp_info_payment_coupon, viewGroup, false);
         }
 
-        TextView couponTxt = rootView.findViewById(R.id.sp_info_payment_coupon_content);
+        TextView couponContent = rootView.findViewById(R.id.sp_info_payment_coupon_content);
 
+        // 쿠폰 내용 SET
+        String couponContentTxt;
         if(i == 0){
-            couponTxt.setText("쿠폰 없음");
+            couponContentTxt = "쿠폰 없음";
         }else{
-            couponTxt.setText(Coupons.get(i).getDiscountRate() + "% 할인 쿠폰( ~ " + Coupons.get(i).getExpDate() + " )");
+            couponContentTxt = Coupons.get(i).getDiscountRate() + "% 할인 쿠폰( ~ " + Coupons.get(i).getExpDate() + " )";
         }
+        couponContent.setText(couponContentTxt);
 
         return rootView;
     }

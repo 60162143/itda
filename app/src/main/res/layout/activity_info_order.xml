@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,29 +12,33 @@
         android:background="@drawable/border_bottom">
 
         <ImageButton
+            android:id="@+id/info_order_back_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/info_order_back_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/infoOrder01" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
             android:id="@+id/info_order_main_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/info_order_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="12sp"
-            android:text="가게 이름"
-            android:background="@drawable/round_color"
-            android:paddingHorizontal="10dp"/>
+            android:textStyle="bold"
+            android:text="@string/infoOrder02"
+            android:textColor="@color/white"
+            android:background="@drawable/round_green_30dp"
+            android:paddingHorizontal="20dp"
+            android:gravity="center"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -55,7 +58,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="메뉴 목록"
+                android:text="@string/infoOrder03"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
@@ -66,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="10dp"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"/>
 
         </LinearLayout>
 
@@ -81,7 +84,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="최종 주문 목록"
+                android:text="@string/infoOrder04"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
@@ -91,17 +94,19 @@
                 android:id="@+id/info_order_select_menu_no_item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="주문목록이 비었습니다. 목록을 추가해 주세요."
+                android:text="@string/infoOrder05"
                 android:textColor="@color/gray03"
-                android:layout_marginStart="20dp"
-                android:textSize="12sp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginStart="30dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/info_order_select_menu_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
+                android:layout_marginStart="20dp"
                 android:overScrollMode="never"/>
 
         </LinearLayout>
@@ -111,7 +116,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <!--    결제 버튼 입니다-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,13 +125,13 @@
                 android:id="@+id/info_order_btn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="주문하기"
+                android:text="@string/infoOrder06"
                 android:textSize="15sp"
                 android:textStyle="bold"
+                android:textColor="@color/white"
                 android:background="@color/green03"/>
 
         </LinearLayout>
-        <!--    결제 버튼 끝입니다-->
 
     </LinearLayout>
 

@@ -1,19 +1,19 @@
 package com.example.itda.ui.mypage;
 
-public class MyPageBookmarkStoreData {
-    private int storeId;             // 가게 고유 아이디
-    private String storeName;        // 가게 명
+public class myPageBookmarkStoreData {
+    private int storeId;        // 가게 고유 아이디
+    private String storeName;   // 가게 명
     private String storeImagePath;  // 가게 썸네일 경로
-    private float storeScore;        // 가게 별점
-    private double storeLatitude;    // 가게 위도
-    private double storeLongitude;   // 가게 경도
-    private float storeDistance;     // 현재 위치에서 가게까지의 거리
-    private String storeInfo;        // 가게 간단 정보
-    private String storeHashTag;     // 가게 해시태그
-    private int bookmarkStoreId;     // 찜한 가게 목록 고유 아이디
+    private float storeScore;       // 가게 별점
+    private double storeLatitude;   // 가게 위도
+    private double storeLongitude;  // 가게 경도
+    private float storeDistance;    // 현재 위치에서 가게까지의 거리
+    private String storeInfo;       // 가게 간단 정보
+    private String storeHashTag;    // 가게 해시태그
+    private int bookmarkStoreId;    // 찜한 가게 목록 고유 아이디
 
     // Constructor
-    public MyPageBookmarkStoreData(int storeId
+    public myPageBookmarkStoreData(int storeId
             , String storeName
             , String storeImagePath
             , float storeScore

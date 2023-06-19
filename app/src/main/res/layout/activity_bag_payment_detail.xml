@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:ignore="RtlSymmetry">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +22,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_green_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/bagPaymentDetail01"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +34,7 @@
             app:layout_constraintLeft_toRightOf="@+id/bag_payment_detail_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
-            android:text="주문/결제 내역 상세"
+            android:text="@string/bagPaymentDetail02"
             android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"/>
@@ -55,9 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/border_vertical">
+                android:background="@drawable/border_vertical_gray">
 
-                <!--카드뷰-->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -71,7 +72,6 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <!--카드뷰-->
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -82,18 +82,17 @@
                             app:cardCornerRadius="20dp"
                             android:adjustViewBounds="true">
 
-                            <!--가게 썸네일-->
                             <ImageButton
                                 android:id="@+id/bag_payment_detail_store_image"
                                 android:layout_width="150dp"
                                 android:layout_height="150dp"
                                 android:layout_gravity="center"
                                 android:adjustViewBounds="true"
-                                android:background="@drawable/round"
-                                android:contentDescription="TODO"
+                                android:background="@drawable/round_white_30dp"
+                                android:contentDescription="@string/bagPaymentDetail03"
                                 android:padding="0dp"
-                                android:src="@drawable/ic_test_image"
-                                app:cardCornerRadius="20dp" />
+                                android:src="@drawable/ic_test_image_black_200dp"
+                                app:cardCornerRadius="20dp"/>
 
                         </androidx.cardview.widget.CardView>
 
@@ -108,7 +107,7 @@
                                 android:id="@+id/bag_payment_detail_store_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="착한커피"
+                                android:text="@string/bagPaymentDetail04"
                                 android:textColor="@color/gray05"
                                 android:textStyle="bold"
                                 android:textSize="18sp"
@@ -119,7 +118,7 @@
                                 android:id="@+id/bag_payment_detail_pay_id"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="주문 번호 : 1"
+                                android:text="@string/bagPaymentDetail05"
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -133,7 +132,7 @@
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:text="결제 일자 : 2023.06.10"
+                                android:text="@string/bagPaymentDetail06"
                                 android:layout_weight="1"
                                 android:gravity="top"/>
                             <TextView
@@ -143,7 +142,7 @@
                                 android:textColor="@color/gray03"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:text="만료 일자 : 2023.06.10"
+                                android:text="@string/bagPaymentDetail07"
                                 android:gravity="top"
                                 android:layout_weight="1"/>
 
@@ -156,7 +155,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="top"
-                                    android:text="티켓 : "
+                                    android:text="@string/bagPaymentDetail08"
                                     android:textColor="@color/gray03"
                                     android:textSize="12sp"
                                     android:textStyle="bold"/>
@@ -166,14 +165,13 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="top"
-                                    android:text="사용 가능"
+                                    android:text="@string/bagPaymentDetail09"
                                     android:textColor="@color/green05"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold"/>
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginStart="5dp"/>
 
                             </LinearLayout>
-
-
 
                         </LinearLayout>
 
@@ -186,7 +184,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="결제 메뉴 목록"
+                android:text="@string/bagPaymentDetail10"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
@@ -201,7 +199,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="결제 금액"
+                android:text="@string/bagPaymentDetail11"
                 android:textColor="@color/gray05"
                 android:textStyle="bold"
                 android:textSize="16sp"
@@ -225,7 +223,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="주문 금액"
+                        android:text="@string/bagPaymentDetail12"
                         android:layout_weight="7"
                         android:textColor="@color/gray04"
                         android:textStyle="bold"
@@ -236,7 +234,7 @@
                         android:id="@+id/bag_payment_detail_order_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="33,000원"
+                        android:text="@string/bagPaymentDetail13"
                         android:layout_weight="3"
                         android:textColor="@color/gray03"
                         android:textStyle="bold"
@@ -258,7 +256,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="쿠폰 할인 금액"
+                        android:text="@string/bagPaymentDetail14"
                         android:layout_weight="7"
                         android:textColor="@color/gray04"
                         android:textStyle="bold"
@@ -269,7 +267,7 @@
                         android:id="@+id/bag_payment_detail_coupon_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="-2,000원"
+                        android:text="@string/bagPaymentDetail15"
                         android:layout_weight="3"
                         android:textColor="@color/gray03"
                         android:textStyle="bold"
@@ -293,7 +291,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="총 결제 금액"
+                    android:text="@string/bagPaymentDetail16"
                     android:layout_weight="7"
                     android:textColor="@color/gray04"
                     android:textStyle="bold"
@@ -304,7 +302,7 @@
                     android:id="@+id/bag_payment_detail_total_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="33,000원"
+                    android:text="@string/bagPaymentDetail13"
                     android:layout_weight="3"
                     android:textColor="@color/green04"
                     android:textStyle="bold"

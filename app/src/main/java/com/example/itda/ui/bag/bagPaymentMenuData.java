@@ -3,16 +3,16 @@ package com.example.itda.ui.bag;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BagPaymentMenuData implements Parcelable {
-    private int paymentMenuId;         // 결제 메뉴 테이블 고유 아이디
-    private int paymentId;        // 결제 고유 아이디
-    private int menuId;    // 메뉴 고유 아이디
+public class bagPaymentMenuData implements Parcelable {
+    private int paymentMenuId;  // 결제 메뉴 테이블 고유 아이디
+    private int paymentId;  // 결제 고유 아이디
+    private int menuId;     // 메뉴 고유 아이디
     private int menuCount;      // 메뉴 수량
-    private String menuName;      // 메뉴 이름
+    private String menuName;    // 메뉴 이름
     private int menuPrice;      // 메뉴 가격
 
     // Constructor
-    public BagPaymentMenuData(int paymentMenuId, int paymentId, int menuId, int menuCount, String menuName, int menuPrice) {
+    public bagPaymentMenuData(int paymentMenuId, int paymentId, int menuId, int menuCount, String menuName, int menuPrice) {
         this.paymentMenuId = paymentMenuId;
         this.paymentId = paymentId;
         this.menuId = menuId;
@@ -22,7 +22,7 @@ public class BagPaymentMenuData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected BagPaymentMenuData(Parcel in) {
+    protected bagPaymentMenuData(Parcel in) {
         paymentMenuId = in.readInt();
         paymentId = in.readInt();
         menuId = in.readInt();
@@ -33,16 +33,16 @@ public class BagPaymentMenuData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<BagPaymentMenuData> CREATOR = new Creator<BagPaymentMenuData>() {
+    public static final Creator<bagPaymentMenuData> CREATOR = new Creator<bagPaymentMenuData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public BagPaymentMenuData createFromParcel(Parcel in) {
-            return new BagPaymentMenuData(in);
+        public bagPaymentMenuData createFromParcel(Parcel in) {
+            return new bagPaymentMenuData(in);
         }
 
         @Override
-        public BagPaymentMenuData[] newArray(int size) {
-            return new BagPaymentMenuData[size];
+        public bagPaymentMenuData[] newArray(int size) {
+            return new bagPaymentMenuData[size];
         }
     };
 
@@ -65,7 +65,6 @@ public class BagPaymentMenuData implements Parcelable {
         dest.writeInt(menuPrice);
     }
     //=======================================================================
-
     // Getter, Setter
     public int getPaymentMenuId() {
         return paymentMenuId;

@@ -1,19 +1,19 @@
 package com.example.itda.ui.mypage;
 
-public class MyPageBookmarkCollaboData {
-    private int bookmarkCollaboId;                    // 찜한 협업 목록 고유 아이디
-    private int prvStoreId;               // 앞 가게 고유 아이디
-    private String prvStoreName;            // 앞 가게 명
-    private String prvStoreImagePath;             // 앞 가게 이미지 경로
-    private int prvDiscountCondition;           // 앞 가게 할인 조건
-    private int postStoreId;               // 뒷 가게 고유 아이디
-    private String postStoreName;            // 뒷 가게 명
-    private String postStoreImagePath;             // 뒷 가게 이미지 경로
-    private int postDiscountRate;           // 뒷 가게 할인 율
-    private float distance;           // 가게 사이의 거리
+public class myPageBookmarkCollaboData {
+    private int bookmarkCollaboId;  // 찜한 협업 목록 고유 아이디
+    private int prvStoreId; // 앞 가게 고유 아이디
+    private String prvStoreName;        // 앞 가게 명
+    private String prvStoreImagePath;   // 앞 가게 이미지 경로
+    private int prvDiscountCondition;   // 앞 가게 할인 조건
+    private int postStoreId;        // 뒷 가게 고유 아이디
+    private String postStoreName;   // 뒷 가게 명
+    private String postStoreImagePath;  // 뒷 가게 이미지 경로
+    private int postDiscountRate;       // 뒷 가게 할인 율
+    private float distance; // 가게 사이의 거리
 
     // Constructor
-    public MyPageBookmarkCollaboData(int bookmarkCollaboId
+    public myPageBookmarkCollaboData(int bookmarkCollaboId
             , int prvStoreId
             , String prvStoreName
             , String prvStoreImagePath

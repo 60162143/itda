@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,48 +12,39 @@
         android:background="@color/black">
 
         <ImageButton
+            android:id="@+id/info_photo_back_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/info_photo_back_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_arrow_back_white"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/infoPhoto01" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
             android:id="@+id/info_photo_main_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/info_photo_back_ic"
             android:layout_marginStart="20dp"
             android:textSize="12sp"
-            android:text="가게 이름"
-            android:textColor="#ffffff"
-            android:background="#00ff0000"
-            android:paddingHorizontal="10dp"/>
+            android:textStyle="bold"
+            android:text="@string/infoPhoto02"
+            android:textColor="@color/white"
+            android:background="@drawable/round_green_30dp"
+            android:paddingHorizontal="20dp"
+            android:gravity="center"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical">-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/info_photo_detail_rv"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"/>-->
-
-<!--    </LinearLayout>-->
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/info_photo_detail_slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

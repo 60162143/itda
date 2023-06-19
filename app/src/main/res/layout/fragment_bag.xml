@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!--상단 화면 입니다.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,11 +30,11 @@
                 app:layout_constraintRight_toLeftOf="@+id/bag_payment_btn"
                 android:layout_marginStart="20dp"
                 android:textSize="11sp"
-                android:text="사용 가능 쿠폰"
+                android:text="@string/fragmentBag01"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:background="@drawable/round_select_color_little"
+                android:background="@drawable/round_select_green_10dp"
                 android:paddingHorizontal="10dp"
                 android:enabled="false"/>
 
@@ -49,11 +48,11 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginStart="20dp"
                 android:textSize="11sp"
-                android:text="주문/결제 내역"
+                android:text="@string/fragmentBag02"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:background="@drawable/round_unselect_color_little"
+                android:background="@drawable/round_unselect_green_10dp"
                 android:paddingHorizontal="10dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,7 +74,7 @@
         android:id="@+id/bag_no_data_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="목록이 없습니다."
+        android:text="@string/fragmentBag03"
         android:gravity="center"
         android:visibility="gone"/>
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,17 +12,16 @@
         android:orientation="horizontal"
         android:background="@drawable/border_bottom">
 
-        <!--검색 아이콘-->
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/search_button"
             android:layout_marginStart="10dp"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/ic_search"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/ic_search_black_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/fragmentHome02" />
 
-        <!--검색어 입력 창-->
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -34,12 +32,12 @@
             android:textSize="15sp"
             android:inputType="text"
             android:imeOptions="actionSearch"
-            android:hint="검색어를 입력해 주세요."
-            android:background="@null"/>
+            android:hint="@string/fragmentHome02"
+            android:background="@null"
+            android:autofillHints="no" />
 
     </LinearLayout>
 
-    <!--스크롤뷰-->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -49,7 +47,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--카테고리 리사이클러뷰-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_category_rv"
                 android:layout_width="match_parent"
@@ -57,7 +54,6 @@
                 android:background="@drawable/border_bottom"
                 android:paddingVertical="10dp"/>
 
-            <!--가게 정보 리사이클러뷰-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

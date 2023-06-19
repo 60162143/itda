@@ -34,7 +34,8 @@ public class InfoMapActivity extends Activity {
         // 뒤로 가기 버튼 클릭 시 Activity 종료
         infoMapBackIc.setOnClickListener(view -> finish());
 
-        infoMapStoreName.setText(Store.getStoreName()); // 상단 가게 명
+        // 상단 가게 명 SET
+        infoMapStoreName.setText(Store.getStoreName());
     }
 
     // Activity 이동간 mapView는 1개만 띄워져 있어야 하기 때문에
@@ -79,7 +80,6 @@ public class InfoMapActivity extends Activity {
     private void initView(){
         infoMapBackIc = findViewById(R.id.info_map_back_ic);    // 상단 뒤로가기 버튼
         infoMapStoreName = findViewById(R.id.info_map_main_store_name);     // 상단 가게 명
-        mapViewContainer = (ViewGroup) findViewById(R.id.info_map_detail_view); // ViewGroup Container
+        mapViewContainer = findViewById(R.id.info_map_detail_view); // ViewGroup Container
     }
 }
-

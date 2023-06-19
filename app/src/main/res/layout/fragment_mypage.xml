@@ -16,7 +16,7 @@
             android:id="@+id/mypage_set_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/ic_set"
+            android:background="@drawable/ic_set_gray_16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"/>
 
@@ -32,7 +32,7 @@
             android:id="@+id/mypage_login_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="로그인으로 잇다를\n더 풍상하게 사용하세요!"
+            android:text="@string/fragmentMypage01"
             android:lineSpacingExtra ="5dp"
             android:layout_marginEnd="50dp"
             android:textColor="#5E5E5E"
@@ -42,10 +42,10 @@
             android:id="@+id/mypage_login_btn"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:background="@drawable/round_color"
-            android:text="Login"
+            android:background="@drawable/round_green_30dp"
+            android:text="@string/fragmentMypage02"
             android:textSize="12sp"
-            android:textColor="#5E5E5E"
+            android:textColor="@color/white"
             android:textStyle="bold"/>
 
     </LinearLayout>
@@ -55,36 +55,40 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:orientation="vertical"
-        android:paddingTop="20dp">
-<!--        android:visibility="gone">-->
+        android:paddingTop="20dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="end"
-            android:paddingEnd="20dp">
+            android:layout_marginEnd="20dp">
 
             <Button
                 android:id="@+id/mypage_logout_btn"
                 android:layout_width="60dp"
                 android:layout_height="25dp"
-                android:background="@drawable/round_color"
-                android:text="Logout"
+                android:background="@drawable/round_green_30dp"
+                android:text="@string/fragmentMypage03"
                 android:textSize="8sp"
                 android:textStyle="bold"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="10dp"/>
+                android:textColor="@color/white"
+                android:layout_marginEnd="10dp"
+                tools:ignore="SmallSp"
+                style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
                 android:id="@+id/mypage_edit_btn"
                 android:layout_width="60dp"
                 android:layout_height="25dp"
-                android:background="@drawable/round_gray"
-                android:text="Edit"
+                android:background="@drawable/round_gray_30dp"
+                android:text="@string/fragmentMypage04"
                 android:textSize="8sp"
                 android:textStyle="bold"
-                android:textColor="#5E5E5E"/>
+                android:textColor="@color/gray02"
+                tools:ignore="SmallSp"
+                style="?android:attr/buttonBarButtonStyle"/>
 
         </LinearLayout>
 
@@ -105,11 +109,12 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/gray"
+                    android:src="@drawable/temp_image"
                     android:padding="0dp"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/fragmentMypage05"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -119,10 +124,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="5dp"
-                android:text="유저명"
+                android:text="@string/fragmentMypage06"
                 android:textColor="#5E5E5E"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -150,20 +155,21 @@
                 android:id="@+id/mypage_bookmark_btn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/round_circle"
-                android:src="@drawable/ic_bookmark_before"
+                android:background="@drawable/round_gray_circle"
+                android:src="@drawable/ic_bookmark_before_black_24dp"
                 android:textColor="#5E5E5E"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:contentDescription="@string/fragmentMypage07"/>
 
             <TextView
                 android:id="@+id/mypage_bookmark_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Marked"
+                android:text="@string/fragmentMypage08"
                 android:textColor="#5E5E5E"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -183,20 +189,21 @@
                 android:id="@+id/mypage_review_btn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/round_circle"
-                android:src="@drawable/ic_review"
+                android:background="@drawable/round_gray_circle"
+                android:src="@drawable/ic_review_black_24dp"
                 android:textColor="#5E5E5E"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:contentDescription="@string/fragmentMypage09"/>
 
             <TextView
                 android:id="@+id/mypage_review_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Review"
+                android:text="@string/fragmentMypage10"
                 android:textColor="#5E5E5E"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -216,22 +223,24 @@
                 android:id="@+id/mypage_photo_btn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/round_circle"
-                android:src="@drawable/ic_photo"
+                android:background="@drawable/round_gray_circle"
+                android:src="@drawable/ic_photo_black_24dp"
                 android:textSize="12sp"
-                android:textColor="#5E5E5E"/>
+                android:textColor="#5E5E5E"
+                android:contentDescription="@string/fragmentMypage11"/>
 
             <TextView
                 android:id="@+id/mypage_photo_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Photo"
+                android:text="@string/fragmentMypage12"
                 android:layout_marginTop="5dp"
                 android:textSize="12sp"
                 android:textColor="#5E5E5E"
                 android:textStyle="bold"/>
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

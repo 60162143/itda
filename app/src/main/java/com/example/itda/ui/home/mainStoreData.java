@@ -4,18 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class mainStoreData implements Parcelable {
-    private int StoreId;                // 가게 고유 아이디
-    private String StoreName;           // 가게 명
-    private String StoreAddress;        // 가게 주소
-    private String StoreDetail;         // 가게 간단 제공 서비스
-    private String StoreFacility;       // 가게 제공 시설 여부
-    private double StoreLatitude;       // 가게 위도
-    private double StoreLongitude;      // 가게 경도
-    private String StoreNumber;         // 가게 번호
-    private String StoreInfo;           // 가게 상세 정보
-    private int StoreCategoryId;        // 가게의 카테고리 고유 아이디
+    private int StoreId;        // 가게 고유 아이디
+    private String StoreName;   // 가게 명
+    private String StoreAddress;    // 가게 주소
+    private String StoreDetail;     // 가게 간단 제공 서비스
+    private String StoreFacility;   // 가게 제공 시설 여부
+    private double StoreLatitude;   // 가게 위도
+    private double StoreLongitude;  // 가게 경도
+    private String StoreNumber;     // 가게 번호
+    private String StoreInfo;       // 가게 상세 정보
+    private int StoreCategoryId;    // 가게의 카테고리 고유 아이디
     private String StoreThumbnailPath;  // 가게 썸네일 이미지 경로
-    private double StoreScore;          // 가게 별점
+    private double StoreScore;  // 가게 별점
     private String StoreWorkingTime;    // 가게 운영 시간
     private String StoreHashTag;        // 가게 해시태그
     private int StoreReviewCount;       // 가게 리뷰 개수

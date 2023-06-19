@@ -1,15 +1,12 @@
 package com.example.itda.ui.info;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.File;
 
 public class infoReviewPhotoFileData {
-    private File file;  // 파일 내용
+    private File file;      // 파일 내용
     private int reviewId;   // 리뷰 고유 아이디
     private String fileName;    // 파일 명
-    private String fileEts; // 파일 확장자
+    private String fileEts;     // 파일 확장자
     private double fileSize;    // 파일 크기
 
     public infoReviewPhotoFileData(File file, int reviewId, String fileName, String fileEts, double fileSize) {

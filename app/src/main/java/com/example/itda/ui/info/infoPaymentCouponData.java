@@ -4,11 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class infoPaymentCouponData implements Parcelable {
-    private int couponId;         // 쿠폰 고유 아이디
-    private int storeId;        // 가게 고유 아이디
-    private int userId;    // 유저 고유 아이디
-    private int discountRate;      // 쿠폰 할인율
-    private String expDate;      // 쿠폰 만료일
+    private int couponId;   // 쿠폰 고유 아이디
+    private int storeId;    // 가게 고유 아이디
+    private int userId;     // 유저 고유 아이디
+    private int discountRate;   // 쿠폰 할인율
+    private String expDate;     // 쿠폰 만료일
 
     // Constructor
     public infoPaymentCouponData(int couponId, int storeId, int userId, int discountRate, String expDate) {

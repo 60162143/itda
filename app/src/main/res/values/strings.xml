@@ -6,4 +6,477 @@
     <string name="title_collabo">협업가게</string>
     <string name="title_bag">가방</string>
     <string name="title_mypage">마이페이지</string>
+
+
+    <!-- activity_bag_payment_detail.xml -->
+    <string name="bagPaymentDetail01">뒤로 가기 버튼</string>
+    <string name="bagPaymentDetail02">주문/결제 내역 상세</string>
+    <string name="bagPaymentDetail03">가게 이미지</string>
+    <string name="bagPaymentDetail04">가게 명</string>
+    <string name="bagPaymentDetail05">주문 번호 : xxx</string>
+    <string name="bagPaymentDetail06">결제 일자 : xxxx.xx.xx</string>
+    <string name="bagPaymentDetail07">만료 일자 : xxxx.xx.xx</string>
+    <string name="bagPaymentDetail08">티켓 : </string>
+    <string name="bagPaymentDetail09">사용 여부</string>
+    <string name="bagPaymentDetail10">결제 메뉴 목록</string>
+    <string name="bagPaymentDetail11">결제 금액</string>
+    <string name="bagPaymentDetail12">주문 금액</string>
+    <string name="bagPaymentDetail13">xx,xxx원</string>
+    <string name="bagPaymentDetail14">쿠폰 할인 금액</string>
+    <string name="bagPaymentDetail15">-xx,xxx원</string>
+    <string name="bagPaymentDetail16">총 결제 금액</string>
+
+    <!-- activity_home_search.xml -->
+    <string name="homeSearch01">뒤로 가기 버튼</string>
+    <string name="homeSearch02">검색한 가게</string>
+
+    <!-- activity_info.xml -->
+    <string name="info01">뒤로 가기 버튼</string>
+    <string name="info02">가게 명</string>
+    <string name="info03">전화 걸기 버튼</string>
+    <string name="info04">찜 버튼</string>
+    <string name="info05">x.x</string>
+    <string name="info06">가게 소개</string>
+    <string name="info07">#해시태그</string>
+    <string name="info08">가게 이미지</string>
+    <string name="info09">Collaboration</string>
+    <string name="info10">Service</string>
+    <string name="info11">xx:xx~xx:xx</string>
+    <string name="info12">운영 시간 확대 버튼</string>
+    <string name="info13">운영 시간 축소 버튼</string>
+    <string name="info14">가게 간단 제공 서비스</string>
+    <string name="info15">가게 제공 시설</string>
+    <string name="info16">Menu</string>
+    <string name="info17">메뉴 아이콘</string>
+    <string name="info18">더보기 ></string>
+    <string name="info19">Location</string>
+    <string name="info20">가게 주소</string>
+    <string name="info21">Picture</string>
+    <string name="info22">Review</string>
+    <string name="info23">리뷰 쓰기 ></string>
+    <string name="info24">작성된 리뷰가 없습니다. 리뷰를 등록해 주세요.</string>
+    <string name="info25">메뉴 담기</string>
+
+    <!-- activity_info_map.xml -->
+    <string name="infoMap01">뒤로 가기 버튼</string>
+    <string name="infoMap02">가게 명</string>
+
+    <!-- activity_info_menu.xml -->
+    <string name="infoMenu01">뒤로 가기 버튼</string>
+    <string name="infoMenu02">가게 명</string>
+
+    <!-- activity_info_menu.xml -->
+    <string name="infoOrder01">뒤로 가기 버튼</string>
+    <string name="infoOrder02">가게 명</string>
+    <string name="infoOrder03">메뉴 목록</string>
+    <string name="infoOrder04">최종 주문 목록</string>
+    <string name="infoOrder05">주문 목록이 비었습니다. 목록을 추가해 주세요.</string>
+    <string name="infoOrder06">주문 하기</string>
+
+    <!-- activity_info_payment.xml -->
+    <string name="infoPayment01">뒤로 가기 버튼</string>
+    <string name="infoPayment02">가게 명</string>
+    <string name="infoPayment03">주문 목록 확인</string>
+    <string name="infoPayment04">결제 확인</string>
+    <string name="infoPayment05">결제 금액</string>
+    <string name="infoPayment06">xx,xxx원</string>
+    <string name="infoPayment07">할인 쿠폰</string>
+    <string name="infoPayment08">최종 결제 금액</string>
+    <string name="infoPayment09">이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공, 전자금융거래 이용약관, 만 14세 이상 이용자 내용 및 결제에 동의합니다.</string>
+    <string name="infoPayment10">결제 하기</string>
+
+    <!-- activity_info_payment_complete.xml -->
+    <string name="infoPaymentComplete01">결제 완료</string>
+    <string name="infoPaymentComplete02">가게 이미지</string>
+    <string name="infoPaymentComplete03">가게 명</string>
+    <string name="infoPaymentComplete04">결제 금액 : xx,xxx원</string>
+    <string name="infoPaymentComplete05">결제 날짜 : xxxx.xx.xx</string>
+    <string name="infoPaymentComplete06">만료 날짜 : xxxx.xx.xx</string>
+    <string name="infoPaymentComplete07">결제 메뉴 목록</string>
+    <string name="infoPaymentComplete08">결제 금액</string>
+    <string name="infoPaymentComplete09">주문 금액</string>
+    <string name="infoPaymentComplete10">xx,xxx원</string>
+    <string name="infoPaymentComplete11">쿠폰 할인 금액</string>
+    <string name="infoPaymentComplete12">-xx,xxx원</string>
+    <string name="infoPaymentComplete13">최종 결제 금액</string>
+    <string name="infoPaymentComplete14">확인</string>
+    <string name="infoPaymentComplete15">가게 제공 시설</string>
+
+    <!-- activity_info_photo.xml -->
+    <string name="infoPhoto01">뒤로 가기 버튼</string>
+    <string name="infoPhoto02">가게 명</string>
+
+    <!-- activity_info_photo_total.xml -->
+    <string name="infoPhotoTotal01">뒤로 가기 버튼</string>
+    <string name="infoPhotoTotal02">가게 명</string>
+
+    <!-- activity_info_review.xml -->
+    <string name="infoReview01">뒤로 가기 버튼</string>
+    <string name="infoReview02">가게 명</string>
+    <string name="infoReview03">유저 프로필 이미지</string>
+    <string name="infoReview04">유저명</string>
+    <string name="infoReview05">xx</string>
+    <string name="infoReview06">xxxx.xx.xx xx:xx:xx</string>
+    <string name="infoReview07">리뷰 내용</string>
+    <string name="infoReview08">좋아요</string>
+    <string name="infoReview09">리뷰에 따뜻한 댓글을 달아주세요.</string>
+    <string name="infoReview10">댓글 작성 버튼</string>
+
+    <!-- activity_info_review_insert.xml -->
+    <string name="infoReviewInsert01">뒤로 가기 버튼</string>
+    <string name="infoReviewInsert02">리뷰 작성</string>
+    <string name="infoReviewInsert03">별점 1점 버튼</string>
+    <string name="infoReviewInsert04">별점 2점 버튼</string>
+    <string name="infoReviewInsert05">별점 3점 버튼</string>
+    <string name="infoReviewInsert06">별점 4점 버튼</string>
+    <string name="infoReviewInsert07">별점 5점 버튼</string>
+    <string name="infoReviewInsert08">리뷰 내용</string>
+    <string name="infoReviewInsert09">주문하신 메뉴는 어떠셨나요?\n식당의 분위기나 서비스도 궁금해요!</string>
+    <string name="infoReviewInsert10">( 0 / 10 )</string>
+    <string name="infoReviewInsert11">작성 완료</string>
+
+    <!-- activity_login.xml -->
+    <string name="login01">잇다 로고</string>
+    <string name="login02">세상을 연결해주는 도구</string>
+    <string name="login03">이메일을 입력해주세요.</string>
+    <string name="login04">비밀번호를 입력해주세요.</string>
+    <string name="login05">로그인</string>
+    <string name="login06">비밀번호를 잊어버리셨나요?</string>
+    <string name="login07">아직 회원이 아니신가요?</string>
+    <string name="login08">간편 로그인</string>
+    <string name="login09">카카오톡 간편 로그인 버튼</string>
+
+    <!-- activity_login_lost_password.xml -->
+    <string name="loginLostPassword01">뒤로 가기 버튼</string>
+    <string name="loginLostPassword02">비밀번호 찾기</string>
+    <string name="loginLostPassword03">가입 시 사용한 이메일로 발송된 인증번호를 입력해주세요.</string>
+    <string name="loginLostPassword04">이메일을 입력해주세요.</string>
+    <string name="loginLostPassword05">인증번호 요청</string>
+    <string name="loginLostPassword06">인증번호를 입력해주세요.</string>
+    <string name="loginLostPassword07">03:00</string>
+    <string name="loginLostPassword08">인증번호 입력</string>
+    <string name="loginLostPassword09">새로운 비밀번호를 입력해주세요.</string>
+    <string name="loginLostPassword10">영문, 숫자, 특수문자를 조합하여 8 ~ 20자리로 설정해주세요.</string>
+    <string name="loginLostPassword11">비밀번호를 다시 한 번 입력해주세요.</string>
+    <string name="loginLostPassword12">비밀번호가 일치하지 않습니다.</string>
+    <string name="loginLostPassword13">변경</string>
+
+    <!-- activity_login_membership.xml -->
+    <string name="loginMembership01">뒤로 가기 버튼</string>
+    <string name="loginMembership02">회원 가입</string>
+    <string name="loginMembership03">회원가입 시 사용하실 이메일을 입력해주세요.</string>
+    <string name="loginMembership04">이메일을 입력해주세요.</string>
+    <string name="loginMembership05">중복 확인</string>
+    <string name="loginMembership06">인증번호 요청</string>
+    <string name="loginMembership07">인증번호를 입력해주세요.</string>
+    <string name="loginMembership08">03:00</string>
+    <string name="loginMembership09">인증번호 입력</string>
+    <string name="loginMembership10">새로운 비밀번호를 입력해주세요.</string>
+    <string name="loginMembership11">영문, 숫자, 특수문자를 조합하여 8 ~ 20자리로 설정해주세요.</string>
+    <string name="loginMembership12">비밀번호를 다시 한 번 입력해주세요.</string>
+    <string name="loginMembership13">비밀번호가 일치하지 않습니다.</string>
+    <string name="loginMembership14">회원 가입</string>
+
+    <!-- activity_login_membership_option.xml -->
+    <string name="loginMembershipOption01">뒤로 가기 버튼</string>
+    <string name="loginMembershipOption02">회원 가입 정보 입력</string>
+    <string name="loginMembershipOption03">프로필 이미지 변경 버튼</string>
+    <string name="loginMembershipOption04">프로필 이미지 변경 플러스 버튼</string>
+    <string name="loginMembershipOption05">이름</string>
+    <string name="loginMembershipOption06">이름을 입력해 주세요.</string>
+    <string name="loginMembershipOption07">휴대폰 번호 ( \'-\'를 제외한 번호를 입력해주세요. )</string>
+    <string name="loginMembershipOption08">휴대폰 번호를 입력해 주세요.</string>
+    <string name="loginMembershipOption09">생일</string>
+    <string name="loginMembershipOption10">년</string>
+    <string name="loginMembershipOption11">월</string>
+    <string name="loginMembershipOption12">일</string>
+    <string name="loginMembershipOption13">입력 완료</string>
+
+    <!-- activity_main.xml -->
+    <string name="main01">홈 버튼</string>
+
+    <!-- activity_mypage_bookmark.xml -->
+    <string name="mypageBookmark01">뒤로 가기 버튼</string>
+    <string name="mypageBookmark02">찜한 가게</string>
+    <string name="mypageBookmark03">찜한 협업 리스트</string>
+    <string name="mypageBookmark04">목록이 없습니다.</string>
+
+    <!-- activity_mypage_edit.xml -->
+    <string name="mypageEdit01">뒤로 가기 버튼</string>
+    <string name="mypageEdit02">내 정보 수정</string>
+    <string name="mypageEdit03">프로필 이미지 변경 버튼</string>
+    <string name="mypageEdit04">프로필 이미지 변경 플러스 버튼</string>
+    <string name="mypageEdit05">이메일</string>
+    <string name="mypageEdit06">xxxxxxxx@xxxxx.com</string>
+    <string name="mypageEdit07">이름</string>
+    <string name="mypageEdit08">유저 명</string>
+    <string name="mypageEdit09">휴대폰 번호</string>
+    <string name="mypageEdit10">010.xxxx.xxxx</string>
+    <string name="mypageEdit11">비밀 번호</string>
+    <string name="mypageEdit12">********</string>
+    <string name="mypageEdit13">생일</string>
+    <string name="mypageEdit14">xxxx.xx.xx</string>
+    <string name="mypageEdit15">프로필</string>
+
+    <!-- activity_mypage_edit_birthday.xml -->
+    <string name="mypageEditBirthday01">뒤로 가기 버튼</string>
+    <string name="mypageEditBirthday02">생일 변경</string>
+    <string name="mypageEditBirthday03">변경하실 생일 정보를 입력해주세요.</string>
+    <string name="mypageEditBirthday04">년</string>
+    <string name="mypageEditBirthday05">월</string>
+    <string name="mypageEditBirthday06">일</string>
+    <string name="mypageEditBirthday07">변경</string>
+
+    <!-- activity_mypage_edit_lost_password.xml -->
+    <string name="mypageEditLostPassword01">뒤로 가기 버튼</string>
+    <string name="mypageEditLostPassword02">비밀번호 찾기</string>
+    <string name="mypageEditLostPassword03">가입 시 사용한 이메일로 발송된 인증번호를 입력해주세요.</string>
+    <string name="mypageEditLostPassword04">이메일을 입력해주세요.</string>
+    <string name="mypageEditLostPassword05">인증번호 요청</string>
+    <string name="mypageEditLostPassword06">인증번호를 입력해주세요.</string>
+    <string name="mypageEditLostPassword07">03:00</string>
+    <string name="mypageEditLostPassword08">인증번호 입력</string>
+    <string name="mypageEditLostPassword09">새로운 비밀번호를 입력해주세요.</string>
+    <string name="mypageEditLostPassword10">영문, 숫자, 특수문자를 조합하여 8 ~ 20자리로 설정해주세요.</string>
+    <string name="mypageEditLostPassword11">비밀번호를 다시 한 번 입력해주세요.</string>
+    <string name="mypageEditLostPassword12">비밀번호가 일치하지 않습니다.</string>
+    <string name="mypageEditLostPassword13">변경</string>
+
+    <!-- activity_mypage_edit_name.xml -->
+    <string name="mypageEditName01">뒤로 가기 버튼</string>
+    <string name="mypageEditName02">이름 변경</string>
+    <string name="mypageEditName03">변경하실 이름을 입력해주세요. ( 최대 10글자 )</string>
+    <string name="mypageEditName04">이름을 입력해주세요.</string>
+    <string name="mypageEditName05">변경</string>
+
+    <!-- activity_mypage_edit_number.xml -->
+    <string name="mypageEditNumber01">뒤로 가기 버튼</string>
+    <string name="mypageEditNumber02">휴대폰번호 변경</string>
+    <string name="mypageEditNumber03">변경하실 휴대폰 번호를 입력해주세요. ( \'-\' 제외 )</string>
+    <string name="mypageEditNumber04">휴대폰 번호를 입력해주세요.</string>
+    <string name="mypageEditNumber05">변경</string>
+
+    <!-- activity_mypage_edit_password.xml -->
+    <string name="mypageEditPassword01">뒤로 가기 버튼</string>
+    <string name="mypageEditPassword02">비밀번호 변경</string>
+    <string name="mypageEditPassword03">현재 비밀번호를 입력해주세요.</string>
+    <string name="mypageEditPassword04">비밀번호가 일치 하지 않습니다.</string>
+    <string name="mypageEditPassword05">새로운 비밀번호를 입력해주세요.</string>
+    <string name="mypageEditPassword06">영문, 숫자, 특수문자를 조합하여 8 ~ 20자리로 설정해주세요.</string>
+    <string name="mypageEditPassword07">변경</string>
+    <string name="mypageEditPassword08">비밀번호를 잊어버리셨나요?</string>
+
+    <!-- activity_mypage_photo.xml -->
+    <string name="mypageEditPhoto01">뒤로 가기 버튼</string>
+    <string name="mypageEditPhoto02">가게 명</string>
+    <string name="mypageEditPhoto03">목록이 없습니다.</string>
+
+    <!-- activity_mypage_review.xml -->
+    <string name="mypageEditReview01">뒤로 가기 버튼</string>
+    <string name="mypageEditReview02">내가 작성한 리뷰</string>
+    <string name="mypageEditReview03">목록이 없습니다.</string>
+
+    <!-- activity_splash.xml -->
+    <string name="splash01">잇다 로고</string>
+    <string name="splash02">세상을 연결해주는 도구 잇다</string>
+
+    <!-- dl_delete.xml -->
+    <string name="dlDelete01">삭제 하시겠습니까?</string>
+    <string name="dlDelete02">확인</string>
+    <string name="dlDelete03">취소</string>
+
+    <!-- dl_info_collabo.xml -->
+    <string name="dlInfoCollabo01">앞가게 명</string>
+    <string name="dlInfoCollabo02">앞가게 이미지</string>
+    <string name="dlInfoCollabo03">협업 화살표 아이콘</string>
+    <string name="dlInfoCollabo04">뒷가게 명</string>
+    <string name="dlInfoCollabo05">뒷가게 이미지</string>
+    <string name="dlInfoCollabo06">협업 찜 버튼</string>
+    <string name="dlInfoCollabo07">xx.x km ( 가게 간 거리 )</string>
+    <string name="dlInfoCollabo08">할인 조건 + 할인 율</string>
+
+    <!-- dl_mypage_profile.xml -->
+    <string name="dlMypageProfile01">프로필 이미지 변경</string>
+    <string name="dlMypageProfile02">갤러리에서 선택</string>
+    <string name="dlMypageProfile03">기본 이미지로 변경</string>
+    <string name="dlMypageProfile04">닫기</string>
+
+    <!-- fragment_bag.xml -->
+    <string name="fragmentBag01">사용 가능 쿠폰</string>
+    <string name="fragmentBag02">주문/결제 내역</string>
+    <string name="fragmentBag03">목록이 없습니다.</string>
+
+    <!-- fragment_collabo.xml -->
+    <string name="fragmentCollabo01">앞가게에서 결제하면 뒷가게에서 혜택이?!</string>
+
+    <!-- fragment_home.xml -->
+    <string name="fragmentHome01">검색 아이콘</string>
+    <string name="fragmentHome02">검색어를 입력해 주세요.</string>
+
+    <!-- fragment_map.xml -->
+    <string name="fragmentMap01">검색 아이콘</string>
+    <string name="fragmentMap02">검색어를 입력해 주세요.</string>
+    <string name="fragmentMap03">새로 고침 아이콘</string>
+    <string name="fragmentMap04">GPS 현재 위치 아이콘</string>
+
+    <!-- fragment_mypage.xml -->
+    <string name="fragmentMypage01">로그인으로 잇다를\n더 풍상하게 사용하세요!</string>
+    <string name="fragmentMypage02">Login</string>
+    <string name="fragmentMypage03">Logout</string>
+    <string name="fragmentMypage04">Edit</string>
+    <string name="fragmentMypage05">프로필 변경 버튼</string>
+    <string name="fragmentMypage06">유저 명</string>
+    <string name="fragmentMypage07">찜 목록 확인 버튼</string>
+    <string name="fragmentMypage08">Marked</string>
+    <string name="fragmentMypage09">작성한 리뷰 확인 버튼</string>
+    <string name="fragmentMypage10">Review</string>
+    <string name="fragmentMypage11">업로드한 사진 확인 버튼</string>
+    <string name="fragmentMypage12">Photo</string>
+
+    <!-- rv_bag_coupon.xml -->
+    <string name="rvBagCoupon01">가게 이미지 상세화면 확인 버튼</string>
+    <string name="rvBagCoupon02">가게 명</string>
+    <string name="rvBagCoupon03">x% 할인</string>
+    <string name="rvBagCoupon04">사용기한 : xxxx.xx.xx까지</string>
+
+    <!-- rv_bag_payment.xml -->
+    <string name="rvBagPayment01">결제 일자 : xxxx.xx.xx</string>
+    <string name="rvBagPayment02">( 상태 )</string>
+    <string name="rvBagPayment03">가게 상세화면 확인 버튼</string>
+    <string name="rvBagPayment04">가게 명</string>
+    <string name="rvBagPayment05">메뉴 명 + 메뉴 수량</string>
+    <string name="rvBagPayment06">결제 금액 : xx,xxx원</string>
+    <string name="rvBagPayment07">만료 일자 : xxxx.xx.xx</string>
+
+    <!-- rv_bag_payment_detail_menu.xml -->
+    <string name="rvBagPaymentDetailMenu01">메뉴 명</string>
+    <string name="rvBagPaymentDetailMenu02">x,xxx원</string>
+
+    <!-- rv_collabo.xml -->
+    <string name="rvCollabo01">앞가게 명</string>
+    <string name="rvCollabo02">앞 가게 상세화면 확인 버튼</string>
+    <string name="rvCollabo03">할인 조건</string>
+    <string name="rvCollabo04">가게 간 거리</string>
+    <string name="rvCollabo05">뒷가게 명</string>
+    <string name="rvCollabo06">뒷 가게 상세화면 확인 버튼</string>
+    <string name="rvCollabo07">할인 율</string>
+
+    <!-- rv_info_collabo.xml -->
+    <string name="rvInfoCollabo01">가게 상세화면 확인 버튼</string>
+    <string name="rvInfoCollabo02">할인 조건</string>
+    <string name="rvInfoCollabo03">가게 명</string>
+
+    <!-- rv_info_menu.xml -->
+    <string name="rvInfoMenu01">·</string>
+    <string name="rvInfoMenu02">메뉴 명</string>
+    <string name="rvInfoMenu03">x,xxx원</string>
+
+    <!-- rv_info_order_menu.xml -->
+    <string name="rvInfoOrderMenu01">+</string>
+    <string name="rvInfoOrderMenu02">메뉴 명</string>
+    <string name="rvInfoOrderMenu03">x,xxx원</string>
+
+    <!-- rv_info_order_select_menu.xml -->
+    <string name="rvInfoOrderSelectMenu01">메뉴 명</string>
+    <string name="rvInfoOrderSelectMenu02">x,xxx원</string>
+    <string name="rvInfoOrderSelectMenu03">메뉴 -1 버튼</string>
+    <string name="rvInfoOrderSelectMenu04">xx</string>
+    <string name="rvInfoOrderSelectMenu05">메뉴 +1 버튼</string>
+    <string name="rvInfoOrderSelectMenu06">선택 메뉴 제거 버튼</string>
+
+    <!-- rv_info_payment_select_menu.xml -->
+    <string name="rvInfoPaymentSelectMenu01">메뉴 명</string>
+    <string name="rvInfoPaymentSelectMenu02">x,xxx원</string>
+    <string name="rvInfoPaymentSelectMenu03">메뉴 -1 버튼</string>
+    <string name="rvInfoPaymentSelectMenu04">xx</string>
+    <string name="rvInfoPaymentSelectMenu05">메뉴 +1 버튼</string>
+
+    <!-- rv_info_photo.xml -->
+    <string name="rvInfoPhoto01">사진 이미지</string>
+    <string name="rvInfoPhoto02">더보기</string>
+
+    <!-- rv_info_photo_detail.xml -->
+    <string name="rvInfoPhotoDetail01">사진 이미지</string>
+    <string name="rvInfoPhotoDetail02">유저 명</string>
+    <string name="rvInfoPhotoDetail03">별점 아이콘</string>
+    <string name="rvInfoPhotoDetail04">x</string>
+    <string name="rvInfoPhotoDetail05">리뷰 내용</string>
+    <string name="rvInfoPhotoDetail06">더보기</string>
+
+    <!-- rv_info_photo_total.xml -->
+    <string name="rvInfoPhotoTotal01">사진 이미지</string>
+    <string name="rvInfoPhotoTotal02">이미지 삭제 버튼</string>
+
+    <!-- rv_info_review.xml -->
+    <string name="rvInfoReview01">유저 프로필 이미지</string>
+    <string name="rvInfoReview02">유저 명</string>
+    <string name="rvInfoReview03">xx</string>
+    <string name="rvInfoReview04">리뷰 삭제 버튼</string>
+    <string name="rvInfoReview05">xxxx.xx.xx. xx:xx:xx</string>
+    <string name="rvInfoReview06">리뷰 내용</string>
+    <string name="rvInfoReview07">좋아요</string>
+
+    <!-- rv_info_review_comment.xml -->
+    <string name="rvInfoReviewComment01">유저 프로필 이미지</string>
+    <string name="rvInfoReviewComment02">유저 명</string>
+    <string name="rvInfoReviewComment03">xxxx.xx.xx. xx:xx:xx</string>
+    <string name="rvInfoReviewComment04">댓글 내용</string>
+
+    <!-- rv_info_review_insert_photo.xml -->
+    <string name="rvInfoReviewInsertPhoto01">사진 이미지</string>
+    <string name="rvInfoReviewInsertPhoto02">이미지 삭제 버튼</string>
+
+    <!-- rv_info_review_photo.xml -->
+    <string name="rvInfoReviewPhoto01">사진 이미지</string>
+
+    <!-- rv_main_category.xml -->
+    <string name="rvMainCategory01">카테고리 이미지</string>
+    <string name="rvMainCategory02">카테고리 명</string>
+
+    <!-- rv_main_store.xml -->
+    <string name="rvMainStore01">가게 이미지</string>
+    <string name="rvMainStore02">가게 명</string>
+    <string name="rvMainStore03">x.xxkm</string>
+    <string name="rvMainStore04">별점 아이콘</string>
+    <string name="rvMainStore05">x.x</string>
+    <string name="rvMainStore06">(xx)</string>
+    <string name="rvMainStore07">#해시태그</string>
+
+    <!-- rv_map_store.xml -->
+    <string name="rvMapStore01">가게 이미지</string>
+    <string name="rvMapStore02">가게 명</string>
+    <string name="rvMapStore03">x.x</string>
+    <string name="rvMapStore04">x.xxkm</string>
+    <string name="rvMapStore05">가게 간단 소개</string>
+    <string name="rvMapStore06">#해시태그</string>
+
+    <!-- rv_mypage_bookmark_collabo.xml -->
+    <string name="rvMypageBookmarkCollabo01">앞 가게 명</string>
+    <string name="rvMypageBookmarkCollabo02">앞 가게 이미지</string>
+    <string name="rvMypageBookmarkCollabo03">할인 조건</string>
+    <string name="rvMypageBookmarkCollabo04">x.xxkm</string>
+    <string name="rvMypageBookmarkCollabo05">뒷 가게 명</string>
+    <string name="rvMypageBookmarkCollabo06">뒷 가게 이미지</string>
+    <string name="rvMypageBookmarkCollabo07">협업 목록 찜 버튼</string>
+    <string name="rvMypageBookmarkCollabo08">할인 율</string>
+
+    <!-- rv_mypage_bookmark_store.xml -->
+    <string name="rvMypageBookmarkStore01">가게 이미지</string>
+    <string name="rvMypageBookmarkStore02">가게 찜 버튼</string>
+    <string name="rvMypageBookmarkStore03">가게 명</string>
+    <string name="rvMypageBookmarkStore04">x.x</string>
+    <string name="rvMypageBookmarkStore05">x.xxkm</string>
+    <string name="rvMypageBookmarkStore06">가게 간단 소개</string>
+    <string name="rvMypageBookmarkStore07">#해시태그</string>
+
+    <!-- rv_mypage_review.xml -->
+    <string name="rvMypageReview01">유저 프로필 이미지</string>
+    <string name="rvMypageReview02">유저 명</string>
+    <string name="rvMypageReview03">xx</string>
+    <string name="rvMypageReview04">리뷰 삭제 버튼</string>
+    <string name="rvMypageReview05">xxxx.xx.xx. xx:xx:xx</string>
+    <string name="rvMypageReview06">리뷰 내용</string>
+
+    <!-- sp_info_payment_coupon.xml -->
+    <string name="spInfoPaymentCoupon01">쿠폰 내용</string>
 </resources>

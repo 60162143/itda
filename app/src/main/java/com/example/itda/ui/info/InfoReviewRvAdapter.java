@@ -26,9 +26,9 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
         implements onInfoReviewPhotoRvClickListener{
 
     private ArrayList<infoReviewData> Reviews;  // 리뷰 데이터
-    private final ArrayList<infoPhotoData> Photos;    // 사진 데이터
+    private final ArrayList<infoPhotoData> Photos;  // 사진 데이터
     private final String storeName; // 가게 명
-    private final int userId; // 로그인 유저 고유 아이디
+    private final int userId;   // 로그인 유저 고유 아이디
 
     private final boolean isLoginFlag;  // 로그인 유무
     private static onInfoReviewRvClickListener rvClickListener = null;
@@ -81,27 +81,38 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
             holder.reviewDeleteBtn.setVisibility(View.GONE);
         }
 
-        // 좋아요를 눌렀는지 표시
+        // 좋아요를 눌렀는지 표시 SET
         holder.reviewHeartBtn.setSelected(review.getReviewHeartIsClick() == 1);
 
-        // 유저 프로필 이미지
+        // 유저 프로필 이미지 SET
         // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
         // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
         Glide.with(holder.itemView) // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(review.getUserProfilePath()))   // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
                 .placeholder(R.drawable.logo)   // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)     // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)     // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.userProfile);  // 이미지를 보여줄 View를 지정
 
-        holder.userName.setText(review.getUserName());  // 유저 명
-        holder.reviewRegDate.setText(review.getReviewRegDate());    // 리뷰 등록일
-        holder.reviewHeartCnt.setText(String.valueOf(review.getReviewHeartCount()));    // 리뷰 좋아요 수
-        holder.reviewScore.setText(String.valueOf(review.getReviewScore()));    // 리뷰 별점
-        holder.reviewDetail.setText(review.getReviewDetail());  // 리뷰 내용
-        holder.reviewCommentCnt.setText(String.valueOf(review.getReviewCommentCount()));    // 리뷰 댓글 수
+        // 유저 명 SET
+        holder.userName.setText(review.getUserName());
 
-        ArrayList<infoPhotoData> reviewPhoto = new ArrayList<>();   // 리뷰 사진 데이터
+        // 리뷰 등록일 SET
+        holder.reviewRegDate.setText(review.getReviewRegDate());
+
+        // 리뷰 좋아요 수 SET
+        holder.reviewHeartCnt.setText(String.valueOf(review.getReviewHeartCount()));
+
+        // 리뷰 별점 SET
+        holder.reviewScore.setText(String.valueOf(review.getReviewScore()));
+
+        // 리뷰 내용 SET
+        holder.reviewDetail.setText(review.getReviewDetail());
+
+        // 리뷰 댓글 수 SET
+        holder.reviewCommentCnt.setText(String.valueOf(review.getReviewCommentCount()));
+
+        ArrayList<infoPhotoData> reviewPhoto = new ArrayList<>();   // 리뷰 사진 데이터 초기화
 
         // 리뷰에 속한 사진 데이터만 저장
         for(int i = 0; i < Photos.size(); i++){
@@ -110,6 +121,7 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
             }
         }
 
+        // 리뷰 사진 리사이클러뷰 SET
         // LayoutManager 객체 생성
         holder.reviewPhotoRv.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
 
@@ -143,7 +155,7 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
         // 리뷰 상세 화면 Activity로 이동하기 위한 Intent 객체 선언
         Intent intent = new Intent(mContext, InfoPhotoActivity.class);
 
-        intent.putParcelableArrayListExtra("Photo", reviewPhoto);    // 사진 데이터
+        intent.putParcelableArrayListExtra("Photo", reviewPhoto);   // 사진 데이터
         intent.putExtra("Position", position);      // 현재 position
         intent.putExtra("storeName", storeName);    // 가게 명
 
@@ -156,8 +168,8 @@ public class InfoReviewRvAdapter extends RecyclerView.Adapter<InfoReviewRvAdapte
     public static class CustomInfoReviewViewHolder extends RecyclerView.ViewHolder {
         ImageButton userProfile;        // 유저 프로필 이미지
         ImageButton reviewDeleteBtn;    // 리뷰 삭제 버튼
-        Button reviewHeartBtn;      // 리뷰 좋아요 버튼
-        TextView userName;  // 유저 명
+        Button reviewHeartBtn;  // 리뷰 좋아요 버튼
+        TextView userName;      // 유저 명
         TextView reviewRegDate;     // 리뷰 작성 일자
         TextView reviewHeartCnt;    // 리뷰 좋아요 수
         TextView reviewScore;       // 리뷰 별점

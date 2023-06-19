@@ -3,23 +3,21 @@ package com.example.itda.ui.bag;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BagPaymentData implements Parcelable {
-    private int paymentId;         // 결제 고유 아이디
-    private int storeId;        // 가게 고유 아이디
-    private int userId;    // 유저 고유 아이디
-    private int paymentPrice;      // 결제 금액
-    private String paymentUsedStatus;      // 결제 상품 사용 가능 상태
-    private int paymentUsedCouponId;      // 결제 시 이용한 쿠폰 고유 아이디 ( 쿠폰 사용 안했을 경우 0 )
-    private int paymentUsedCouponDisRate;      // 결제 시 이용한 쿠폰 할인율 ( 쿠폰 사용 안했을 경우 0 )
-    private String paymentPayDate;      // 결제일
-    private String paymentExpDate;      // 만료 일자
-    private String storeName;      // 가게 명
-    private String storeImagePath;      // 가게 썸네일 이미지
+public class bagPaymentData implements Parcelable {
+    private int paymentId;  // 결제 고유 아이디
+    private int storeId;    // 가게 고유 아이디
+    private int userId;     // 유저 고유 아이디
+    private int paymentPrice;   // 결제 금액
+    private String paymentUsedStatus;       // 결제 상품 사용 가능 상태
+    private int paymentUsedCouponId;        // 결제 시 이용한 쿠폰 고유 아이디 ( 쿠폰 사용 안했을 경우 0 )
+    private int paymentUsedCouponDisRate;   // 결제 시 이용한 쿠폰 할인율 ( 쿠폰 사용 안했을 경우 0 )
+    private String paymentPayDate;  // 결제일
+    private String paymentExpDate;  // 만료 일자
+    private String storeName;       // 가게 명
+    private String storeImagePath;  // 가게 썸네일 이미지
 
     // Constructor
-
-
-    public BagPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentUsedStatus, int paymentUsedCouponId, int paymentUsedCouponDisRate, String paymentPayDate, String paymentExpDate, String storeName, String storeImagePath) {
+    public bagPaymentData(int paymentId, int storeId, int userId, int paymentPrice, String paymentUsedStatus, int paymentUsedCouponId, int paymentUsedCouponDisRate, String paymentPayDate, String paymentExpDate, String storeName, String storeImagePath) {
         this.paymentId = paymentId;
         this.storeId = storeId;
         this.userId = userId;
@@ -34,7 +32,7 @@ public class BagPaymentData implements Parcelable {
     }
 
     // Parcelable interface Constructor
-    protected BagPaymentData(Parcel in) {
+    protected bagPaymentData(Parcel in) {
         paymentId = in.readInt();
         storeId = in.readInt();
         userId = in.readInt();
@@ -50,16 +48,16 @@ public class BagPaymentData implements Parcelable {
 
     // ===========Activity간 데이터를 한꺼번에 전달받기 위해 사용한 Interface==============
     // 새롭게 생성된 Activity 에서 이 객체를 추출해 낼 떄 호출
-    public static final Creator<BagPaymentData> CREATOR = new Creator<BagPaymentData>() {
+    public static final Creator<bagPaymentData> CREATOR = new Creator<bagPaymentData>() {
         // writeToParcel() 메소드에서 썼던 순서대로 읽어 옴
         @Override
-        public BagPaymentData createFromParcel(Parcel in) {
-            return new BagPaymentData(in);
+        public bagPaymentData createFromParcel(Parcel in) {
+            return new bagPaymentData(in);
         }
 
         @Override
-        public BagPaymentData[] newArray(int size) {
-            return new BagPaymentData[size];
+        public bagPaymentData[] newArray(int size) {
+            return new bagPaymentData[size];
         }
     };
 

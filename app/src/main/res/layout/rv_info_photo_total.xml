@@ -22,19 +22,21 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_test_image"
+                android:src="@drawable/ic_test_image_black_200dp"
                 android:padding="0dp"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/rvInfoPhotoTotal01"/>
 
             <ImageButton
                 android:id="@+id/info_photo_total_del_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_delete"
+                android:src="@drawable/ic_delete_gray_24dp"
                 android:background="@android:color/transparent"
                 android:layout_gravity="end"
                 android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:contentDescription="@string/rvInfoPhotoTotal02"/>
 
         </FrameLayout>
 

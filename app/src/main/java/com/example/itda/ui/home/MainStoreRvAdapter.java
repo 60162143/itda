@@ -1,16 +1,13 @@
 package com.example.itda.ui.home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,17 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.itda.R;
 import com.example.itda.ui.global.globalMethod;
-import com.example.itda.ui.info.InfoActivity;
-import com.example.itda.ui.info.onInfoCollaboRvClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 // ViewHolder 패턴은, 각 뷰의 객체를 ViewHolder에 보관함으로써 뷰의 내용을 업데이트 하기 위한
 // findViewById() 메소드 호출을 줄여 효과적으로 퍼포먼스 개선을 할 수 있는 패턴이다.
 // ViewHolder 패턴을 사용하면, 한 번 생성하여 저장했던 뷰는 다시 findViewById() 를 통해 뷰를 불러올 필요가 사라지게 된다.
 public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.CustomMainCategoryViewHolder>{
-    private ArrayList<mainStoreData> Stores;    // 가게 데이터
+    private final ArrayList<mainStoreData> Stores;  // 가게 데이터
     private ArrayList<mainBookmarkStoreData> BookmarkStores;    // 찜한 가게 데이터
 
     // 리사이클러뷰 클릭 리스너 인터페이스
@@ -78,15 +73,6 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     public void onBindViewHolder(@NonNull MainStoreRvAdapter.CustomMainCategoryViewHolder holder, int position) {
         mainStoreData store = Stores.get(position);     // 현재 position의 가게 정보
 
-        // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
-        // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
-        Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
-                .load(Uri.parse(store.getStoreThumbnailPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
-                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
-                .error(R.drawable.ic_error)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
-                .fallback(R.drawable.ic_fallback)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
-                .into(holder.mainStoreImage);       // 이미지를 보여줄 View를 지정
-
         // 로그인이 되어있을 경우 찜 버튼 보이기
         if(((globalMethod) mContext.getApplicationContext()).loginChecked()){
             holder.mainStoreBookmark.setVisibility(View.VISIBLE);
@@ -96,47 +82,63 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
                 for(int i = 0; i < BookmarkStores.size(); i++){
                     if(store.getStoreId() == BookmarkStores.get(i).getStoreId()){
                         holder.mainStoreBookmark.setSelected(true);
-
                         break;
                     }
                 }
             }
         }
 
-        holder.mainStoreName.setText(store.getStoreName()); // 가게 이름
+        // 가게 이미지 SET
+        // 안드로이드에서 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
+        // 이미지를 빠르고 부드럽게 스크롤 하는 것을 목적
+        Glide.with(holder.itemView)                 // View, Fragment 혹은 Activity로부터 Context를 GET
+                .load(Uri.parse(store.getStoreThumbnailPath()))     // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.logo)       // 이미지가 로드되기 전 보여줄 이미지 설정
+                .error(R.drawable.ic_error_black_36dp)         // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.ic_fallback_black_36dp)   // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .into(holder.mainStoreImage);       // 이미지를 보여줄 View를 지정
 
-        holder.mainStoreScore.setText(String.format("%.1f", store.getStoreScore()));   // 가게 별점
+        // 가게 이름 SET
+        holder.mainStoreName.setText(store.getStoreName());
 
+        // 가게 별점 SET
+        holder.mainStoreScore.setText(String.format(Locale.getDefault(), "%.1f", store.getStoreScore()));
+
+        // 가게 거리 SET
         // 거리가 10m 이상인 경우만 거리 표시
-        if(store.getStoreDistance() <= 0.01){
-            holder.mainStoreDistance.setText("10m 이내");
-        }else{
-            holder.mainStoreDistance.setText(String.format("%.2f", store.getStoreDistance()) + "km");
-        }
+        String mainStoreDistanceTxt;
 
-        // 가게 리뷰 수
+        if(store.getStoreDistance() <= 0.01){
+            mainStoreDistanceTxt = "10m 이내";
+        }else{
+            mainStoreDistanceTxt = String.format(Locale.getDefault(), "%.2f", store.getStoreDistance()) + "km";
+        }
+        holder.mainStoreDistance.setText(mainStoreDistanceTxt);
+
+        // 가게 리뷰 수 SET
         String reviewCount = " (" + store.getStoreReviewCount() + ")";
         holder.mainStoreReviewCount.setText(reviewCount);
 
-        holder.mainStoreHashTag.setText(store.getStoreHashTag());   // 가게 해시태그
+        // 가게 해시태그 SET
+        holder.mainStoreHashTag.setText(store.getStoreHashTag());
     }
 
-    // 리스너 설정
+    // 리사이클러뷰 리스너 SET
     public void setonMainStoreRvClickListener(onMainStoreRvClickListener rvClickListener) {
         MainStoreRvAdapter.rvClickListener = rvClickListener;
     }
 
-    // 찜한 가게 목록 설정
-    public void setbookmarkStores(ArrayList<mainBookmarkStoreData> bookmarkStores) {
+    // 찜한 가게 목록 SET
+    public void setBookmarkStores(ArrayList<mainBookmarkStoreData> bookmarkStores) {
         BookmarkStores = bookmarkStores;
     }
 
-    // 리뷰 갯수 설정
+    // 리뷰 갯수 SET
     public void setReviewCount(int index, int count) {
         Stores.get(index).setStoreReviewCount(count);
     }
 
-    // 가게 별점 설정
+    // 가게 별점 SET
     public void setStoreScore(int index, double score) {
         Stores.get(index).setStoreScore(score);
     }
@@ -151,11 +153,11 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
     // itemView를 저장하는 custom viewHolder 생성
     // findViewById & 각종 event 작업
     public static class CustomMainCategoryViewHolder extends RecyclerView.ViewHolder {
-        ImageButton mainStoreImage;     // 가게 썸네일
-        Button mainStoreBookmark; // 가게 찜 버튼
-        TextView mainStoreName;         // 가게 이름
-        TextView mainStoreDistance;     // 현 위치에서 가게까지의 거리
-        TextView mainStoreScore;        // 가게 별점
+        ImageButton mainStoreImage; // 가게 썸네일
+        Button mainStoreBookmark;   // 가게 찜 버튼
+        TextView mainStoreName;     // 가게 이름
+        TextView mainStoreDistance; // 현 위치에서 가게까지의 거리
+        TextView mainStoreScore;    // 가게 별점
         TextView mainStoreReviewCount;  // 가게 리뷰 수
         TextView mainStoreHashTag;      // 가게 해시태그
 
@@ -163,7 +165,6 @@ public class MainStoreRvAdapter extends RecyclerView.Adapter<MainStoreRvAdapter.
             super(itemView);
             mainStoreImage = itemView.findViewById(R.id.main_store_image);
             mainStoreBookmark = itemView.findViewById(R.id.main_store_bookmark);
-
             mainStoreName = itemView.findViewById(R.id.main_store_name);
             mainStoreDistance = itemView.findViewById(R.id.main_store_distance);
             mainStoreScore = itemView.findViewById(R.id.main_store_score);
