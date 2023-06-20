@@ -120,9 +120,12 @@ public class InfoPhotoDetailRvAdapter extends RecyclerView.Adapter<InfoPhotoDeta
             photoReview = itemView.findViewById(R.id.info_photo_detail_review);
             photoReviewMore = itemView.findViewById(R.id.info_photo_detail_plus_btn);
 
+            photoReviewMore.setText("더보기"); // 더보기 버튼 SET
+
             // 리뷰 더보기 클릭 리스너
             photoReviewMore.setOnClickListener(view -> {
                 // 더보기일 경우 텍스트 전문 보이기
+                System.out.println(photoReviewMore.getText().toString());
                 if(photoReviewMore.getText() == "더보기"){
                     photoReview.setMaxLines(100);
                     photoReviewMore.setText("접기");
