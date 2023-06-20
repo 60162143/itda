@@ -1,4 +1,4 @@
-# **Itda**
+![메인 화면](https://github.com/60162143/itda/assets/33407087/fdfe69fd-090e-400e-9036-767278c9b634)# **Itda**
 
 ## **📗 목차**
 Itda, a tool that connects the world.
@@ -24,7 +24,7 @@ Itda, a tool that connects the world.
 
 ## **📝 포트폴리오 개요**
 
-<img width="100%" alt="메인 페이지" src="https://user-images.githubusercontent.com/51189962/136147406-e80d9f8a-49b9-42bc-aa3a-301fff182608.png" />
+<img width="50" height="50" alt="메인 페이지" src="https://github.com/60162143/itda/assets/33407087/b7bfe654-56cd-4feb-97c5-de789ca4c5ab" />
 
 > **프로젝트:** 개인 포트폴리오 사이트
 >
