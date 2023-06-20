@@ -1,4 +1,4 @@
-![메인 화면](https://github.com/60162143/itda/assets/33407087/fdfe69fd-090e-400e-9036-767278c9b634)# **Itda**
+**Itda**
 
 ## **📗 목차**
 Itda, a tool that connects the world.
@@ -24,21 +24,53 @@ Itda, a tool that connects the world.
 
 ## **📝 포트폴리오 개요**
 
-<img width="50" height="50" alt="메인 페이지" src="https://github.com/60162143/itda/assets/33407087/b7bfe654-56cd-4feb-97c5-de789ca4c5ab" />
+<img width="300" height="300" alt="메인 페이지" src="https://github.com/60162143/itda/assets/33407087/3342b10b-9b62-4ca2-bb5c-3fe686861326" />
 
-> **프로젝트:** 개인 포트폴리오 사이트
+> **프로젝트:** 세상을 연결해주는 도구 잇다(**Itda**)
 >
-> **기획 및 제작:** 김태진
+> **기획 및 제작:** 오태근
 >
-> **분류:** 개인 프로젝트
+> **분류:** 개인 모바일 프로젝트 (Android Ver.)
 >
-> **제작 기간:** 2021.09 ~ 10.
+> **제작 기간:** 23.02 ~ 23.06
 >
-> **배포일:** 2021.10.05.
+> **주요 기능:**
+- 주변 맛집 정보 조회
+
+- 가게 간 협업을 통한 맛집 추천
+- 지도 API를 활용한 가게 위치 조회
+- 이미지 파일 업로드
+- 메일 전송
+- 주문/결제
 >
-> **주요 기능:** 라이트/다크 모드, 반응형 웹, Hash Link, Email 전송, 배포 및 커스텀 도메인 연결, open graph
->
-> **사용 기술:** React, Styled-components, Firebase Hosting
+> **사용 기술:**
+- Framework
+
+    <img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat&logo=Android Studio&logoColor=white">
+    <img src="https://img.shields.io/badge/Eclipse-2C2255?style=flat&logo=eclipseide&logoColor=white">
+  
+- Language
+
+  <img src="https://img.shields.io/badge/java-007396?style=flat&logo=Backblaze&logoColor=white">
+  <img src="https://img.shields.io/badge/Php-777BB4?style=flat&logo=php&logoColor=white">
+  <img src="https://img.shields.io/badge/python-3776AB?style=flat&logo=python&logoColor=white">
+  
+- Server
+
+    <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white">
+    
+- Database
+
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white">
+  
+- SCM
+
+  <img src="https://img.shields.io/badge/github-181717?style=flat&logo=github&logoColor=white">
+
+- 빌드/배포
+
+  <img src="https://img.shields.io/badge/gradle-02303A?style=flat&logo=gradle&logoColor=white">
+  
 >
 > **문의:** keemgreat@gmail.com
 
