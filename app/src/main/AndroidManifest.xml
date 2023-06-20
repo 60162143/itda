@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:name=".ui.global.globalMethod">
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="${KAKAO_LOGIN_API_KEY}" />
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="${KAKAO_LOGIN_API_KEY}"/>
         <activity android:name="com.example.itda.ui.splash.SplashActivity"
             android:theme="@style/Theme.MyApplication"
             android:exported="true">
