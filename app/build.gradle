@@ -30,7 +30,7 @@ android {
         buildConfigField "String", "BOOTPAY_APPLICATION_KEY", properties["bootpay_application_key"]
 
         // 매니페스트에서 사용이 가능하다. 구글맵 같은 경우가 이에 해당한다.
-        // 키 - 값으로 저장된다.
+        // 키 - 값으로 저장된다. 
         manifestPlaceholders = [KAKAO_LOGIN_API_KEY: "@string/kakao_api_key"]
     }
 
