@@ -23,7 +23,7 @@
             android:src="@drawable/ic_test_image_black_200dp"
             android:padding="0dp"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/infoPhoto01"/>
+            android:contentDescription="@string/rvInfoPhoto01"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -31,7 +31,7 @@
         android:id="@+id/info_photo_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/infoPhoto02"
+        android:text="@string/rvInfoPhoto02"
         android:textColor="#ffffff"
         android:layout_gravity="center_horizontal|center_vertical"
         android:visibility="gone"/>
