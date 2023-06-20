@@ -44,6 +44,14 @@ Itda, a tool that connects the world.
 - 주문/결제
 >
 > **사용 기술:**
+  
+>
+> **문의:** keemgreat@gmail.com
+
+<br />
+
+## **🛠 기술 및 도구**
+
 - Framework
 
     <img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat&logo=Android Studio&logoColor=white">
@@ -51,27 +59,25 @@ Itda, a tool that connects the world.
   
 - Language
 
-  <img src="https://img.shields.io/badge/java-007396?style=flat&logo=Backblaze&logoColor=white">
+  <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Backblaze&logoColor=white">
   <img src="https://img.shields.io/badge/Php-777BB4?style=flat&logo=php&logoColor=white">
-  <img src="https://img.shields.io/badge/python-3776AB?style=flat&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white">
   
 - Server
 
-    <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white">
+    <img src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=flat&logo=apachetomcat&logoColor=white">
+    <img src="https://img.shields.io/badge/Ivy Hosting-DB3552?style=flat&logo=askfm&logoColor=white">
     
 - Database
 
-  <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white">
+  <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat&logo=mysql&logoColor=white">
   
 - SCM
 
-  <img src="https://img.shields.io/badge/github-181717?style=flat&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/Github-181717?style=flat&logo=github&logoColor=white">
 
 - 빌드/배포
 
-  <img src="https://img.shields.io/badge/gradle-02303A?style=flat&logo=gradle&logoColor=white">
+  <img src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=gradle&logoColor=white">
   
->
-> **문의:** keemgreat@gmail.com
-
 <br />
