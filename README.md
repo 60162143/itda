@@ -65,7 +65,6 @@ Itda, a tool that connects the world.
 ## **👨🏻‍💻 기능 구현**
 
 ### **1. 어플 실행 & 메인 화면**
-
 <img width="300" height="600" alt="어플 실행 화면" src="https://github.com/60162143/itda/assets/33407087/ec581a5c-64d0-480e-96a8-95024a8de0a3" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="메인 가게 검색 화면" src="https://github.com/60162143/itda/assets/33407087/74f64b89-7c9f-4dce-b23d-8ffef49233fc" />
 
 - 스플래시 화면 실행 후 메인 화면 전환
@@ -76,21 +75,39 @@ Itda, a tool that connects the world.
 
 <br />
 
-### **2. 가게 상세 화면**
-  - #### **2-1. 가게 정보 조회 화면**
-    <img width="300" height="600" alt="가게 상세 조회 화면" src="https://github.com/60162143/itda/assets/33407087/0710e018-c1ce-4bb7-bfc3-971be221a8f6" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="리뷰 작성 화면" src="https://github.com/60162143/itda/assets/33407087/53e04e9e-3dce-4b9f-8029-948ec915818a" />
-![리뷰 댓글 작성 화면](https://github.com/60162143/itda/assets/33407087/8511b860-c9ac-43d0-8f3c-1fae652f5160)
+### **2. 로그인&회원가입입 화면**
+<img width="300" height="600" alt="로그인 화면" src="https://github.com/60162143/itda/assets/33407087/e6f0263a-90e6-44e9-a332-bde8da0e009c" /> <img width="300" height="600" alt="회원가입 화면" src="https://github.com/60162143/itda/assets/33407087/c579eeae-1aee-4485-9833-280f4d078933" />
 
-    - 가게 정보 **조회 기능** 구현( **데이터는 카카오 맵에서 크롤링** )
-
-    - **카카에 맵 라이브러리를 이용한 가게 위치 조회 기능** 구현
-    - 협업된 가게 정보 **조회 기능** 구현
-    - 리뷰 **추가, 삭제, 조회 기능** 구현
-    - 리뷰 작성 시 업로드 한 사진 **조회 기능** 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
+  - 일반 로그인 / 카카오 소셜 로그인 기능 구현
+  
+  - 비밀번호 변경, 찾기 기능 구현 ( SHA-256 알고리즘으로 암호화된 비밀번호 저장 )
+  - 일반 회원가입 / 카카오 소셜 회원가입 기능 구현
+  - Gmail SMTP 방식을 이용한 인증 메일 전송 기능 구현
 
 <br />
 
-  - #### **2-2. 주문/결제 화면**
+### **3. 가게 상세 화면**
+  - #### **3-1. 가게 정보 조회 화면**
+    <img width="300" height="600" alt="가게 상세 조회 화면" src="https://github.com/60162143/itda/assets/33407087/0710e018-c1ce-4bb7-bfc3-971be221a8f6" />
+
+    - 가게 정보 **조회 기능** 구현( **데이터는 카카오 맵에서 크롤링** )
+
+    - **카카오맵 API 라이브러리를 이용한 가게 위치 조회 기능** 구현
+    - 협업된 가게 정보 **조회 기능** 구현
+    - 리뷰 **조회 기능** 구현
+    - 리뷰 작성 시 업로드 한 사진 **조회 기능** 구현
+
+<br />
+
+  - #### **3-2. 리뷰 화면**
+    <img width="300" height="600" alt="리뷰 작성 화면" src="https://github.com/60162143/itda/assets/33407087/53e04e9e-3dce-4b9f-8029-948ec915818a" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="리뷰 댓글 작성 화면" src="https://github.com/60162143/itda/assets/33407087/8511b860-c9ac-43d0-8f3c-1fae652f5160" />
+
+    - 리뷰 **추가, 삭제, 조회 기능** 구현
+
+    - 리뷰 작성 시 사진 **업로드 기능** 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
+    - 작성된 리뷰에 댓글 작성 기능 구현
+
+  - #### **3-3. 주문/결제 화면**
     <img width="300" height="600" alt="주문 화면" src="https://github.com/60162143/itda/assets/33407087/213e3c46-3485-44c5-9c45-61f1338fe56c" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="결제 화면" src="https://github.com/60162143/itda/assets/33407087/44838570-8d4d-4d04-9a87-cc2c8baa87af" />
 
     - 선택 메뉴 주문 기능 구현
@@ -101,7 +118,7 @@ Itda, a tool that connects the world.
 
 <br />
 
-### **3. 협업 화면**
+### **4. 협업 화면**
 <img width="300" height="600" alt="협업 화면" src="https://github.com/60162143/itda/assets/33407087/077262bd-d100-46c8-a34f-6d7c7068b74f" />
 
   - 협업된 가게 정보 조회 기능 구현
@@ -109,30 +126,50 @@ Itda, a tool that connects the world.
   - 협업한 가게 찜 기능 구현
   - 가게 이미지 클릭 시 가게 상세 정보 조회 기능 구현
 
-### **4. 지도 화면**
+<br />
 
-<img width="300" height="600" alt="지도 화면" src="https://github.com/60162143/itda/assets/33407087/077262bd-d100-46c8-a34f-6d7c7068b74f" />
-![지도 화면](https://github.com/60162143/itda/assets/33407087/d9a54d75-6e1d-4fb6-8e02-693028373a8e)
+### **5. 지도 화면**
 
-  - 협업된 가게 정보 조회 기능 구현
+<img width="300" height="600" alt="지도 화면" src="https://github.com/60162143/itda/assets/33407087/d9a54d75-6e1d-4fb6-8e02-693028373a8e" />
+
+  - 카카오 지도 API를 이용한 지도 화면 구현
   
-  - 협업한 가게 찜 기능 구현
+  -현재 위치 표시 + Heading 기능 구현
+  - 검색어로 가게 조회 기능 구현
   - 가게 이미지 클릭 시 가게 상세 정보 조회 기능 구현
 
-### **5. 마이페이지 화면**
+<br />
 
-<img width="100%" alt="스크린샷 2021-10-06 15 02 30" src="https://user-images.githubusercontent.com/51189962/136148865-7b6cfd30-ae66-410f-89fa-16f9ad883c74.png" />
+### **6. 가방 화면**
 
-<img width="100%" alt="스크린샷 2021-10-06 15 03 15" src="https://user-images.githubusercontent.com/51189962/136148961-28e8c84b-b5fb-4052-9150-7c20e6af3cbc.png" />
+<img width="300" height="600" alt="가방 화면" src="https://github.com/60162143/itda/assets/33407087/240bc06d-551a-469e-a6fe-320f47dcaf03" />
 
-```html
-<!-- index.html -->
-<meta property="og:title" content="김태진 • Frontend Developer" />
-<meta property="og:description" content="프론트엔드 개발자 김태진입니다." />
-<meta property="og:image" content="%PUBLIC_URL%/thumb.png" />
-<meta property="og:url" content="https://keemtj.com/" />
-<meta property="og:type" content="website" />
-```
+  - 사용 가능한 쿠폰 내역 조회 기능 구현
+  
+  - 주문/결제 내역 조회 기능 구현
 
-- meta tags를 통해 Facebook, twitter, linkedin, discord, kakao talk 등 링크를 전달 했을 때 링크에 대한 정보를 볼 수 있도록 구현
-- https://www.opengraph.xyz
+<br />
+
+### **7. 마이페이지 화면**
+
+  - #### **3-1. 내 정보 조회 화면**
+    <img width="300" height="600" alt="찜 목록 조회 화면" src="https://github.com/60162143/itda/assets/33407087/8eac6822-4ccd-477f-80ec-13ab024d292f" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="작성한 리뷰 목록 조회 화면" src="https://github.com/60162143/itda/assets/33407087/4c0b53b5-4f4a-4245-bc73-c1e779f81a7a" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="업로드한 사진 목록 조회 화면" src="https://github.com/60162143/itda/assets/33407087/5506779e-528f-4193-8557-3988714d2588" />
+
+    - 내정보 조회 화면
+
+    - 찜한 가게, 협업 목록 조회, 삭제 기능 구현
+    - 작성한 리뷰 조회, 삭제 기능 구현
+    - 업로드한 사진 조회, 삭제 기능 구현
+
+<br />
+
+  - #### **3-2. 내 정보 수정 화면**
+    <img width="300" height="600" alt="프로필 변경 화면" src="https://github.com/60162143/itda/assets/33407087/57bb4774-5d9b-42b5-98ef-26d3772fafeb" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="내 정보 변경 화면" src="https://github.com/60162143/itda/assets/33407087/f7475274-3136-4961-948c-ce1063a40183" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="비밀번호 찾기 화면" src="https://github.com/60162143/itda/assets/33407087/8df6d924-e2bd-42ea-a393-303b2ce76d03" />
+
+    - 프로필 이미지 변경 및 업로드 기능 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
+
+    - 이름, 휴대폰 번호, 생일 변경 기능 구현
+    - 비밀번호 변경, 찾기 기능 구현 ( SHA-256 알고리즘으로 암호화된 비밀번호 저장 )
+
+<br />
+
