@@ -192,7 +192,7 @@
                 .error(R.drawable.errorImage)           // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
                 .fallback(R.drawable.nullImage)         // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);               // 이미지를 보여줄 View를 지정
-
+      ```
     - **Styleable Toast Library** : 폰트, 배경색, 아이콘 등 토스트의 전반적인 디자인을 themes.xml에서 원하는 대로 지정해 줄 수 있는 라이브러리
       ```java
         // themes.xml
@@ -210,7 +210,7 @@
             <item name="stGravity">위치  top or center</item>
             <item name="stRadius">가장자리 둥글게</item>
         </style>
-
+      ```
     - **Volley Library** : 네트워킹을 보다 쉽고 빠르게 만들어주는 HTTP 라이브러리
       ```java
         public void sendRequest(){
@@ -254,7 +254,7 @@
           AppHelper.requestQueue.add(request);
           println("요청 보냄!!");
         }
-
+      ```
     - **TedPermission Library** : 안드로이드에서 퍼미션 권한 관리에 도움을 주는 라이브러리
       ```java
         PermissionListener permissionlistener = new PermissionListener() {
@@ -276,7 +276,7 @@
                   .setDeniedMessage("왜 거부하셨어요...\n하지만 [설정] > [권한] 에서 권한을 허용할 수 있어요.")
                   .setPermissions(Manifest.permission.READ_CONTACTS)
                   .check();
-
+      ```
     - **Kakao Login API** : 카카오에서 제공하는 카카오 로그인 API
       ```java
         // 카카오톡이 설치되어 있는지 확인하는 메서드 , 카카오에서 제공함. 콜백 객체를 이용합.
@@ -298,7 +298,7 @@
                 return null;
             }
         };
-
+      ```
     - **Kakao Map API** : 카카오에서 제공하는 카카오 지도 API
       ```java
         // 지도 띄우기
@@ -307,6 +307,7 @@
         mapViewContainer.addView(mapView);
         mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+      ```
 
     - **BootPay Payment API** : 부트페이에서 제공하는 PG 결제 연동 API
       ```java
@@ -370,7 +371,7 @@
                     }
                 })
                 .request();
-
+      ```
     - **SMTP Mail Library** : Javax의 기본 Mail 라이브러리
       ```java
         public GMailSender(String user, String password) {
@@ -391,7 +392,7 @@
           //구글에서 지원하는 smtp 정보를 받아와 MimeMessage 객체에 전달해준다.
           session = Session.getDefaultInstance(props, this);
       }
-
+      ```
     - **ftp4j-1.6 Library** : Ftp 파일 전송 라이브러
       ```java
         public void uploadFile(File fileName){
@@ -430,7 +431,7 @@
               }
           }
       }
-
+    ```
 <br />
 
   - #### **3-2. 데이터 크롤링**
