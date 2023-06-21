@@ -19,9 +19,9 @@
   - [마이페이지 화면](#5-마이페이지-화면)
     - [내 정보 조회 화면](#1-내-정보-조회-화면)
     - [내 정보 수정 화면](#1-내-정보-수정-화면)
-  - [기타](#6-기타-기능)
-- 🚀 [배포](#-배포)
-- ⏰ [커밋 히스토리](#-커밋-히스토리)
+  - [기타](#6-기타)
+    - [사용 라이브러리](#1-사용-라이브러리)
+    - [사용 API](#1-사용-API)
 
 </b>
 
@@ -38,13 +38,13 @@
 > **제작 기간:** 23.02 ~ 23.06
 >
 > **주요 기능:**
-- 주변 맛집 정보 조회
-
-- 가게 간 협업을 통한 맛집 추천
-- 지도 API를 활용한 가게 위치 조회
-- 이미지 파일 업로드
-- 메일 전송
-- 주문/결제
+  - **주변 맛집 정보 조회**
+  
+  - **가게 간 협업을 통한 맛집 추천**
+  - **지도 API를 활용한 가게 위치 조회**
+  - **FTP 이미지 파일 업로드**
+  - **메일 전송**
+  - **주문/결제**
 >
 > **문의:** no2955922@naver.com
 
@@ -185,6 +185,7 @@
   - #### **8-1. 사용 라이브러리**
 
     - **Glide Library** : 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
+
       ```java
         Glide.with(holder.itemView)                     // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(photo.getPhotoPath()))  // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
@@ -277,7 +278,72 @@
                   .setPermissions(Manifest.permission.READ_CONTACTS)
                   .check();
       ```
+    - **SMTP Mail Library** : Javax의 기본 Mail 라이브러리
+      ```java
+        public GMailSender(String user, String password) {
+          this.user = user;
+          this.password = password;
+          emailCode = createEmailCode();
+          Properties props = new Properties();
+          props.setProperty("mail.transport.protocol", "smtp");
+          props.setProperty("mail.host", mailhost);
+          props.put("mail.smtp.auth", "true");
+          props.put("mail.smtp.port", "465");
+          props.put("mail.smtp.socketFactory.port", "465");
+          props.put("mail.smtp.socketFactory.class",
+                  "javax.net.ssl.SSLSocketFactory");
+          props.put("mail.smtp.socketFactory.fallback", "false");
+          props.setProperty("mail.smtp.quitwait", "false");
+  
+          //구글에서 지원하는 smtp 정보를 받아와 MimeMessage 객체에 전달해준다.
+          session = Session.getDefaultInstance(props, this);
+      }
+      ```
+    - **ftp4j-1.6 Library** : Ftp 파일 전송 라이브러
+      ```java
+        public void uploadFile(File fileName){
+ 
+          FTPClient client = new FTPClient();
+   
+          try {
+              client.connect(FTP_HOST,21);//ftp 서버와 연결, 호스트와 포트를 기입
+              client.login(FTP_USER, FTP_PASS);//로그인을 위해 아이디와 패스워드 기입
+              client.setType(FTPClient.TYPE_BINARY);//2진으로 변경
+              client.changeDirectory("uploadtest/");//서버에서 넣고 싶은 파일 경로를 기입
+   
+              client.upload(fileName, new MyTransferListener());//업로드 시작
+   
+              handler.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
+                  }
+              });
+   
+          } catch (Exception e) {
+   
+              handler.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      Toast.makeText(getApplicationContext(),"실패",Toast.LENGTH_SHORT).show();
+                  }
+              });
+   
+              e.printStackTrace();
+              try {
+                  client.disconnect(true);
+              } catch (Exception e2) {
+                  e2.printStackTrace();
+              }
+          }
+      }
+
+<br />
+      
+  - #### **8-1. 사용 API**
+
     - **Kakao Login API** : 카카오에서 제공하는 카카오 로그인 API
+
       ```java
         // 카카오톡이 설치되어 있는지 확인하는 메서드 , 카카오에서 제공함. 콜백 객체를 이용합.
         Function2<OAuthToken,Throwable,Unit> callback =new Function2<OAuthToken, Throwable, Unit>() {
@@ -372,74 +438,3 @@
                 })
                 .request();
       ```
-    - **SMTP Mail Library** : Javax의 기본 Mail 라이브러리
-      ```java
-        public GMailSender(String user, String password) {
-          this.user = user;
-          this.password = password;
-          emailCode = createEmailCode();
-          Properties props = new Properties();
-          props.setProperty("mail.transport.protocol", "smtp");
-          props.setProperty("mail.host", mailhost);
-          props.put("mail.smtp.auth", "true");
-          props.put("mail.smtp.port", "465");
-          props.put("mail.smtp.socketFactory.port", "465");
-          props.put("mail.smtp.socketFactory.class",
-                  "javax.net.ssl.SSLSocketFactory");
-          props.put("mail.smtp.socketFactory.fallback", "false");
-          props.setProperty("mail.smtp.quitwait", "false");
-  
-          //구글에서 지원하는 smtp 정보를 받아와 MimeMessage 객체에 전달해준다.
-          session = Session.getDefaultInstance(props, this);
-      }
-      ```
-    - **ftp4j-1.6 Library** : Ftp 파일 전송 라이브러
-      ```java
-        public void uploadFile(File fileName){
- 
-          FTPClient client = new FTPClient();
-   
-          try {
-              client.connect(FTP_HOST,21);//ftp 서버와 연결, 호스트와 포트를 기입
-              client.login(FTP_USER, FTP_PASS);//로그인을 위해 아이디와 패스워드 기입
-              client.setType(FTPClient.TYPE_BINARY);//2진으로 변경
-              client.changeDirectory("uploadtest/");//서버에서 넣고 싶은 파일 경로를 기입
-   
-              client.upload(fileName, new MyTransferListener());//업로드 시작
-   
-              handler.post(new Runnable() {
-                  @Override
-                  public void run() {
-                      Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
-                  }
-              });
-   
-          } catch (Exception e) {
-   
-              handler.post(new Runnable() {
-                  @Override
-                  public void run() {
-                      Toast.makeText(getApplicationContext(),"실패",Toast.LENGTH_SHORT).show();
-                  }
-              });
-   
-              e.printStackTrace();
-              try {
-                  client.disconnect(true);
-              } catch (Exception e2) {
-                  e2.printStackTrace();
-              }
-          }
-      }
-    ```
-<br />
-
-  - #### **3-2. 데이터 크롤링**
-    <img width="300" height="600" alt="프로필 변경 화면" src="https://github.com/60162143/itda/assets/33407087/57bb4774-5d9b-42b5-98ef-26d3772fafeb" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="내 정보 변경 화면" src="https://github.com/60162143/itda/assets/33407087/f7475274-3136-4961-948c-ce1063a40183" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="비밀번호 찾기 화면" src="https://github.com/60162143/itda/assets/33407087/8df6d924-e2bd-42ea-a393-303b2ce76d03" />
-
-    - 프로필 이미지 변경 및 업로드 기능 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
-
-    - 이름, 휴대폰 번호, 생일 변경 기능 구현
-    - 비밀번호 변경, 찾기 기능 구현 ( SHA-256 알고리즘으로 암호화된 비밀번호 저장 )
-
-<br />
