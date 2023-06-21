@@ -48,42 +48,25 @@ Itda, a tool that connects the world.
 <br />
 
 ## **🛠 기술 및 도구**
-
-- Framework
-
-    <img src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat&logo=Android Studio&logoColor=white">
-    <img src="https://img.shields.io/badge/Eclipse-2C2255?style=flat&logo=eclipseide&logoColor=white">
-  
-- Language
-
-  <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Backblaze&logoColor=white">
-  <img src="https://img.shields.io/badge/Php-777BB4?style=flat&logo=php&logoColor=white">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white">
-  
-- Server
-
-    <img src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=flat&logo=apachetomcat&logoColor=white">
-    <img src="https://img.shields.io/badge/Ivy Hosting-DB3552?style=flat&logo=askfm&logoColor=white">
-    
-- Database
-
-  <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat&logo=mysql&logoColor=white">
-  
-- SCM
-
-  <img src="https://img.shields.io/badge/Github-181717?style=flat&logo=github&logoColor=white">
-
-- 빌드/배포
-
-  <img src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=gradle&logoColor=white">
-  
+- **Framework :**
+  <img align="center" src="https://img.shields.io/badge/Android Studio-3DDC84?style=flat&logo=Android Studio&logoColor=white"> <img align="center" src="https://img.shields.io/badge/Eclipse-2C2255?style=flat&logo=eclipseide&logoColor=white"> <img align="center" src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat&logo=visualstudiocode&logoColor=white">
+- **Language :**
+  &nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Java-007396?style=flat&logo=Backblaze&logoColor=white"> <img align="center" src="https://img.shields.io/badge/Php-777BB4?style=flat&logo=php&logoColor=white"> <img align="center" src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white">
+- **Server :**
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=flat&logo=apachetomcat&logoColor=white"> <img align="center" src="https://img.shields.io/badge/Ivy Hosting-DB3552?style=flat&logo=askfm&logoColor=white">
+- **Database :**
+  &nbsp;&nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Mysql-4479A1?style=flat&logo=mysql&logoColor=white">
+- **SCM :**
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Github-181717?style=flat&logo=github&logoColor=white">
+- **Build :**
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=gradle&logoColor=white">
 <br />
 
 ## **👨🏻‍💻 기능 구현**
 
 ### **1. 어플 실행 & 메인 화면**
 
-<img width="400" height="800" alt="어플 실행 화면" src="https://github.com/60162143/itda/assets/33407087/ec581a5c-64d0-480e-96a8-95024a8de0a3" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="400" height="800" alt="메인 가게 검색 화면" src="https://github.com/60162143/itda/assets/33407087/74f64b89-7c9f-4dce-b23d-8ffef49233fc" />
+<img width="300" height="600" alt="어플 실행 화면" src="https://github.com/60162143/itda/assets/33407087/ec581a5c-64d0-480e-96a8-95024a8de0a3" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="메인 가게 검색 화면" src="https://github.com/60162143/itda/assets/33407087/74f64b89-7c9f-4dce-b23d-8ffef49233fc" />
 
 - 스플래시 화면 실행 후 메인 화면 전환
   
@@ -91,54 +74,50 @@ Itda, a tool that connects the world.
 - 카테고리 별로 **조회 기능** 구현
 - 간단 가게 정보 **조회 기능** 구현
 
-### **2. 협업 화면**
+<br />
 
-<img width="100%" alt="hashlink" src="https://user-images.githubusercontent.com/51189962/136143186-aeb70c36-8e21-40e7-b937-deea0e66ad18.gif" />
-![협업 화면](https://github.com/60162143/itda/assets/33407087/7e28375a-2fb1-4d97-a4f7-94ac206f4d6a)
+### **2. 가게 상세 화면**
+  - #### **2-1. 가게 정보 조회 화면**
+    <img width="300" height="600" alt="가게 상세 조회 화면" src="https://github.com/60162143/itda/assets/33407087/0710e018-c1ce-4bb7-bfc3-971be221a8f6" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="리뷰 작성 화면" src="https://github.com/60162143/itda/assets/33407087/53e04e9e-3dce-4b9f-8029-948ec915818a" />
+![리뷰 댓글 작성 화면](https://github.com/60162143/itda/assets/33407087/8511b860-c9ac-43d0-8f3c-1fae652f5160)
 
-- Hash Link링크를 이용하여 네비게이션에서 메뉴 클릭시 해당 영역으로 스크롤되도록 구현
-- 해당하는 메뉴의 영역은 Full page.js와 유사하게 스타일링함
+    - 가게 정보 **조회 기능** 구현( **데이터는 카카오 맵에서 크롤링** )
+
+    - **카카에 맵 라이브러리를 이용한 가게 위치 조회 기능** 구현
+    - 협업된 가게 정보 **조회 기능** 구현
+    - 리뷰 **추가, 삭제, 조회 기능** 구현
+    - 리뷰 작성 시 업로드 한 사진 **조회 기능** 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
+
+<br />
+
+  - #### **2-2. 주문/결제 화면**
+    <img width="300" height="600" alt="주문 화면" src="https://github.com/60162143/itda/assets/33407087/213e3c46-3485-44c5-9c45-61f1338fe56c" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="결제 화면" src="https://github.com/60162143/itda/assets/33407087/44838570-8d4d-4d04-9a87-cc2c8baa87af" />
+
+    - 선택 메뉴 주문 기능 구현
+
+    - Boot Pay 라이브러리를 이용한 결제 기능 구현 ( 카카오 결제 or 카드 결제 )
+    - 결제 시 쿠폰 사용 기능 구현
+    - 협업된 가게에 한해서 협업 조건에 따른 할인 쿠폰 발급 기능 구현
+
+<br />
+
+### **3. 협업 화면**
+<img width="300" height="600" alt="협업 화면" src="https://github.com/60162143/itda/assets/33407087/077262bd-d100-46c8-a34f-6d7c7068b74f" />
+
+  - 협업된 가게 정보 조회 기능 구현
   
-### **3. 지도 화면**
+  - 협업한 가게 찜 기능 구현
+  - 가게 이미지 클릭 시 가게 상세 정보 조회 기능 구현
 
-<img width="100%" alt="반응형" src="https://user-images.githubusercontent.com/51189962/136144110-0a5cb56e-1dcf-4bc8-b7d8-b93bbb100744.gif" />
+### **4. 지도 화면**
 
-- 5개의 endpoint를 두고 반응형을 구현함
+<img width="300" height="600" alt="지도 화면" src="https://github.com/60162143/itda/assets/33407087/077262bd-d100-46c8-a34f-6d7c7068b74f" />
+![지도 화면](https://github.com/60162143/itda/assets/33407087/d9a54d75-6e1d-4fb6-8e02-693028373a8e)
 
-```javascript
-// media.js
-const deviceSizes = {
-  desktop: '1440px',
-  laptop: '1280px',
-  tablet: '1024px',
-  mobile: '768px',
-  phone: '480px',
-};
-
-const media = {
-  desktop: `screen and (max-width: ${deviceSizes.desktop})`,
-  laptop: `screen and (max-width: ${deviceSizes.laptop})`,
-  tablet: `screen and (max-width: ${deviceSizes.tablet})`,
-  mobile: `screen and (max-width: ${deviceSizes.mobile})`,
-  phone: `screen and (max-width: ${deviceSizes.phone})`,
-};
-
-export { deviceSizes, media };
-```
-
-<img width="100%" alt="반응형 네비게이션" src="https://user-images.githubusercontent.com/51189962/136144313-2a67d258-3ec1-4517-80fc-3f67b957dff5.gif" />
-
-- 네비게이션 메뉴의 경우 mobile(768px)을 기준으로 그 이상일 경우 상단바, 이하일 경우 햄버거메뉴로 변경
-
-### **4. 가방 화면**
-
-<img width="100%" alt="이메일 발신" src="https://user-images.githubusercontent.com/51189962/136146784-b8b42395-8a05-402a-b393-d0aa95580c7f.gif" />
-<img width="100%" alt="이메일 수신" src="https://user-images.githubusercontent.com/51189962/136147118-ae829b7e-7ca5-4ef0-92e2-f7adc70ddb29.png" />
-
-- EmailJS를 이용하여 서버없이 메일 서비스를 이용할 수 있도록 구현
-- Sweetalert를 이용하여 커스텀 alert를 구현
-- https://emailjs.com
-- https://sweetalert2.github.io/
+  - 협업된 가게 정보 조회 기능 구현
+  
+  - 협업한 가게 찜 기능 구현
+  - 가게 이미지 클릭 시 가게 상세 정보 조회 기능 구현
 
 ### **5. 마이페이지 화면**
 
