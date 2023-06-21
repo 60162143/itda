@@ -1,32 +1,35 @@
-**Itda**
+# **Itda, a tool that connects the world.**
 
 ## **📗 목차**
-Itda, a tool that connects the world.
-
 
 <b>
 
-- 📝 [개요](#-포트폴리오-개요)
+- 📝 [프로젝트 개요](#-프로젝트-개요)
 - 🛠 [기술 및 도구](#-기술-및-도구)
-- 🔗 [링크](#-링크)
-- ✨ [업데이트](#-업데이트)
 - 👨🏻‍💻 [기능 구현](#-기능-구현)
-  - [라이트/다크 모드](#1-라이트/다크-모드)
-  - [Hash Link](#2-Hash-Link)
-  - [반응형 웹](#3-반응형-웹)
-  - [Email 전송](#4-Email-전송)
-  - [Open graph](#5-Open-graph)
+  - [어플 실행&메인 화면](#1-어플-실행&메인-화면)
+  - [로그인&회원가입 화면](#2-로그인&회원가입-화면)
+  - [가게 상세 화면](#3-가게-상세-화면)
+    - [가게 정보 조회 화면](#1-가게-정보-조회-화면)
+    - [리뷰 화면](#1-리뷰-화면)
+    - [주문/결제 화면](#1-주문/결제-화면)
+  - [협업 화면](#4-협업-화면)
+  - [지도 화면](#5-지도-화면)
+  - [가방 화면](#5-가방-화면)
+  - [마이페이지 화면](#5-마이페이지-화면)
+    - [내 정보 조회 화면](#1-내-정보-조회-화면)
+    - [내 정보 수정 화면](#1-내-정보-수정-화면)
   - [기타](#6-기타-기능)
 - 🚀 [배포](#-배포)
 - ⏰ [커밋 히스토리](#-커밋-히스토리)
 
 </b>
 
-## **📝 포트폴리오 개요**
+## **📝 프로젝트 개요**
 
-<img width="300" height="300" alt="메인 페이지" src="https://github.com/60162143/itda/assets/33407087/3342b10b-9b62-4ca2-bb5c-3fe686861326" />
+<img width="200" height="200" alt="메인 페이지" src="https://github.com/60162143/itda/assets/33407087/3342b10b-9b62-4ca2-bb5c-3fe686861326" />
 
-> **프로젝트:** 세상을 연결해주는 도구 잇다(**Itda**)
+> **프로젝트:** 세상을 연결해주는 도구 **잇다(Itda**)
 >
 > **기획 및 제작:** 오태근
 >
@@ -64,7 +67,7 @@ Itda, a tool that connects the world.
 
 ## **👨🏻‍💻 기능 구현**
 
-### **1. 어플 실행 & 메인 화면**
+### **1. 어플 실행&메인 화면**
 <img width="300" height="600" alt="어플 실행 화면" src="https://github.com/60162143/itda/assets/33407087/ec581a5c-64d0-480e-96a8-95024a8de0a3" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="메인 가게 검색 화면" src="https://github.com/60162143/itda/assets/33407087/74f64b89-7c9f-4dce-b23d-8ffef49233fc" />
 
 - 스플래시 화면 실행 후 메인 화면 전환
@@ -75,10 +78,10 @@ Itda, a tool that connects the world.
 
 <br />
 
-### **2. 로그인&회원가입입 화면**
+### **2. 로그인&회원가입 화면**
 <img width="300" height="600" alt="로그인 화면" src="https://github.com/60162143/itda/assets/33407087/e6f0263a-90e6-44e9-a332-bde8da0e009c" /> <img width="300" height="600" alt="회원가입 화면" src="https://github.com/60162143/itda/assets/33407087/c579eeae-1aee-4485-9833-280f4d078933" />
 
-  - 일반 로그인 / 카카오 소셜 로그인 기능 구현
+  - 일반 로그인 / 카카오 소셜 로그인 기능 구현 ( 카카오 로그인 API 활용 )
   
   - 비밀번호 변경, 찾기 기능 구현 ( SHA-256 알고리즘으로 암호화된 비밀번호 저장 )
   - 일반 회원가입 / 카카오 소셜 회원가입 기능 구현
@@ -94,6 +97,7 @@ Itda, a tool that connects the world.
 
     - **카카오맵 API 라이브러리를 이용한 가게 위치 조회 기능** 구현
     - 협업된 가게 정보 **조회 기능** 구현
+    - 가게 찜 기능 구현
     - 리뷰 **조회 기능** 구현
     - 리뷰 작성 시 업로드 한 사진 **조회 기능** 구현
 
@@ -106,6 +110,8 @@ Itda, a tool that connects the world.
 
     - 리뷰 작성 시 사진 **업로드 기능** 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
     - 작성된 리뷰에 댓글 작성 기능 구현
+
+<br />
 
   - #### **3-3. 주문/결제 화면**
     <img width="300" height="600" alt="주문 화면" src="https://github.com/60162143/itda/assets/33407087/213e3c46-3485-44c5-9c45-61f1338fe56c" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="결제 화면" src="https://github.com/60162143/itda/assets/33407087/44838570-8d4d-4d04-9a87-cc2c8baa87af" />
@@ -134,15 +140,16 @@ Itda, a tool that connects the world.
 
   - 카카오 지도 API를 이용한 지도 화면 구현
   
-  -현재 위치 표시 + Heading 기능 구현
+  - 현재 위치 표시 + Heading 기능 구현
   - 검색어로 가게 조회 기능 구현
   - 가게 이미지 클릭 시 가게 상세 정보 조회 기능 구현
+  - 가게 찜 기능 구현
 
 <br />
 
 ### **6. 가방 화면**
 
-<img width="300" height="600" alt="가방 화면" src="https://github.com/60162143/itda/assets/33407087/240bc06d-551a-469e-a6fe-320f47dcaf03" />
+<img width="300" height="600" alt="가방 화면" src="https://github.com/60162143/itda/assets/33407087/91e34258-b8e4-4bab-a8ae-f77d2ebd3f39" />
 
   - 사용 가능한 쿠폰 내역 조회 기능 구현
   
@@ -173,3 +180,87 @@ Itda, a tool that connects the world.
 
 <br />
 
+### **8. 기타**
+
+  - #### **8-1. 사용 라이브러리**
+
+    - Glide Library : 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
+      ```java
+        Glide.with(holder.itemView)                     // View, Fragment 혹은 Activity로부터 Context를 GET
+                .load(Uri.parse(photo.getPhotoPath()))  // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
+                .placeholder(R.drawable.preImage)       // 이미지가 로드되기 전 보여줄 이미지 설정
+                .error(R.drawable.errorImage)           // 리소스를 불러오다가 에러가 발생했을 때 보여줄 이미지 설정
+                .fallback(R.drawable.nullImage)         // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
+                .into(holder.photoImage);               // 이미지를 보여줄 View를 지정
+
+    - Styleable Toast Library : 폰트, 배경색, 아이콘 등 토스트의 전반적인 디자인을 themes.xml에서 원하는 대로 지정해 줄 수 있는 라이브러
+      ```java
+        // themes.xml
+        <style name="orangeToast">
+            <item name="stTextBold">텍스트 스타일 Bold 유무</item>
+            <item name="stTextColor">텍스트 색상</item>
+            <item name="stFont">폰트</item>
+            <item name="stTextSize">텍스트 사이즈</item>
+            <item name="stColorBackground">배경색</item>
+            <item name="stStrokeWidth">테두리 두께</item>
+            <item name="stStrokeColor">테두리 색상</item>
+            <item name="stIconStart">왼쪽에 나타날 아이콘</item>
+            <item name="stIconEnd">오른쪽에 나타날 아이콘</item>
+            <item name="stLength">지속 시간  LONG or SHORT</item>
+            <item name="stGravity">위치  top or center</item>
+            <item name="stRadius">가장자리 둥글게</item>
+        </style>
+
+    - Volley Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+      ```java
+      dependencies {
+        implementation 'com.google.android.material:material:1.8.0'
+      }
+
+<br />
+
+  - #### **3-2. 내 정보 수정 화면**
+    <img width="300" height="600" alt="프로필 변경 화면" src="https://github.com/60162143/itda/assets/33407087/57bb4774-5d9b-42b5-98ef-26d3772fafeb" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="내 정보 변경 화면" src="https://github.com/60162143/itda/assets/33407087/f7475274-3136-4961-948c-ce1063a40183" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="비밀번호 찾기 화면" src="https://github.com/60162143/itda/assets/33407087/8df6d924-e2bd-42ea-a393-303b2ce76d03" />
+
+    - 프로필 이미지 변경 및 업로드 기능 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
+
+    - 이름, 휴대폰 번호, 생일 변경 기능 구현
+    - 비밀번호 변경, 찾기 기능 구현 ( SHA-256 알고리즘으로 암호화된 비밀번호 저장 )
+
+<br />
