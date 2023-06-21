@@ -58,12 +58,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
+    // ---------------- Library ----------------
     // Google에서 공식적으로 제공하는 디자인 라이브러리
     implementation 'com.google.android.material:material:1.8.0'
-
-    // ViewPager2
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     // Glide Library
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -77,22 +76,26 @@ dependencies {
     // TedPermission Library
     implementation 'gun0912.ted:tedpermission:2.0.0'
 
-    // Kakao Login
+
+    // ---------------- API ----------------
+    // Kakao Login API
     implementation 'com.kakao.sdk:v2-user:2.10.0'
 
-    // 부트페이 결제 Library
-    implementation 'io.github.bootpay:android:4.2.9' //최신 버전 추천
-    implementation 'io.github.bootpay:android-bio:4.2.4' //생체인증 결제 사용시 추가
+    // 부트페이 결제 API
+    implementation 'io.github.bootpay:android:4.2.9'        // 최신 버전 추천
+    implementation 'io.github.bootpay:android-bio:4.2.4'    // 생체인증 결제 사용시 추가
 
-    // ---------- Files ----------------
-
-    // Kakao Map API Library
+    // Kakao Map API
     implementation files('libs/libDaumMapAndroid.jar')
 
-    // Android Email Library
+
+    // ---------------- Files ----------------
+    // Android Email Library File
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
+
+    // Ftp Upload Library File
     implementation files('libs/ftp4j-1.7.2.jar')
 
     // 테스트 시에만 적용
