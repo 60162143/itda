@@ -79,7 +79,7 @@
 <br />
 
 ### **2. 로그인&회원가입 화면**
-<img width="300" height="600" alt="로그인 화면" src="https://github.com/60162143/itda/assets/33407087/e6f0263a-90e6-44e9-a332-bde8da0e009c" /> <img width="300" height="600" alt="회원가입 화면" src="https://github.com/60162143/itda/assets/33407087/c579eeae-1aee-4485-9833-280f4d078933" />
+<img width="300" height="600" alt="로그인 화면" src="https://github.com/60162143/itda/assets/33407087/e6f0263a-90e6-44e9-a332-bde8da0e009c" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="회원가입 화면" src="https://github.com/60162143/itda/assets/33407087/c579eeae-1aee-4485-9833-280f4d078933" />
 
   - 일반 로그인 / 카카오 소셜 로그인 기능 구현 ( 카카오 로그인 API 활용 )
   
@@ -184,7 +184,7 @@
 
   - #### **8-1. 사용 라이브러리**
 
-    - Glide Library : 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
+    - **Glide Library** : 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
       ```java
         Glide.with(holder.itemView)                     // View, Fragment 혹은 Activity로부터 Context를 GET
                 .load(Uri.parse(photo.getPhotoPath()))  // 이미지를 로드, 다양한 방법으로 이미지를 불러올 수 있음
@@ -193,7 +193,7 @@
                 .fallback(R.drawable.nullImage)         // Load할 URL이 null인 경우 등 비어있을 때 보여줄 이미지 설정
                 .into(holder.photoImage);               // 이미지를 보여줄 View를 지정
 
-    - Styleable Toast Library : 폰트, 배경색, 아이콘 등 토스트의 전반적인 디자인을 themes.xml에서 원하는 대로 지정해 줄 수 있는 라이브러
+    - **Styleable Toast Library** : 폰트, 배경색, 아이콘 등 토스트의 전반적인 디자인을 themes.xml에서 원하는 대로 지정해 줄 수 있는 라이브러리
       ```java
         // themes.xml
         <style name="orangeToast">
@@ -211,51 +211,229 @@
             <item name="stRadius">가장자리 둥글게</item>
         </style>
 
-    - Volley Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+    - **Volley Library** : 네트워킹을 보다 쉽고 빠르게 만들어주는 HTTP 라이브러리
       ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
+        public void sendRequest(){
+          String url = "https://www.google.co.kr";
+  
+          //StringRequest를 만듬 (파라미터구분을 쉽게하기위해 엔터를 쳐서 구분하면 좋다)
+          //StringRequest는 요청객체중 하나이며 가장 많이 쓰인다고한다.
+          //요청객체는 다음고 같이 보내는방식(GET,POST), URL, 응답성공리스너, 응답실패리스너 이렇게 4개의 파라미터를 전달할 수 있다.(리퀘스트큐에 ㅇㅇ)
+          //화면에 결과를 표시할때 핸들러를 사용하지 않아도되는 장점이있다.
+          StringRequest request = new StringRequest(
+                  Request.Method.GET,
+                  url,
+                  new Response.Listener<String>() {  //응답을 문자열로 받아서 여기다 넣어달란말임(응답을 성공적으로 받았을 떄 이메소드가 자동으로 호출됨
+                      @Override
+                      public void onResponse(String response) {
+                          println("응답 => " + response);
+                      }
+                  },
+                  new Response.ErrorListener(){ //에러발생시 호출될 리스너 객체
+                      @Override
+                      public void onErrorResponse(VolleyError error) {
+                          println("에러 => "+ error.getMessage());
+                      }
+                  }
+          ){
+              //만약 POST 방식에서 전달할 요청 파라미터가 있다면 getParams 메소드에서 반환하는 HashMap 객체에 넣어줍니다.
+              //이렇게 만든 요청 객체는 요청 큐에 넣어주는 것만 해주면 됩니다.
+              //POST방식으로 안할거면 없어도 되는거같다.
+              @Override
+              protected Map<String, String> getParams() throws AuthFailureError {
+                  Map<String, String> params = new HashMap<String, String>();
+                  return params;
+              }
+          };
+  
+          //아래 add코드처럼 넣어줄때 Volley라고하는게 내부에서 캐싱을 해준다, 즉, 한번 보내고 받은 응답결과가 있으면
+          //그 다음에 보냈을 떄 이전 게 있으면 그냥 이전거를 보여줄수도  있다.
+          //따라서 이렇게 하지말고 매번 받은 결과를 그대로 보여주기 위해 다음과같이 setShouldCache를 false로한다.
+          //결과적으로 이전 결과가 있어도 새로 요청한 응답을 보여줌
+          request.setShouldCache(false);
+          AppHelper.requestQueue.add(request);
+          println("요청 보냄!!");
+        }
+
+    - **TedPermission Library** : 안드로이드에서 퍼미션 권한 관리에 도움을 주는 라이브러리
+      ```java
+        PermissionListener permissionlistener = new PermissionListener() {
+              @Override
+              public void onPermissionGranted() {
+                  Toast.makeText(MainActivity.this, "권한 허가", Toast.LENGTH_SHORT).show();
+              }
+  
+              @Override
+              public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                  Toast.makeText(MainActivity.this, "권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+              }
+  
+          };
+  
+          TedPermission.with(this)
+                  .setPermissionListener(permissionlistener)
+                  .setRationaleMessage("구글 로그인을 하기 위해서는 주소록 접근 권한이 필요해요")
+                  .setDeniedMessage("왜 거부하셨어요...\n하지만 [설정] > [권한] 에서 권한을 허용할 수 있어요.")
+                  .setPermissions(Manifest.permission.READ_CONTACTS)
+                  .check();
+
+    - **Kakao Login API** : 카카오에서 제공하는 카카오 로그인 API
+      ```java
+        // 카카오톡이 설치되어 있는지 확인하는 메서드 , 카카오에서 제공함. 콜백 객체를 이용합.
+        Function2<OAuthToken,Throwable,Unit> callback =new Function2<OAuthToken, Throwable, Unit>() {
+            @Override
+            // 콜백 메서드 ,
+            public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                Log.e(TAG,"CallBack Method");
+                //oAuthToken != null 이라면 로그인 성공
+                if(oAuthToken!=null){
+                    // 토큰이 전달된다면 로그인이 성공한 것이고 토큰이 전달되지 않으면 로그인 실패한다.
+                    updateKakaoLoginUi();
+
+                }else {
+                    //로그인 실패
+                    Log.e(TAG, "invoke: login fail" );
+                }
+
+                return null;
+            }
+        };
+
+    - **Kakao Map API** : 카카오에서 제공하는 카카오 지도 API
+      ```java
+        // 지도 띄우기
+        mapView = new MapView(this);
+        mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+        mapViewContainer.addView(mapView);
+        mapView.setMapViewEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+
+    - **BootPay Payment API** : 부트페이에서 제공하는 PG 결제 연동 API
+      ```java
+        // 결제호출
+        BootUser bootUser = new BootUser().setPhone("010-1234-5678");
+        BootExtra bootExtra = new BootExtra().setQuotas(new int[] {0,2,3});
+
+        Bootpay.init(getFragmentManager())
+                .setApplicationId([ Android SDK용 Application ID ]) // 해당 프로젝트(안드로이드)의 application id 값
+                .setPG(PG.) // 결제할 PG 사
+                .setMethod(Method.) // 결제수단
+                .setContext(this)
+                .setBootUser(bootUser)
+                .setBootExtra(bootExtra)
+                .setUX(UX.PG_DIALOG)
+                .setUserPhone("010-1234-5678") // 구매자 전화번호
+                .setName("맥북프로's 임다") // 결제할 상품명
+                .setOrderId("1234") // 결제 고유번호expire_month
+                .setPrice(10000) // 결제할 금액
+                .addItem("마우's 스", 1, "ITEM_CODE_MOUSE", 100) // 주문정보에 담길 상품정보, 통계를 위해 사용
+                .addItem("키보드", 1, "ITEM_CODE_KEYBOARD", 200, "패션", "여성상의", "블라우스") // 주문정보에 담길 상품정보, 통계를 위해 사용
+                .onConfirm(new ConfirmListener() { // 결제가 진행되기 바로 직전 호출되는 함수로, 주로 재고처리 등의 로직이 수행
+                    @Override
+                    public void onConfirm(@Nullable String message) {
+
+                        if (0 < stuck) Bootpay.confirm(message); // 재고가 있을 경우.
+                        else Bootpay.removePaymentWindow(); // 재고가 없어 중간에 결제창을 닫고 싶을 경우
+                        Log.d("confirm", message);
+                    }
+                })
+                .onDone(new DoneListener() { // 결제완료시 호출, 아이템 지급 등 데이터 동기화 로직을 수행합니다
+                    @Override
+                    public void onDone(@Nullable String message) {
+                        Log.d("done", message);
+                    }
+                })
+                .onReady(new ReadyListener() { // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+                    @Override
+                    public void onReady(@Nullable String message) {
+                        Log.d("ready", message);
+                    }
+                })
+                .onCancel(new CancelListener() { // 결제 취소시 호출
+                    @Override
+                    public void onCancel(@Nullable String message) {
+
+                        Log.d("cancel", message);
+                    }
+                })
+                .onError(new ErrorListener() { // 에러가 났을때 호출되는 부분
+                    @Override
+                    public void onError(@Nullable String message) {
+                        Log.d("error", message);
+                    }
+                })
+                .onClose(
+                        new CloseListener() { //결제창이 닫힐때 실행되는 부분
+                    @Override
+                    public void onClose(String message) {
+                        Log.d("close", "close");
+                    }
+                })
+                .request();
+
+    - **SMTP Mail Library** : Javax의 기본 Mail 라이브러리
+      ```java
+        public GMailSender(String user, String password) {
+          this.user = user;
+          this.password = password;
+          emailCode = createEmailCode();
+          Properties props = new Properties();
+          props.setProperty("mail.transport.protocol", "smtp");
+          props.setProperty("mail.host", mailhost);
+          props.put("mail.smtp.auth", "true");
+          props.put("mail.smtp.port", "465");
+          props.put("mail.smtp.socketFactory.port", "465");
+          props.put("mail.smtp.socketFactory.class",
+                  "javax.net.ssl.SSLSocketFactory");
+          props.put("mail.smtp.socketFactory.fallback", "false");
+          props.setProperty("mail.smtp.quitwait", "false");
+  
+          //구글에서 지원하는 smtp 정보를 받아와 MimeMessage 객체에 전달해준다.
+          session = Session.getDefaultInstance(props, this);
       }
 
-    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
+    - **ftp4j-1.6 Library** : Ftp 파일 전송 라이브러
       ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
-      }
-
-    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
-      ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
-      }
-
-    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
-      ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
-      }
-
-    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
-      ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
-      }
-
-    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
-      ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
-      }
-
-    - Material Library : Google에서 공식적으로 제공하는 디자인 라이브러리
-      ```java
-      dependencies {
-        implementation 'com.google.android.material:material:1.8.0'
+        public void uploadFile(File fileName){
+ 
+          FTPClient client = new FTPClient();
+   
+          try {
+              client.connect(FTP_HOST,21);//ftp 서버와 연결, 호스트와 포트를 기입
+              client.login(FTP_USER, FTP_PASS);//로그인을 위해 아이디와 패스워드 기입
+              client.setType(FTPClient.TYPE_BINARY);//2진으로 변경
+              client.changeDirectory("uploadtest/");//서버에서 넣고 싶은 파일 경로를 기입
+   
+              client.upload(fileName, new MyTransferListener());//업로드 시작
+   
+              handler.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
+                  }
+              });
+   
+          } catch (Exception e) {
+   
+              handler.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      Toast.makeText(getApplicationContext(),"실패",Toast.LENGTH_SHORT).show();
+                  }
+              });
+   
+              e.printStackTrace();
+              try {
+                  client.disconnect(true);
+              } catch (Exception e2) {
+                  e2.printStackTrace();
+              }
+          }
       }
 
 <br />
 
-  - #### **3-2. 내 정보 수정 화면**
+  - #### **3-2. 데이터 크롤링**
     <img width="300" height="600" alt="프로필 변경 화면" src="https://github.com/60162143/itda/assets/33407087/57bb4774-5d9b-42b5-98ef-26d3772fafeb" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="내 정보 변경 화면" src="https://github.com/60162143/itda/assets/33407087/f7475274-3136-4961-948c-ce1063a40183" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="비밀번호 찾기 화면" src="https://github.com/60162143/itda/assets/33407087/8df6d924-e2bd-42ea-a393-303b2ce76d03" />
 
     - 프로필 이미지 변경 및 업로드 기능 구현 ( **ftp4j-1.6 라이브러리를 이용한 ftp 파일 업로드** )
