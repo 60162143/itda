@@ -22,7 +22,7 @@
   - [기타](#8-기타)
     - [사용 라이브러리](#1-사용-라이브러리)
     - [사용 API](#2-사용-api)
-- 📓 [ERD 설계](#-erd-설계)
+- 📓 [ERD 설계](#-데이터베이스)
 - 📮 [데이터 크롤링](#-데이터-크롤링)
 
 </b>
@@ -572,7 +572,8 @@
 
 <br />
 
-## **📓 erd 설계**
+## **📓 데이터베이스**
+### ERD 설계
   <details>
   <summary>ERD 접기/펼치기</summary>
     
@@ -587,5 +588,5 @@
 
 ## **📮 데이터 크롤링**
 
-[**Itda 데이터 크롤링 자세히 보기**](https://github.com/60162143/itda-data-Crawling)
+[**Itda Data Crawling 자세히 보기**](https://github.com/60162143/itda-data-Crawling)
 
