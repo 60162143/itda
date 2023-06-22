@@ -22,8 +22,8 @@
   - [기타](#8-기타)
     - [사용 라이브러리](#1-사용-라이브러리)
     - [사용 API](#2-사용-api)
-- ✏️ [ERD 설계](#-erd-설계)
-- 🖥️ [데이터 크롤링](#-데이터-크롤링)
+- 📓 [ERD 설계](#-erd-설계)
+- 📮 [데이터 크롤링](#-데이터-크롤링)
 
 </b>
 
@@ -572,19 +572,20 @@
 
 <br />
 
-## **✏️ erd 설계**
-<details>
-<summary>ERD 접기/펼치기</summary>
-  
-<img width="1800" alt="erd" src="https://github.com/60162143/itda-Server/assets/33407087/107ae9fb-7c0d-41ca-9d09-fe5aa1f30197">
-  
-</div>
-</details>
+## **📓 erd 설계**
+  <details>
+  <summary>ERD 접기/펼치기</summary>
+    
+  <img width="1800" alt="erd" src="https://github.com/60162143/itda-Server/assets/33407087/107ae9fb-7c0d-41ca-9d09-fe5aa1f30197">
+    
+  </div>
+  </details>
 
 [**Itda Rest API 자세히 보기**](https://github.com/60162143/itda-Server)
 
 <br />
 
-## **🖥️ 데이터 크롤링**
+## **📮 데이터 크롤링**
+
 [**Itda 데이터 크롤링 자세히 보기**](https://github.com/60162143/itda-data-Crawling)
 
