@@ -67,7 +67,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=gradle&logoColor=white">
 <br />
 
-## **👨🏻‍💻 기능 구현**
+## **👨🏻‍💻 기능 구현(각 기능에 대한 이미지는 'View 접기/펼치기 버튼을 클릭하여 확인하실 수 있습니다.)**
 
 
 
