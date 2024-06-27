@@ -67,14 +67,14 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img align="center" src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=gradle&logoColor=white">
 <br />
 
-## **👨🏻‍💻 기능 구현(각 기능에 대한 이미지는 'View 접기/펼치기 버튼을 클릭하여 확인하실 수 있습니다.)**
+## **👨🏻‍💻 기능 구현**
 
 
 
 ### **1. 메인 화면**
 ***
-  <details>
-  <summary>View 접기/펼치기</summary>
+  <details open>
+  <summary><b>View 접기/펼치기</b></summary>
   
   <img width="300" height="600" alt="어플 실행 화면" src="https://github.com/60162143/itda/assets/33407087/ec581a5c-64d0-480e-96a8-95024a8de0a3" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="메인 가게 검색 화면" src="https://github.com/60162143/itda/assets/33407087/74f64b89-7c9f-4dce-b23d-8ffef49233fc" />
   
@@ -92,8 +92,8 @@
 
 ### **2. 로그인 화면**
 ***
-  <details>
-  <summary>View 접기/펼치기</summary>
+  <details open>
+  <summary><b>View 접기/펼치기</b></summary>
   
   <img width="300" height="600" alt="로그인 화면" src="https://github.com/60162143/itda/assets/33407087/e6f0263a-90e6-44e9-a332-bde8da0e009c" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="회원가입 화면" src="https://github.com/60162143/itda/assets/33407087/c579eeae-1aee-4485-9833-280f4d078933" />
   
@@ -111,8 +111,8 @@
 ### **3. 가게 상세 화면**
   - #### **1. 가게 정보 조회 화면**
     ***
-    <details>
-    <summary>View 접기/펼치기</summary>
+    <details open>
+    <summary><b>View 접기/펼치기</b></summary>
     
     <img width="300" height="600" alt="가게 상세 조회 화면" src="https://github.com/60162143/itda/assets/33407087/0710e018-c1ce-4bb7-bfc3-971be221a8f6" />
     
@@ -131,8 +131,8 @@
 
   - #### **2. 리뷰 화면**
     ***
-    <details>
-    <summary>View 접기/펼치기</summary>
+    <details open>
+    <summary><b>View 접기/펼치기</b></summary>
     
     <img width="300" height="600" alt="리뷰 작성 화면" src="https://github.com/60162143/itda/assets/33407087/53e04e9e-3dce-4b9f-8029-948ec915818a" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="리뷰 댓글 작성 화면" src="https://github.com/60162143/itda/assets/33407087/8511b860-c9ac-43d0-8f3c-1fae652f5160" />
     
@@ -148,8 +148,8 @@
 
   - #### **3. 주문 결제 화면**
     ***
-    <details>
-    <summary>View 접기/펼치기</summary>
+    <details open>
+    <summary><b>View 접기/펼치기</b></summary>
     
     <img width="300" height="600" alt="주문 화면" src="https://github.com/60162143/itda/assets/33407087/213e3c46-3485-44c5-9c45-61f1338fe56c" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="결제 화면" src="https://github.com/60162143/itda/assets/33407087/44838570-8d4d-4d04-9a87-cc2c8baa87af" />
     
@@ -166,8 +166,8 @@
 
 ### **4. 협업 화면**
 ***
-  <details>
-  <summary>View 접기/펼치기</summary>
+  <details open>
+  <summary><b>View 접기/펼치기</b></summary>
   
   <img width="300" height="600" alt="협업 화면" src="https://github.com/60162143/itda/assets/33407087/077262bd-d100-46c8-a34f-6d7c7068b74f" />
   
@@ -183,8 +183,8 @@
 
 ### **5. 지도 화면**
 ***
-  <details>
-  <summary>View 접기/펼치기</summary>
+  <details open>
+  <summary><b>View 접기/펼치기</b></summary>
   
   <img width="300" height="600" alt="지도 화면" src="https://github.com/60162143/itda/assets/33407087/d9a54d75-6e1d-4fb6-8e02-693028373a8e" />
   
@@ -202,8 +202,8 @@
 
 ### **6. 가방 화면**
 ***
-  <details>
-  <summary>View 접기/펼치기</summary>
+  <details open>
+  <summary><b>View 접기/펼치기</b></summary>
   
   <img width="300" height="600" alt="가방 화면" src="https://github.com/60162143/itda/assets/33407087/91e34258-b8e4-4bab-a8ae-f77d2ebd3f39" />
   
@@ -220,8 +220,8 @@
 
   - #### **1. 내 정보 조회 화면**
     ***
-    <details>
-    <summary>View 접기/펼치기</summary>
+    <details open>
+    <summary><b>View 접기/펼치기</b></summary>
     
     <img width="300" height="600" alt="찜 목록 조회 화면" src="https://github.com/60162143/itda/assets/33407087/8eac6822-4ccd-477f-80ec-13ab024d292f" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="작성한 리뷰 목록 조회 화면" src="https://github.com/60162143/itda/assets/33407087/4c0b53b5-4f4a-4245-bc73-c1e779f81a7a" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="업로드한 사진 목록 조회 화면" src="https://github.com/60162143/itda/assets/33407087/5506779e-528f-4193-8557-3988714d2588" />
     
@@ -237,8 +237,8 @@
 
   - #### **2. 내 정보 수정 화면**
     ***
-    <details>
-    <summary>View 접기/펼치기</summary>
+    <details open>
+    <summary><b>View 접기/펼치기</b></summary>
     
     <img width="300" height="600" alt="프로필 변경 화면" src="https://github.com/60162143/itda/assets/33407087/57bb4774-5d9b-42b5-98ef-26d3772fafeb" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="내 정보 변경 화면" src="https://github.com/60162143/itda/assets/33407087/f7475274-3136-4961-948c-ce1063a40183" /> &nbsp;&nbsp;&nbsp;&nbsp; <img width="300" height="600" alt="비밀번호 찾기 화면" src="https://github.com/60162143/itda/assets/33407087/8df6d924-e2bd-42ea-a393-303b2ce76d03" />
     
@@ -257,8 +257,8 @@
   - #### **1. 사용 라이브러리**
 
     - **Glide Library** : 이미지를 빠르고 효율적으로 불러올 수 있게 도와주는 라이브러리
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         Glide.with(holder.itemView)                     // View, Fragment 혹은 Activity로부터 Context를 GET
@@ -273,8 +273,8 @@
       </details>
 
     - **Styleable Toast Library** : 폰트, 배경색, 아이콘 등 토스트의 전반적인 디자인을 themes.xml에서 원하는 대로 지정해 줄 수 있는 라이브러리
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         // themes.xml
@@ -298,8 +298,8 @@
       </details>
 
     - **Volley Library** : 네트워킹을 보다 쉽고 빠르게 만들어주는 HTTP 라이브러리
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         public void sendRequest(){
@@ -349,8 +349,8 @@
       </details>
       
     - **TedPermission Library** : 안드로이드에서 퍼미션 권한 관리에 도움을 주는 라이브러리
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         PermissionListener permissionlistener = new PermissionListener() {
@@ -378,8 +378,8 @@
       </details>
       
     - **SMTP Mail Library** : Javax의 기본 Mail 라이브러리
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         public GMailSender(String user, String password) {
@@ -406,8 +406,8 @@
       </details>
 
     - **ftp4j-1.6 Library** : Ftp 파일 전송 라이브러리
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         public void uploadFile(File fileName){
@@ -456,8 +456,8 @@
   - #### **2. 사용 api**
 
     - **Kakao Login API** : 카카오에서 제공하는 카카오 로그인 API
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         // 카카오톡이 설치되어 있는지 확인하는 메서드 , 카카오에서 제공함. 콜백 객체를 이용합.
@@ -485,8 +485,8 @@
       </details>
 
     - **Kakao Map API** : 카카오에서 제공하는 카카오 지도 API
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         // 지도 띄우기
@@ -501,8 +501,8 @@
       </details>
 
     - **BootPay Payment API** : 부트페이에서 제공하는 PG 결제 연동 API
-      <details>
-      <summary>예시 접기/펼치기</summary>
+      <details open>
+      <summary><b>적용 코드 접기/펼치기</b></summary>
       
       ```java
         // 결제호출
@@ -574,8 +574,8 @@
 
 ## **📓 데이터베이스**
 ### ERD 설계
-  <details>
-  <summary>ERD 접기/펼치기</summary>
+  <details open>
+  <summary><b>ERD 접기/펼치기</b></summary>
     
   <img width="1800" alt="erd" src="https://github.com/60162143/itda-Server/assets/33407087/107ae9fb-7c0d-41ca-9d09-fe5aa1f30197">
     
